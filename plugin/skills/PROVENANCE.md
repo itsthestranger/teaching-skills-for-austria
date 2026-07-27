@@ -61,9 +61,12 @@ The files above were originally verified byte-identical to the pinned upstream c
 - Document type ids: `lesson_plan` → `unterrichtsplanung`, `student_materials` →
   `schueler_material`, `observation_template` → `beobachtungsbogen` are now the agreed
   Austrian names and are used as-is in `references/example_lesson.json`.
-  **TODO:** `hint_cards` was provisionally renamed to `hinweiskarten` (used in the
-  fixture) but its fate as a distinct document type is **not yet decided** — do not
-  treat this rename as final, and do not delete the type pending that decision.
+  **Decided 2026-07-27:** upstream's fourth document type, `hint_cards`, is **dropped**.
+  The Austrian document set is exactly the three above, per the specification. Nothing in
+  the renderer hardcodes document ids — they are free-form JSON `id`s — so the drop was a
+  fixture-only change and the renderer retains no dead code for it. Tiered support material
+  for `at-differenzierung` is served by the `niveau_spalte` block, not by a separate
+  document type.
 
 `at-differenzierung/scripts/render_all.sh` and `at-unterrichtsplanung/scripts/render_all.sh`
 were not touched — they differ from each other only in filenames/comments (inherited from

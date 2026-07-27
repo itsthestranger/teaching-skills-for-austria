@@ -19,4 +19,5 @@ This project is derived from the upstream repository:
 | Render Blocks | Added: `kompetenzbezug` | Reference competency standards in lesson plans |
 | Render Blocks | Added: `uebergreifende_themen_tag` | Cross-curricular theme tags per Lehrplan 2023 |
 | Render Blocks | Added: `niveau_spalte` | Tiered proficiency levels for differentiation |
-| Document Types | `lesson_plan`, `student_materials`, `hint_cards`, `observation_template` → `unterrichtsplanung`, `schueler_material`, `beobachtungsbogen` | German terminology aligned with Lehrplan 2023 |
+| Document Types | `lesson_plan` → `unterrichtsplanung`, `student_materials` → `schueler_material`, `observation_template` → `beobachtungsbogen`; **`hint_cards` dropped** | German terminology aligned with Lehrplan 2023; the Austrian document set is exactly three, and tiered support material is served by the `niveau_spalte` block instead |
+| Dependencies | `python-docx` install kept as upstream's runtime `pip install` in `render_all.sh` | Vendoring is not viable: `python-docx` requires `lxml`, which ships 7 compiled C extensions bound to a specific CPython version, architecture and libc. Portable vendoring would mean shipping a ~12 MB binary wheel per OS × arch × Python-minor combination. Upstream's fallback already degrades safely to HTML-only when the install fails |

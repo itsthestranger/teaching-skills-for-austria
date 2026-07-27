@@ -20,13 +20,37 @@
     },
     "bruch_tabelle": {
       "type": "data_table",
-      "headers": ["Gegenstand", "Gruppe Rot", "Gruppe Blau"],
+      "headers": [
+        "Gegenstand",
+        "Gruppe Rot",
+        "Gruppe Blau"
+      ],
       "rows": [
-        ["Schokolade", "3 Tafeln für 4 Kinder", "2 Tafeln für 3 Kinder"],
-        ["Pizza", "5 Stück für 6 Kinder", "3 Stück für 4 Kinder"],
-        ["Saft", "2 Liter für 5 Kinder", "3 Liter für 8 Kinder"],
-        ["Kekse", "7 Stück für 8 Kinder", "5 Stück für 6 Kinder"],
-        ["Äpfel", "—", "4 Stück für 5 Kinder"]
+        [
+          "Schokolade",
+          "3 Tafeln für 4 Kinder",
+          "2 Tafeln für 3 Kinder"
+        ],
+        [
+          "Pizza",
+          "5 Stück für 6 Kinder",
+          "3 Stück für 4 Kinder"
+        ],
+        [
+          "Saft",
+          "2 Liter für 5 Kinder",
+          "3 Liter für 8 Kinder"
+        ],
+        [
+          "Kekse",
+          "7 Stück für 8 Kinder",
+          "5 Stück für 6 Kinder"
+        ],
+        [
+          "Äpfel",
+          "—",
+          "4 Stück für 5 Kinder"
+        ]
       ]
     },
     "p1": {
@@ -49,21 +73,55 @@
     "vokabular": {
       "type": "table",
       "rows": [
-        ["**Bruch**", "Ein Anteil eines Ganzen, geschrieben als Zähler/Nenner."],
-        ["**Zähler**", "Die Zahl über dem Bruchstrich; sie zählt die Anteile."],
-        ["**Nenner**", "Die Zahl unter dem Bruchstrich; sie zeigt, in wie viele Teile geteilt wird."],
-        ["**Erweitern**", "Zähler und Nenner mit derselben Zahl multiplizieren; der Wert bleibt gleich."],
-        ["**Kürzen**", "Zähler und Nenner durch dieselbe Zahl teilen; der Wert bleibt gleich."],
-        ["**Gleichnamig**", "Brüche mit demselben Nenner - so werden sie vergleichbar."]
+        [
+          "**Bruch**",
+          "Ein Anteil eines Ganzen, geschrieben als Zähler/Nenner."
+        ],
+        [
+          "**Zähler**",
+          "Die Zahl über dem Bruchstrich; sie zählt die Anteile."
+        ],
+        [
+          "**Nenner**",
+          "Die Zahl unter dem Bruchstrich; sie zeigt, in wie viele Teile geteilt wird."
+        ],
+        [
+          "**Erweitern**",
+          "Zähler und Nenner mit derselben Zahl multiplizieren; der Wert bleibt gleich."
+        ],
+        [
+          "**Kürzen**",
+          "Zähler und Nenner durch dieselbe Zahl teilen; der Wert bleibt gleich."
+        ],
+        [
+          "**Gleichnamig**",
+          "Brüche mit demselben Nenner - so werden sie vergleichbar."
+        ]
       ]
     },
     "fehlvorstellungen": {
       "type": "table",
-      "headers": ["Was Kinder tun", "Warum das passiert", "Reaktion der Lehrperson"],
+      "headers": [
+        "Was Kinder tun",
+        "Warum das passiert",
+        "Reaktion der Lehrperson"
+      ],
       "rows": [
-        ["Hält 2/3 für größer als 3/4, weil 2 < 3.", "Zähler und Nenner werden wie getrennte ganze Zahlen verglichen.", "Frage: Wie viel bleibt bis zum Ganzen übrig? Bruchstreifen zum Vergleich zeigen."],
-        ["Vergleicht nur die Gesamtmenge (3 Liter vs. 2 Liter), nicht den Anteil pro Kind.", "Übersieht, dass unterschiedlich viele Kinder teilen.", "Fragen, wie viel EIN Kind bekommt; für dieselbe Kinderzahl vergleichen lassen."],
-        ["Stockt beim Erweitern auf einen gemeinsamen Nenner (7/8 und 5/6).", "Unsicherheit beim Finden des kleinsten gemeinsamen Vielfachen.", "Nenner 24 als Zwischenschritt anbieten oder ein Bruchbild zeichnen lassen."]
+        [
+          "Hält 2/3 für größer als 3/4, weil 2 < 3.",
+          "Zähler und Nenner werden wie getrennte ganze Zahlen verglichen.",
+          "Frage: Wie viel bleibt bis zum Ganzen übrig? Bruchstreifen zum Vergleich zeigen."
+        ],
+        [
+          "Vergleicht nur die Gesamtmenge (3 Liter vs. 2 Liter), nicht den Anteil pro Kind.",
+          "Übersieht, dass unterschiedlich viele Kinder teilen.",
+          "Fragen, wie viel EIN Kind bekommt; für dieselbe Kinderzahl vergleichen lassen."
+        ],
+        [
+          "Stockt beim Erweitern auf einen gemeinsamen Nenner (7/8 und 5/6).",
+          "Unsicherheit beim Finden des kleinsten gemeinsamen Vielfachen.",
+          "Nenner 24 als Zwischenschritt anbieten oder ein Bruchbild zeichnen lassen."
+        ]
       ]
     },
     "merkmale": {
@@ -87,18 +145,18 @@
     "exit_sort": {
       "type": "cards",
       "items": [
-        {"title": "Verstanden", "text": "Beide Anteile richtig verglichen (5/6 und 4/5), wählt Gruppe Grün und begründet mit dem gemeinsamen Nenner."},
-        {"title": "Fast so weit", "text": "Bringt die Brüche richtig auf einen gemeinsamen Nenner, macht aber einen Rechenfehler oder vergleicht nur einen Bruch; Schlussfolgerung passt zu den eigenen Zahlen."},
-        {"title": "Braucht Wiederholung", "text": "Stimmt Mia zu, weil 5 > 4, oder vergleicht nur die Kinderzahl, ohne einen Anteil pro Kind zu berechnen."}
-      ]
-    },
-    "hinweiskarten": {
-      "type": "cards",
-      "items": [
-        {"title": "Hier anfangen", "text": "Wie viel bekommt EIN Kind? Teile die Menge durch die Kinderzahl."},
-        {"title": "Gemeinsamer Nenner", "text": "Erweitere beide Brüche, bis sie denselben Nenner haben - dann vergleiche nur die Zähler."},
-        {"title": "Bruchstreifen", "text": "Zeichne zwei gleich lange Streifen. Teile sie passend zum Nenner ein und färbe die Anteile ein."},
-        {"title": "Sag es mit 'von'", "text": "Deine Antwort ist ein Anteil von einem Ganzen: \"____ von ____ Teilen.\""}
+        {
+          "title": "Verstanden",
+          "text": "Beide Anteile richtig verglichen (5/6 und 4/5), wählt Gruppe Grün und begründet mit dem gemeinsamen Nenner."
+        },
+        {
+          "title": "Fast so weit",
+          "text": "Bringt die Brüche richtig auf einen gemeinsamen Nenner, macht aber einen Rechenfehler oder vergleicht nur einen Bruch; Schlussfolgerung passt zu den eigenen Zahlen."
+        },
+        {
+          "title": "Braucht Wiederholung",
+          "text": "Stimmt Mia zu, weil 5 > 4, oder vergleicht nur die Kinderzahl, ohne einen Anteil pro Kind zu berechnen."
+        }
       ]
     }
   },
@@ -113,7 +171,10 @@
         {
           "heading": "Auf einen Blick",
           "blocks": [
-            {"type": "from_shared", "key": "standard"},
+            {
+              "type": "from_shared",
+              "key": "standard"
+            },
             {
               "type": "kompetenzbezug",
               "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.01",
@@ -128,7 +189,10 @@
             },
             {
               "type": "uebergreifende_themen_tag",
-              "themen": ["Informatische Bildung", "Medienbildung"]
+              "themen": [
+                "Informatische Bildung",
+                "Medienbildung"
+              ]
             },
             {
               "type": "labeled",
@@ -198,18 +262,41 @@
         {
           "heading": "Fachbegriffe & erwartete Schwierigkeiten",
           "blocks": [
-            {"type": "h3", "text": "Fachbegriffe"},
-            {"type": "from_shared", "key": "vokabular"},
-            {"type": "h3", "text": "Erwartete Schwierigkeiten"},
-            {"type": "from_shared", "key": "fehlvorstellungen"}
+            {
+              "type": "h3",
+              "text": "Fachbegriffe"
+            },
+            {
+              "type": "from_shared",
+              "key": "vokabular"
+            },
+            {
+              "type": "h3",
+              "text": "Erwartete Schwierigkeiten"
+            },
+            {
+              "type": "from_shared",
+              "key": "fehlvorstellungen"
+            }
           ]
         },
         {
           "heading": "Unterrichtsverlauf",
           "blocks": [
-            {"type": "phase_header", "name": "Einstieg: Welche Gruppe?", "minutes": 6},
-            {"type": "from_shared", "key": "anchor_task"},
-            {"type": "phase_header", "name": "Kurzinput: Direkte Instruktion", "minutes": 7},
+            {
+              "type": "phase_header",
+              "name": "Einstieg: Welche Gruppe?",
+              "minutes": 6
+            },
+            {
+              "type": "from_shared",
+              "key": "anchor_task"
+            },
+            {
+              "type": "phase_header",
+              "name": "Kurzinput: Direkte Instruktion",
+              "minutes": 7
+            },
             {
               "type": "list",
               "items": [
@@ -219,7 +306,11 @@
                 "Whiteboard-Check: 2/3 oder 3/5 - was ist größer? (2/3)"
               ]
             },
-            {"type": "phase_header", "name": "Erarbeitung: Wer bekommt mehr?", "minutes": 15},
+            {
+              "type": "phase_header",
+              "name": "Erarbeitung: Wer bekommt mehr?",
+              "minutes": 15
+            },
             {
               "type": "paragraph",
               "text": "Zweiergruppen bearbeiten die fünf Vergleichsaufgaben. Jede Antwort verwendet das Wort 'Anteil'. Hinweiskarten liegen umgedreht auf jedem Tisch."
@@ -229,29 +320,78 @@
               "label": "Abdeckung",
               "text": "einfacher Bruchvergleich → 1-2; Gesamtmengen-Falle → 3; ungerades Erweitern → 4; zwei Anteile gleichzeitig → 5; die Abschlussfrage testet die Falle erneut."
             },
-            {"type": "from_shared", "key": "bruch_tabelle"},
+            {
+              "type": "from_shared",
+              "key": "bruch_tabelle"
+            },
             {
               "type": "labeled",
               "label": "Was jede Aufgabe prüft",
               "text": "Anteil pro Kind (Basis): Aufgaben 1-2 · Gesamtmengen-vs-Anteil-Falle: Aufgabe 3 · ungerades Erweitern: Aufgabe 4 · Begründung des besseren Anteils: Aufgabe 5 · die Falle erneut mit neuen Zahlen: Abschlussfrage"
             },
-            {"type": "from_shared", "key": "p1", "label": "1"},
-            {"type": "from_shared", "key": "p2", "label": "2"},
-            {"type": "from_shared", "key": "p3", "label": "3"},
-            {"type": "from_shared", "key": "p4", "label": "4"},
-            {"type": "from_shared", "key": "p5", "label": "5"},
-            {"type": "h3", "text": "Beim Herumgehen"},
-            {"type": "from_shared", "key": "merkmale"},
+            {
+              "type": "from_shared",
+              "key": "p1",
+              "label": "1"
+            },
+            {
+              "type": "from_shared",
+              "key": "p2",
+              "label": "2"
+            },
+            {
+              "type": "from_shared",
+              "key": "p3",
+              "label": "3"
+            },
+            {
+              "type": "from_shared",
+              "key": "p4",
+              "label": "4"
+            },
+            {
+              "type": "from_shared",
+              "key": "p5",
+              "label": "5"
+            },
+            {
+              "type": "h3",
+              "text": "Beim Herumgehen"
+            },
+            {
+              "type": "from_shared",
+              "key": "merkmale"
+            },
             {
               "type": "table",
-              "headers": ["Hilfestellung", "Wann", "So sieht es aus"],
+              "headers": [
+                "Hilfestellung",
+                "Wann",
+                "So sieht es aus"
+              ],
               "rows": [
-                ["Bruchstreifen zeichnen", "Kein Zugang zum Vergleich", "Zwei gleich lange Streifen falten und einfärben"],
-                ["Gemeinsamer Nenner 24", "Ungerades Erweitern (Aufgabe 4)", "7/8 = 21/24 und 5/6 = 20/24"],
-                ["Anteil-pro-Kind-Karte", "Vergleicht nur Gesamtmengen", "Menge ÷ Kinderzahl = Anteil für 1 Kind"]
+                [
+                  "Bruchstreifen zeichnen",
+                  "Kein Zugang zum Vergleich",
+                  "Zwei gleich lange Streifen falten und einfärben"
+                ],
+                [
+                  "Gemeinsamer Nenner 24",
+                  "Ungerades Erweitern (Aufgabe 4)",
+                  "7/8 = 21/24 und 5/6 = 20/24"
+                ],
+                [
+                  "Anteil-pro-Kind-Karte",
+                  "Vergleicht nur Gesamtmengen",
+                  "Menge ÷ Kinderzahl = Anteil für 1 Kind"
+                ]
               ]
             },
-            {"type": "phase_header", "name": "Besprechung: Strategien vergleichen", "minutes": 10},
+            {
+              "type": "phase_header",
+              "name": "Besprechung: Strategien vergleichen",
+              "minutes": 10
+            },
             {
               "type": "paragraph",
               "text": "Zweiergruppen tauschen Antworten zu Aufgabe 3-4 mit einer Nachbargruppe, stimmen zu oder widersprechen. Danach im Plenum: zuerst eine Gruppe mit Bruchstreifen zeigen lassen, dann eine mit gemeinsamem Nenner, und beide verknüpfen."
@@ -265,15 +405,32 @@
                 "Zwei Anteile beschreiben die Äpfel. Was sagt jeder davon aus?"
               ]
             },
-            {"type": "phase_header", "name": "Sicherung", "minutes": 5},
+            {
+              "type": "phase_header",
+              "name": "Sicherung",
+              "minutes": 5
+            },
             {
               "type": "paragraph",
               "text": "Am Plakat jede Aufgabe festhalten: gegebene Aufteilung → Anteil pro Kind. Zusammenfassen: Anteile sind vergleichbar, weil sich beide auf genau ein Kind beziehen."
             },
-            {"type": "phase_header", "name": "Abschlussfrage", "minutes": 7},
-            {"type": "from_shared", "key": "exit_ticket"},
-            {"type": "h3", "text": "Schüler:innenarbeiten einordnen"},
-            {"type": "from_shared", "key": "exit_sort"}
+            {
+              "type": "phase_header",
+              "name": "Abschlussfrage",
+              "minutes": 7
+            },
+            {
+              "type": "from_shared",
+              "key": "exit_ticket"
+            },
+            {
+              "type": "h3",
+              "text": "Schüler:innenarbeiten einordnen"
+            },
+            {
+              "type": "from_shared",
+              "key": "exit_sort"
+            }
           ]
         },
         {
@@ -304,7 +461,9 @@
       "eyebrow": "2. Klasse Mathematik · Arbeitsblatt",
       "title": "Wer bekommt mehr?",
       "meta": "Name: ____________________    Datum: ____________    Partner:in: ____________________",
-      "theme": {"body_size": 11.5},
+      "theme": {
+        "body_size": 11.5
+      },
       "sections": [
         {
           "heading": "Gemeinsamer Einstieg",
@@ -312,8 +471,13 @@
             {
               "type": "group",
               "blocks": [
-                {"type": "from_shared", "key": "anchor_task"},
-                {"type": "answer_box"}
+                {
+                  "type": "from_shared",
+                  "key": "anchor_task"
+                },
+                {
+                  "type": "answer_box"
+                }
               ]
             }
           ]
@@ -327,44 +491,78 @@
               "label": "Denk daran",
               "text": "Verwende in jeder Antwort das Wort **Anteil**. *Anteil* bedeutet *das, was auf ein Kind entfällt*."
             },
-            {"type": "from_shared", "key": "bruch_tabelle"},
+            {
+              "type": "from_shared",
+              "key": "bruch_tabelle"
+            },
             {
               "type": "group",
               "blocks": [
-                {"type": "from_shared", "key": "p1", "label": "1"},
-                {"type": "answer_box"}
+                {
+                  "type": "from_shared",
+                  "key": "p1",
+                  "label": "1"
+                },
+                {
+                  "type": "answer_box"
+                }
               ]
             },
             {
               "type": "group",
               "blocks": [
-                {"type": "from_shared", "key": "p2", "label": "2"},
-                {"type": "answer_box"}
+                {
+                  "type": "from_shared",
+                  "key": "p2",
+                  "label": "2"
+                },
+                {
+                  "type": "answer_box"
+                }
               ]
             },
             {
               "type": "group",
               "blocks": [
-                {"type": "from_shared", "key": "p3", "label": "3"},
+                {
+                  "type": "from_shared",
+                  "key": "p3",
+                  "label": "3"
+                },
                 {
                   "type": "paragraph",
                   "text": "Ich (stimme zu / stimme nicht zu), weil ein Kind in Gruppe Rot __________ Liter und in Gruppe Blau __________ Liter bekommt."
                 },
-                {"type": "answer_box", "ruled": true}
+                {
+                  "type": "answer_box",
+                  "ruled": true
+                }
               ]
             },
             {
               "type": "group",
               "blocks": [
-                {"type": "from_shared", "key": "p4", "label": "4"},
-                {"type": "answer_box"}
+                {
+                  "type": "from_shared",
+                  "key": "p4",
+                  "label": "4"
+                },
+                {
+                  "type": "answer_box"
+                }
               ]
             },
             {
               "type": "group",
               "blocks": [
-                {"type": "from_shared", "key": "p5", "label": "5"},
-                {"type": "answer_box"}
+                {
+                  "type": "from_shared",
+                  "key": "p5",
+                  "label": "5"
+                },
+                {
+                  "type": "answer_box"
+                }
               ]
             }
           ]
@@ -375,28 +573,16 @@
             {
               "type": "group",
               "blocks": [
-                {"type": "from_shared", "key": "exit_ticket"},
-                {"type": "answer_box", "ruled": true}
+                {
+                  "type": "from_shared",
+                  "key": "exit_ticket"
+                },
+                {
+                  "type": "answer_box",
+                  "ruled": true
+                }
               ]
             }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "hinweiskarten",
-      "audience": "student",
-      "eyebrow": "2. Klasse Mathematik · Hinweiskarten",
-      "title": "Nicht weiter? Wähle eine Hinweiskarte",
-      "sections": [
-        {
-          "heading": "Hinweiskarten",
-          "blocks": [
-            {
-              "type": "paragraph",
-              "text": "Nimm nur eine Karte, wenn deine Zweiergruppe nicht weiterkommt."
-            },
-            {"type": "from_shared", "key": "hinweiskarten"}
           ]
         }
       ]
@@ -419,10 +605,17 @@
         {
           "heading": "Worauf achten",
           "blocks": [
-            {"type": "from_shared", "key": "merkmale"},
+            {
+              "type": "from_shared",
+              "key": "merkmale"
+            },
             {
               "type": "fill_table",
-              "headers": ["Schüler:in", "Beobachtete Strategie", "Nächster Schritt"],
+              "headers": [
+                "Schüler:in",
+                "Beobachtete Strategie",
+                "Nächster Schritt"
+              ],
               "blank_rows": 8,
               "row_height_pt": 26
             }
@@ -431,14 +624,23 @@
         {
           "heading": "Erwartete Schwierigkeiten",
           "blocks": [
-            {"type": "from_shared", "key": "fehlvorstellungen"}
+            {
+              "type": "from_shared",
+              "key": "fehlvorstellungen"
+            }
           ]
         },
         {
           "heading": "Abschlussfragen einordnen",
           "blocks": [
-            {"type": "from_shared", "key": "exit_ticket"},
-            {"type": "from_shared", "key": "exit_sort"}
+            {
+              "type": "from_shared",
+              "key": "exit_ticket"
+            },
+            {
+              "type": "from_shared",
+              "key": "exit_sort"
+            }
           ]
         }
       ]
