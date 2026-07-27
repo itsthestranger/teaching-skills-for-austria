@@ -15,7 +15,8 @@ Visual design principles:
 
 Block types (canonical names; legacy aliases accepted, see ALIASES in lesson_common):
   paragraph, labeled, list, h2, h3, callout, table, cards, columns, group, page_break,
-  phase_header, fill_in, instructions, workspace, checklist
+  phase_header, fill_in, instructions, workspace, checklist, kompetenzbezug,
+  uebergreifende_themen_tag
 
 Usage:
     python render_lesson_html.py lesson.json -o lesson_preview.html
@@ -35,7 +36,7 @@ from lesson_common import (  # noqa: E402
     btype as _btype, resolve_callout_kind as _resolve_callout_kind,
     answer_profile, expand_document, build_header, preamble_blocks, coerce_marks,
     workspace_height, normalize_text, label_text, label_sep, table_row_height,
-    coerce_headers, coerce_rows,
+    coerce_headers, coerce_rows, kompetenz_citation,
 )
 
 FILL_IN_SIZES = {"short": "6em", "med": "14em", "long": "100%"}
@@ -252,6 +253,26 @@ def render_block(blk: dict, theme: Theme) -> str:
             for v, lab in marks)
         return (f"<div class=\"numberline\"><div class=\"nl-bar\">{tick_html}{mark_html}"
                 f"</div></div>")
+    if t == "kompetenzbezug":
+        # Legally load-bearing: the quote must render as an exact quotation (verbatim —
+        # no markdown bold/italic parsing, no reflow) and its citation must always
+        # accompany it. Reuses the callout icon/box machinery via CALLOUT_KINDS.
+        icon, klass = CALLOUT_KINDS["kompetenz"]
+        kid = blk.get("kompetenz_id", "")
+        head = (f"<div class=\"co-label\"><span class=\"co-icon\">{icon}</span>"
+                f"<b>Kompetenzbezug</b>"
+                + (f" <span class=\"kb-id\">{md(kid)}</span>" if kid else "") + "</div>")
+        raw = str(blk.get("text", ""))
+        quote = escape(raw, quote=True).replace("\n", "<br>")
+        body = f"<p class=\"kb-quote\">„{quote}“</p>" if raw else ""
+        cite = kompetenz_citation(blk.get("quelle"))
+        foot = (f"<p class=\"kb-cite\">Quelle: {md(cite)}</p>" if cite else "")
+        return f"<div class=\"co {klass}\">{head}{body}{foot}</div>"
+    if t == "uebergreifende_themen_tag":
+        label = md(label_text(blk)) if blk.get("label") else "Übergreifende Themen"
+        chips = "".join(f"<span class=\"tag-chip\">{md(str(th))}</span>"
+                        for th in blk.get("themen", []))
+        return f"<div class=\"tagrow\"><span class=\"tagrow-label\">{label}:</span>{chips}</div>"
     # NEVER dump raw JSON into the page — a printed worksheet with {"type": ...} on it is a
     # blocking print-safety failure (seen in real model output: "list" and "labeled_box").
     if blk.get("text"):
@@ -310,7 +331,7 @@ def render(data: dict) -> str:
     if data.get("footer_note"):
         out.append(f"<div class=\"footer\">{md(data['footer_note'])}</div>")
 
-    title = escape(str(data.get("title", "Lesson Plan")), quote=True)
+    title = escape(str(data.get("title", "Unterrichtsplanung")), quote=True)
     return ("<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>" + title
             + "</title><style>" + css(theme) + "</style></head><body><div class=\"page\">"
             + "".join(out) + "</div></body></html>")

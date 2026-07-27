@@ -303,7 +303,7 @@ def _faceted(val: dict, audience: str) -> list[dict]:
             out.extend(t_blocks)
     s = _facet_text(val.get("student"))
     if s:
-        out.append({"type": "labeled", "label": "Students see", "text": s})
+        out.append({"type": "labeled", "label": "Sicht der Schüler:innen", "text": s})
     else:
         out.extend(_as_blocks(val.get("student")))
     return out
@@ -325,7 +325,7 @@ def expand_from_shared(key: str, shared: dict, audience: str = "teacher",
         if not (shared.get("standard_text") or shared.get("standard_code")):
             return []
         return [{"type": "callout", "kind": "special",
-                 "label": f"{shared.get('standard_code', '')} — Target standard".strip(" —"),
+                 "label": f"{shared.get('standard_code', '')} — Angestrebter Standard".strip(" —"),
                  "text": shared.get("standard_text", "")}]
 
     val = shared.get(key)
@@ -489,11 +489,15 @@ def btype(blk: dict) -> str:
 
 
 # Callout kinds: semantic name -> (icon, css class). Legacy `style`/`role` values map in.
+# "kompetenz" is not selected via resolve_callout_kind() (kompetenzbezug is its own block
+# type, not a callout `kind` value) — both renderers pull it directly by key so the
+# kompetenzbezug block reuses the same icon/box machinery as an ordinary callout.
 CALLOUT_KINDS = {
     "special":      ("⭐", "special"),
     "student-task": ("📌", "task"),
     "teacher-note": ("✋", "tnote"),
     "student-note": ("✋", "snote"),
+    "kompetenz":    ("§", "kompetenz"),
 }
 CALLOUT_ALIASES = {
     "accent": "special", "standard": "special",
@@ -735,14 +739,14 @@ def preamble_blocks(data: dict) -> list[dict]:
     and the first section. Shared by both formats so the preamble can never drift."""
     blocks: list[dict] = []
     if data.get("standard_text"):
-        label = f"{data.get('standard_code', '')} — Target standard".strip(" —")
+        label = f"{data.get('standard_code', '')} — Angestrebter Standard".strip(" —")
         blocks.append({"type": "callout", "kind": "special", "label": label,
                        "text": data["standard_text"]})
     if data.get("prerequisite_standard"):
-        blocks.append({"type": "labeled", "label": "Builds on",
+        blocks.append({"type": "labeled", "label": "Baut auf",
                        "text": data["prerequisite_standard"]})
     if data.get("smps"):
-        blocks.append({"type": "labeled", "label": "Mathematical practices",
+        blocks.append({"type": "labeled", "label": "Prozessbezogene Kompetenzen",
                        "text": "; ".join(data["smps"])})
     return blocks
 
@@ -754,10 +758,24 @@ def build_header(data: dict) -> dict:
         bits = [data.get("standard_code"), data.get("grade"), data.get("duration"),
                 data.get("curriculum")]
         if data.get("materials"):
-            bits.append("Materials: " + ", ".join(data["materials"]))
+            bits.append("Materialien: " + ", ".join(data["materials"]))
         meta = " · ".join(str(b) for b in bits if b)
     name_line = ""
     if meta and data.get("audience") == "student" and re.search(r"name\s*:", meta, re.I):
         name_line, meta = meta, ""
-    return {"eyebrow": data.get("eyebrow", ""), "title": data.get("title", "Lesson Plan"),
+    return {"eyebrow": data.get("eyebrow", ""), "title": data.get("title", "Unterrichtsplanung"),
             "meta": meta, "name_line": name_line}
+
+
+def kompetenz_citation(quelle) -> str:
+    """Format a `kompetenzbezug` block's `quelle` dict into one citation line —
+    "kurztitel, teil, kundmachung (NOR: ...; Stand: ...)". Shared by both renderers so the
+    legal citation that must accompany every quoted competence text can never drift or be
+    dropped by one format and not the other."""
+    q = quelle if isinstance(quelle, dict) else {}
+    head = ", ".join(str(q[k]) for k in ("kurztitel", "teil", "kundmachung") if q.get(k))
+    tail = "; ".join(f"{lbl}: {q[k]}" for k, lbl in (("nor", "NOR"), ("stand", "Stand"))
+                     if q.get(k))
+    if head and tail:
+        return f"{head} ({tail})"
+    return head or tail

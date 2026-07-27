@@ -104,7 +104,7 @@
   },
   "documents": [
     {
-      "id": "unterrichtsplan",
+      "id": "unterrichtsplanung",
       "audience": "teacher",
       "eyebrow": "2. Klasse · Mathematik · Brüche",
       "title": "Bruchvergleich: Wer bekommt mehr?",
@@ -114,6 +114,22 @@
           "heading": "Auf einen Blick",
           "blocks": [
             {"type": "from_shared", "key": "standard"},
+            {
+              "type": "kompetenzbezug",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.01",
+              "text": "Die Schülerinnen und Schüler können Brüche als Anteile eines Ganzen deuten, gleichwertige Brüche durch Erweitern und Kürzen bilden und Brüche der Größe nach vergleichen und ordnen.",
+              "quelle": {
+                "kurztitel": "Lehrpläne der Mittelschulen",
+                "nor": "NOR40271471",
+                "kundmachung": "BGBl. II Nr. 185/2012 idF BGBl. II Nr. 178/2025",
+                "teil": "ACHTER TEIL",
+                "stand": "2026-07-27"
+              }
+            },
+            {
+              "type": "uebergreifende_themen_tag",
+              "themen": ["Informatische Bildung", "Medienbildung"]
+            },
             {
               "type": "labeled",
               "label": "Einfach gesagt",
@@ -283,7 +299,7 @@
       ]
     },
     {
-      "id": "arbeitsblatt",
+      "id": "schueler_material",
       "audience": "student",
       "eyebrow": "2. Klasse Mathematik · Arbeitsblatt",
       "title": "Wer bekommt mehr?",

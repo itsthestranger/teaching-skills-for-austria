@@ -11,7 +11,7 @@ formats stay in sync by construction. Styling follows the same visual design pri
 minimal color, icon-prefixed callouts (no fill), B+W-safe.
 
 Usage:
-    python render_lesson_docx.py lesson.json -o lesson_plan.docx
+    python render_lesson_docx.py lesson.json -o unterrichtsplanung.docx
 """
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ from lesson_common import (  # noqa: E402
     Theme, CALLOUT_KINDS, FILL_IN_CHARS, btype as _btype,
     resolve_callout_kind, answer_profile, build_header, expand_document, coerce_marks,
     md_tokens, workspace_height, label_text, label_sep, table_row_height, preamble_blocks,
-    coerce_headers, coerce_rows,
+    coerce_headers, coerce_rows, kompetenz_citation,
 )
 
 try:
@@ -98,6 +98,18 @@ def add_md(para, text, bold=False, italic=False):
         r.italic = italic or attrs.get("italic", False)
 
 
+def add_verbatim(para, text):
+    """Add text to a paragraph with NO markdown parsing and no reflow — real newlines
+    become line breaks, nothing else is interpreted. Used for kompetenzbezug's quoted
+    competence text, which must reproduce the published wording exactly (a literal '*'
+    in a legal citation must never be read as a bold marker)."""
+    lines = str(text).split("\n")
+    for i, line in enumerate(lines):
+        if i:
+            para.add_run().add_break()
+        para.add_run(line)
+
+
 # ---- table primitives --------------------------------------------------------
 
 def _set_borders(tbl, color="CBD2D8", sides=("top", "bottom", "left", "right",
@@ -142,6 +154,16 @@ def _shade_cell(cell, fill="F6F8F9"):
     shd.set(qn("w:val"), "clear")
     shd.set(qn("w:fill"), fill)
     pr.append(shd)
+
+
+def _shade_run(run, fill="F0F4F2"):
+    """Character-level shading (w:shd on rPr) — the docx analog of a CSS chip
+    background, used for uebergreifende_themen_tag's inline tag row."""
+    rpr = run._r.get_or_add_rPr()
+    shd = OxmlElement("w:shd")
+    shd.set(qn("w:val"), "clear")
+    shd.set(qn("w:fill"), fill)
+    rpr.append(shd)
 
 
 def _list_number_abstract_id(doc) -> str | None:
@@ -270,6 +292,52 @@ def _emit_callout(doc, blk, theme):
     if text:
         add_md(cell.add_paragraph(), text)
     doc.add_paragraph(style="LC Spacer")
+
+
+def _emit_kompetenzbezug(doc, blk, theme):
+    """Legally load-bearing block: the quoted competence text and its legal citation.
+    Reuses the callout box (_box) and icon machinery — same visual language as an
+    ordinary callout — rather than new OOXML geometry. The quote itself goes through
+    add_verbatim(), never add_md(), so it is reproduced exactly: no markdown parsing,
+    no reflow, no gender-reforming of the published wording."""
+    icon, _ = CALLOUT_KINDS["kompetenz"]
+    cell = _box(doc, theme)
+    lp = cell.paragraphs[0]
+    lp.add_run(icon + "  ")
+    lp.add_run("Kompetenzbezug").bold = True
+    kid = blk.get("kompetenz_id")
+    if kid:
+        lp.add_run(f"  {kid}")
+    text = blk.get("text", "")
+    if text:
+        qp = cell.add_paragraph()
+        qp.add_run("„")
+        add_verbatim(qp, text)
+        qp.add_run("“")
+    cite = kompetenz_citation(blk.get("quelle"))
+    if cite:
+        cp = cell.add_paragraph()
+        r = cp.add_run(f"Quelle: {cite}")
+        r.italic = True
+        r.font.size = Pt(8.5)
+        r.font.color.rgb = _hex_rgb(theme.safe("muted"))
+    doc.add_paragraph(style="LC Spacer")
+
+
+def _emit_themen_tags(doc, blk, theme):
+    """Compact inline chip row for cross-cutting curriculum themes. Closest analog is
+    `labeled` (bold label + content) extended with shaded runs standing in for chips —
+    docx has no rounded-pill primitive, so a run-level w:shd (_shade_run) is the nearest
+    equivalent to the html .tag-chip pill."""
+    label = label_text(blk) or "Übergreifende Themen"
+    p = doc.add_paragraph()
+    add_md(p, f"{label}: ", bold=True)
+    themen = blk.get("themen") or []
+    for i, th in enumerate(themen):
+        r = p.add_run(f" {th} ")
+        _shade_run(r)
+        if i < len(themen) - 1:
+            p.add_run("  ")
 
 
 def _emit_cards(doc, blk, theme):
@@ -562,6 +630,8 @@ _EMITTERS = {
     "source_card": _emit_source_card,
     "fill_table": _emit_fill_table,
     "number_line": _emit_number_line,
+    "kompetenzbezug": _emit_kompetenzbezug,
+    "uebergreifende_themen_tag": _emit_themen_tags,
 }
 
 
@@ -624,7 +694,7 @@ def render(data: dict, out_path: str) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("input", help="lesson JSON file")
-    ap.add_argument("-o", "--output", default="lesson_plan.docx")
+    ap.add_argument("-o", "--output", default="unterrichtsplanung.docx")
     args = ap.parse_args()
     data = json.loads(Path(args.input).read_text(encoding="utf-8"))
     render(data, args.output)

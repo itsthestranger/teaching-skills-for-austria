@@ -39,6 +39,16 @@ ul.check{list-style:none;padding-left:4pt}ul.check li:before{content:"\2610  "}
 .co.task{border-color:#9FB8D8}
 .co.tnote{border-color:#E8C98A}
 .co.snote{border-color:#E8C98A}
+.co.kompetenz{border-color:#7A8CC4;background:#F5F6FB}
+.kb-id{color:var(--muted);font-weight:400;font-size:9pt}
+.kb-quote{font-style:italic;margin:2pt 0 6pt}
+.kb-cite{color:var(--muted);font-size:8pt;margin:0}
+
+/* --- cross-cutting theme tags (chip row) -------------------------------- */
+.tagrow{margin:6pt 0 10pt;display:flex;flex-wrap:wrap;align-items:center;gap:6pt}
+.tagrow-label{font-weight:700;font-size:9.5pt;margin-right:2pt}
+.tag-chip{display:inline-block;background:#F0F4F2;border:0.8pt solid var(--border);
+          border-radius:10pt;padding:2pt 9pt;font-size:8.5pt;color:var(--text)}
 
 /* --- tables ------------------------------------------------------------ */
 table{width:100%;border-collapse:separate;border-spacing:0;margin:4pt 0 14pt;
