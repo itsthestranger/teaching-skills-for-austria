@@ -19,7 +19,9 @@ Two fixtures are used:
 
 from __future__ import annotations
 
+import hashlib
 import io
+import json
 import logging
 import sys
 import unittest
@@ -28,6 +30,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+import abbildungen as ABB  # noqa: E402
 import parse_lehrplan as P  # noqa: E402
 
 # The parser mirrors every tolerated deviation to logging.WARNING; that is the
@@ -73,9 +76,34 @@ class TestTextExtraction(unittest.TestCase):
         )
         ex = P.element_text(el)
         self.assertNotIn("/Dokumente", ex.text)
-        self.assertEqual(ex.text, "Wert 0,6[Abbildung].")
+        self.assertEqual(ex.text, "Wert 0,6⟦ABB:x.png⟧.")
         self.assertEqual(ex.abbildungen, ("/Dokumente/x.png",))
         self.assertTrue(ex.hat_abbildung)
+
+    def test_binary_token_uses_the_mathematical_white_square_brackets(self):
+        # U+27E6 / U+27E7 -- chosen because this pair cannot occur in the
+        # source text, so token vs. prose is never ambiguous.
+        self.assertEqual(P.abbildung_token("x.png"), "⟦ABB:x.png⟧")
+
+    def test_binary_token_position_matches_the_image_position(self):
+        # A listelem with prose both before and after the image: the token
+        # must land exactly where the <binary> sat, not at the start/end.
+        el = ET.fromstring(
+            '<listelem xmlns="http://www.bka.gv.at">vor'
+            '<binary nr="1"><src>/Dokumente/a.png</src></binary>nach</listelem>'
+        )
+        ex = P.element_text(el)
+        self.assertEqual(ex.text, "vor⟦ABB:a.png⟧nach")
+
+    def test_multiple_binaries_keep_document_order_between_text_and_abbildungen(self):
+        el = ET.fromstring(
+            '<listelem xmlns="http://www.bka.gv.at">a'
+            '<binary nr="1"><src>/Dokumente/one.png</src></binary>b'
+            '<binary nr="2"><src>/Dokumente/two.png</src></binary>c</listelem>'
+        )
+        ex = P.element_text(el)
+        self.assertEqual(ex.text, "a⟦ABB:one.png⟧b⟦ABB:two.png⟧c")
+        self.assertEqual(ex.abbildungen, ("/Dokumente/one.png", "/Dokumente/two.png"))
 
     def test_no_internal_whitespace_collapsing(self):
         el = ET.fromstring(
@@ -227,10 +255,15 @@ class TestStufe(unittest.TestCase):
         )
 
     def test_ten_competences_per_class_year(self):
-        for jahr in ("K1", "K2", "K3", "K4"):
+        # K3 and K4 carry 11: the usual 10 from the four numbered
+        # Kompetenzbereiche plus one promoted "integrative Führung von
+        # Geometrisches Zeichnen" competence each (K1/K2 have none -- that
+        # appendix only covers 3./4. Klasse). See TestGzIntegrativPromotion.
+        erwartet = {"K1": 10, "K2": 10, "K3": 11, "K4": 11}
+        for jahr, soll in erwartet.items():
             with self.subTest(jahr=jahr):
                 self.assertEqual(
-                    sum(1 for k in self.echt.kompetenzen if k.stufe == jahr), 10
+                    sum(1 for k in self.echt.kompetenzen if k.stufe == jahr), soll
                 )
 
     def test_class_year_resets_the_area(self):
@@ -321,7 +354,21 @@ class TestJoin(unittest.TestCase):
         self.assertEqual(s["unmatched"], 0)
 
     def test_every_competence_receives_exactly_one_block(self):
-        self.assertEqual(self.echt.join_stats["kompetenzen_ohne_block"], 0)
+        # Every competence from the four numbered Kompetenzbereiche joins
+        # exactly one Anwendungsblock. The 2 promoted GZ-integrative
+        # competences are the sole, expected exception: that appendix has no
+        # Anwendungsbereiche counterpart in the source at all, so they can
+        # never be joined -- see TestGzIntegrativPromotion.
+        ohne = self.echt.join_stats["kompetenzen_ohne_block"]
+        self.assertEqual(ohne, 2)
+        unjoined = [
+            k.id for k in self.echt.kompetenzen
+            if not any(b.kompetenz_id == k.id for b in self.echt.bloecke)
+        ]
+        self.assertEqual(
+            sorted(unjoined),
+            ["AT.LP23.SEK1.M.GZINTEGRATIV.K3.01", "AT.LP23.SEK1.M.GZINTEGRATIV.K4.01"],
+        )
         ids = [b.kompetenz_id for b in self.echt.bloecke]
         self.assertEqual(len(ids), len(set(ids)))
 
@@ -469,18 +516,38 @@ class TestThemen(unittest.TestCase):
 
 
 class TestTolerance(unittest.TestCase):
-    def test_unknown_heading_ends_the_section_and_is_logged_not_fatal(self):
+    def test_gz_integrativ_heading_no_longer_an_unknown_heading(self):
+        # The "... bei integrativer Führung von Geometrisches Zeichnen ..."
+        # heading used to fall through to the generic ANDERE_UEBERSCHRIFT /
+        # unbekannte_ueberschrift path (see git history / notes/deviations.md).
+        # It is now specifically recognised and promoted -- see
+        # TestGzIntegrativPromotion -- so it must no longer be logged as an
+        # unknown heading, and the mini fixture's genuinely-unrelated unknown
+        # trailing heading ("Kompetenzen bei integrativer Führung (Anhang):")
+        # must still exercise the untouched fallback path.
         r = parse(ECHT)
-        issues = r.issues.by_art("unbekannte_ueberschrift")
+        self.assertEqual(r.issues.by_art("unbekannte_ueberschrift"), [])
+
+        m = parse(MINI)
+        issues = m.issues.by_art("unbekannte_ueberschrift")
         self.assertEqual(len(issues), 1)
         self.assertIn("integrativer Führung", issues[0].kontext)
 
     def test_content_after_the_sections_is_carried_not_dropped(self):
+        # The mini fixture's unrelated trailing heading still lands in
+        # zusatzbloecke (nothing generic was removed); the live document's
+        # GZ appendix no longer does, because it is now promoted into
+        # r.kompetenzen -- see TestGzIntegrativPromotion.
         r = parse(ECHT)
-        self.assertEqual(len(r.zusatzbloecke), 2)
-        self.assertEqual([z["stufe"] for z in r.zusatzbloecke], ["K3", "K4"])
-        # ... and is not counted among the core 40.
-        self.assertEqual(len(r.kompetenzen), 40)
+        self.assertEqual(r.zusatzbloecke, [])
+        self.assertEqual(len(r.kompetenzen), 42)
+
+        m = parse(MINI)
+        self.assertEqual(len(m.zusatzbloecke), 1)
+        self.assertEqual(m.zusatzbloecke[0]["stufe"], "K2")
+        self.assertEqual(
+            m.zusatzbloecke[0]["text"], "Anhangkompetenz, die nicht zu den vier Kernkompetenzen zählt."
+        )
 
     def test_empty_required_text_is_fatal(self):
         xml = """<risdok xmlns="http://www.bka.gv.at"><nutzdaten><abschnitt>
@@ -534,6 +601,166 @@ class TestTolerance(unittest.TestCase):
 
 
 # ---------------------------------------------------------------------------
+# The 2 promoted "integrative Führung von Geometrisches Zeichnen" competences
+# ---------------------------------------------------------------------------
+
+
+class TestGzIntegrativPromotion(unittest.TestCase):
+    """Decision taken (notes/deviations.md): the 2 competences under
+    'Kompetenzen für den Mathematik-Lehrplan bei integrativer Führung von
+    Geometrisches Zeichnen (1. bis 4. Klasse):' ship as part of the main
+    dataset instead of being carried in zusatzbloecke. 40 -> 42."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.echt = parse(ECHT)
+
+    def test_exactly_two_promoted_competences_with_the_expected_ids(self):
+        promoted = [
+            k for k in self.echt.kompetenzen
+            if k.id.startswith("AT.LP23.SEK1.M.GZINTEGRATIV.")
+        ]
+        self.assertEqual(
+            sorted(k.id for k in promoted),
+            ["AT.LP23.SEK1.M.GZINTEGRATIV.K3.01", "AT.LP23.SEK1.M.GZINTEGRATIV.K4.01"],
+        )
+
+    def test_promoted_competences_carry_the_verbatim_text(self):
+        by_id = {k.id: k for k in self.echt.kompetenzen}
+        k3 = by_id["AT.LP23.SEK1.M.GZINTEGRATIV.K3.01"]
+        k4 = by_id["AT.LP23.SEK1.M.GZINTEGRATIV.K4.01"]
+        self.assertEqual(
+            k3.text,
+            "Grund-, Auf- und Kreuzriss, Schrägrisse und Zentralrisse von "
+            "geometrischen Objekten lesen, mit unterschiedlichen Methoden "
+            "herstellen sowie die Raumvorstellung mittels Raumtransformation "
+            "von geometrischen Objekten weiterentwickeln.",
+        )
+        self.assertEqual(
+            k4.text,
+            "Geometrische Objekte in unterschiedlichen Rissen mithilfe von "
+            "Raumtransformationen und Booleschen Operationen unter Verwendung "
+            "von Konstruktionszeichnungen und 3D-Software erzeugen und "
+            "bearbeiten sowie die Raumvorstellung stärken.",
+        )
+
+    def test_promoted_competences_get_a_synthetic_unnumbered_area(self):
+        by_id = {k.id: k for k in self.echt.kompetenzen}
+        for kid in ("AT.LP23.SEK1.M.GZINTEGRATIV.K3.01", "AT.LP23.SEK1.M.GZINTEGRATIV.K4.01"):
+            k = by_id[kid]
+            self.assertIsNone(k.bereich_nummer)
+            self.assertEqual(k.bereich_name, P.GZ_INTEGRATIV_BEREICH_NAME)
+
+    def test_synthetic_area_is_not_added_to_kompetenzbereiche(self):
+        # There are still exactly 4 official Kompetenzbereiche; the promoted
+        # pair is labelled but not folded into that list as a 5th area.
+        self.assertEqual(len(self.echt.bereiche), 4)
+        self.assertNotIn(P.GZ_INTEGRATIV_BEREICH_NAME, [b.name for b in self.echt.bereiche])
+
+    def test_total_competence_count_is_42(self):
+        self.assertEqual(len(self.echt.kompetenzen), 42)
+
+    def test_promoted_competences_have_no_super_or_abbildung(self):
+        by_id = {k.id: k for k in self.echt.kompetenzen}
+        for kid in ("AT.LP23.SEK1.M.GZINTEGRATIV.K3.01", "AT.LP23.SEK1.M.GZINTEGRATIV.K4.01"):
+            k = by_id[kid]
+            self.assertEqual(k.themen_marker_roh, [])
+            self.assertEqual(k.abbildungen, [])
+
+    def test_year_over_year_progression_links_the_two(self):
+        by_id = {k.id: k for k in self.echt.kompetenzen}
+        k3 = by_id["AT.LP23.SEK1.M.GZINTEGRATIV.K3.01"]
+        k4 = by_id["AT.LP23.SEK1.M.GZINTEGRATIV.K4.01"]
+        self.assertEqual(k3.folge, [k4.id])
+        self.assertEqual(k4.vorlaeufer, [k3.id])
+        self.assertEqual(k3.vorlaeufer, [])
+        self.assertEqual(k4.folge, [])
+
+
+# ---------------------------------------------------------------------------
+# Inline images (⟦ABB:...⟧ tokens and the abbildungen metadata array)
+# ---------------------------------------------------------------------------
+
+
+class TestAbbildungen(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.echt = parse(ECHT)
+
+    def test_no_placeholder_survives_anywhere(self):
+        d = P.result_to_dict(self.echt)
+        payload = json.dumps(d, ensure_ascii=False)
+        self.assertNotIn("[Abbildung]", payload)
+
+    def test_raw_src_path_never_leaks_into_quotable_text(self):
+        # The raw <binary>/<src> path must never appear in `text`/`text_roh`
+        # (that was the original bug this whole feature fixes). It legitimately
+        # *does* appear inside abbildungen[].quelle_url, which is the point.
+        for k in self.echt.kompetenzen:
+            self.assertNotIn("/Dokumente/Bundesnormen", k.text)
+            self.assertNotIn("/Dokumente/Bundesnormen", k.text_roh)
+        for a in self.echt.anwendungsitems:
+            self.assertNotIn("/Dokumente/Bundesnormen", a.text)
+            self.assertNotIn("/Dokumente/Bundesnormen", a.text_roh)
+
+    def test_every_token_in_text_has_a_matching_abbildungen_entry(self):
+        # Order of tokens found in `text` must match `abbildungen`, 1:1.
+        alle = list(self.echt.kompetenzen) + list(self.echt.anwendungsitems)
+        checked_any = False
+        for rec in alle:
+            tokens_in_text = P.ABBILDUNG_TOKEN_RE.findall(rec.text)
+            if not tokens_in_text:
+                self.assertEqual(rec.abbildungen, [])
+                continue
+            checked_any = True
+            self.assertEqual(len(tokens_in_text), len(rec.abbildungen))
+            for dateiname, eintrag in zip(tokens_in_text, rec.abbildungen):
+                self.assertEqual(dateiname, eintrag["datei"])
+                self.assertEqual(eintrag["token"], P.abbildung_token(dateiname))
+        self.assertTrue(checked_any, "fixture should exercise at least one image-bearing record")
+
+    def test_25_application_items_carry_images_none_of_the_kompetenzen_do(self):
+        mit_bild = [a for a in self.echt.anwendungsitems if a.abbildungen]
+        self.assertEqual(len(mit_bild), 25)
+        self.assertEqual([k for k in self.echt.kompetenzen if k.abbildungen], [])
+
+    def test_abbildung_metadata_matches_the_shipped_file(self):
+        item = next(a for a in self.echt.anwendungsitems if a.abbildungen)
+        eintrag = item.abbildungen[0]
+        shipped = ABB.PLUGIN_ABBILDUNGEN_DIR / eintrag["nor"] / eintrag["datei"]
+        self.assertTrue(shipped.is_file(), f"{shipped} must be shipped under plugin/data/abbildungen/")
+        data = shipped.read_bytes()
+        self.assertEqual(eintrag["sha256"], hashlib.sha256(data).hexdigest())
+        breite, hoehe = ABB.read_png_dimensions(data)
+        self.assertEqual((eintrag["breite_px"], eintrag["hoehe_px"]), (breite, hoehe))
+        self.assertEqual(eintrag["hoehe_px"], 17)  # measured fact: every glyph is 17px tall
+        self.assertEqual(eintrag["pfad"], f"data/abbildungen/{eintrag['nor']}/{eintrag['datei']}")
+        self.assertEqual(
+            eintrag["quelle_url"],
+            f"https://www.ris.bka.gv.at/Dokumente/Bundesnormen/{eintrag['nor']}/{eintrag['datei']}",
+        )
+
+    def test_all_63_in_scope_images_resolve_against_the_shipped_registry(self):
+        # 64 images exist in the Mittelschule document; 63 fall inside the
+        # Sek I Mathematik span this parser covers (the 64th sits in the
+        # following GEOMETRISCHES ZEICHNEN subject, out of scope). None of
+        # them should be logged as missing/unresolvable.
+        total = sum(len(a.abbildungen) for a in self.echt.anwendungsitems)
+        self.assertEqual(total, 63)
+        self.assertEqual(self.echt.issues.by_art("abbildung_nicht_installiert"), [])
+        self.assertEqual(self.echt.issues.by_art("abbildung_pfad_unerwartet"), [])
+
+    def test_unresolvable_image_is_tolerated_and_logged_not_fatal(self):
+        # The mini fixture's image references a synthetic NOR
+        # ("NOR00000000") that is never shipped -- this must not crash the
+        # parser; it is logged and the token still appears in the text.
+        m = parse(MINI)
+        item = next(a for a in m.anwendungsitems if "⟦ABB:" in a.text)
+        self.assertEqual(item.abbildungen, [])
+        self.assertEqual(len(m.issues.by_art("abbildung_nicht_installiert")), 1)
+
+
+# ---------------------------------------------------------------------------
 # End-to-end counts
 # ---------------------------------------------------------------------------
 
@@ -544,11 +771,9 @@ class TestMeasuredCounts(unittest.TestCase):
         self.assertEqual(ist, P.ERWARTET_SEK1_M)
 
     def test_serialisation_round_trips(self):
-        import json
-
         d = P.result_to_dict(parse(ECHT))
         wieder = json.loads(json.dumps(d, ensure_ascii=False))
-        self.assertEqual(len(wieder["kompetenzen"]), 40)
+        self.assertEqual(len(wieder["kompetenzen"]), 42)
         self.assertEqual(len(wieder["anwendungsitems"]), 237)
         self.assertEqual(wieder["meta"]["anwendungsbereiche_status"], "item_flags")
 

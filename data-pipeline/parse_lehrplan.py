@@ -44,15 +44,30 @@ from enum import Enum
 from pathlib import Path
 from typing import Iterator, Sequence
 
+import abbildungen as ABB
+
 # --------------------------------------------------------------------------
 # XML primitives
 # --------------------------------------------------------------------------
 
 NS = "{http://www.bka.gv.at}"
 
-#: Placeholder substituted for an inline ``<binary>`` image (formulae are
-#: shipped as PNG in the RIS XML and have no textual representation at all).
-ABBILDUNG_PLATZHALTER = "[Abbildung]"
+#: Token substituted for an inline ``<binary>`` image (formulae are shipped
+#: as PNG in the RIS XML and have no textual representation at all).
+#:
+#: U+27E6 / U+27E7 MATHEMATICAL WHITE SQUARE BRACKET -- chosen because this
+#: pair cannot occur in the source text, so it is unambiguous to find and
+#: match downstream. This *is* the faithful serialisation: the source
+#: sentence genuinely contains an image at this point, and the token marks
+#: exactly where. See the ``abbildungen`` field on Kompetenz/Anwendungsitem
+#: for the accompanying image metadata (dimensions, sha256, shipped path).
+ABBILDUNG_TOKEN_RE = re.compile(r"⟦ABB:(?P<dateiname>[^⟧]+)⟧")
+
+
+def abbildung_token(dateiname: str) -> str:
+    """Build the ⟦ABB:<dateiname>⟧ token for one inline image."""
+    return f"⟦ABB:{dateiname}⟧"
+
 
 LOG = logging.getLogger("parse_lehrplan")
 
@@ -78,7 +93,8 @@ class ExtractedText:
     """Result of :func:`element_text` -- clean text plus everything removed."""
 
     text: str
-    """Quotable sentence: bullets dropped, images replaced, superscripts removed."""
+    """Quotable sentence: bullets dropped, images replaced by an ⟦ABB:...⟧
+    token, superscripts removed. Faithful: an image genuinely sits there."""
 
     roh: str
     """Same traversal but with superscript digits inlined; nothing is lost."""
@@ -87,7 +103,8 @@ class ExtractedText:
     """Raw contents of each ``<super>`` (a single one may read ``"6, 7"``)."""
 
     abbildungen: tuple[str, ...] = ()
-    """``<binary>/<src>`` paths, in document order."""
+    """``<binary>/<src>`` paths, in document order (one per ⟦ABB:...⟧ token
+    in ``text``, same order)."""
 
     @property
     def hat_abbildung(self) -> bool:
@@ -100,7 +117,11 @@ def element_text(el: ET.Element) -> ExtractedText:
     1. ``<symbol>`` -- the list bullet glyph ("--").  Presentation, not text.
     2. ``<binary>`` -- an inline PNG (fraction/formula graphic).  ``itertext()``
        would otherwise splice the *file path* from ``<src>`` into the sentence.
-       Replaced by :data:`ABBILDUNG_PLATZHALTER`; the paths are kept.
+       Replaced by the token :func:`abbildung_token` builds (e.g.
+       ``⟦ABB:hauptdokument.img1is.png⟧``); the paths are kept in
+       ``abbildungen`` and the shipped image plus its metadata are attached
+       to the owning Kompetenz/Anwendungsitem record -- see
+       :func:`_abbildung_eintraege`.
     3. ``<super>`` -- superscript footnote markers referencing the 13 cross
        cutting themes.  Removed from ``text`` (a raised "4" is not part of the
        sentence) and preserved verbatim in ``super_marker`` and ``roh``.
@@ -127,9 +148,12 @@ def element_text(el: ET.Element) -> ExtractedText:
                 return
             if name == "binary":
                 src = node.find(NS + "src")
-                bilder.append((src.text or "").strip() if src is not None else "")
-                clean.append(ABBILDUNG_PLATZHALTER)
-                roh.append(ABBILDUNG_PLATZHALTER)
+                pfad = (src.text or "").strip() if src is not None else ""
+                bilder.append(pfad)
+                dateiname = pfad.rsplit("/", 1)[-1] if pfad else ""
+                token = abbildung_token(dateiname)
+                clean.append(token)
+                roh.append(token)
                 emit(node.tail)
                 return
             if name == "super":
@@ -274,6 +298,26 @@ TEIL_RE = re.compile(
     r"|ACHTER|NEUNTER|ZEHNTER|ELFTER|ZW(?:Ö|OE)LFTER)\s+TEIL$"
 )
 
+#: ``Kompetenzen für den Mathematik-Lehrplan bei integrativer Führung von
+#: Geometrisches Zeichnen (1. bis 4. Klasse):`` -- a short appendix to Sek I
+#: Mathematik, structurally outside the four numbered Kompetenzbereiche.
+#:
+#: Decision taken (see FINDINGS.md V-57 and notes/deviations.md): the two
+#: competences under this heading (one for K3, one for K4) are promoted into
+#: the main dataset rather than left in ``zusatzbloecke``. They fit none of
+#: the four official Kompetenzbereiche, so they are given a synthetic,
+#: clearly-labelled area (:data:`GZ_INTEGRATIV_BEREICH_NAME` /
+#: :data:`GZ_INTEGRATIV_BEREICH_SLUG`, ``bereich_nummer=None``) rather than
+#: being folded into one of the four -- and that synthetic area is *not*
+#: added to :attr:`ParseResult.bereiche`, so the "4 Kompetenzbereiche" count
+#: stays faithful to the regulation's actual structure.
+GZ_INTEGRATIV_RE = re.compile(
+    r"^Kompetenzen f(?:ü|ue)r den Mathematik-Lehrplan bei integrativer "
+    r"F(?:ü|ue)hrung von Geometrisches Zeichnen\b"
+)
+GZ_INTEGRATIV_BEREICH_NAME = "Integrative Führung von Geometrisches Zeichnen"
+GZ_INTEGRATIV_BEREICH_SLUG = "GZINTEGRATIV"
+
 
 @dataclass(frozen=True)
 class SubjectSpec:
@@ -394,7 +438,11 @@ class Kompetenz:
     uebergreifende_themen: list[str] = field(default_factory=list)
     themen_marker_roh: list[str] = field(default_factory=list)
     fussnoten_unaufgeloest: list[str] = field(default_factory=list)
-    abbildungen: list[str] = field(default_factory=list)
+    abbildungen: list[dict] = field(default_factory=list)
+    """One entry per ⟦ABB:...⟧ token in ``text``, in order -- see the ABB
+    interface contract in notes/ris-xml-structure.md (token, datei, nor,
+    pfad, quelle_url, breite_px, hoehe_px, sha256)."""
+
     quell_index: int = -1
     vorlaeufer: list[str] = field(default_factory=list)
     folge: list[str] = field(default_factory=list)
@@ -425,7 +473,9 @@ class Anwendungsitem:
     join_score: float | None = None
     ist_wiederholung: bool = False
     wiederholung_von: list[str] = field(default_factory=list)
-    abbildungen: list[str] = field(default_factory=list)
+    abbildungen: list[dict] = field(default_factory=list)
+    """See :attr:`Kompetenz.abbildungen`."""
+
     quell_index: int = -1
 
 
@@ -487,6 +537,12 @@ class State(Enum):
     headings arrive as ``absatz/@typ="abs"`` -- see the element-type trap in
     the notes."""
 
+    KOMPETENZ_GZ_INTEGRATIV = "kompetenz_gz_integrativ"
+    """Inside the ``... bei integrativer Führung von Geometrisches
+    Zeichnen ...`` appendix (promoted into the main dataset -- see
+    :data:`GZ_INTEGRATIV_RE`). Shape mirrors KOMPETENZBEREICHE (class-year
+    marker, bare stem, list) but for one fixed synthetic area."""
+
     FACH_ANHANG = "fach_anhang"
     """Inside the subject, after both sections closed."""
 
@@ -500,6 +556,7 @@ class Token(Enum):
     FACH_UEBERSCHRIFT = "fach_ueberschrift"
     SEKTION_KOMPETENZ = "sektion_kompetenz"
     SEKTION_ANWENDUNG = "sektion_anwendung"
+    SEKTION_GZ_INTEGRATIV = "sektion_gz_integrativ"
     BEREICH = "bereich"
     STUFE = "stufe"
     STAMMSATZ = "stammsatz"
@@ -528,9 +585,20 @@ class Ereignis:
 class LehrplanParser:
     """Sequential state machine over the flat ``<abschnitt>`` child list."""
 
-    def __init__(self, spec: SubjectSpec, issues: IssueLog | None = None) -> None:
+    def __init__(
+        self,
+        spec: SubjectSpec,
+        issues: IssueLog | None = None,
+        abbildungen_registry: dict[tuple[str, str], ABB.AbbildungRecord] | None = None,
+    ) -> None:
         self.spec = spec
         self.issues = issues if issues is not None else IssueLog()
+        #: (nor, dateiname) -> AbbildungRecord for every image shipped under
+        #: plugin/data/abbildungen/. Injectable (tests use a synthetic one);
+        #: defaults to scanning the real shipped directory.
+        self._abbildungen = (
+            abbildungen_registry if abbildungen_registry is not None else ABB.build_registry()
+        )
 
     # -- public ----------------------------------------------------------
 
@@ -601,6 +669,8 @@ class LehrplanParser:
                     return Ereignis(Token.SEKTION_KOMPETENZ, index, el, ex)
                 if self.spec.anwendung_sektion_re and self.spec.anwendung_sektion_re.search(text):
                     return Ereignis(Token.SEKTION_ANWENDUNG, index, el, ex)
+                if GZ_INTEGRATIV_RE.match(text):
+                    return Ereignis(Token.SEKTION_GZ_INTEGRATIV, index, el, ex)
                 m = self.spec.bereich_re.match(text)
                 if m:
                     return Ereignis(Token.BEREICH, index, el, ex, self._bereich_daten(m, text))
@@ -698,6 +768,21 @@ class LehrplanParser:
             self._block_ordinal = 0
             return
 
+        if ev.token is Token.SEKTION_GZ_INTEGRATIV:
+            self._close_block()
+            self.state = State.KOMPETENZ_GZ_INTEGRATIV
+            self.stufe = None
+            # Fixed, synthetic area for the life of this appendix -- not
+            # registered in self.bereiche (see GZ_INTEGRATIV_RE docstring),
+            # so it never appears as a 5th entry in ParseResult.bereiche.
+            self.bereich = Kompetenzbereich(
+                nummer=None,
+                name=GZ_INTEGRATIV_BEREICH_NAME,
+                slug=GZ_INTEGRATIV_BEREICH_SLUG,
+                quell_index=ev.index,
+            )
+            return
+
         if state is State.FACH_PRAEAMBEL:
             self._praeambel(ev)
             return
@@ -706,6 +791,9 @@ class LehrplanParser:
             return
         if state is State.ANWENDUNGSBEREICHE:
             self._anwendungsbereiche(ev)
+            return
+        if state is State.KOMPETENZ_GZ_INTEGRATIV:
+            self._kompetenz_gz_integrativ(ev)
             return
         if state is State.FACH_ANHANG:
             self._fach_anhang(ev)
@@ -783,6 +871,31 @@ class LehrplanParser:
                 "bare stem paragraph inside Anwendungsbereiche (expected inline form)",
                 ev.index,
             )
+
+    def _kompetenz_gz_integrativ(self, ev: Ereignis) -> None:
+        """The integrative-Geometrisches-Zeichnen appendix (promoted).
+
+        Shape: ``STUFE`` (3. Klasse / 4. Klasse), a bare stem paragraph
+        (ignored, same as in KOMPETENZBEREICHE), then one ``LISTE`` of
+        competences for that class year. ``self.bereich`` was fixed to the
+        synthetic GZ area when this state was entered and never changes
+        here; only ``self.stufe`` and the per-stufe ordinal reset.
+        """
+        if ev.token is Token.STUFE:
+            self.stufe = self._stufe_code(ev)
+            self._komp_ordinal = 0
+            return
+        if ev.token is Token.LISTE:
+            self._emit_kompetenzen(ev)
+            return
+        if ev.token is Token.ANDERE_UEBERSCHRIFT:
+            self._verlasse_sektion(ev)
+            return
+        if ev.token is Token.TABELLE:
+            # The per-subject footnote legend table follows directly after
+            # this appendix in the live document, with no intervening
+            # heading -- see notes/ris-xml-structure.md §6.
+            self._themen_map.update(self._parse_themen_tabelle(ev.element))
 
     def _fach_anhang(self, ev: Ereignis) -> None:
         """Capture, without interpreting, anything after the two sections."""
@@ -873,6 +986,55 @@ class LehrplanParser:
         if wert in (None, ""):
             raise ParseError(f"required field {feld!r} missing at child index {index}")
 
+    def _abbildung_eintraege(self, pfade: Sequence[str], index: int) -> list[dict]:
+        """Resolve raw ``<binary>/<src>`` paths (as collected by
+        :func:`element_text` into ``ExtractedText.abbildungen``) against the
+        shipped-image registry, in the order the ⟦ABB:...⟧ tokens appear in
+        the text.  Per the interface contract, each entry carries the token,
+        the shipped path (relative to the plugin root), the source URL, the
+        PNG dimensions and the SHA-256 of the shipped file.
+
+        A path that does not match the expected RIS shape, or an image the
+        registry does not know about (not fetched/installed), is logged and
+        skipped rather than raising -- ``abbildungen`` on a record is
+        best-effort metadata, not a required field.
+        """
+        eintraege: list[dict] = []
+        for pfad in pfade:
+            m = ABB.IMAGE_SRC_RE.match(pfad)
+            if not m:
+                self.issues.add(
+                    "abbildung_pfad_unerwartet",
+                    f"<binary>/<src> path does not match the expected RIS "
+                    f"shape: {pfad!r}",
+                    index,
+                )
+                continue
+            nor, dateiname = m.group("nor"), m.group("filename")
+            rec = self._abbildungen.get((nor, dateiname))
+            if rec is None:
+                self.issues.add(
+                    "abbildung_nicht_installiert",
+                    f"{dateiname!r} (nor={nor!r}) is referenced in the source "
+                    f"but not found under plugin/data/abbildungen/{nor}/ -- "
+                    f"image not shipped",
+                    index,
+                )
+                continue
+            eintraege.append(
+                {
+                    "token": abbildung_token(dateiname),
+                    "datei": dateiname,
+                    "nor": nor,
+                    "pfad": rec.pfad,
+                    "quelle_url": rec.quelle_url,
+                    "breite_px": rec.breite_px,
+                    "hoehe_px": rec.hoehe_px,
+                    "sha256": rec.sha256,
+                }
+            )
+        return eintraege
+
     def _emit_kompetenzen(self, ev: Ereignis) -> None:
         if self.bereich is None or self.stufe is None:
             self.issues.add(
@@ -902,7 +1064,7 @@ class LehrplanParser:
                     uebergreifende_themen=themen,
                     themen_marker_roh=roh,
                     fussnoten_unaufgeloest=offen,
-                    abbildungen=list(ex.abbildungen),
+                    abbildungen=self._abbildung_eintraege(ex.abbildungen, ev.index),
                     quell_index=ev.index,
                 )
             )
@@ -948,7 +1110,7 @@ class LehrplanParser:
                 verbindlich=not bool(ALLENFALLS_RE.search(ex.text)),
                 art=art,
                 ist_wiederholung=bool(WIEDERHOLUNG_RE.match(ex.text)),
-                abbildungen=list(ex.abbildungen),
+                abbildungen=self._abbildung_eintraege(ex.abbildungen, ev.index),
                 quell_index=ev.index,
             )
             self.anwendungsitems.append(item)
@@ -1235,9 +1397,17 @@ def link_wiederholungen(result: ParseResult, issues: IssueLog | None = None) -> 
 # --------------------------------------------------------------------------
 
 
-def parse_lehrplan(path: str | Path, spec: SubjectSpec = SEK1_MATHEMATIK) -> ParseResult:
-    """Parse *path* for *spec* and run the join and backlink passes."""
-    parser = LehrplanParser(spec)
+def parse_lehrplan(
+    path: str | Path,
+    spec: SubjectSpec = SEK1_MATHEMATIK,
+    abbildungen_registry: dict[tuple[str, str], ABB.AbbildungRecord] | None = None,
+) -> ParseResult:
+    """Parse *path* for *spec* and run the join and backlink passes.
+
+    *abbildungen_registry* is normally left ``None`` (scans the real shipped
+    ``plugin/data/abbildungen/``); tests inject a synthetic registry instead.
+    """
+    parser = LehrplanParser(spec, abbildungen_registry=abbildungen_registry)
     result = parser.parse_file(path)
     join_anwendungen(result)
     link_wiederholungen(result)
@@ -1265,8 +1435,15 @@ def result_to_dict(result: ParseResult) -> dict:
 
 
 #: Measured on NOR40271471 (Mittelschule, in force 2025-09-01), Sek I Mathematik.
+#: ``kompetenzen`` is 42, not 40: the 4 numbered Kompetenzbereiche contribute
+#: 40 (4 areas x ~2.5 avg across 4 class years, always 10 per class year),
+#: plus the 2 promoted "integrative Führung von Geometrisches Zeichnen"
+#: competences (1 for K3, 1 for K4) -- see GZ_INTEGRATIV_RE and
+#: notes/deviations.md. ``kompetenzbereiche`` stays 4: the promoted pair
+#: gets a synthetic area *label* on the Kompetenz records but is not added
+#: as a 5th entry to ParseResult.bereiche.
 ERWARTET_SEK1_M = {
-    "kompetenzen": 40,
+    "kompetenzen": 42,
     "anwendungsitems": 237,
     "allenfalls": 32,
     "wiederholen_und_festigen": 16,

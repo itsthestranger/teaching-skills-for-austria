@@ -36,9 +36,12 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import xml.etree.ElementTree as ET
 from datetime import date
 from pathlib import Path
 from typing import Any, Callable
+
+from abbildungen import IMAGE_SRC_RE, RIS_HOST
 
 DeviationSink = Callable[[str, str, str, str], None]
 
@@ -93,6 +96,9 @@ REGULATIONS: dict[str, dict[str, str]] = {
 }
 
 ANNEX_MARKER = "Anl. 1"
+
+#: Namespace every RIS XML element lives in (same constant as parse_lehrplan.py).
+XML_NS = "{http://www.bka.gv.at}"
 
 
 # --------------------------------------------------------------------------
@@ -492,6 +498,77 @@ def resolve_regulation(
         }
 
 
+# --------------------------------------------------------------------------
+# Inline images (<binary>/<src>) -- formulae shipped as PNG, see FINDINGS.md
+# V-53 and the corresponding row in notes/deviations.md and
+# notes/ris-xml-structure.md.
+# --------------------------------------------------------------------------
+
+
+def find_image_refs(xml_bytes: bytes) -> list[str]:
+    """Return every distinct ``<binary>/<src>`` path in *xml_bytes*, in
+    document order. Deliberately scoped to ``binary/src`` (not any ``src``
+    anywhere) -- narrower than the general element census, matching the
+    same discipline as parse_lehrplan.py's element_text()."""
+    root = ET.fromstring(xml_bytes)
+    seen: set[str] = set()
+    refs: list[str] = []
+    for binary in root.iter(XML_NS + "binary"):
+        src = binary.find(XML_NS + "src")
+        if src is None or not (src.text or "").strip():
+            continue
+        path = src.text.strip()
+        if path not in seen:
+            seen.add(path)
+            refs.append(path)
+    return refs
+
+
+def download_images(
+    key: str,
+    xml_bytes: bytes,
+    output_dir: Path,
+    http: HttpClient,
+    deviation_sink: DeviationSink = log_deviation,
+) -> dict[str, dict[str, Any]]:
+    """Discover and download every inline image referenced by *xml_bytes*.
+
+    Images are written to ``<output_dir>/<key>/images/<nor>/<filename>``,
+    mirroring the eventual plugin layout (``plugin/data/abbildungen/<nor>/``)
+    one level down, so installing them is a straight copy -- see
+    abbildungen.py. Reuses *http* (same rate limiter, User-Agent, backoff as
+    the XML/PDF downloads).
+
+    Returns ``{filename: {"nor":, "src":, "url":, "sha256":, "size":}}``.
+    """
+    images: dict[str, dict[str, Any]] = {}
+    for path in find_image_refs(xml_bytes):
+        m = IMAGE_SRC_RE.match(path)
+        if not m:
+            deviation_sink(
+                f"image src shape ({key})",
+                "/Dokumente/Bundesnormen/<NOR>/<filename>",
+                path,
+                "skipped -- does not match the expected shape, not downloaded",
+            )
+            continue
+        nor, filename = m.group("nor"), m.group("filename")
+        url = RIS_HOST + path
+        log(f"downloading image for {key} ({nor}): {url}")
+        raw = http.get_bytes(url)
+        dest_dir = output_dir / key / "images" / nor
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        (dest_dir / filename).write_bytes(raw)
+        images[filename] = {
+            "nor": nor,
+            "src": path,
+            "url": url,
+            "sha256": hashlib.sha256(raw).hexdigest(),
+            "size": len(raw),
+        }
+    return images
+
+
 def download_files(
     resolved: dict[str, Any], output_dir: Path, http: HttpClient
 ) -> dict[str, dict[str, Any]]:
@@ -526,7 +603,10 @@ def download_files(
 
 
 def build_manifest_entry(
-    resolved: dict[str, Any], files: dict[str, dict[str, Any]], retrieval_date: str
+    resolved: dict[str, Any],
+    files: dict[str, dict[str, Any]],
+    retrieval_date: str,
+    images: dict[str, dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     return {
         "artikel_paragraph_anlage": resolved["artikel_paragraph_anlage"],
@@ -537,6 +617,7 @@ def build_manifest_entry(
         "fallback_used": resolved["fallback_used"],
         "files": files,
         "gesetzesnummer": resolved["gesetzesnummer"],
+        "images": images or {},
         "inkrafttretensdatum": resolved["inkrafttretensdatum"],
         "kundmachungsorgan": resolved["kundmachungsorgan"],
         "kurztitel": resolved["kurztitel"],
@@ -727,6 +808,41 @@ def run_self_test() -> bool:
         f"rate limiter sleeps the remainder of 1s (got {slept})",
     )
 
+    # 9. Image discovery: find_image_refs() finds <binary>/<src> paths, in
+    #    document order, deduplicated, and ignores unrelated <src>-shaped
+    #    text elsewhere in the document.
+    sample_xml = b"""<risdok xmlns="http://www.bka.gv.at"><nutzdaten><abschnitt>
+      <liste><aufzaehlung><listelem>Wert 0,6<binary nr="1">
+        <src>/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img1is.png</src>
+      </binary></listelem></aufzaehlung></liste>
+      <liste><aufzaehlung><listelem>Wert 0,7<binary nr="2">
+        <src>/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img2is.png</src>
+      </binary><binary nr="3">
+        <src>/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img1is.png</src>
+      </binary></listelem></aufzaehlung></liste>
+    </abschnitt></nutzdaten></risdok>"""
+    refs = find_image_refs(sample_xml)
+    check(
+        refs == [
+            "/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img1is.png",
+            "/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img2is.png",
+        ],
+        f"find_image_refs dedupes and preserves document order (got {refs})",
+    )
+
+    # 10. IMAGE_SRC_RE extracts (nor, filename); an unexpected shape does not
+    #     match and must be handled as a skip, not a crash.
+    m = IMAGE_SRC_RE.match("/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img1is.png")
+    check(
+        m is not None and m.group("nor") == "NOR40271471"
+        and m.group("filename") == "hauptdokument.img1is.png",
+        "IMAGE_SRC_RE extracts nor and filename from a well-formed path",
+    )
+    check(
+        IMAGE_SRC_RE.match("/Dokumente/Bundesnormen/hauptdokument.img1is.png") is None,
+        "IMAGE_SRC_RE rejects a path missing the NOR segment",
+    )
+
     return ok
 
 
@@ -746,6 +862,12 @@ def main(argv: list[str] | None = None) -> int:
         "--allow-fallback",
         action="store_true",
         help="Permit the direct-NOR fallback path when discovery fails.",
+    )
+    parser.add_argument(
+        "--skip-images",
+        action="store_true",
+        help="Text-only run: fetch XML/PDF but do not discover or download "
+        "inline <binary> images.",
     )
     parser.add_argument(
         "--self-test",
@@ -806,7 +928,21 @@ def main(argv: list[str] | None = None) -> int:
             continue
 
         files = download_files(resolved, args.output_dir, http)
-        manifest[key] = build_manifest_entry(resolved, files, retrieval_date)
+
+        images: dict[str, dict[str, Any]] = {}
+        if args.skip_images:
+            log(f"{key}: --skip-images set, not scanning for inline images")
+        else:
+            xml_path = args.output_dir / key / f"{resolved['nor']}.xml"
+            if "xml" in files and xml_path.exists():
+                images = download_images(
+                    key, xml_path.read_bytes(), args.output_dir, http
+                )
+                log(f"{key}: downloaded {len(images)} inline image(s)")
+            else:
+                log(f"{key}: no XML on disk, skipping image discovery")
+
+        manifest[key] = build_manifest_entry(resolved, files, retrieval_date, images)
 
     if args.dry_run:
         log("dry-run complete; nothing written")

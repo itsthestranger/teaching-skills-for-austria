@@ -58,7 +58,7 @@ ueberschrift/g1min   3    absatz/satz         1    ueberschrift/erlz    1
 |---|---|---|
 | `<symbol stellen="1">–</symbol>` | The list bullet glyph, first child of every `listelem` | Dropped. It is presentation, not text. |
 | `<super>4</super>`, `<super>6, 7</super>` | Superscript footnote marker referring to the 13 cross-cutting themes. **One `<super>` may hold several numbers.** | Removed from the quotable `text`; preserved in `text_roh` and in `themen_marker_roh`; resolved against the theme map. |
-| `<binary><src>/Dokumente/…/hauptdokument.img1is.png</src></binary>` | An inline PNG — fractions and formulae are shipped as images | **Trap:** `itertext()` splices the *file path* into the sentence. Replaced by `[Abbildung]`; paths kept in `abbildungen`. 25 Sek I maths application items are affected. |
+| `<binary><src>/Dokumente/…/hauptdokument.img1is.png</src></binary>` | An inline PNG — fractions and formulae are shipped as images | **Trap:** `itertext()` splices the *file path* into the sentence. Replaced by the token `⟦ABB:hauptdokument.img1is.png⟧`; the image is fetched, shipped and its metadata attached — see §11. 25 Sek I maths application items (63 images) are affected within this parser's scope. |
 | `<feld>`, `<tab>` | Page furniture in headers/footers | Outside the content range. |
 
 ---
@@ -113,9 +113,12 @@ ueberschrift/erll   Didaktische Grundsätze (…):                      [881]
 ueberschrift/erll   Kompetenzbereiche (1. bis 4. Klasse):            [895]  <== SECTION 1
 ueberschrift/erll   Anwendungsbereiche (1. bis 4. Klasse):           [948]  <== SECTION 2
 ueberschrift/erll   Kompetenzen … bei integrativer Führung von
-                    Geometrisches Zeichnen (1. bis 4. Klasse):       [1063] <== appendix
+                    Geometrisches Zeichnen (1. bis 4. Klasse):       [1063] <== SECTION 3 (promoted)
 table               the 13-theme footnote legend                     [1071]
 ```
+
+**Section 3** was originally left unrecognised (fell into `FACH_ANHANG`/`zusatzbloecke`); it is now
+promoted into the main dataset by a dedicated `KOMPETENZ_GZ_INTEGRATIV` state — see §11.
 
 ### Section 1 — `Kompetenzbereiche` (the competence descriptions)
 
@@ -278,20 +281,28 @@ Reproduced by `python3 parse_lehrplan.py --verify`:
 
 | Quantity | Count |
 |---|---|
-| competence areas | 4 |
-| competence descriptions | 40 (4 areas × 4 class years) |
+| competence areas (`kompetenzbereiche`, the 4 numbered ones) | 4 |
+| competence descriptions (`kompetenzen`) | 42 (40 from the 4 numbered areas × 4 class years, + 2 promoted GZ-integrative, K3+K4) |
 | application-area `listelem`s | 237 |
 | … of which precisifications joined to a competence | 198 |
 | … of which `Vorschläge für den Einsatz digitaler Technologien` | 39 |
 | items containing `allenfalls` (⇒ `verbindlich: false`) | 32 |
 | items beginning `Wiederholen und Festigen:` (K2–K4 only) | 16 |
 | competences carrying a `<super>` theme marker | 10 |
-| competence `listelem`s outside the four areas (GZ appendix) | 2 |
+| competences with no Anwendungsbereiche block (`kompetenzen_ohne_block`) | 2 (the 2 promoted GZ-integrative competences — that appendix has no Anwendungsbereiche counterpart at all) |
+| inline `<binary>` images referenced within this parser's scope | 63 (25 application items; 1 further image sits in the following GEOMETRISCHES ZEICHNEN subject, out of scope — 64 total in the document) |
 
 **The 237 is a section total, not a count of precisifications.** 39 of them are
 the per-class-year digital-technology suggestion lists, which precisify no
 competence. They are emitted with `art: "digitale_technologien"` and
 `kompetenz_id: null`. None of them contains `allenfalls`.
+
+**The 42 is not 40.** Sek I Mathematik carries 2 further competence
+`listelem`s under a separate `erll` heading (`Kompetenzen für den
+Mathematik-Lehrplan bei integrativer Führung von Geometrisches Zeichnen (1.
+bis 4. Klasse):`, one for K3 and one for K4) that belong to none of the four
+numbered Kompetenzbereiche. Decision taken (FINDINGS.md V-57): promoted into
+the main dataset rather than left in `zusatzbloecke` — see §11.
 
 `Wiederholen und Festigen` backlinks are positional: same area, class year − 1.
 The source gives no identifier. It is Sek-I-only — **zero** occurrences in the
@@ -302,22 +313,30 @@ primary document, so primary progression must be derived positionally.
 ## 8. State machine, tolerance, and hard failures
 
 States: `VOR_FACH → FACH_PRAEAMBEL → KOMPETENZBEREICHE ⇄ ANWENDUNGSBEREICHE →
-FACH_ANHANG → NACH_FACH`. Every element is first classified into a `Token`,
-then handled by exactly one per-state handler; there are no implicit
-transitions.
+KOMPETENZ_GZ_INTEGRATIV → FACH_ANHANG → NACH_FACH`. Every element is first
+classified into a `Token`, then handled by exactly one per-state handler;
+there are no implicit transitions. `KOMPETENZ_GZ_INTEGRATIV` (§11) mirrors
+`KOMPETENZBEREICHE`'s shape (class-year marker, bare stem, list) but for one
+fixed, synthetic area rather than the four numbered ones, and is entered from
+whatever state precedes it (in the live document, `ANWENDUNGSBEREICHE`) via
+`Token.SEKTION_GZ_INTEGRATIV`, matched by `GZ_INTEGRATIV_RE` — not via the
+generic `ANDERE_UEBERSCHRIFT` fallback anymore.
 
 **Tolerated (logged as a `ParseIssue`, parsing continues):**
 
 | `art` | Trigger |
 |---|---|
-| `unbekannte_ueberschrift` | An `erll` heading inside a section that is neither an area nor a known section → leaves the section into `FACH_ANHANG`, content kept in `zusatzbloecke`. Fires once on the live document (the GZ appendix at 1063). |
+| `unbekannte_ueberschrift` | An `erll` heading inside a section that is neither an area, a known section, nor the GZ-integrative appendix → leaves the section into `FACH_ANHANG`, content kept in `zusatzbloecke`. Fires **zero** times on the live document since the GZ-integrative promotion (§11); still exercised by the mini fixture's synthetic unrelated trailing heading. |
 | `bereich_ohne_slug` | Area name with no configured ID segment → deterministic slug derived |
 | `unerwartete_stufeneinheit` | `Schulstufe` seen where `Klasse` expected, or vice versa |
 | `bereichsnummer_wechselt` | Same area name appears with a different number |
 | `liste_ohne_kontext`, `anwendungsliste_ohne_stufe`, `anwendungsliste_ohne_satz` | Structural surprise around a list |
 | `join_fuzzy`, `join_positional`, `join_fehlgeschlagen` | Every non-exact join |
+| `kompetenz_ohne_anwendungsblock` | A competence with no joined Anwendungsblock. Fires exactly twice on the live document: the 2 promoted GZ-integrative competences, which have no Anwendungsbereiche counterpart at all (§11) — not a join failure. |
 | `fachueberschrift_im_falschen_teil` | Subject heading found under the wrong TEIL |
 | `thema_ohne_nummer`, `keine_themenlegende` | Theme map incomplete |
+| `abbildung_nicht_installiert` | A `<binary>/<src>` path parses (matches the expected RIS shape) but no file is shipped under `plugin/data/abbildungen/<nor>/` for it — see §11. Fires **zero** times against the live document once images are installed; the mini fixture's synthetic `NOR00000000` reference exercises it. |
+| `abbildung_pfad_unerwartet` | A `<binary>/<src>` path does not match `/Dokumente/Bundesnormen/<NOR>/<filename>` → skipped rather than guessed at. |
 
 **Hard failures (`ParseError`):** a missing required field (`id`, `stufe`,
 `text`), an ID collision, a document without `<nutzdaten>`/`<abschnitt>`, and
@@ -329,7 +348,9 @@ the configured subject heading not occurring at all.
 `AT.LP23.SEK1.M.ZAHLEN.K1.03`. Application items add a kind segment:
 `AT.LP23.SEK1.M.AB.ZAHLEN.K2.05` (precisification),
 `AT.LP23.SEK1.M.DT.ZAHLEN.K1.01` (digital-technology suggestion).
-Area segments for Sek I maths: `ZAHLEN`, `VARIABLEN`, `FIGUREN`, `DATEN`.
+Area segments for Sek I maths: `ZAHLEN`, `VARIABLEN`, `FIGUREN`, `DATEN`, plus
+the synthetic `GZINTEGRATIV` for the 2 promoted competences (§11) — e.g.
+`AT.LP23.SEK1.M.GZINTEGRATIV.K3.01`.
 
 ---
 
@@ -384,11 +405,102 @@ Do not fan out before reading this list.
 
 ---
 
-## 10. Running it
+## 10. Inline images and the GZ-integrativ promotion
+
+Two decisions taken 2026-07-27 on top of the original parser (FINDINGS.md
+V-53 and V-57); both are implemented in `data-pipeline/abbildungen.py` (new)
+and `data-pipeline/parse_lehrplan.py`.
+
+### 10.1 Images are fetched and shipped, not just flagged
+
+The Mittelschule document embeds **64 `<binary>` images** (fraction/formula
+glyphs). All 64 live under `NOR40271471`; Volksschule and
+Bildungsstandards-Verordnung reference zero. 63 of the 64 fall inside the Sek
+I Mathematik span this parser covers (25 application items); the 64th sits in
+the immediately following GEOMETRISCHES ZEICHNEN subject, out of scope.
+Measured: every image is exactly **17px tall**, widths **4–227px**, ~39.5 KB
+total for all 64 (see notes/deviations.md for the exact numbers vs. the
+task brief's approximation).
+
+**Pipeline, in order:**
+
+1. `fetch_ris_resources.py::find_image_refs` scans the fetched XML for every
+   `<binary>/<src>` path (namespace-scoped, document order, deduplicated) and
+   `download_images` fetches each one with the *same* `HttpClient` used for
+   the XML/PDF (1 req/s, exponential backoff, the shared User-Agent) into
+   `data-pipeline/resources/<key>/images/<nor>/<filename>` — gitignored, like
+   the rest of `resources/`. Every image is also recorded in
+   `resources/manifest.json` under `<key>.images.<filename>` (sha256, size,
+   src, url), so amendment detection covers images too. `--skip-images` skips
+   this step for a text-only run.
+2. `abbildungen.py::install_images` copies every fetched image into
+   `plugin/data/abbildungen/<nor>/<filename>` — **shipped, committed** (unlike
+   `data-pipeline/resources/`). Run it directly: `python3
+   data-pipeline/abbildungen.py`. Dimensions are read from the PNG **IHDR
+   chunk** with `struct` (8 bytes: `>II` at offset 16) — no Pillow, no new
+   dependency, per the stdlib-only rule.
+3. `parse_lehrplan.py::element_text` replaces each `<binary>` with the token
+   `abbildung_token(dateiname)` → `⟦ABB:<dateiname>⟧` (U+27E6 / U+27E7
+   MATHEMATICAL WHITE SQUARE BRACKET, chosen because this pair cannot occur
+   in the source text) at the exact position the image occupied — this *is*
+   the faithful serialisation, not a lossy substitute. The raw `<src>` path
+   is still collected internally (`ExtractedText.abbildungen`) but never
+   reaches `text`/`text_roh`.
+4. `LehrplanParser._abbildung_eintraege` resolves each raw path against a
+   registry built by `abbildungen.build_registry()` (scans
+   `plugin/data/abbildungen/` once per parse) and attaches one dict per token,
+   in order, to the owning Kompetenz/Anwendungsitem's `abbildungen` field:
+   `token`, `datei`, `nor`, `pfad` (relative to the plugin root — the
+   renderer resolves it against `${CLAUDE_PLUGIN_ROOT}`), `quelle_url`,
+   `breite_px`, `hoehe_px`, `sha256`. A path that doesn't parse, or an image
+   the registry doesn't know about, is logged (`abbildung_pfad_unerwartet` /
+   `abbildung_nicht_installiert`) and skipped, not fatal — `abbildungen` is
+   best-effort metadata, not a required field.
+
+Records touched by an image are **no longer flagged as incomplete
+quotations** — the sentence, including the image, is now fully reproduced.
+
+### 10.2 The 2 GZ-integrative competences are promoted, not dropped
+
+`Kompetenzen für den Mathematik-Lehrplan bei integrativer Führung von
+Geometrisches Zeichnen (1. bis 4. Klasse):` (child 1063, §3) used to fall
+through to the generic `ANDERE_UEBERSCHRIFT` → `FACH_ANHANG` path and land in
+`ParseResult.zusatzbloecke`, uncounted. It is now recognised specifically
+(`GZ_INTEGRATIV_RE`) and drives a dedicated state,
+`State.KOMPETENZ_GZ_INTEGRATIV`, entered via `Token.SEKTION_GZ_INTEGRATIV`
+from whichever state precedes it (`ANWENDUNGSBEREICHE` in the live document).
+That state mirrors `KOMPETENZBEREICHE`'s shape — `STUFE` marker, a bare stem
+paragraph (ignored, same as section 1), one `LISTE` of competences per class
+year — but for one area fixed for its whole duration, and it still hands the
+trailing footnote-legend `TABELLE` to `_parse_themen_tabelle`, since that
+table follows with no intervening heading.
+
+The 2 competences (1 for K3, 1 for K4) fit none of the four numbered
+Kompetenzbereiche — the heading is structurally a fifth, separate list, not a
+fifth area of the same kind. They are given a synthetic, clearly-labelled
+area (`bereich_nummer=None`, `bereich_name="Integrative Führung von
+Geometrisches Zeichnen"`, ID slug `GZINTEGRATIV`) that is **not** added to
+`ParseResult.bereiche` — `kompetenzbereiche` stays 4, faithful to the
+regulation's actual structure. `ERWARTET_SEK1_M["kompetenzen"]` moves **40 →
+42**. Consequence: these two competences have no Anwendungsbereiche
+counterpart at all, so `join_stats["kompetenzen_ohne_block"]` is 2, not 0 —
+by design, logged as `kompetenz_ohne_anwendungsblock`, not a join failure.
+The two do get natural year-over-year `vorlaeufer`/`folge` links to each
+other from `link_wiederholungen`'s positional pass (bucketed by
+`(stufe, bereich_nummer)`, and `bereich_nummer=None` is a valid, distinct
+bucket key).
+
+---
+
+## 11. Running it
 
 ```bash
-python3 data-pipeline/parse_lehrplan.py --summary     # counts + issue log
-python3 data-pipeline/parse_lehrplan.py --verify      # non-zero exit on drift
+python3 data-pipeline/fetch_ris_resources.py           # fetch XML/PDF + images, write manifest
+python3 data-pipeline/fetch_ris_resources.py --skip-images  # text-only run
+python3 data-pipeline/abbildungen.py                    # install fetched images into plugin/data/abbildungen/
+python3 data-pipeline/abbildungen.py --check             # inspect installed images only, no fetch/copy
+python3 data-pipeline/parse_lehrplan.py --summary       # counts + issue log
+python3 data-pipeline/parse_lehrplan.py --verify        # non-zero exit on drift
 python3 data-pipeline/parse_lehrplan.py --out out.json
 python3 -m unittest discover -s data-pipeline/tests -t data-pipeline/tests
 ```
