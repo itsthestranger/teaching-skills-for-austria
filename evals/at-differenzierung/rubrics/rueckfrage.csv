@@ -1,0 +1,2 @@
+ID,Bucket,Criterion,What pass requires,Notes,Conditional
+"M-CLARIFY-CURRICULUM","M — Modell-Gerüstbau","Fragt nach Lehrplan, wenn unbekannt","In einiger Wendung vor allen Dokumenten geliefert sind, fragt das Modell die Lehrkraft, welcher Lehrplan sie verwenden (z.B. Österreichischer Primarstufen-Lehrplan, Bildungsstandards). Pass = eine klare Frage, die den Lehrplan als fehlende Eingabe identifiziert, in irgendwelche Wendung, die Dokument-Lieferung vorhergeht. Fail = Dokumente werden ohne die Lehrplan-Frage jemals gestellt generiert.","","Lehrplan-unbekannt"
