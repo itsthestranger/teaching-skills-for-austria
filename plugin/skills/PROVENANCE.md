@@ -58,6 +58,20 @@ The files above were originally verified byte-identical to the pinned upstream c
   Both reuse existing callout/labeled machinery rather than introducing new OOXML
   geometry — see `CALLOUT_KINDS["kompetenz"]` and `kompetenz_citation()` in
   `lesson_common.py`.
+- A third Austrian block type, `niveau_spalte`, was added to both renderers for
+  `at-differenzierung`'s tiered material: `{"type": "niveau_spalte", "niveaus": [{"label":
+  "unter"|"auf"|"über", "titel": ..., "blocks": [...]}]}` renders however many
+  differentiation tiers side by side, each an independent nested block list. Unlike
+  `kompetenzbezug`/`uebergreifende_themen_tag` (leaf blocks), `niveau_spalte` nests —
+  implemented as its own emitter pair (`_emit_niveau_spalte` in `render_lesson_docx.py`,
+  a `render_block` branch in `render_lesson_html.py`) rather than as an alias over
+  `columns`, since `columns` is a fixed two-panel `left`/`right` shape with no per-panel
+  label/title, and `niveau_spalte` needs an arbitrary tier count plus a label/titel head
+  per tier. It is threaded through the same recursive passes `columns` already uses in
+  `lesson_common.py` (`_repair_enum_breaks`, `_repair_pipe_tables`, `_repair_inline_bullets`,
+  `expand_blocks`) so nested `from_shared` references inside a tier expand correctly. Tier
+  labels resolve via `resolve_niveau_kind()`, which reuses existing callout accent colors
+  (tnote amber / special green / kompetenz indigo) rather than a new palette.
 - Document type ids: `lesson_plan` → `unterrichtsplanung`, `student_materials` →
   `schueler_material`, `observation_template` → `beobachtungsbogen` are now the agreed
   Austrian names and are used as-is in `references/example_lesson.json`.

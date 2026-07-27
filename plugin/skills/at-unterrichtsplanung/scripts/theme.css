@@ -50,6 +50,19 @@ ul.check{list-style:none;padding-left:4pt}ul.check li:before{content:"\2610  "}
 .tag-chip{display:inline-block;background:#F0F4F2;border:0.8pt solid var(--border);
           border-radius:10pt;padding:2pt 9pt;font-size:8.5pt;color:var(--text)}
 
+/* --- differentiation tiers (niveau_spalte: unter/auf/über side by side) - */
+.niveau-row{display:flex;gap:14pt;margin:6pt 0 14pt}
+.niveau-row .niveau{flex:1;min-width:0}
+.niveau{border:0.8pt solid var(--border);border-left:3pt solid var(--border);
+        border-radius:6pt;padding:9pt 11pt;page-break-inside:avoid}
+.niveau-unter{border-left-color:#E8C98A}
+.niveau-auf{border-left-color:#5BB088}
+.niveau-ueber{border-left-color:#7A8CC4}
+.niveau-head{margin-bottom:6pt}
+.niveau-label{display:block;font-size:8pt;font-weight:700;letter-spacing:0.6pt;
+              text-transform:uppercase;color:var(--muted)}
+.niveau-titel{display:block;font-size:10pt;font-weight:700;color:var(--text);margin-top:1pt}
+
 /* --- tables ------------------------------------------------------------ */
 table{width:100%;border-collapse:separate;border-spacing:0;margin:4pt 0 14pt;
       font-size:9pt;line-height:1.45;border:0.6pt solid var(--border);border-radius:6pt;

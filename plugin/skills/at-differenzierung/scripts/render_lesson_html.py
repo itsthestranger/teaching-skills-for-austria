@@ -16,7 +16,7 @@ Visual design principles:
 Block types (canonical names; legacy aliases accepted, see ALIASES in lesson_common):
   paragraph, labeled, list, h2, h3, callout, table, cards, columns, group, page_break,
   phase_header, fill_in, instructions, workspace, checklist, kompetenzbezug,
-  uebergreifende_themen_tag
+  uebergreifende_themen_tag, niveau_spalte
 
 Usage:
     python render_lesson_html.py lesson.json -o lesson_preview.html
@@ -36,7 +36,7 @@ from lesson_common import (  # noqa: E402
     btype as _btype, resolve_callout_kind as _resolve_callout_kind,
     answer_profile, expand_document, build_header, preamble_blocks, coerce_marks,
     workspace_height, normalize_text, label_text, label_sep, table_row_height,
-    coerce_headers, coerce_rows, kompetenz_citation,
+    coerce_headers, coerce_rows, kompetenz_citation, resolve_niveau_kind,
 )
 
 FILL_IN_SIZES = {"short": "6em", "med": "14em", "long": "100%"}
@@ -273,6 +273,22 @@ def render_block(blk: dict, theme: Theme) -> str:
         chips = "".join(f"<span class=\"tag-chip\">{md(str(th))}</span>"
                         for th in blk.get("themen", []))
         return f"<div class=\"tagrow\"><span class=\"tagrow-label\">{label}:</span>{chips}</div>"
+    if t == "niveau_spalte":
+        # Three (or however many) differentiation tiers side by side. Each tier is its own
+        # nested block list (expanded/repaired upstream in expand_document — see
+        # lesson_common's niveau_spalte branches), rendered through the normal
+        # render_block() dispatch, so official curriculum blocks (e.g. kompetenzbezug) and
+        # teacher-authored prose keep whatever visual distinction they already have.
+        tiers = []
+        for n in blk.get("niveaus", []):
+            disp, slug, _color = resolve_niveau_kind(n.get("label"))
+            titel = (f"<span class=\"niveau-titel\">{md(n.get('titel', ''))}</span>"
+                     if n.get("titel") else "")
+            body = "".join(render_block(b, theme) for b in n.get("blocks", []))
+            tiers.append(f"<div class=\"niveau niveau-{slug}\">"
+                         f"<div class=\"niveau-head\"><span class=\"niveau-label\">{md(disp)}"
+                         f"</span>{titel}</div>{body}</div>")
+        return f"<div class=\"niveau-row\">{''.join(tiers)}</div>"
     # NEVER dump raw JSON into the page — a printed worksheet with {"type": ...} on it is a
     # blocking print-safety failure (seen in real model output: "list" and "labeled_box").
     if blk.get("text"):

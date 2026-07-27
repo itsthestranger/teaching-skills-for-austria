@@ -25,7 +25,7 @@ from lesson_common import (  # noqa: E402
     Theme, CALLOUT_KINDS, FILL_IN_CHARS, btype as _btype,
     resolve_callout_kind, answer_profile, build_header, expand_document, coerce_marks,
     md_tokens, workspace_height, label_text, label_sep, table_row_height, preamble_blocks,
-    coerce_headers, coerce_rows, kompetenz_citation,
+    coerce_headers, coerce_rows, kompetenz_citation, resolve_niveau_kind,
 )
 
 try:
@@ -467,6 +467,37 @@ def _emit_columns(doc, blk, theme):
             emit_block(cell, b, theme)
 
 
+def _emit_niveau_spalte(doc, blk, theme):
+    """Differentiation tiers side by side (unter/auf/über), one table cell per tier — same
+    N-panel structure as _emit_columns, generalized from a fixed left/right pair to however
+    many tiers `niveaus` carries, plus a label+titel head per cell. A colored left border
+    (docx analog of the html .niveau-unter/-auf/-ueber accent) marks the tier; the label
+    text itself carries the distinction in B+W print. Nested tier blocks render through the
+    normal emit_block() dispatch into the cell, so official curriculum blocks (e.g.
+    kompetenzbezug) keep their own visual treatment inside a tier."""
+    niveaus = blk.get("niveaus") or []
+    if not niveaus:
+        return
+    tbl = doc.add_table(rows=1, cols=len(niveaus))
+    _set_borders(tbl, color=theme.safe("border").lstrip("#"))
+    _set_cell_margins(tbl)
+    _cant_split(tbl)
+    for cell, n in zip(tbl.rows[0].cells, niveaus):
+        disp, _slug, color = resolve_niveau_kind(n.get("label"))
+        _cell_borders(cell, ["left"], color=color.lstrip("#"), sz="24")
+        lp = cell.paragraphs[0]
+        r = lp.add_run(disp.upper())
+        r.bold = True
+        r.font.size = Pt(8)
+        r.font.color.rgb = _hex_rgb(theme.safe("muted"))
+        if n.get("titel"):
+            tp = cell.add_paragraph()
+            tp.add_run(str(n["titel"])).bold = True
+        for b in n.get("blocks", []):
+            emit_block(cell, b, theme)
+    doc.add_paragraph(style="LC Spacer")
+
+
 def _emit_source_card(doc, blk, theme):
     head = " · ".join(str(blk.get(k))
                       for k in ("title", "author", "date", "origin") if blk.get(k))
@@ -632,6 +663,7 @@ _EMITTERS = {
     "number_line": _emit_number_line,
     "kompetenzbezug": _emit_kompetenzbezug,
     "uebergreifende_themen_tag": _emit_themen_tags,
+    "niveau_spalte": _emit_niveau_spalte,
 }
 
 

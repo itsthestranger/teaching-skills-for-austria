@@ -72,6 +72,10 @@ def _repair_enum_breaks(blk: dict) -> list[dict]:
         return [dict(blk,
                      left=[rb for b in blk.get("left", []) for rb in _repair_enum_breaks(b)],
                      right=[rb for b in blk.get("right", []) for rb in _repair_enum_breaks(b)])]
+    if blk.get("type") == "niveau_spalte":
+        return [dict(blk, niveaus=[
+            dict(n, blocks=[rb for b in n.get("blocks", []) for rb in _repair_enum_breaks(b)])
+            for n in blk.get("niveaus", [])])]
     if blk.get("type") in ("paragraph", "labeled", "callout") and isinstance(blk.get("text"), str):
         fixed = _repair_cap_subparts(_ENUM_MIDPROSE.sub("\n", blk["text"]))
         if fixed != blk["text"]:
@@ -90,6 +94,10 @@ def _repair_inline_bullets(blk: dict) -> list[dict]:
         return [dict(blk,
                      left=[rb for b in blk.get("left", []) for rb in _repair_inline_bullets(b)],
                      right=[rb for b in blk.get("right", []) for rb in _repair_inline_bullets(b)])]
+    if blk.get("type") == "niveau_spalte":
+        return [dict(blk, niveaus=[
+            dict(n, blocks=[rb for b in n.get("blocks", []) for rb in _repair_inline_bullets(b)])
+            for n in blk.get("niveaus", [])])]
     if blk.get("type") not in ("paragraph", "labeled") or not isinstance(blk.get("text"), str) \
             or "\n" not in blk["text"]:
         return [blk]
@@ -143,6 +151,10 @@ def _repair_pipe_tables(blk: dict) -> list[dict]:
         return [dict(blk,
                      left=[rb for b in blk.get("left", []) for rb in _repair_pipe_tables(b)],
                      right=[rb for b in blk.get("right", []) for rb in _repair_pipe_tables(b)])]
+    if blk.get("type") == "niveau_spalte":
+        return [dict(blk, niveaus=[
+            dict(n, blocks=[rb for b in n.get("blocks", []) for rb in _repair_pipe_tables(b)])
+            for n in blk.get("niveaus", [])])]
     if btype(blk) in ("list", "checklist"):
         # A pipe table inside a bullet item: split the list around it and lift the table out.
         out: list[dict] = []
@@ -376,6 +388,10 @@ def expand_blocks(blocks: list, shared: dict, audience: str = "teacher") -> list
             out.append({"type": "columns",
                         "left": expand_blocks(blk.get("left", []), shared, audience),
                         "right": expand_blocks(blk.get("right", []), shared, audience)})
+        elif btype == "niveau_spalte":
+            out.append({**blk, "niveaus": [
+                {**n, "blocks": expand_blocks(n.get("blocks", []), shared, audience)}
+                for n in blk.get("niveaus", [])]})
         elif btype == "group":
             out.append({**blk, "blocks": expand_blocks(blk.get("blocks", []), shared, audience)})
         else:
@@ -765,6 +781,30 @@ def build_header(data: dict) -> dict:
         name_line, meta = meta, ""
     return {"eyebrow": data.get("eyebrow", ""), "title": data.get("title", "Unterrichtsplanung"),
             "meta": meta, "name_line": name_line}
+
+
+# niveau_spalte tier labels -> (display text, css/docx-safe slug, accent color). Colors
+# reuse existing callout hues (tnote amber / special green / kompetenz indigo) rather than
+# inventing a new palette, so "below/at/above level" reads as a natural extension of the
+# existing icon-and-border visual language instead of a fourth unrelated color scheme.
+# The literal label text still carries the distinction in B+W print; color is a bonus.
+NIVEAU_KINDS = {
+    "unter": ("Unter dem Niveau", "unter", "#E8C98A"),
+    "auf":   ("Auf dem Niveau", "auf", "#5BB088"),
+    "über":  ("Über dem Niveau", "ueber", "#7A8CC4"),
+    "ueber": ("Über dem Niveau", "ueber", "#7A8CC4"),  # ASCII-typed alias for "über"
+}
+
+
+def resolve_niveau_kind(label) -> tuple[str, str, str]:
+    """Resolve a niveau_spalte tier's `label` to (display text, css slug, accent color).
+    An unrecognized label (a model-authored custom tier name) still renders — as its own
+    text, a generic slug, and the neutral border color — rather than being dropped."""
+    raw = str(label or "").strip()
+    known = NIVEAU_KINDS.get(raw.lower())
+    if known:
+        return known
+    return (raw or "Niveau", "sonst", "#CBD2D8")
 
 
 def kompetenz_citation(quelle) -> str:
