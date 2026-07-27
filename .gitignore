@@ -2,3 +2,11 @@ teaching-skills-austria-plan.md
 FINDINGS.md
 BACKLOG.md
 CLAUDE.md
+docs/*
+!docs/.gitkeep
+!docs/README.md
+data-pipeline/resources/*
+!data-pipeline/resources/manifest.json
+.venv/
+__pycache__/
+*.pyc

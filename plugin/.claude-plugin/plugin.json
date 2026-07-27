@@ -1,0 +1,7 @@
+{
+  "name": "teaching-skills-austria",
+  "version": "0.1.0",
+  "description": "Skills und Kompetenzdaten für kompetenzorientierten Unterricht nach dem österreichischen Lehrplan 2023 (Primarstufe und Sekundarstufe I).",
+  "author": { "name": "<Name/Org>" },
+  "license": "Apache-2.0"
+}
