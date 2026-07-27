@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SYNTHETIC fixture. Not RIS content.
+
+     Mirrors the structural shape of Sek I MATHEMATIK in NOR40271471 at 1/50th
+     the size, and deliberately contains the cases the live document does NOT
+     provide, so all three join strategies get exercised:
+
+       * exact join      (2x)
+       * fuzzy join      (1x, "sowie" -> "und", as at child index 998 live)
+       * positional join (1x, sentence rewritten beyond fuzzy reach; the live
+                          document has no such case; this guards the fallback)
+
+     Also covers: subject boundary (LATEIN before, GEOMETRIE after), the
+     element-type trap (Kompetenzbereich as <ueberschrift> then as <absatz>),
+     class-year markers, `allenfalls`, `Wiederholen und Festigen`, a <super>
+     theme marker, a <binary> inline image, the per-year "Vorschläge für den
+     Einsatz digitaler Technologien" list, an unknown trailing heading, and the
+     footnote legend table.
+-->
+<risdok xmlns="http://www.bka.gv.at">
+  <metadaten/>
+  <nutzdaten>
+    <abschnitt nr="1" typ="ns">
+
+      <ueberschrift typ="g1">ACHTER TEIL</ueberschrift>
+      <ueberschrift typ="g2">LEHRPLÄNE DER EINZELNEN UNTERRICHTSGEGENSTÄNDE</ueberschrift>
+      <ueberschrift typ="g1">A. PFLICHTGEGENSTÄNDE</ueberschrift>
+
+      <ueberschrift typ="g1">LATEIN</ueberschrift>
+      <ueberschrift typ="erll">Kompetenzbereiche (1. bis 4. Klasse):</ueberschrift>
+      <absatz typ="erltext">1. Klasse:</absatz>
+      <ueberschrift typ="erll">Kompetenzbereich 1: Fremdes Fach</ueberschrift>
+      <absatz typ="abs">Die Schülerinnen und Schüler können</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>diese Kompetenz gehört nicht zu MATHEMATIK.</listelem>
+      </aufzaehlung></liste>
+
+      <ueberschrift typ="g1">MATHEMATIK</ueberschrift>
+      <ueberschrift typ="erll">Bildungs- und Lehraufgabe (1. – 4.Klasse):</ueberschrift>
+      <absatz typ="abs">Präambeltext, der nicht als Kompetenz gezählt werden darf.</absatz>
+      <absatz typ="abs">Dieser Lehrplan greift folgende übergreifende Themen auf: Informatische Bildung<super>4</super>, Medienbildung<super>6</super></absatz>
+
+      <ueberschrift typ="erll">Kompetenzbereiche (1. bis 4. Klasse):</ueberschrift>
+
+      <absatz typ="erltext">1. Klasse:</absatz>
+      <ueberschrift typ="erll">Kompetenzbereich 1: Zahlen und Maße</ueberschrift>
+      <absatz typ="abs">Die Schülerinnen und Schüler können</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>erste Kompetenz mit Marker;<super>4</super></listelem>
+        <listelem ct="text"><symbol stellen="1">–</symbol>zweite Kompetenz.</listelem>
+      </aufzaehlung></liste>
+      <ueberschrift typ="erll">Kompetenzbereich 2: Daten und Zufall</ueberschrift>
+      <absatz typ="abs">Die Schülerinnen und Schüler können</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>dritte Kompetenz sowie weitere Teile nutzen.</listelem>
+      </aufzaehlung></liste>
+
+      <absatz typ="erltext">2. Klasse:</absatz>
+      <ueberschrift typ="erll">Kompetenzbereich 1: Zahlen und Maße</ueberschrift>
+      <absatz typ="abs">Die Schülerinnen und Schüler können</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>vierte Kompetenz.</listelem>
+      </aufzaehlung></liste>
+
+      <ueberschrift typ="erll">Anwendungsbereiche (1. bis 4. Klasse):</ueberschrift>
+      <absatz typ="abs">Im Folgenden werden die Kompetenzbeschreibungen anhand des Lehrstoffs präzisiert. Die mit „allenfalls“ gekennzeichneten Inhalte sind nicht verbindlich.</absatz>
+
+      <absatz typ="erltext">1. Klasse:</absatz>
+      <absatz typ="abs">Kompetenzbereich 1: Zahlen und Maße</absatz>
+      <absatz typ="abs">Die Schülerinnen und Schüler können erste Kompetenz mit Marker.</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>verbindlicher Inhalt zur ersten Kompetenz;</listelem>
+        <listelem ct="text"><symbol stellen="1">–</symbol>allenfalls nicht verbindlicher Inhalt zur ersten Kompetenz.</listelem>
+      </aufzaehlung></liste>
+      <absatz typ="abs">Die Schülerinnen und Schüler können zweite Kompetenz.</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>Inhalt mit Formelgrafik (zB 0,6<binary nr="1" shapetype="is" datatype="png"><src>/Dokumente/Bundesnormen/NOR00000000/hauptdokument.img1is.png</src></binary>).</listelem>
+      </aufzaehlung></liste>
+      <absatz typ="abs">Kompetenzbereich 2: Daten und Zufall</absatz>
+      <absatz typ="abs">Die Schülerinnen und Schüler können dritte Kompetenz und weitere Teile nutzen.</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>Inhalt zur dritten Kompetenz.</listelem>
+      </aufzaehlung></liste>
+      <absatz typ="abs">Vorschläge für den Einsatz digitaler Technologien<super>4</super> in der 1. Klasse</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>Tabellenkalkulation einsetzen.</listelem>
+      </aufzaehlung></liste>
+
+      <absatz typ="erltext">2. Klasse:</absatz>
+      <absatz typ="abs">Kompetenzbereich 1: Zahlen und Maße</absatz>
+      <absatz typ="abs">Die Schülerinnen und Schüler können völlig anders formulierter Satz ohne jede Ähnlichkeit zum Kompetenztext.</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>Wiederholen und Festigen: Inhalte der ersten Klasse;</listelem>
+        <listelem ct="text"><symbol stellen="1">–</symbol>neuer Inhalt der zweiten Klasse.</listelem>
+      </aufzaehlung></liste>
+
+      <ueberschrift typ="erll">Kompetenzen bei integrativer Führung (Anhang):</ueberschrift>
+      <absatz typ="erltext">2. Klasse:</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>Anhangkompetenz, die nicht zu den vier Kernkompetenzen zählt.</listelem>
+      </aufzaehlung></liste>
+
+      <table>
+        <tr>
+          <td><absatz typ="tabtext"><super>4</super>Informatische Bildung</absatz></td>
+          <td><absatz typ="tabtext"><super>6</super>Medienbildung</absatz></td>
+        </tr>
+      </table>
+
+      <ueberschrift typ="g1">GEOMETRISCHES ZEICHNEN</ueberschrift>
+      <ueberschrift typ="erll">Kompetenzbereiche (3. und 4. Klasse):</ueberschrift>
+      <absatz typ="erltext">3. Klasse:</absatz>
+      <ueberschrift typ="erll">Kompetenzbereich 1: Nachfolgendes Fach</ueberschrift>
+      <absatz typ="abs">Die Schülerinnen und Schüler können</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>diese Kompetenz gehört ebenfalls nicht zu MATHEMATIK.</listelem>
+      </aufzaehlung></liste>
+
+    </abschnitt>
+  </nutzdaten>
+</risdok>
