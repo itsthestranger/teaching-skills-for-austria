@@ -11,7 +11,9 @@ content is written once and can never drift between artifacts.
 """
 from __future__ import annotations
 
+import os
 import re
+from pathlib import Path
 
 # ---- render-time print-safety repair ---------------------------------------------------
 # Two failure classes survive prompt instructions and are repaired structurally instead:
@@ -819,3 +821,87 @@ def kompetenz_citation(quelle) -> str:
     if head and tail:
         return f"{head} ({tail})"
     return head or tail
+
+
+# ============================================================================
+# Inline formula images — ⟦ABB:datei⟧ tokens in verbatim-quoted competence text.
+#
+# The kompetenzbezug block quotes Austrian curriculum competences verbatim, as law.
+# Some competences ship their formula portions as small inline PNGs in the source
+# regulation rather than as text (see FINDINGS.md V-53); a `text` field marks each
+# image's position with a ⟦ABB:datei⟧ token, and the carrying block's `abbildungen`
+# list gives that token's file metadata. split_abbildungen() is the single place both
+# renderers turn a token stream into ordered runs, so they can never disagree about
+# where an image sits relative to the surrounding quoted text.
+# ============================================================================
+
+_ABB_TOKEN = re.compile(r"⟦ABB:[^⟧]*⟧")
+
+ABB_SRC_PX, ABB_SRC_DPI = 17, 96
+# Both renderers size the inline glyph off body_size using this ratio (source images
+# are 17px @ 96dpi = 12.75pt at the default 10.5pt body size, ≈1.214x) rather than a
+# fixed point size, so a theme's body_size override keeps the glyph proportionate to
+# surrounding text instead of drifting fixed-size against a resized body font.
+ABB_HEIGHT_RATIO = (ABB_SRC_PX / ABB_SRC_DPI * 72) / DEFAULT_THEME["body_size"]
+
+
+def split_abbildungen(text, abbildungen) -> list[tuple[str, object]]:
+    """Split `text` into an ordered sequence of ("text", str) / ("image", meta) parts
+    around ⟦ABB:datei⟧ tokens, matching each token to its metadata dict in
+    `abbildungen` (a block's `abbildungen` list, matched by the `token` field).
+
+    A token with no matching metadata entry is kept as literal text rather than
+    silently dropped — the caller renders it through whichever verbatim path is
+    already in use, which is the safe failure mode for quoted legal text: a stray
+    token character is visible and obviously wrong, a vanished one is not."""
+    text = str(text or "")
+    by_token = {a.get("token"): a for a in (abbildungen or []) if isinstance(a, dict)}
+    parts: list[tuple[str, object]] = []
+    pos = 0
+    for m in _ABB_TOKEN.finditer(text):
+        if m.start() > pos:
+            parts.append(("text", text[pos:m.start()]))
+        meta = by_token.get(m.group(0))
+        parts.append(("image", meta) if meta is not None else ("text", m.group(0)))
+        pos = m.end()
+    if pos < len(text) or not parts:
+        parts.append(("text", text[pos:]))
+    return parts
+
+
+def _plugin_root() -> Path:
+    """Walk up from this script's location to find the plugin root, marked by a
+    `.claude-plugin/` directory. Falls back to this file's fixed
+    `<plugin>/skills/<skill>/scripts/lesson_common.py` depth if no marker is found."""
+    cur = Path(__file__).resolve().parent
+    for _ in range(8):
+        if (cur / ".claude-plugin").is_dir():
+            return cur
+        if cur.parent == cur:
+            break
+        cur = cur.parent
+    return Path(__file__).resolve().parents[2]
+
+
+def resolve_abbildung_path(pfad: str) -> Path:
+    """Resolve an `abbildungen[].pfad` (relative to the plugin root) to an absolute
+    path. Uses $CLAUDE_PLUGIN_ROOT when the runtime has set it (an installed plugin);
+    otherwise walks up from this script's location to the plugin root, so the renderer
+    behaves the same run from an installed plugin or straight out of a checkout."""
+    root = os.environ.get("CLAUDE_PLUGIN_ROOT")
+    base = Path(root) if root else _plugin_root()
+    return (base / str(pfad)).resolve()
+
+
+def abbildung_missing_marker(meta: dict) -> str:
+    """Visible fallback text for a referenced image file that isn't on disk (data
+    pipeline not finished, or a partial install). This is legal text — a silently
+    missing formula is worse than an obviously missing one."""
+    name = (meta or {}).get("datei") or (meta or {}).get("pfad") or "?"
+    return f"[Abbildung fehlt: {name}]"
+
+
+def abbildung_alt(meta: dict) -> str:
+    """Meaningful alt text for an inline formula image."""
+    name = (meta or {}).get("datei") or (meta or {}).get("pfad") or "Abbildung"
+    return f"Formel-Abbildung aus dem Lehrplantext ({name})"

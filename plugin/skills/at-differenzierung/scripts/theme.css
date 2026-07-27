@@ -44,6 +44,15 @@ ul.check{list-style:none;padding-left:4pt}ul.check li:before{content:"\2610  "}
 .kb-quote{font-style:italic;margin:2pt 0 6pt}
 .kb-cite{color:var(--muted);font-size:8pt;margin:0}
 
+/* --- inline formula images (⟦ABB:...⟧ glyphs embedded in a kompetenzbezug quote) ---
+   Source images are 17px @ 96dpi = 12.75pt at the 10.5pt reference body size, ≈1.214x
+   the type size (matches lesson_common.ABB_HEIGHT_RATIO) — sized off the current
+   font-size in em so the glyph stays proportionate to surrounding text, and vertical-
+   aligned to the text baseline so it reads as part of the sentence, not a floated
+   figure. */
+img.abb{height:1.214em;width:auto;vertical-align:baseline;display:inline-block;margin:0 0.05em}
+.abb-missing{color:#B23A3A;font-style:normal;font-weight:700;white-space:nowrap}
+
 /* --- cross-cutting theme tags (chip row) -------------------------------- */
 .tagrow{margin:6pt 0 10pt;display:flex;flex-wrap:wrap;align-items:center;gap:6pt}
 .tagrow-label{font-weight:700;font-size:9.5pt;margin-right:2pt}

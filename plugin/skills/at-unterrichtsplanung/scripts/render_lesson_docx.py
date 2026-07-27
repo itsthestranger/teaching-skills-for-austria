@@ -26,6 +26,7 @@ from lesson_common import (  # noqa: E402
     resolve_callout_kind, answer_profile, build_header, expand_document, coerce_marks,
     md_tokens, workspace_height, label_text, label_sep, table_row_height, preamble_blocks,
     coerce_headers, coerce_rows, kompetenz_citation, resolve_niveau_kind,
+    split_abbildungen, resolve_abbildung_path, abbildung_missing_marker, ABB_HEIGHT_RATIO,
 )
 
 try:
@@ -98,16 +99,43 @@ def add_md(para, text, bold=False, italic=False):
         r.italic = italic or attrs.get("italic", False)
 
 
-def add_verbatim(para, text):
+def add_verbatim(para, text, abbildungen=None, theme=None):
     """Add text to a paragraph with NO markdown parsing and no reflow — real newlines
     become line breaks, nothing else is interpreted. Used for kompetenzbezug's quoted
     competence text, which must reproduce the published wording exactly (a literal '*'
-    in a legal citation must never be read as a bold marker)."""
-    lines = str(text).split("\n")
-    for i, line in enumerate(lines):
-        if i:
-            para.add_run().add_break()
-        para.add_run(line)
+    in a legal citation must never be read as a bold marker).
+
+    `abbildungen`, if given, resolves ⟦ABB:datei⟧ tokens in `text` to inline embedded
+    images at their exact sentence position via split_abbildungen() — the helper shared
+    with render_lesson_html.py, so the two formats can never disagree about run order.
+    Text on either side of an image is added through this same no-parsing loop, so it
+    never leaves the paragraph the image sits in and never touches add_md()."""
+    for kind, part in split_abbildungen(text, abbildungen):
+        if kind == "text":
+            lines = str(part).split("\n")
+            for i, line in enumerate(lines):
+                if i:
+                    para.add_run().add_break()
+                if line:
+                    para.add_run(line)
+        else:
+            _add_abbildung_run(para, part, theme)
+
+
+def _add_abbildung_run(para, meta, theme):
+    """Embed one inline formula image as a run in `para` (run.add_picture), or — if the
+    referenced file is absent (data pipeline not finished, partial install) or fails to
+    load — a visible '[Abbildung fehlt: ...]' run. Never raises."""
+    path = resolve_abbildung_path((meta or {}).get("pfad", ""))
+    if not path.is_file():
+        para.add_run(abbildung_missing_marker(meta))
+        return
+    body_size = float(getattr(theme, "raw", {}).get("body_size", 10.5)) if theme else 10.5
+    run = para.add_run()
+    try:
+        run.add_picture(str(path), height=Pt(body_size * ABB_HEIGHT_RATIO))
+    except Exception:
+        para.add_run(abbildung_missing_marker(meta))
 
 
 # ---- table primitives --------------------------------------------------------
@@ -312,7 +340,7 @@ def _emit_kompetenzbezug(doc, blk, theme):
     if text:
         qp = cell.add_paragraph()
         qp.add_run("„")
-        add_verbatim(qp, text)
+        add_verbatim(qp, text, blk.get("abbildungen"), theme)
         qp.add_run("“")
     cite = kompetenz_citation(blk.get("quelle"))
     if cite:

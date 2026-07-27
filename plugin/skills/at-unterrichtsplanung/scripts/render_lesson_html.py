@@ -24,6 +24,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import base64
 import json
 import re
 import sys
@@ -37,6 +38,7 @@ from lesson_common import (  # noqa: E402
     answer_profile, expand_document, build_header, preamble_blocks, coerce_marks,
     workspace_height, normalize_text, label_text, label_sep, table_row_height,
     coerce_headers, coerce_rows, kompetenz_citation, resolve_niveau_kind,
+    split_abbildungen, resolve_abbildung_path, abbildung_missing_marker, abbildung_alt,
 )
 
 FILL_IN_SIZES = {"short": "6em", "med": "14em", "long": "100%"}
@@ -50,6 +52,37 @@ def md(text) -> str:
     # multi-paragraph callouts). Collapsing them produced unreadable prose blobs.
     t = re.sub(r"[ \t]*\n[ \t]*", "<br>", t)
     return t
+
+
+def _abbildung_img(meta: dict) -> str:
+    """One inline formula image as a self-contained <img> (base64 data URI, so the
+    standalone HTML preview never depends on a relative path to the plugin's data
+    directory) — or, if the file is absent or unreadable, a visible inline marker.
+    Never raises."""
+    path = resolve_abbildung_path((meta or {}).get("pfad", ""))
+    try:
+        data = base64.b64encode(path.read_bytes()).decode("ascii") if path.is_file() else None
+    except OSError:
+        data = None
+    if data is None:
+        marker = escape(abbildung_missing_marker(meta), quote=True)
+        return f"<span class=\"abb-missing\" role=\"img\" aria-label=\"{marker}\">{marker}</span>"
+    alt = escape(abbildung_alt(meta), quote=True)
+    return f"<img class=\"abb\" src=\"data:image/png;base64,{data}\" alt=\"{alt}\">"
+
+
+def verbatim_html(text, abbildungen=None) -> str:
+    """Render `text` with NO markdown parsing (escape + literal <br> for real
+    newlines only) — the html twin of render_lesson_docx.add_verbatim(). `abbildungen`,
+    if given, resolves ⟦ABB:datei⟧ tokens to inline <img> tags via the shared
+    split_abbildungen() helper, at their exact position in the quoted text."""
+    out = []
+    for kind, part in split_abbildungen(text, abbildungen):
+        if kind == "text":
+            out.append(escape(str(part), quote=True).replace("\n", "<br>"))
+        else:
+            out.append(_abbildung_img(part))
+    return "".join(out)
 
 
 def answer_space(blk: dict, theme) -> str:
@@ -263,7 +296,7 @@ def render_block(blk: dict, theme: Theme) -> str:
                 f"<b>Kompetenzbezug</b>"
                 + (f" <span class=\"kb-id\">{md(kid)}</span>" if kid else "") + "</div>")
         raw = str(blk.get("text", ""))
-        quote = escape(raw, quote=True).replace("\n", "<br>")
+        quote = verbatim_html(raw, blk.get("abbildungen"))
         body = f"<p class=\"kb-quote\">„{quote}“</p>" if raw else ""
         cite = kompetenz_citation(blk.get("quelle"))
         foot = (f"<p class=\"kb-cite\">Quelle: {md(cite)}</p>" if cite else "")
