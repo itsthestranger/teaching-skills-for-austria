@@ -1,0 +1,74 @@
+{
+  "bildungsstandards": {
+    "artikel_paragraph_anlage": "Anl. 1",
+    "ausserkrafttretensdatum": null,
+    "disambiguated": false,
+    "dokument_url": "https://www.ris.bka.gv.at/eli/bgbl/ii/2009/1/ANL1/NOR40255561",
+    "eli": "https://ris.bka.gv.at/eli/bgbl/ii/2009/1/ANL1/NOR40255561",
+    "fallback_used": false,
+    "files": {
+      "pdf": {
+        "sha256": "97071b626bfb631eee34347f4190a5cd04a254ee22e5afba3c2310fe8d2a77fb",
+        "size": 324098
+      },
+      "xml": {
+        "sha256": "b6bc3dafdcf228ac7caee1bd0e59ab484ddddbcf9f32b44f152a5921c998b457",
+        "size": 81009
+      }
+    },
+    "gesetzesnummer": "20006166",
+    "inkrafttretensdatum": "2023-09-09",
+    "kundmachungsorgan": "BGBl. II Nr. 1/2009 zuletzt geändert durch BGBl. II Nr. 262/2023 ",
+    "kurztitel": "Bildungsstandardsverordnung",
+    "nor": "NOR40255561",
+    "retrieval_date": "2026-07-27"
+  },
+  "mittelschule": {
+    "artikel_paragraph_anlage": "Anl. 1",
+    "ausserkrafttretensdatum": null,
+    "disambiguated": false,
+    "dokument_url": "https://www.ris.bka.gv.at/eli/bgbl/ii/2012/185/ANL1/NOR40271471",
+    "eli": "https://ris.bka.gv.at/eli/bgbl/ii/2012/185/ANL1/NOR40271471",
+    "fallback_used": false,
+    "files": {
+      "pdf": {
+        "sha256": "e6d2f6070dae950d779fe0f09dcf32b28b77d9c75f3787f1a70e040f77aa9042",
+        "size": 1874143
+      },
+      "xml": {
+        "sha256": "23174cd0fdb3ddced6aafe495f5022d141134d982894e1942fd83d03771de115",
+        "size": 1113412
+      }
+    },
+    "gesetzesnummer": "20007850",
+    "inkrafttretensdatum": "2025-09-01",
+    "kundmachungsorgan": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025 ",
+    "kurztitel": "Lehrpläne der Mittelschulen",
+    "nor": "NOR40271471",
+    "retrieval_date": "2026-07-27"
+  },
+  "volksschule": {
+    "artikel_paragraph_anlage": "Anl. 1",
+    "ausserkrafttretensdatum": null,
+    "disambiguated": false,
+    "dokument_url": "https://www.ris.bka.gv.at/eli/bgbl/1963/134/ANL1/NOR40271469",
+    "eli": "https://ris.bka.gv.at/eli/bgbl/1963/134/ANL1/NOR40271469",
+    "fallback_used": false,
+    "files": {
+      "pdf": {
+        "sha256": "b2c850ce8ee0e1e68758d4e66c4806361da704580d21dcc4a0ea296ae911e1b9",
+        "size": 1408473
+      },
+      "xml": {
+        "sha256": "5cfbacdda1d933876e73b27bc3294df6fb7b69fc724e3727c8153ba235a9be7f",
+        "size": 867732
+      }
+    },
+    "gesetzesnummer": "10009275",
+    "inkrafttretensdatum": "2025-09-01",
+    "kundmachungsorgan": "BGBl. Nr. 134/1963 zuletzt geändert durch BGBl. II Nr. 178/2025 ",
+    "kurztitel": "Lehrplan der Volksschule",
+    "nor": "NOR40271469",
+    "retrieval_date": "2026-07-27"
+  }
+}

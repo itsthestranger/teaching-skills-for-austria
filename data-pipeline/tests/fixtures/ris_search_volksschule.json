@@ -1,0 +1,220 @@
+{
+  "OgdSearchResult": {
+    "OgdDocumentResults": {
+      "Hits": {
+        "@pageNumber": "1",
+        "@pageSize": "20",
+        "#text": "4"
+      },
+      "OgdDocumentReference": [
+        {
+          "Data": {
+            "Metadaten": {
+              "Technisch": {
+                "ID": "NOR40265822",
+                "Applikation": "BrKons",
+                "Organ": "BKA (Bundeskanzleramt)"
+              },
+              "Allgemein": {
+                "Veroeffentlicht": "2024-10-21",
+                "Geaendert": "2025-08-07",
+                "DokumentUrl": "https://www.ris.bka.gv.at/eli/bgbl/1963/134/P0/NOR40265822"
+              },
+              "Bundesrecht": {
+                "Kurztitel": "Lehrplan der Volksschule",
+                "Eli": "https://ris.bka.gv.at/eli/bgbl/1963/134/P0/NOR40265822",
+                "BrKons": {
+                  "Kundmachungsorgan": "BGBl. Nr. 134/1963 zuletzt geändert durch BGBl. II Nr. 280/2024 ",
+                  "Typ": "V",
+                  "Dokumenttyp": "Norm",
+                  "ArtikelParagraphAnlage": "§ 0",
+                  "StammnormPublikationsorgan": "BGBl. Nr.",
+                  "StammnormBgblnummer": "134/1963",
+                  "NovellenPublikationsorgan": "BGBl. II Nr.",
+                  "NovellenBgblnummer": "280/2024",
+                  "Inkrafttretensdatum": "2025-09-01",
+                  "Gesetzesnummer": "10009275"
+                }
+              }
+            },
+            "Dokumentliste": {
+              "ContentReference": {
+                "ContentType": "MainDocument",
+                "Name": "Hauptdokument",
+                "Urls": {
+                  "ContentUrl": [
+                    {
+                      "DataType": "Xml",
+                      "Url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40265822/NOR40265822.xml"
+                    },
+                    {
+                      "DataType": "Pdf",
+                      "Url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40265822/NOR40265822.pdf"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "Data": {
+            "Metadaten": {
+              "Technisch": {
+                "ID": "NOR40200001",
+                "Applikation": "BrKons",
+                "Organ": "BKA (Bundeskanzleramt)"
+              },
+              "Allgemein": {
+                "Veroeffentlicht": "2018-06-01",
+                "Geaendert": "2018-06-01",
+                "DokumentUrl": "https://www.ris.bka.gv.at/eli/bgbl/1963/134/ANL1/NOR40200001"
+              },
+              "Bundesrecht": {
+                "Kurztitel": "Lehrplan der Volksschule",
+                "Eli": "https://ris.bka.gv.at/eli/bgbl/1963/134/ANL1/NOR40200001",
+                "BrKons": {
+                  "Kundmachungsorgan": "BGBl. Nr. 134/1963 zuletzt geändert durch BGBl. II Nr. 1/2018 ",
+                  "Typ": "V",
+                  "Dokumenttyp": "Paragraph",
+                  "ArtikelParagraphAnlage": "Anl. 1",
+                  "Anlagennummer": "1",
+                  "StammnormPublikationsorgan": "BGBl. Nr.",
+                  "StammnormBgblnummer": "134/1963",
+                  "NovellenPublikationsorgan": "BGBl. II Nr.",
+                  "NovellenBgblnummer": "1/2018",
+                  "Inkrafttretensdatum": "2018-09-01",
+                  "Ausserkrafttretensdatum": "2020-08-31",
+                  "Gesetzesnummer": "10009275"
+                }
+              }
+            },
+            "Dokumentliste": {
+              "ContentReference": {
+                "ContentType": "MainDocument",
+                "Name": "Hauptdokument",
+                "Urls": {
+                  "ContentUrl": {
+                    "DataType": "Xml",
+                    "Url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40200001/NOR40200001.xml"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "Data": {
+            "Metadaten": {
+              "Technisch": {
+                "ID": "NOR40271469",
+                "Applikation": "BrKons",
+                "Organ": "BKA (Bundeskanzleramt)"
+              },
+              "Allgemein": {
+                "Veroeffentlicht": "2025-08-07",
+                "Geaendert": "2025-08-07",
+                "DokumentUrl": "https://www.ris.bka.gv.at/eli/bgbl/1963/134/ANL1/NOR40271469"
+              },
+              "Bundesrecht": {
+                "Kurztitel": "Lehrplan der Volksschule",
+                "Eli": "https://ris.bka.gv.at/eli/bgbl/1963/134/ANL1/NOR40271469",
+                "BrKons": {
+                  "Kundmachungsorgan": "BGBl. Nr. 134/1963 zuletzt geändert durch BGBl. II Nr. 178/2025 ",
+                  "Typ": "V",
+                  "Dokumenttyp": "Paragraph",
+                  "ArtikelParagraphAnlage": "Anl. 1",
+                  "Anlagennummer": "1",
+                  "StammnormPublikationsorgan": "BGBl. Nr.",
+                  "StammnormBgblnummer": "134/1963",
+                  "NovellenPublikationsorgan": "BGBl. II Nr.",
+                  "NovellenBgblnummer": "178/2025",
+                  "Inkrafttretensdatum": "2025-09-01",
+                  "Gesetzesnummer": "10009275"
+                }
+              }
+            },
+            "Dokumentliste": {
+              "ContentReference": {
+                "ContentType": "MainDocument",
+                "Name": "Hauptdokument",
+                "Urls": {
+                  "ContentUrl": [
+                    {
+                      "DataType": "Xml",
+                      "Url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271469/NOR40271469.xml"
+                    },
+                    {
+                      "DataType": "Html",
+                      "Url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271469/NOR40271469.html"
+                    },
+                    {
+                      "DataType": "Rtf",
+                      "Url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271469/NOR40271469.rtf"
+                    },
+                    {
+                      "DataType": "Pdf",
+                      "Url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271469/NOR40271469.pdf"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "Data": {
+            "Metadaten": {
+              "Technisch": {
+                "ID": "NOR40253200",
+                "Applikation": "BrKons",
+                "Organ": "BKA (Bundeskanzleramt)"
+              },
+              "Allgemein": {
+                "Veroeffentlicht": "2023-08-10",
+                "Geaendert": "2023-08-10",
+                "DokumentUrl": "https://www.ris.bka.gv.at/eli/bgbl/1963/134/ANL3_1/NOR40253200"
+              },
+              "Bundesrecht": {
+                "Kurztitel": "Lehrplan der Volksschule",
+                "Eli": "https://ris.bka.gv.at/eli/bgbl/1963/134/ANL3_1/NOR40253200",
+                "BrKons": {
+                  "Kundmachungsorgan": "BGBl. Nr. 134/1963 zuletzt geändert durch BGBl. II Nr. 219/2023 ",
+                  "Typ": "V",
+                  "Dokumenttyp": "Paragraph",
+                  "ArtikelParagraphAnlage": "Anl. 3/1",
+                  "Anlagennummer": "3/1",
+                  "StammnormPublikationsorgan": "BGBl. Nr.",
+                  "StammnormBgblnummer": "134/1963",
+                  "NovellenPublikationsorgan": "BGBl. II Nr.",
+                  "NovellenBgblnummer": "219/2023",
+                  "Inkrafttretensdatum": "2023-09-01",
+                  "Ausserkrafttretensdatum": "2029-08-31",
+                  "Gesetzesnummer": "10009275"
+                }
+              }
+            },
+            "Dokumentliste": {
+              "ContentReference": {
+                "ContentType": "MainDocument",
+                "Name": "Hauptdokument",
+                "Urls": {
+                  "ContentUrl": [
+                    {
+                      "DataType": "Xml",
+                      "Url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40253200/NOR40253200.xml"
+                    },
+                    {
+                      "DataType": "Pdf",
+                      "Url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40253200/NOR40253200.pdf"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
