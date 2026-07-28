@@ -1,0 +1,1085 @@
+{
+  "meta": {
+    "lehrplan_fassung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+    "dataset_version": "2026-07-27",
+    "band": "SEK1",
+    "fach": {
+      "code": "M",
+      "name": "Mathematik"
+    },
+    "uebergreifende_themen_fach": [
+      "Entrepreneurship Education",
+      "Informatische Bildung",
+      "Interkulturelle Bildung",
+      "Medienbildung",
+      "Politische Bildung",
+      "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "Sprachliche Bildung und Lesen",
+      "Umweltbildung für nachhaltige Entwicklung",
+      "Verkehrs- und Mobilitätsbildung",
+      "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    ],
+    "uebergreifende_themen_legende": {
+      "1": "Bildungs-, Berufs- und Lebensorientierung",
+      "2": "Entrepreneurship Education",
+      "3": "Gesundheitsförderung",
+      "4": "Informatische Bildung",
+      "5": "Interkulturelle Bildung",
+      "6": "Medienbildung",
+      "7": "Politische Bildung",
+      "8": "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "9": "Sexualpädagogik",
+      "10": "Sprachliche Bildung und Lesen",
+      "11": "Umweltbildung für nachhaltige Entwicklung",
+      "12": "Verkehrs- und Mobilitätsbildung",
+      "13": "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    },
+    "differenzierungs_achse": {
+      "typ": "standard_standardplus",
+      "niveaus": [
+        "Standard",
+        "Standard AHS"
+      ],
+      "enrichment_quelle": "allenfalls",
+      "spiralprinzip_backlinks": true
+    },
+    "anwendungsbereiche_status": "item_flags",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Lehrpläne der Mittelschulen",
+      "nor": "NOR40271471",
+      "kundmachung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+      "anlage": "Anl. 1",
+      "teil": "ACHTER TEIL",
+      "stand": "2026-07-27"
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "nummer": 3,
+      "slug": "FIGUREN",
+      "name": "Figuren und Körper",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.SEK1.M.FIGUREN.K1.01",
+          "stufe": "K1",
+          "ordinal": 0,
+          "text": "mit einfachen geometrischen Objekten in der Ebene arbeiten;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.M.FIGUREN.K2.01",
+            "AT.LP23.SEK1.M.FIGUREN.K2.02",
+            "AT.LP23.SEK1.M.FIGUREN.K2.03"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.01",
+              "stufe": "K1",
+              "ordinal": 0,
+              "text": "Kennen der geometrischen Objekte Punkt, Strecke, Strahl, Gerade, Winkel; Beschreiben zugehöriger Lagebeziehungen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.02",
+              "stufe": "K1",
+              "ordinal": 1,
+              "text": "Lösen von Konstruktionsaufgaben mit parallelen bzw. normalen Geraden, Strahlen und Strecken;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.03",
+              "stufe": "K1",
+              "ordinal": 2,
+              "text": "Beschreiben des Abstands zweier Punkte, des Abstands eines Punktes von einer Geraden, des Abstands paralleler Geraden; Ermitteln solcher Abstände;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.04",
+              "stufe": "K1",
+              "ordinal": 3,
+              "text": "Kennen des Gradmaßes für Winkel; Schätzen der Größe von Winkeln; Einteilen der Winkel nach ihrer Größe (spitzer, rechter, stumpfer, gestreckter, erhabener und voller Winkel);",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.05",
+              "stufe": "K1",
+              "ordinal": 4,
+              "text": "Zeichnen und Messen von Winkeln;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.06",
+              "stufe": "K1",
+              "ordinal": 5,
+              "text": "Kennen, Beschreiben und Zeichnen von Kreisen (Kreislinien, Kreisflächen) und von Kreisteilen (Kreisbogen, Kreissektor, Kreissegment); Beschreiben der Lagebeziehung zwischen Punkt bzw. Gerade und Kreis, insbesondere im Fall einer Tangente; Konstruieren von Tangenten in Kreispunkten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.07",
+              "stufe": "K1",
+              "ordinal": 6,
+              "text": "allenfalls Lösen weiterer Konstruktionsaufgaben mit Kreisen und Geraden;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.08",
+              "stufe": "K1",
+              "ordinal": 7,
+              "text": "Beachten des Unterschieds zwischen einem geometrischen Objekt und seiner Größe (Strecke – Streckenlänge, Fläche – Flächeninhalt, Winkel – Winkelmaß).",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.FIGUREN.K1.02",
+          "stufe": "K1",
+          "ordinal": 1,
+          "text": "Eigenschaften von Rechtecken beschreiben; Rechtecke und Figuren, die aus Rechtecken bestehen, konstruieren und maßstäblich darstellen; Formeln für den Umfang und den Flächeninhalt von Rechtecken begründen und anwenden;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.M.FIGUREN.K2.01",
+            "AT.LP23.SEK1.M.FIGUREN.K2.02",
+            "AT.LP23.SEK1.M.FIGUREN.K2.03"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.09",
+              "stufe": "K1",
+              "ordinal": 0,
+              "text": "Skizzieren und Konstruieren von Rechtecken und Figuren, die aus Rechtecken bestehen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.10",
+              "stufe": "K1",
+              "ordinal": 1,
+              "text": "maßstäbliches Zeichnen von Figuren, die aus Rechtecken bestehen; Wählen geeigneter Maßstäbe; Ermitteln von Längen aus maßstäblichen Zeichnungen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.11",
+              "stufe": "K1",
+              "ordinal": 2,
+              "text": "Kennen, Anwenden und Begründen einer Formel für den Umfang eines Rechtecks; Lösen entsprechender Umkehraufgaben;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.12",
+              "stufe": "K1",
+              "ordinal": 3,
+              "text": "Ermitteln von Flächeninhalten von Rechtecken durch Zerlegen in passende Einheitsquadrate;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.13",
+              "stufe": "K1",
+              "ordinal": 4,
+              "text": "Kennen, Anwenden und Begründen der Formel für den Flächeninhalt eines Rechtecks; Lösen entsprechender Umkehraufgaben;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.14",
+              "stufe": "K1",
+              "ordinal": 5,
+              "text": "Abschätzen des Flächeninhalts von Figuren durch Auslegen bzw. Überdecken mit Rechtecken, allenfalls auch von nicht geradlinig begrenzten Figuren;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.15",
+              "stufe": "K1",
+              "ordinal": 6,
+              "text": "Bearbeiten von Aufgaben in Sachsituationen, zB Arbeiten mit Plänen und Landkarten.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.FIGUREN.K1.03",
+          "stufe": "K1",
+          "ordinal": 2,
+          "text": "Eigenschaften von Quadern beschreiben; Formeln für den Oberflächeninhalt und Rauminhalt von Quadern begründen und anwenden.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.M.FIGUREN.K2.01",
+            "AT.LP23.SEK1.M.FIGUREN.K2.02",
+            "AT.LP23.SEK1.M.FIGUREN.K2.03"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.16",
+              "stufe": "K1",
+              "ordinal": 0,
+              "text": "Beschreiben von Quadern mithilfe geeigneter geometrischer Begriffe (Ecken, Kanten, Flächen, parallel, normal);",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.17",
+              "stufe": "K1",
+              "ordinal": 1,
+              "text": "Skizzieren von Schrägrissen von Quadern;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.18",
+              "stufe": "K1",
+              "ordinal": 2,
+              "text": "Erkennen, ob eine gegebene Figur Netz eines Quaders sein kann; Skizzieren und allenfalls Konstruieren von Netzen;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.19",
+              "stufe": "K1",
+              "ordinal": 3,
+              "text": "Kennen, Anwenden und Begründen einer Formel für den Oberflächeninhalt eines Quaders;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.20",
+              "stufe": "K1",
+              "ordinal": 4,
+              "text": "Ermitteln von Rauminhalten von Quadern durch Zerlegen in passende Einheitswürfel;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.21",
+              "stufe": "K1",
+              "ordinal": 5,
+              "text": "Kennen, Anwenden und Begründen einer Formel für das Volumen eines Quaders; allenfalls Lösen entsprechender Umkehraufgaben;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K1.22",
+              "stufe": "K1",
+              "ordinal": 6,
+              "text": "Erstellen einfacher Ansichten (von vorne, von der Seite, von oben) von Körpern, die aus Quadern bestehen.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K1.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.FIGUREN.K2.01",
+          "stufe": "K2",
+          "ordinal": 0,
+          "text": "mit kartesischen Koordinatensystemen arbeiten;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.FIGUREN.K1.01",
+            "AT.LP23.SEK1.M.FIGUREN.K1.02",
+            "AT.LP23.SEK1.M.FIGUREN.K1.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.FIGUREN.K3.01",
+            "AT.LP23.SEK1.M.FIGUREN.K3.02",
+            "AT.LP23.SEK1.M.FIGUREN.K3.03"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K2.01",
+              "stufe": "K2",
+              "ordinal": 0,
+              "text": "Wissen, dass die Koordinatenachsen Zahlengeraden sind, die aufeinander normal stehen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K2.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K2.02",
+              "stufe": "K2",
+              "ordinal": 1,
+              "text": "Ablesen der Koordinaten von Punkten sowie Einzeichnen von Punkten mit gegebenen Koordinaten in allen Quadranten; Einzeichnen von Figuren, die durch Punkte festgelegt sind;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K2.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K2.03",
+              "stufe": "K2",
+              "ordinal": 2,
+              "text": "grafisches und rechnerisches Verschieben von Figuren.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K2.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.FIGUREN.K2.02",
+          "stufe": "K2",
+          "ordinal": 1,
+          "text": "achsensymmetrische Figuren sowie zueinander kongruente Figuren erkennen, konstruieren und ihre Eigenschaften nutzen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.FIGUREN.K1.01",
+            "AT.LP23.SEK1.M.FIGUREN.K1.02",
+            "AT.LP23.SEK1.M.FIGUREN.K1.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.FIGUREN.K3.01",
+            "AT.LP23.SEK1.M.FIGUREN.K3.02",
+            "AT.LP23.SEK1.M.FIGUREN.K3.03"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K2.04",
+              "stufe": "K2",
+              "ordinal": 0,
+              "text": "Überprüfen, ob eine Figur achsensymmetrisch ist;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K2.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K2.05",
+              "stufe": "K2",
+              "ordinal": 1,
+              "text": "Überprüfen, ob zwei Figuren zueinander kongruent sind (durch Übereinanderlegen, durch Messen aller Längen und Winkel sowie allenfalls durch Anwenden geometrischer Sätze);",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K2.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K2.06",
+              "stufe": "K2",
+              "ordinal": 2,
+              "text": "Konstruieren zueinander kongruenter Figuren;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K2.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K2.07",
+              "stufe": "K2",
+              "ordinal": 3,
+              "text": "Kennen der Eigenschaften, Konstruieren und Anwenden von Strecken- und Winkelsymmetralen.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K2.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.FIGUREN.K2.03",
+          "stufe": "K2",
+          "ordinal": 2,
+          "text": "mit Dreiecken, besonderen Vierecken und ihren Flächeninhalten arbeiten.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.FIGUREN.K1.01",
+            "AT.LP23.SEK1.M.FIGUREN.K1.02",
+            "AT.LP23.SEK1.M.FIGUREN.K1.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.FIGUREN.K3.01",
+            "AT.LP23.SEK1.M.FIGUREN.K3.02",
+            "AT.LP23.SEK1.M.FIGUREN.K3.03"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K2.08",
+              "stufe": "K2",
+              "ordinal": 0,
+              "text": "Darstellen von Sachverhalten (zB Neigungen, Drehungen) durch Winkel; Erkennen und Anwenden von Größenbeziehungen zwischen Winkeln in geometrischen Figuren (zB Winkel, die einander auf 90° oder 180° ergänzen; Parallelwinkel);",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K2.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K2.09",
+              "stufe": "K2",
+              "ordinal": 1,
+              "text": "Begründen, dass die Winkelsumme im Dreieck 180° beträgt; Anwenden dieser Eigenschaft;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K2.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K2.10",
+              "stufe": "K2",
+              "ordinal": 2,
+              "text": "Kennen und Nutzen von Eigenschaften spitzwinkeliger, rechtwinkeliger, stumpfwinkeliger, gleichschenkeliger sowie gleichseitiger Dreiecke und besonderer Vierecke (Rechteck, Quadrat, Parallelogramm, Rhombus/Raute, Drachenviereck/Deltoid, Trapez);",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K2.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K2.11",
+              "stufe": "K2",
+              "ordinal": 3,
+              "text": "Konstruieren von Dreiecken und besonderen Vierecken;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K2.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K2.12",
+              "stufe": "K2",
+              "ordinal": 4,
+              "text": "Kennen, Anwenden und Begründen von Flächeninhaltsformeln für Dreiecke und besondere Vierecke;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K2.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K2.13",
+              "stufe": "K2",
+              "ordinal": 5,
+              "text": "allenfalls Kennen, Anwenden und Begründen des Satzes von Thales;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K2.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K2.14",
+              "stufe": "K2",
+              "ordinal": 6,
+              "text": "allenfalls Konstruieren besonderer Punkte im Dreieck;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K2.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K2.15",
+              "stufe": "K2",
+              "ordinal": 7,
+              "text": "allenfalls konstruktives Lösen von Vermessungsaufgaben mithilfe maßstäblicher Zeichnungen.",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K2.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.FIGUREN.K3.01",
+          "stufe": "K3",
+          "ordinal": 0,
+          "text": "mit Vielecken und ihren Flächeninhalten arbeiten;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.FIGUREN.K2.01",
+            "AT.LP23.SEK1.M.FIGUREN.K2.02",
+            "AT.LP23.SEK1.M.FIGUREN.K2.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.FIGUREN.K4.01",
+            "AT.LP23.SEK1.M.FIGUREN.K4.02",
+            "AT.LP23.SEK1.M.FIGUREN.K4.03"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K3.01",
+              "stufe": "K3",
+              "ordinal": 0,
+              "text": "Wiederholen und Festigen: Berechnen von Flächeninhalten von Dreiecken und besonderen Vierecken;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K3.01",
+              "wiederholung_von": [
+                "AT.LP23.SEK1.M.FIGUREN.K2.01",
+                "AT.LP23.SEK1.M.FIGUREN.K2.02",
+                "AT.LP23.SEK1.M.FIGUREN.K2.03"
+              ],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K3.02",
+              "stufe": "K3",
+              "ordinal": 1,
+              "text": "Konstruieren regelmäßiger Sechsecke und allenfalls weiterer regelmäßiger Vielecke;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K3.03",
+              "stufe": "K3",
+              "ordinal": 2,
+              "text": "allenfalls Berechnen von Flächeninhalten allgemeiner Vierecke im Koordinatensystem;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K3.04",
+              "stufe": "K3",
+              "ordinal": 3,
+              "text": "Lösen von Umkehraufgaben zu Flächeninhalten, insbesondere durch Umformen von Formeln;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.FIGUREN.K3.02",
+          "stufe": "K3",
+          "ordinal": 1,
+          "text": "Figuren zentrisch vergrößern bzw. verkleinern; ähnliche Figuren erkennen und nutzen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.FIGUREN.K2.01",
+            "AT.LP23.SEK1.M.FIGUREN.K2.02",
+            "AT.LP23.SEK1.M.FIGUREN.K2.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.FIGUREN.K4.01",
+            "AT.LP23.SEK1.M.FIGUREN.K4.02",
+            "AT.LP23.SEK1.M.FIGUREN.K4.03"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K3.05",
+              "stufe": "K3",
+              "ordinal": 0,
+              "text": "zentrisches Vergrößern bzw. Verkleinern von Figuren mit einem positiven Faktor ⟦ABB:hauptdokument.img45is.png⟧; Erkennen, dass einander entsprechende Winkel gleich groß sind, dass alle neuen Strecken ⟦ABB:hauptdokument.img46is.png⟧-mal so lang wie die ursprünglichen Strecken sind und dass der neue Flächeninhalt ⟦ABB:hauptdokument.img47is.png⟧-mal so groß wie der ursprüngliche Flächeninhalt ist;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K3.02",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img45is.png⟧",
+                  "datei": "hauptdokument.img45is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img45is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img45is.png",
+                  "breite_px": 8,
+                  "hoehe_px": 17,
+                  "sha256": "fc4cb7f44cf3753a9015398b9abd76832f901d3fa9351d06081e72d34f17502e"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img46is.png⟧",
+                  "datei": "hauptdokument.img46is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img46is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img46is.png",
+                  "breite_px": 8,
+                  "hoehe_px": 17,
+                  "sha256": "fc4cb7f44cf3753a9015398b9abd76832f901d3fa9351d06081e72d34f17502e"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img47is.png⟧",
+                  "datei": "hauptdokument.img47is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img47is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img47is.png",
+                  "breite_px": 14,
+                  "hoehe_px": 17,
+                  "sha256": "f8c86f513f1af4d7fbb03657c29cbdd4d94f565a97bbc0c0c5620854e76e697e"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K3.06",
+              "stufe": "K3",
+              "ordinal": 1,
+              "text": "Beschreiben von Eigenschaften ähnlicher Figuren; Kennen und Anwenden des Ähnlichkeitsfaktors; Anwenden und allenfalls Begründen, dass Dreiecke mit paarweise gleich großen Winkeln zueinander ähnlich sind;",
+              "text_roh": "Beschreiben von Eigenschaften ähnlicher Figuren10; Kennen und Anwenden des Ähnlichkeitsfaktors; Anwenden und allenfalls Begründen, dass Dreiecke mit paarweise gleich großen Winkeln zueinander ähnlich sind;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K3.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K3.07",
+              "stufe": "K3",
+              "ordinal": 2,
+              "text": "allenfalls Teilen von Strecken in einem gegebenen Verhältnis durch Konstruktion.",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K3.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.FIGUREN.K3.03",
+          "stufe": "K3",
+          "ordinal": 2,
+          "text": "räumliche Objekte beschreiben und darstellen; Oberflächen- und Rauminhalte gerader Prismen und Rauminhalte von Pyramiden ermitteln.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.FIGUREN.K2.01",
+            "AT.LP23.SEK1.M.FIGUREN.K2.02",
+            "AT.LP23.SEK1.M.FIGUREN.K2.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.FIGUREN.K4.01",
+            "AT.LP23.SEK1.M.FIGUREN.K4.02",
+            "AT.LP23.SEK1.M.FIGUREN.K4.03"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K3.08",
+              "stufe": "K3",
+              "ordinal": 0,
+              "text": "Kennen und Beschreiben grundlegender Eigenschaften von geraden Prismen und von Pyramiden;",
+              "text_roh": "Kennen und Beschreiben grundlegender Eigenschaften von geraden Prismen und von Pyramiden;10",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K3.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K3.09",
+              "stufe": "K3",
+              "ordinal": 1,
+              "text": "Skizzieren von Schrägrissen von geraden Prismen und von Pyramiden;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K3.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K3.10",
+              "stufe": "K3",
+              "ordinal": 2,
+              "text": "Berechnen von Oberflächeninhalten gerader Prismen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K3.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K3.11",
+              "stufe": "K3",
+              "ordinal": 3,
+              "text": "Kennen und Anwenden der Formeln für den Rauminhalt von geraden Prismen und von Pyramiden; allenfalls Begründen solcher Formeln;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K3.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K3.12",
+              "stufe": "K3",
+              "ordinal": 4,
+              "text": "Bearbeiten von Sachaufgaben zu diesen Körpern, insbesondere Berechnen von Massen und Dichten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K3.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K3.13",
+              "stufe": "K3",
+              "ordinal": 5,
+              "text": "allenfalls Untersuchen, wie sich Längenänderungen auf Oberflächen- und Rauminhalte auswirken.",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K3.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.FIGUREN.K4.01",
+          "stufe": "K4",
+          "ordinal": 0,
+          "text": "mit dem pythagoräischen Lehrsatz arbeiten;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.FIGUREN.K3.01",
+            "AT.LP23.SEK1.M.FIGUREN.K3.02",
+            "AT.LP23.SEK1.M.FIGUREN.K3.03"
+          ],
+          "folge": [],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K4.01",
+              "stufe": "K4",
+              "ordinal": 0,
+              "text": "Formulieren des pythagoräischen Lehrsatzes für vorgegebene rechtwinkelige Dreiecke in unterschiedlichen Lagen und unter Verwendung verschiedener Bezeichnungen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K4.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K4.02",
+              "stufe": "K4",
+              "ordinal": 1,
+              "text": "Anwenden der Umkehrung des pythagoräischen Lehrsatzes für die Überprüfung, ob ein Dreieck rechtwinkelig ist;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K4.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K4.03",
+              "stufe": "K4",
+              "ordinal": 2,
+              "text": "Nachvollziehen und Erläutern eines Beweises des pythagoräischen Lehrsatzes;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K4.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K4.04",
+              "stufe": "K4",
+              "ordinal": 3,
+              "text": "Anwenden des pythagoräischen Lehrsatzes für Berechnungen in ebenen Figuren; allenfalls Aufstellen von Formeln;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K4.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K4.05",
+              "stufe": "K4",
+              "ordinal": 4,
+              "text": "Anwenden des pythagoräischen Lehrsatzes für Berechnungen in Körpern (zB Längen von Raumdiagonalen, Oberflächeninhalte von Pyramiden); allenfalls Aufstellen von Formeln.",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K4.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.FIGUREN.K4.02",
+          "stufe": "K4",
+          "ordinal": 1,
+          "text": "Umfang und Flächeninhalt von Kreisen und Kreisteilen ermitteln;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.FIGUREN.K3.01",
+            "AT.LP23.SEK1.M.FIGUREN.K3.02",
+            "AT.LP23.SEK1.M.FIGUREN.K3.03"
+          ],
+          "folge": [],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K4.06",
+              "stufe": "K4",
+              "ordinal": 0,
+              "text": "Wissen, dass bei jedem Kreis das Verhältnis von Umfang zu Durchmesser die gleiche Zahl ⟦ABB:hauptdokument.img62is.png⟧ ergibt; experimentelles Ermitteln von Näherungswerten für ⟦ABB:hauptdokument.img63is.png⟧;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K4.02",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img62is.png⟧",
+                  "datei": "hauptdokument.img62is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img62is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img62is.png",
+                  "breite_px": 8,
+                  "hoehe_px": 17,
+                  "sha256": "bc92ac5ec84b23464c2a8cf46bc2efa99eda9426c910ba623dba30dabeccedd7"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img63is.png⟧",
+                  "datei": "hauptdokument.img63is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img63is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img63is.png",
+                  "breite_px": 8,
+                  "hoehe_px": 17,
+                  "sha256": "bc92ac5ec84b23464c2a8cf46bc2efa99eda9426c910ba623dba30dabeccedd7"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K4.07",
+              "stufe": "K4",
+              "ordinal": 1,
+              "text": "allenfalls näherungsweises Ermitteln des Flächeninhalts von Kreisen;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K4.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K4.08",
+              "stufe": "K4",
+              "ordinal": 2,
+              "text": "Kennen und Anwenden der Formeln für die Berechnung des Umfangs und des Flächeninhalts eines Kreises; Anwenden dieser Formeln auf den Halbkreis, Viertelkreis und Achtelkreis;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K4.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K4.09",
+              "stufe": "K4",
+              "ordinal": 3,
+              "text": "allenfalls Herleiten und Anwenden von Formeln für Umfang und Flächeninhalt von Kreissektoren;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K4.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K4.10",
+              "stufe": "K4",
+              "ordinal": 4,
+              "text": "Lösen von Umkehraufgaben, insbesondere durch Umformen von Formeln.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K4.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.FIGUREN.K4.03",
+          "stufe": "K4",
+          "ordinal": 2,
+          "text": "Drehzylinder und Drehkegel beschreiben; Oberflächen- und Rauminhalte ermitteln.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.FIGUREN.K3.01",
+            "AT.LP23.SEK1.M.FIGUREN.K3.02",
+            "AT.LP23.SEK1.M.FIGUREN.K3.03"
+          ],
+          "folge": [],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K4.11",
+              "stufe": "K4",
+              "ordinal": 0,
+              "text": "Wiederholen und Festigen: Eigenschaften von Prismen und Pyramiden, Berechnen von Oberflächen- und Rauminhalten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K4.03",
+              "wiederholung_von": [
+                "AT.LP23.SEK1.M.FIGUREN.K3.01",
+                "AT.LP23.SEK1.M.FIGUREN.K3.02",
+                "AT.LP23.SEK1.M.FIGUREN.K3.03"
+              ],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K4.12",
+              "stufe": "K4",
+              "ordinal": 1,
+              "text": "Beschreiben grundlegender Eigenschaften von Drehzylindern und Drehkegeln;",
+              "text_roh": "Beschreiben grundlegender Eigenschaften von Drehzylindern und Drehkegeln;10",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K4.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K4.13",
+              "stufe": "K4",
+              "ordinal": 2,
+              "text": "Kennen und Anwenden von Formeln für die Berechnung von Oberflächen- und Rauminhalten von Drehzylindern und Drehkegeln; allenfalls Begründen solcher Formeln;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K4.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K4.14",
+              "stufe": "K4",
+              "ordinal": 3,
+              "text": "Lösen einfacher Umkehraufgaben, insbesondere durch Umformen von Formeln;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K4.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.FIGUREN.K4.15",
+              "stufe": "K4",
+              "ordinal": 4,
+              "text": "Lösen von Aufgaben in Sachsituationen, insbesondere Berechnen von Massen und Dichten.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K4.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

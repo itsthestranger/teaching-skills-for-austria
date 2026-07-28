@@ -1,0 +1,498 @@
+{
+  "meta": {
+    "lehrplan_fassung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+    "dataset_version": "2026-07-27",
+    "band": "SEK1",
+    "fach": {
+      "code": "M",
+      "name": "Mathematik"
+    },
+    "uebergreifende_themen_fach": [
+      "Entrepreneurship Education",
+      "Informatische Bildung",
+      "Interkulturelle Bildung",
+      "Medienbildung",
+      "Politische Bildung",
+      "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "Sprachliche Bildung und Lesen",
+      "Umweltbildung für nachhaltige Entwicklung",
+      "Verkehrs- und Mobilitätsbildung",
+      "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    ],
+    "uebergreifende_themen_legende": {
+      "1": "Bildungs-, Berufs- und Lebensorientierung",
+      "2": "Entrepreneurship Education",
+      "3": "Gesundheitsförderung",
+      "4": "Informatische Bildung",
+      "5": "Interkulturelle Bildung",
+      "6": "Medienbildung",
+      "7": "Politische Bildung",
+      "8": "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "9": "Sexualpädagogik",
+      "10": "Sprachliche Bildung und Lesen",
+      "11": "Umweltbildung für nachhaltige Entwicklung",
+      "12": "Verkehrs- und Mobilitätsbildung",
+      "13": "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    },
+    "differenzierungs_achse": {
+      "typ": "standard_standardplus",
+      "niveaus": [
+        "Standard",
+        "Standard AHS"
+      ],
+      "enrichment_quelle": "allenfalls",
+      "spiralprinzip_backlinks": true
+    },
+    "anwendungsbereiche_status": "item_flags",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Lehrpläne der Mittelschulen",
+      "nor": "NOR40271471",
+      "kundmachung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+      "anlage": "Anl. 1",
+      "teil": "ACHTER TEIL",
+      "stand": "2026-07-27"
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "nummer": 4,
+      "slug": "DATEN",
+      "name": "Daten und Zufall",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.SEK1.M.DATEN.K1.01",
+          "stufe": "K1",
+          "ordinal": 0,
+          "text": "Daten erheben, ordnen, darstellen und aus unterschiedlichen Darstellungsformen ablesen;",
+          "text_roh": "Daten erheben, ordnen, darstellen und aus unterschiedlichen Darstellungsformen ablesen;4",
+          "uebergreifende_themen": [
+            "Informatische Bildung"
+          ],
+          "themen_marker_roh": [
+            "4"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.M.DATEN.K2.01"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K1.01",
+              "stufe": "K1",
+              "ordinal": 0,
+              "text": "Sammeln von Daten, Auswählen und Ordnen dieser Daten nach verschiedenen Gesichtspunkten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K1.02",
+              "stufe": "K1",
+              "ordinal": 1,
+              "text": "Ermitteln absoluter Häufigkeiten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K1.03",
+              "stufe": "K1",
+              "ordinal": 2,
+              "text": "Darstellen von Daten in Tabellen und durch Säulen- oder Balkendiagramme;",
+              "text_roh": "Darstellen von Daten4, 6 in Tabellen und durch Säulen- oder Balkendiagramme;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K1.04",
+              "stufe": "K1",
+              "ordinal": 3,
+              "text": "Ablesen und Interpretieren von Daten aus Tabellen und grafischen Darstellungen (zB Säulen- und Balkendiagramme, Piktogramme);",
+              "text_roh": "Ablesen und Interpretieren von Daten13 aus Tabellen und grafischen Darstellungen (zB Säulen- und Balkendiagramme, Piktogramme);",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K1.05",
+              "stufe": "K1",
+              "ordinal": 4,
+              "text": "Lösen einfacher Abzählaufgaben, auch mithilfe von Baumdiagrammen (zB Anzahl der verschiedenen Menüs, wenn 3 Vorspeisen und 2 Hauptspeisen zur Wahl stehen).",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.DATEN.K1.02",
+          "stufe": "K1",
+          "ordinal": 1,
+          "text": "einfache statistische Kennzahlen ermitteln und interpretieren.",
+          "text_roh": "einfache statistische Kennzahlen ermitteln und interpretieren.6, 7",
+          "uebergreifende_themen": [
+            "Medienbildung",
+            "Politische Bildung"
+          ],
+          "themen_marker_roh": [
+            "6, 7"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.M.DATEN.K2.01"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K1.06",
+              "stufe": "K1",
+              "ordinal": 0,
+              "text": "Ordnen von Datenlisten; Ermitteln und Interpretieren von Minimum, Maximum sowie Spannweite von Datenlisten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K1.07",
+              "stufe": "K1",
+              "ordinal": 1,
+              "text": "Ermitteln und Interpretieren des arithmetischen Mittelwerts (Durchschnittswerts) und des Medians für kleine Datensätze.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.DATEN.K2.01",
+          "stufe": "K2",
+          "ordinal": 0,
+          "text": "relative Häufigkeiten ermitteln, grafisch darstellen und grafische Darstellungen interpretieren.",
+          "text_roh": "relative Häufigkeiten ermitteln, grafisch darstellen und grafische Darstellungen interpretieren.4, 6, 10",
+          "uebergreifende_themen": [
+            "Informatische Bildung",
+            "Medienbildung",
+            "Sprachliche Bildung und Lesen"
+          ],
+          "themen_marker_roh": [
+            "4, 6, 10"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.DATEN.K1.01",
+            "AT.LP23.SEK1.M.DATEN.K1.02"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.DATEN.K3.01",
+            "AT.LP23.SEK1.M.DATEN.K3.02"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K2.01",
+              "stufe": "K2",
+              "ordinal": 0,
+              "text": "Wiederholen und Festigen: Arbeiten mit verschiedenen Darstellungsformen, dem arithmetischen Mittelwert und dem Median von Daten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K2.01",
+              "wiederholung_von": [
+                "AT.LP23.SEK1.M.DATEN.K1.01",
+                "AT.LP23.SEK1.M.DATEN.K1.02"
+              ],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K2.02",
+              "stufe": "K2",
+              "ordinal": 1,
+              "text": "Berechnen relativer Häufigkeiten; Anwenden des Zusammenhangs zwischen absoluten und relativen Häufigkeiten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K2.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K2.03",
+              "stufe": "K2",
+              "ordinal": 2,
+              "text": "Angeben relativer Häufigkeiten in Bruch-, Dezimal- und Prozentdarstellung, in Tabellen und Diagrammen (Säulen- oder Balkendiagramm, Kreisdiagramm, Prozentstreifen);",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K2.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K2.04",
+              "stufe": "K2",
+              "ordinal": 3,
+              "text": "Ablesen und Interpretieren relativer Häufigkeiten aus Tabellen und grafischen Darstellungen;",
+              "text_roh": "Ablesen und Interpretieren relativer Häufigkeiten aus Tabellen und grafischen Darstellungen;10",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K2.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K2.05",
+              "stufe": "K2",
+              "ordinal": 4,
+              "text": "Arbeiten mit relativen Anteilen und relativen Häufigkeiten in zweistufigen, allenfalls dreistufigen Situationen, insbesondere mithilfe von Baumdiagrammen.",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K2.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.DATEN.K3.01",
+          "stufe": "K3",
+          "ordinal": 0,
+          "text": "statistische Darstellungen erstellen und nutzen; Manipulationen in statistischen Darstellungen erkennen;",
+          "text_roh": "statistische Darstellungen erstellen und nutzen4, 12; Manipulationen in statistischen Darstellungen erkennen;6, 7",
+          "uebergreifende_themen": [
+            "Informatische Bildung",
+            "Verkehrs- und Mobilitätsbildung",
+            "Medienbildung",
+            "Politische Bildung"
+          ],
+          "themen_marker_roh": [
+            "4, 12",
+            "6, 7"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.DATEN.K2.01"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.DATEN.K4.01",
+            "AT.LP23.SEK1.M.DATEN.K4.02"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K3.01",
+              "stufe": "K3",
+              "ordinal": 0,
+              "text": "Wiederholen und Festigen: Ermitteln und Interpretieren einfacher statistischer Kennzahlen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K3.01",
+              "wiederholung_von": [
+                "AT.LP23.SEK1.M.DATEN.K2.01"
+              ],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K3.02",
+              "stufe": "K3",
+              "ordinal": 1,
+              "text": "grafisches Darstellen von Häufigkeitsverteilungen (zB Säulen- oder Balkendiagramm, Liniendiagramm, Kreisdiagramm, Prozentstreifen);",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K3.03",
+              "stufe": "K3",
+              "ordinal": 2,
+              "text": "Interpretieren verschiedener grafischer Darstellungen von Häufigkeitsverteilungen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K3.04",
+              "stufe": "K3",
+              "ordinal": 3,
+              "text": "Verwenden geeigneter Darstellungsformen zur Hervorhebung ausgewählter Aspekte; Aufzeigen von Manipulationsmöglichkeiten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.DATEN.K3.02",
+          "stufe": "K3",
+          "ordinal": 1,
+          "text": "aufbauend auf einem intuitiven Wahrscheinlichkeitsbegriff Wahrscheinlichkeiten in einfachen Zufallsexperimenten ermitteln, vergleichen und interpretieren.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.DATEN.K2.01"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.DATEN.K4.01",
+            "AT.LP23.SEK1.M.DATEN.K4.02"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K3.05",
+              "stufe": "K3",
+              "ordinal": 0,
+              "text": "Verwenden eines intuitiven Wahrscheinlichkeitsbegriffs zur Quantifizierung von Sicherheit;",
+              "text_roh": "Verwenden eines intuitiven Wahrscheinlichkeitsbegriffs zur Quantifizierung von Sicherheit;7, 13",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K3.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K3.06",
+              "stufe": "K3",
+              "ordinal": 1,
+              "text": "Schätzen von Wahrscheinlichkeiten mithilfe empirisch gewonnener relativer Häufigkeiten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K3.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K3.07",
+              "stufe": "K3",
+              "ordinal": 2,
+              "text": "Ermitteln von Laplace-Wahrscheinlichkeiten bei einstufigen Zufallsexperimenten (zB Münzwurf, Würfeln); Interpretieren solcher Wahrscheinlichkeiten als Vorhersagewertfür relative Häufigkeiten.",
+              "text_roh": "Ermitteln von Laplace-Wahrscheinlichkeiten bei einstufigen Zufallsexperimenten (zB Münzwurf, Würfeln); Interpretieren solcher Wahrscheinlichkeiten als Vorhersagewert7, 13 für relative Häufigkeiten.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K3.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.DATEN.K4.01",
+          "stufe": "K4",
+          "ordinal": 0,
+          "text": "Kreuztabellen erstellen und interpretieren;",
+          "text_roh": "Kreuztabellen erstellen und interpretieren;10",
+          "uebergreifende_themen": [
+            "Sprachliche Bildung und Lesen"
+          ],
+          "themen_marker_roh": [
+            "10"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.DATEN.K3.01",
+            "AT.LP23.SEK1.M.DATEN.K3.02"
+          ],
+          "folge": [],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K4.01",
+              "stufe": "K4",
+              "ordinal": 0,
+              "text": "Wiederholen und Festigen: Darstellen von Häufigkeitsverteilungen in Tabellen und Diagrammen, Ermitteln und Interpretieren des arithmetischen Mittelwerts und des Medians einer Datenmenge;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K4.01",
+              "wiederholung_von": [
+                "AT.LP23.SEK1.M.DATEN.K3.01",
+                "AT.LP23.SEK1.M.DATEN.K3.02"
+              ],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K4.02",
+              "stufe": "K4",
+              "ordinal": 1,
+              "text": "Darstellen, Ergänzen und Interpretieren von absoluten und relativen Häufigkeiten in Kreuztabellen, insbesondere in Vierfeldertafeln.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K4.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.DATEN.K4.02",
+          "stufe": "K4",
+          "ordinal": 1,
+          "text": "Wahrscheinlichkeiten bei ein- und zweistufigen Zufallsexperimenten ermitteln und interpretieren.",
+          "text_roh": "Wahrscheinlichkeiten bei ein- und zweistufigen Zufallsexperimenten ermitteln und interpretieren.4, 10",
+          "uebergreifende_themen": [
+            "Informatische Bildung",
+            "Sprachliche Bildung und Lesen"
+          ],
+          "themen_marker_roh": [
+            "4, 10"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.DATEN.K3.01",
+            "AT.LP23.SEK1.M.DATEN.K3.02"
+          ],
+          "folge": [],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K4.03",
+              "stufe": "K4",
+              "ordinal": 0,
+              "text": "Wiederholen und Festigen: Erstellen und Interpretieren von Baumdiagrammen; Ermitteln und Interpretieren von Laplace-Wahrscheinlichkeiten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K4.02",
+              "wiederholung_von": [
+                "AT.LP23.SEK1.M.DATEN.K3.01",
+                "AT.LP23.SEK1.M.DATEN.K3.02"
+              ],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.DATEN.K4.04",
+              "stufe": "K4",
+              "ordinal": 1,
+              "text": "Ermitteln von Wahrscheinlichkeiten bei ein- und zweistufigen Zufallsexperimenten (auch mithilfe von Baumdiagrammen); Interpretieren solcher Wahrscheinlichkeiten.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K4.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

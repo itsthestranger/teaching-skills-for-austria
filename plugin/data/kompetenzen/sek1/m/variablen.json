@@ -1,0 +1,1208 @@
+{
+  "meta": {
+    "lehrplan_fassung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+    "dataset_version": "2026-07-27",
+    "band": "SEK1",
+    "fach": {
+      "code": "M",
+      "name": "Mathematik"
+    },
+    "uebergreifende_themen_fach": [
+      "Entrepreneurship Education",
+      "Informatische Bildung",
+      "Interkulturelle Bildung",
+      "Medienbildung",
+      "Politische Bildung",
+      "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "Sprachliche Bildung und Lesen",
+      "Umweltbildung für nachhaltige Entwicklung",
+      "Verkehrs- und Mobilitätsbildung",
+      "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    ],
+    "uebergreifende_themen_legende": {
+      "1": "Bildungs-, Berufs- und Lebensorientierung",
+      "2": "Entrepreneurship Education",
+      "3": "Gesundheitsförderung",
+      "4": "Informatische Bildung",
+      "5": "Interkulturelle Bildung",
+      "6": "Medienbildung",
+      "7": "Politische Bildung",
+      "8": "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "9": "Sexualpädagogik",
+      "10": "Sprachliche Bildung und Lesen",
+      "11": "Umweltbildung für nachhaltige Entwicklung",
+      "12": "Verkehrs- und Mobilitätsbildung",
+      "13": "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    },
+    "differenzierungs_achse": {
+      "typ": "standard_standardplus",
+      "niveaus": [
+        "Standard",
+        "Standard AHS"
+      ],
+      "enrichment_quelle": "allenfalls",
+      "spiralprinzip_backlinks": true
+    },
+    "anwendungsbereiche_status": "item_flags",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Lehrpläne der Mittelschulen",
+      "nor": "NOR40271471",
+      "kundmachung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+      "anlage": "Anl. 1",
+      "teil": "ACHTER TEIL",
+      "stand": "2026-07-27"
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "nummer": 2,
+      "slug": "VARIABLEN",
+      "name": "Variablen und Funktionen",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.SEK1.M.VARIABLEN.K1.01",
+          "stufe": "K1",
+          "ordinal": 0,
+          "text": "einfache Terme, Gleichungen und Formeln aufstellen und interpretieren;",
+          "text_roh": "einfache Terme, Gleichungen und Formeln aufstellen und interpretieren;10",
+          "uebergreifende_themen": [
+            "Sprachliche Bildung und Lesen"
+          ],
+          "themen_marker_roh": [
+            "10"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.M.VARIABLEN.K2.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K2.02"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K1.01",
+              "stufe": "K1",
+              "ordinal": 0,
+              "text": "Aufstellen einfacher Terme bzw. Gleichungen zu vorgegebenen Texten; Formulieren von Textenzu vorgegebenen einfachen Termen bzw. Gleichungen;",
+              "text_roh": "Aufstellen einfacher Terme bzw. Gleichungen zu vorgegebenen Texten; Formulieren von Texten10 zu vorgegebenen einfachen Termen bzw. Gleichungen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K1.02",
+              "stufe": "K1",
+              "ordinal": 1,
+              "text": "Aufstellen einfacher Formeln in der Geometrie und in verschiedenen Sachsituationen(zB Zusammenhang Preis – Warenmenge).",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.VARIABLEN.K1.02",
+          "stufe": "K1",
+          "ordinal": 1,
+          "text": "Lösungen einfacher Gleichungen finden.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.M.VARIABLEN.K2.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K2.02"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K1.03",
+              "stufe": "K1",
+              "ordinal": 0,
+              "text": "Lösen einfacher Gleichungen durch systematisches Probieren und durch Veranschaulichen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K1.04",
+              "stufe": "K1",
+              "ordinal": 1,
+              "text": "Berechnen einer Größe aus einer einfachen Formel, wenn alle anderen Größen gegeben sind.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.VARIABLEN.K2.01",
+          "stufe": "K2",
+          "ordinal": 0,
+          "text": "Terme, Gleichungen und Formeln auch mit Brüchen und im Zusammenhang mit Proportionalitäten und Prozenten aufstellen und interpretieren;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.VARIABLEN.K1.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K1.02"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.VARIABLEN.K3.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K3.02",
+            "AT.LP23.SEK1.M.VARIABLEN.K3.03",
+            "AT.LP23.SEK1.M.VARIABLEN.K3.04"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K2.01",
+              "stufe": "K2",
+              "ordinal": 0,
+              "text": "Wiederholen und Festigen: Aufstellen und Deuten von einfachen Termen, Gleichungen und Formeln in der Geometrie und in verschiedenen Sachsituationen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K2.01",
+              "wiederholung_von": [
+                "AT.LP23.SEK1.M.VARIABLEN.K1.01",
+                "AT.LP23.SEK1.M.VARIABLEN.K1.02"
+              ],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K2.02",
+              "stufe": "K2",
+              "ordinal": 1,
+              "text": "Aufstellen von Gleichungen zu vorgegebenen Texten; Formulieren von Texten zu vorgegebenen Gleichungen;",
+              "text_roh": "Aufstellen von Gleichungen zu vorgegebenen Texten; Formulieren von Texten10 zu vorgegebenen Gleichungen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K2.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K2.03",
+              "stufe": "K2",
+              "ordinal": 2,
+              "text": "Aufstellen von Formeln im Zusammenhang mit Proportionalitäten und Prozenten.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K2.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.VARIABLEN.K2.02",
+          "stufe": "K2",
+          "ordinal": 1,
+          "text": "lineare Gleichungen durch Umkehren von Rechenoperationen lösen und Formeln umformen.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.VARIABLEN.K1.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K1.02"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.VARIABLEN.K3.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K3.02",
+            "AT.LP23.SEK1.M.VARIABLEN.K3.03",
+            "AT.LP23.SEK1.M.VARIABLEN.K3.04"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K2.04",
+              "stufe": "K2",
+              "ordinal": 0,
+              "text": "Wiederholen und Festigen: Lösen einfacher Gleichungen durch systematisches Probieren und mithilfe von Veranschaulichungen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K2.02",
+              "wiederholung_von": [
+                "AT.LP23.SEK1.M.VARIABLEN.K1.01",
+                "AT.LP23.SEK1.M.VARIABLEN.K1.02"
+              ],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K2.05",
+              "stufe": "K2",
+              "ordinal": 1,
+              "text": "Lösen linearer Gleichungen durch Umkehren von Rechenoperationen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K2.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K2.06",
+              "stufe": "K2",
+              "ordinal": 2,
+              "text": "Umformen von Formeln im Zusammenhang mit Prozenten und Proportionalitäten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K2.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K2.07",
+              "stufe": "K2",
+              "ordinal": 3,
+              "text": "Anwenden linearer Gleichungen in Sachsituationen; kritisches Betrachten der Angemessenheit der mathematischen Beschreibung, der Ergebnisse und ihrer Genauigkeit.",
+              "text_roh": "Anwenden linearer Gleichungen in Sachsituationen; kritisches Betrachten6, 7 der Angemessenheit der mathematischen Beschreibung, der Ergebnisse und ihrer Genauigkeit.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K2.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.VARIABLEN.K3.01",
+          "stufe": "K3",
+          "ordinal": 0,
+          "text": "Terme, Gleichungen und Formeln auch im Zusammenhang mit Verhältnissen bzw. Proportionen aufstellen und interpretieren;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.VARIABLEN.K2.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K2.02"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.VARIABLEN.K4.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K4.02",
+            "AT.LP23.SEK1.M.VARIABLEN.K4.03",
+            "AT.LP23.SEK1.M.VARIABLEN.K4.04"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.01",
+              "stufe": "K3",
+              "ordinal": 0,
+              "text": "Wiederholen und Festigen: Lösen von Aufgaben mit direkten und indirekten Proportionalitäten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.01",
+              "wiederholung_von": [
+                "AT.LP23.SEK1.M.VARIABLEN.K2.01",
+                "AT.LP23.SEK1.M.VARIABLEN.K2.02"
+              ],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.02",
+              "stufe": "K3",
+              "ordinal": 1,
+              "text": "Aufstellen von Termen, Gleichungen und Formeln in unterschiedlichen Kontexten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.03",
+              "stufe": "K3",
+              "ordinal": 2,
+              "text": "kontextbezogenes Deuten von Termen und Formeln (zB ⟦ABB:hauptdokument.img22is.png⟧ deuten als Weg = Geschwindigkeit ⟦ABB:hauptdokument.img23is.png⟧ Zeit, oder als Flächeninhalt eines Rechtecks = Länge ⟦ABB:hauptdokument.img24is.png⟧ Breite);",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img22is.png⟧",
+                  "datei": "hauptdokument.img22is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img22is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img22is.png",
+                  "breite_px": 53,
+                  "hoehe_px": 17,
+                  "sha256": "48c47d6524a7b8c1cc850433f70b54d313964e49507d3aa53205dbdea5bc0407"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img23is.png⟧",
+                  "datei": "hauptdokument.img23is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img23is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img23is.png",
+                  "breite_px": 4,
+                  "hoehe_px": 17,
+                  "sha256": "9a29c0650ad5524931f7bf500e85af735ec73dcc8ad2ea9fee25e1b0d3469a09"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img24is.png⟧",
+                  "datei": "hauptdokument.img24is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img24is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img24is.png",
+                  "breite_px": 4,
+                  "hoehe_px": 17,
+                  "sha256": "9a29c0650ad5524931f7bf500e85af735ec73dcc8ad2ea9fee25e1b0d3469a09"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.04",
+              "stufe": "K3",
+              "ordinal": 3,
+              "text": "Beschreiben, wie sich die Änderung von Größen auf eine andere Größe in einer Formel auswirkt (zB Wie ändert sich A in ⟦ABB:hauptdokument.img25is.png⟧, wenn c verdoppelt und h verdreifacht wird? Wie ändert sich ⟦ABB:hauptdokument.img26is.png⟧ in s = v ⋅ t, wenn ⟦ABB:hauptdokument.img27is.png⟧ verdreifacht wird und ⟦ABB:hauptdokument.img28is.png⟧ konstant bleibt?);",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img25is.png⟧",
+                  "datei": "hauptdokument.img25is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img25is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img25is.png",
+                  "breite_px": 36,
+                  "hoehe_px": 17,
+                  "sha256": "9e8062b109915a2dcde829ce2a7f862503f58f46775d3e650dc9f34be208d632"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img26is.png⟧",
+                  "datei": "hauptdokument.img26is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img26is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img26is.png",
+                  "breite_px": 6,
+                  "hoehe_px": 17,
+                  "sha256": "776405c8f7d5a8d2cbc50fbf67db902dd8110116e2320994ea944e70c0d99db9"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img27is.png⟧",
+                  "datei": "hauptdokument.img27is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img27is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img27is.png",
+                  "breite_px": 8,
+                  "hoehe_px": 17,
+                  "sha256": "0505e1e2bb384eec3059aae190fffbcbaad9e114e4093dcf3c924daeca28f2f5"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img28is.png⟧",
+                  "datei": "hauptdokument.img28is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img28is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img28is.png",
+                  "breite_px": 6,
+                  "hoehe_px": 17,
+                  "sha256": "da0c912e98d08b9d28c57134582cd1f21934df2b4e1176f85104dc5cc50c883d"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.05",
+              "stufe": "K3",
+              "ordinal": 4,
+              "text": "Erkennen und Beschreiben von Termstrukturen, insbesondere im Hinblick auf die Anwendbarkeit von Rechenregeln;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.06",
+              "stufe": "K3",
+              "ordinal": 5,
+              "text": "Darstellen direkter und indirekter Proportionalitäten mithilfe von Tabellen und Diagrammen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.07",
+              "stufe": "K3",
+              "ordinal": 6,
+              "text": "Beschreiben von Proportionalitäten mit Gleichungen und mithilfe von Verhältnissen (zB Beschreiben des direkt proportionalen Zusammenhangs zwischen einem Preis ⟦ABB:hauptdokument.img29is.png⟧ und einer Warenmenge ⟦ABB:hauptdokument.img30is.png⟧ durch ⟦ABB:hauptdokument.img31is.png⟧ bzw. ⟦ABB:hauptdokument.img32is.png⟧ bzw. ⟦ABB:hauptdokument.img33is.png⟧);",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img29is.png⟧",
+                  "datei": "hauptdokument.img29is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img29is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img29is.png",
+                  "breite_px": 8,
+                  "hoehe_px": 17,
+                  "sha256": "db629fc86a2c42088bea0158ee9e7d92073393c907e7bc6c81d1a8cb3861c8c6"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img30is.png⟧",
+                  "datei": "hauptdokument.img30is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img30is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img30is.png",
+                  "breite_px": 8,
+                  "hoehe_px": 17,
+                  "sha256": "2855b26c871d5456706fdc487abcd9f9ed6b1cf9ec82eaba3fef1663d6e38073"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img31is.png⟧",
+                  "datei": "hauptdokument.img31is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img31is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img31is.png",
+                  "breite_px": 59,
+                  "hoehe_px": 17,
+                  "sha256": "0aa0451cf5cb2c0cbc5b1758a30c6780ecaaf7a7ec87a8607bff9f944075cff3"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img32is.png⟧",
+                  "datei": "hauptdokument.img32is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img32is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img32is.png",
+                  "breite_px": 29,
+                  "hoehe_px": 17,
+                  "sha256": "c03f87f9d1ba6bcaaf7c47d4bed76ac29765532a86ad1080f3a47ba38933bcd3"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img33is.png⟧",
+                  "datei": "hauptdokument.img33is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img33is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img33is.png",
+                  "breite_px": 65,
+                  "hoehe_px": 17,
+                  "sha256": "3d5313bda243627b331f953c1e3393d3a8c068165e0b00757471dd3fad24c1e2"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.08",
+              "stufe": "K3",
+              "ordinal": 7,
+              "text": "Umformen von Proportionen, insbesondere durch Anwenden von ⟦ABB:hauptdokument.img34is.png⟧ (für ⟦ABB:hauptdokument.img35is.png⟧).",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img34is.png⟧",
+                  "datei": "hauptdokument.img34is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img34is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img34is.png",
+                  "breite_px": 227,
+                  "hoehe_px": 17,
+                  "sha256": "fec96a2eac4649dfdfeceee4bff37dc84017e4d98bb0374db4c28ddbff71d046"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img35is.png⟧",
+                  "datei": "hauptdokument.img35is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img35is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img35is.png",
+                  "breite_px": 45,
+                  "hoehe_px": 17,
+                  "sha256": "f871d7f446455818bbcf7380d25cd611725227a610fd564b260e47a35e3d6e83"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.VARIABLEN.K3.02",
+          "stufe": "K3",
+          "ordinal": 1,
+          "text": "Terme umformen, auch unter Anwendung der Potenzdarstellung mit positiven ganzzahligen Exponenten;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.VARIABLEN.K2.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K2.02"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.VARIABLEN.K4.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K4.02",
+            "AT.LP23.SEK1.M.VARIABLEN.K4.03",
+            "AT.LP23.SEK1.M.VARIABLEN.K4.04"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.09",
+              "stufe": "K3",
+              "ordinal": 0,
+              "text": "Kennen und Anwenden der Potenzdarstellung mit positiven ganzzahligen Exponenten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.10",
+              "stufe": "K3",
+              "ordinal": 1,
+              "text": "Kennen und Anwenden der elementaren Rechenregeln für Potenzen; allenfalls Begründen dieser Regeln;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.11",
+              "stufe": "K3",
+              "ordinal": 2,
+              "text": "Umformen von Termen zB durch Ausmultiplizieren, Zusammenfassen, Herausheben, Kürzen (zB ⟦ABB:hauptdokument.img36is.png⟧; ⟦ABB:hauptdokument.img37is.png⟧; ⟦ABB:hauptdokument.img38is.png⟧ ⟦ABB:hauptdokument.img39is.png⟧; ⟦ABB:hauptdokument.img40is.png⟧);",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.02",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img36is.png⟧",
+                  "datei": "hauptdokument.img36is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img36is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img36is.png",
+                  "breite_px": 140,
+                  "hoehe_px": 17,
+                  "sha256": "106d8d2a7f4cc6004bf11ea631669c6f722e29122c6b7209051ae57993879367"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img37is.png⟧",
+                  "datei": "hauptdokument.img37is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img37is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img37is.png",
+                  "breite_px": 41,
+                  "hoehe_px": 17,
+                  "sha256": "abb60175d8d92ac0c978d36b83f440621db19ac888d0fe7f6f0201edc01e1e12"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img38is.png⟧",
+                  "datei": "hauptdokument.img38is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img38is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img38is.png",
+                  "breite_px": 140,
+                  "hoehe_px": 17,
+                  "sha256": "7db5e9cb23024c211e295b9f77c98935b649d46d2caecf0b2fcab1852f24f5ab"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img39is.png⟧",
+                  "datei": "hauptdokument.img39is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img39is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img39is.png",
+                  "breite_px": 43,
+                  "hoehe_px": 17,
+                  "sha256": "4b4d99f02e5b4fc0a7469a2db3bb9a70bad937bc90f8f26adb8a44a286bab2fb"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img40is.png⟧",
+                  "datei": "hauptdokument.img40is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img40is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img40is.png",
+                  "breite_px": 40,
+                  "hoehe_px": 17,
+                  "sha256": "41a65683c9381913d898070fab69a9a878ee56c84a3103d1b155a22e6c76154c"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.12",
+              "stufe": "K3",
+              "ordinal": 3,
+              "text": "Herleiten, grafisches Veranschaulichen und Anwenden der drei binomischen Formeln; allenfalls Herleiten weiterer Rechenregeln (zB ⟦ABB:hauptdokument.img41is.png⟧…).",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.02",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img41is.png⟧",
+                  "datei": "hauptdokument.img41is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img41is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img41is.png",
+                  "breite_px": 65,
+                  "hoehe_px": 17,
+                  "sha256": "e59ba2390dc9c625b00d57dd88009527ef6c30a8c05811bf40d6cdd189dd8f7d"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.VARIABLEN.K3.03",
+          "stufe": "K3",
+          "ordinal": 2,
+          "text": "Gleichungen und Formeln umformen; Gleichungen durch Äquivalenzumformungen lösen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.VARIABLEN.K2.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K2.02"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.VARIABLEN.K4.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K4.02",
+            "AT.LP23.SEK1.M.VARIABLEN.K4.03",
+            "AT.LP23.SEK1.M.VARIABLEN.K4.04"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.13",
+              "stufe": "K3",
+              "ordinal": 0,
+              "text": "Wiederholen und Festigen: Lösen von Gleichungen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.03",
+              "wiederholung_von": [
+                "AT.LP23.SEK1.M.VARIABLEN.K2.01",
+                "AT.LP23.SEK1.M.VARIABLEN.K2.02"
+              ],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.14",
+              "stufe": "K3",
+              "ordinal": 1,
+              "text": "Lösen von linearen Gleichungen durch Äquivalenzumformungen; allenfalls Begründen einzelner Umformungsschritte;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.15",
+              "stufe": "K3",
+              "ordinal": 2,
+              "text": "Lösen von Gleichungen, die sich durch einfache Umformungen auf lineare Gleichungen zurückführen lassen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.16",
+              "stufe": "K3",
+              "ordinal": 3,
+              "text": "Anwenden von Gleichungen in Sachsituationen; kritisches Betrachten der Angemessenheit der mathematischen Beschreibung, der Ergebnisse und ihrer Genauigkeit;",
+              "text_roh": "Anwenden von Gleichungen in Sachsituationen; kritisches Betrachten7 der Angemessenheit der mathematischen Beschreibung, der Ergebnisse und ihrer Genauigkeit;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.17",
+              "stufe": "K3",
+              "ordinal": 4,
+              "text": "Umformen einfacher Formeln (zB ⟦ABB:hauptdokument.img42is.png⟧), insbesondere auch bei Flächeninhaltsformeln von Dreiecken und besonderen Vierecken.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.03",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img42is.png⟧",
+                  "datei": "hauptdokument.img42is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img42is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img42is.png",
+                  "breite_px": 138,
+                  "hoehe_px": 17,
+                  "sha256": "218884f7711c268362b95afd42ebe2f080b0b5fcd87681fad48daa496b866f11"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.VARIABLEN.K3.04",
+          "stufe": "K3",
+          "ordinal": 3,
+          "text": "Wachstums- und Abnahmeprozesse modellieren und mit den zugehörigen Modellen arbeiten.",
+          "text_roh": "Wachstums- und Abnahmeprozesse modellieren4, 11 und mit den zugehörigen Modellen arbeiten.",
+          "uebergreifende_themen": [
+            "Informatische Bildung",
+            "Umweltbildung für nachhaltige Entwicklung"
+          ],
+          "themen_marker_roh": [
+            "4, 11"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.VARIABLEN.K2.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K2.02"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.VARIABLEN.K4.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K4.02",
+            "AT.LP23.SEK1.M.VARIABLEN.K4.03",
+            "AT.LP23.SEK1.M.VARIABLEN.K4.04"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.18",
+              "stufe": "K3",
+              "ordinal": 0,
+              "text": "Wiederholen und Festigen: Bearbeiten von Fragestellungen im Zusammenhang mit der Prozentrechnung;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.04",
+              "wiederholung_von": [
+                "AT.LP23.SEK1.M.VARIABLEN.K2.01",
+                "AT.LP23.SEK1.M.VARIABLEN.K2.02"
+              ],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.19",
+              "stufe": "K3",
+              "ordinal": 1,
+              "text": "Erkennen, Bearbeiten und Darstellen linearer Wachstums- und Abnahmeprozesse in Sachsituationen; Überprüfen der Anwendbarkeit linearer Modelle (zB absolute Änderung pro Zeiteinheit ist konstant);",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.04",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.20",
+              "stufe": "K3",
+              "ordinal": 2,
+              "text": "vertiefendes Bearbeiten von Aufgaben zur Prozentrechnung in ein- und mehrstufigen Situationen, insbesondere unter Verwendung von Änderungsfaktoren(zB Erhöhen von ⟦ABB:hauptdokument.img43is.png⟧ um 20 % und Verringern des neuen Wertes um 5 % ergibt ⟦ABB:hauptdokument.img44is.png⟧);",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.04",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img43is.png⟧",
+                  "datei": "hauptdokument.img43is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img43is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img43is.png",
+                  "breite_px": 8,
+                  "hoehe_px": 17,
+                  "sha256": "d3f3b019d4405eab657d38f611eb6f0b0cef94803fa11518f7a191336db1c7b8"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img44is.png⟧",
+                  "datei": "hauptdokument.img44is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img44is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img44is.png",
+                  "breite_px": 69,
+                  "hoehe_px": 17,
+                  "sha256": "2ca4a3544f93d93a4b36b41a0401c0dc23b167fa6dd575c2fad18d76dc329c9d"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.21",
+              "stufe": "K3",
+              "ordinal": 3,
+              "text": "Aufstellen von Formeln im Zusammenhang mit Zinsen bzw. Zinseszinsen;",
+              "text_roh": "Aufstellen von Formeln im Zusammenhang mit Zinsen bzw. Zinseszinsen;13",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.04",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.22",
+              "stufe": "K3",
+              "ordinal": 4,
+              "text": "Bearbeiten von Aufgaben im Kontext von Wachstums- und Abnahmeprozessen mit einem Tabellenkalkulationsprogramm, insbesondere bei konstanter prozentueller Änderung pro Zeiteinheit.",
+              "text_roh": "Bearbeiten von Aufgaben im Kontext von Wachstums- und Abnahmeprozessen mit einem Tabellenkalkulationsprogramm4, insbesondere bei konstanter prozentueller Änderung pro Zeiteinheit.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.04",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.VARIABLEN.K4.01",
+          "stufe": "K4",
+          "ordinal": 0,
+          "text": "mit Termen, Gleichungen mit einer Variablen und Formeln in vielfältigen Situationen arbeiten;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.VARIABLEN.K3.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K3.02",
+            "AT.LP23.SEK1.M.VARIABLEN.K3.03",
+            "AT.LP23.SEK1.M.VARIABLEN.K3.04"
+          ],
+          "folge": [],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K4.01",
+              "stufe": "K4",
+              "ordinal": 0,
+              "text": "Aufstellen und Umformen von Termen und Formeln;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K4.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K4.02",
+              "stufe": "K4",
+              "ordinal": 1,
+              "text": "Lösen von Gleichungen, die sich auf lineare Gleichungen zurückführen lassen; Anwenden von Gleichungen in Sachsituationen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K4.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K4.03",
+              "stufe": "K4",
+              "ordinal": 2,
+              "text": "allenfalls Umformen von Bruchtermen und Angeben von Bedingungen, die Variablen dabei erfüllen müssen.",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K4.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.VARIABLEN.K4.02",
+          "stufe": "K4",
+          "ordinal": 1,
+          "text": "unterschiedliche Darstellungsformen funktionaler Zusammenhänge nutzen und Darstellungsformen wechseln;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.VARIABLEN.K3.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K3.02",
+            "AT.LP23.SEK1.M.VARIABLEN.K3.03",
+            "AT.LP23.SEK1.M.VARIABLEN.K3.04"
+          ],
+          "folge": [],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K4.04",
+              "stufe": "K4",
+              "ordinal": 0,
+              "text": "Wiederholen und Festigen: Beschreiben, wie sich die Änderung von Größen auf eine andere Größe in einer Formel auswirkt und Erkennen von Proportionalitäten in diesem Zusammenhang;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K4.02",
+              "wiederholung_von": [
+                "AT.LP23.SEK1.M.VARIABLEN.K3.01",
+                "AT.LP23.SEK1.M.VARIABLEN.K3.02",
+                "AT.LP23.SEK1.M.VARIABLEN.K3.03",
+                "AT.LP23.SEK1.M.VARIABLEN.K3.04"
+              ],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K4.05",
+              "stufe": "K4",
+              "ordinal": 1,
+              "text": "Interpretieren grafischer Darstellungen in Sachsituationen (zB Temperaturkurve, Zeit-Weg Diagramm), insbesondere Ablesen von Werten und Beschreiben von Änderungen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K4.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K4.06",
+              "stufe": "K4",
+              "ordinal": 2,
+              "text": "Wissen, dass eine Funktion eine eindeutige Zuordnung ist;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K4.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K4.07",
+              "stufe": "K4",
+              "ordinal": 3,
+              "text": "Kennen verschiedener Darstellungsformen einfacher reeller Funktionen: verbale Beschreibung, Funktionsterm bzw. Funktionsgleichung (zB ⟦ABB:hauptdokument.img54is.png⟧, ⟦ABB:hauptdokument.img55is.png⟧), Wertetabelle, Funktionsgraph; Wechseln der Darstellungsform in einfachen Fällen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K4.02",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img54is.png⟧",
+                  "datei": "hauptdokument.img54is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img54is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img54is.png",
+                  "breite_px": 82,
+                  "hoehe_px": 17,
+                  "sha256": "3ce950c33fd4d8a4fab96578a0e1d10c28a7bc83062152bc5b14c6304b228861"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img55is.png⟧",
+                  "datei": "hauptdokument.img55is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img55is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img55is.png",
+                  "breite_px": 57,
+                  "hoehe_px": 17,
+                  "sha256": "f8b7be8d3ce6e56d58ac70eb8dc77d94b289595114d80c6b4500331ce2999e56"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K4.08",
+              "stufe": "K4",
+              "ordinal": 4,
+              "text": "Erkennen und Begründen, ob durch eine gegebene grafische Darstellung bzw. Tabelle ein funktionaler Zusammenhang beschrieben wird.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K4.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.VARIABLEN.K4.03",
+          "stufe": "K4",
+          "ordinal": 2,
+          "text": "mit linearen Funktionen arbeiten;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.VARIABLEN.K3.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K3.02",
+            "AT.LP23.SEK1.M.VARIABLEN.K3.03",
+            "AT.LP23.SEK1.M.VARIABLEN.K3.04"
+          ],
+          "folge": [],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K4.09",
+              "stufe": "K4",
+              "ordinal": 0,
+              "text": "Kennen der Eigenschaften einer linearen Funktion ⟦ABB:hauptdokument.img56is.png⟧ mit ⟦ABB:hauptdokument.img57is.png⟧;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K4.03",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img56is.png⟧",
+                  "datei": "hauptdokument.img56is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img56is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img56is.png",
+                  "breite_px": 8,
+                  "hoehe_px": 17,
+                  "sha256": "90020e7522f960f111db9e270e3544ba26261efdb73f669be3de2abbe6842131"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img57is.png⟧",
+                  "datei": "hauptdokument.img57is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img57is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img57is.png",
+                  "breite_px": 93,
+                  "hoehe_px": 17,
+                  "sha256": "ef6076e1048bcb79c002891d96a35c3dc7b43487dc0cdf55d6e05edd09578ab0"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K4.10",
+              "stufe": "K4",
+              "ordinal": 1,
+              "text": "Wechseln zwischen Funktionsgleichung und Funktionsgraph, auch mithilfe von Steigungsdreiecken unter Verwendung der Parameter ⟦ABB:hauptdokument.img58is.png⟧ und ⟦ABB:hauptdokument.img59is.png⟧;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K4.03",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img58is.png⟧",
+                  "datei": "hauptdokument.img58is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img58is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img58is.png",
+                  "breite_px": 8,
+                  "hoehe_px": 17,
+                  "sha256": "fc4cb7f44cf3753a9015398b9abd76832f901d3fa9351d06081e72d34f17502e"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img59is.png⟧",
+                  "datei": "hauptdokument.img59is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img59is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img59is.png",
+                  "breite_px": 8,
+                  "hoehe_px": 17,
+                  "sha256": "1435c960ad207a25fb7248ccbb2221ea0928e2e31381844fdd6368d735fee39e"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K4.11",
+              "stufe": "K4",
+              "ordinal": 2,
+              "text": "Deuten der Parameter ⟦ABB:hauptdokument.img60is.png⟧ und ⟦ABB:hauptdokument.img61is.png⟧, auch in Sachsituationen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K4.03",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img60is.png⟧",
+                  "datei": "hauptdokument.img60is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img60is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img60is.png",
+                  "breite_px": 8,
+                  "hoehe_px": 17,
+                  "sha256": "fc4cb7f44cf3753a9015398b9abd76832f901d3fa9351d06081e72d34f17502e"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img61is.png⟧",
+                  "datei": "hauptdokument.img61is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img61is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img61is.png",
+                  "breite_px": 8,
+                  "hoehe_px": 17,
+                  "sha256": "1435c960ad207a25fb7248ccbb2221ea0928e2e31381844fdd6368d735fee39e"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K4.12",
+              "stufe": "K4",
+              "ordinal": 3,
+              "text": "Anwenden von linearen Funktionen in Sachsituationen; kritisches Betrachten der Angemessenheit der Modellierung mit linearen Funktionen;",
+              "text_roh": "Anwenden von linearen Funktionen in Sachsituationen; kritisches Betrachten13 der Angemessenheit der Modellierung mit linearen Funktionen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K4.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K4.13",
+              "stufe": "K4",
+              "ordinal": 4,
+              "text": "allenfalls Begründen, dass der Graph einer linearen Funktion eine Gerade ist.",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K4.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.VARIABLEN.K4.04",
+          "stufe": "K4",
+          "ordinal": 3,
+          "text": "lineare Gleichungssysteme in zwei Variablen aufstellen und lösen.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.VARIABLEN.K3.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K3.02",
+            "AT.LP23.SEK1.M.VARIABLEN.K3.03",
+            "AT.LP23.SEK1.M.VARIABLEN.K3.04"
+          ],
+          "folge": [],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K4.14",
+              "stufe": "K4",
+              "ordinal": 0,
+              "text": "Berechnen von Lösungen einer linearen Gleichung, Darstellen aller Lösungen im Koordinatensystem;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K4.04",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K4.15",
+              "stufe": "K4",
+              "ordinal": 1,
+              "text": "grafisches und rechnerisches Lösen linearer Gleichungssysteme;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K4.04",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K4.16",
+              "stufe": "K4",
+              "ordinal": 2,
+              "text": "Bearbeiten von Aufgaben in inner- und außermathematischen Situationen mithilfe linearer Gleichungssysteme.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K4.04",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

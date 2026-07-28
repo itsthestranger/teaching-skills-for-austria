@@ -1,0 +1,1225 @@
+{
+  "meta": {
+    "lehrplan_fassung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+    "dataset_version": "2026-07-27",
+    "band": "SEK1",
+    "fach": {
+      "code": "M",
+      "name": "Mathematik"
+    },
+    "uebergreifende_themen_fach": [
+      "Entrepreneurship Education",
+      "Informatische Bildung",
+      "Interkulturelle Bildung",
+      "Medienbildung",
+      "Politische Bildung",
+      "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "Sprachliche Bildung und Lesen",
+      "Umweltbildung für nachhaltige Entwicklung",
+      "Verkehrs- und Mobilitätsbildung",
+      "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    ],
+    "uebergreifende_themen_legende": {
+      "1": "Bildungs-, Berufs- und Lebensorientierung",
+      "2": "Entrepreneurship Education",
+      "3": "Gesundheitsförderung",
+      "4": "Informatische Bildung",
+      "5": "Interkulturelle Bildung",
+      "6": "Medienbildung",
+      "7": "Politische Bildung",
+      "8": "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "9": "Sexualpädagogik",
+      "10": "Sprachliche Bildung und Lesen",
+      "11": "Umweltbildung für nachhaltige Entwicklung",
+      "12": "Verkehrs- und Mobilitätsbildung",
+      "13": "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    },
+    "differenzierungs_achse": {
+      "typ": "standard_standardplus",
+      "niveaus": [
+        "Standard",
+        "Standard AHS"
+      ],
+      "enrichment_quelle": "allenfalls",
+      "spiralprinzip_backlinks": true
+    },
+    "anwendungsbereiche_status": "item_flags",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Lehrpläne der Mittelschulen",
+      "nor": "NOR40271471",
+      "kundmachung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+      "anlage": "Anl. 1",
+      "teil": "ACHTER TEIL",
+      "stand": "2026-07-27"
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "nummer": 1,
+      "slug": "ZAHLEN",
+      "name": "Zahlen und Maße",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.SEK1.M.ZAHLEN.K1.01",
+          "stufe": "K1",
+          "ordinal": 0,
+          "text": "natürliche Zahlen sowie nichtnegative Dezimal- und Bruchzahlen interpretieren, darstellen und vergleichen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.M.ZAHLEN.K2.01",
+            "AT.LP23.SEK1.M.ZAHLEN.K2.02",
+            "AT.LP23.SEK1.M.ZAHLEN.K2.03",
+            "AT.LP23.SEK1.M.ZAHLEN.K2.04"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.01",
+              "stufe": "K1",
+              "ordinal": 0,
+              "text": "grafisches Darstellen von Zahlen als Punkte am Zahlenstrahl und Ablesen von Zahlen; Lesen großer Zahlen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.02",
+              "stufe": "K1",
+              "ordinal": 1,
+              "text": "Verstehen und Anwenden des dezimalen Stellenwertsystems, d. h. des Prinzips „Bündeln in Zehner-Schritten“;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.03",
+              "stufe": "K1",
+              "ordinal": 2,
+              "text": "Deuten von Brüchen als Anteile eines Ganzen bzw. als Anteile von mehreren Ganzen; Ergänzen von Brüchen auf Ganze;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.04",
+              "stufe": "K1",
+              "ordinal": 3,
+              "text": "Erweitern und Kürzen von Brüchen, insbesondere mithilfe von Visualisierungen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.05",
+              "stufe": "K1",
+              "ordinal": 4,
+              "text": "Deuten von Brüchen als Quotienten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.06",
+              "stufe": "K1",
+              "ordinal": 5,
+              "text": "Wechseln zwischen Bruch- und Dezimaldarstellung in einfachen Fällen (zB 0,6⟦ABB:hauptdokument.img1is.png⟧ ⟦ABB:hauptdokument.img2is.png⟧; 1,25⟦ABB:hauptdokument.img3is.png⟧; ⟦ABB:hauptdokument.img4is.png⟧;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img1is.png⟧",
+                  "datei": "hauptdokument.img1is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img1is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img1is.png",
+                  "breite_px": 10,
+                  "hoehe_px": 17,
+                  "sha256": "af89dbdbebcda7236803a36deff441a37a85866876866a2b98d1a1c0d203ad7d"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img2is.png⟧",
+                  "datei": "hauptdokument.img2is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img2is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img2is.png",
+                  "breite_px": 38,
+                  "hoehe_px": 17,
+                  "sha256": "afe47c7eb57f08dfcf9cbc884e06e52f8bd63088550d51719db3c54630d0bcbb"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img3is.png⟧",
+                  "datei": "hauptdokument.img3is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img3is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img3is.png",
+                  "breite_px": 18,
+                  "hoehe_px": 17,
+                  "sha256": "4c4071d8e8dc0b7bf42bfbffc0b11c072fe41da363e9e914c48a59d1d06a20a6"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img4is.png⟧",
+                  "datei": "hauptdokument.img4is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img4is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img4is.png",
+                  "breite_px": 64,
+                  "hoehe_px": 17,
+                  "sha256": "6eaab75451a5ab96402f78366adfd046ce6973bd6cbf5937cd64628273c1d819"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.07",
+              "stufe": "K1",
+              "ordinal": 6,
+              "text": "Vergleichen und Ordnen natürlicher Zahlen sowie nichtnegativer Dezimal- und Bruchzahlen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.08",
+              "stufe": "K1",
+              "ordinal": 7,
+              "text": "Lesen und allenfalls Schreiben römischer Zahldarstellungen; Erkennen der Vorteile des dezimalen Stellenwertsystems im Vergleich zur römischen Zahldarstellung.",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+          "stufe": "K1",
+          "ordinal": 1,
+          "text": "Rechenoperationen mit natürlichen Zahlen und mit nichtnegativen Dezimalzahlen durchführen und deuten; Überschlagsrechnungen durchführen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.M.ZAHLEN.K2.01",
+            "AT.LP23.SEK1.M.ZAHLEN.K2.02",
+            "AT.LP23.SEK1.M.ZAHLEN.K2.03",
+            "AT.LP23.SEK1.M.ZAHLEN.K2.04"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.09",
+              "stufe": "K1",
+              "ordinal": 0,
+              "text": "schriftliches Durchführen der vier Grundrechenoperationen mit natürlichen Zahlen und nichtnegativen Dezimalzahlen, in einfachen Fällen auch im Kopf;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.10",
+              "stufe": "K1",
+              "ordinal": 1,
+              "text": "Beschreiben der Algorithmen für die Grundrechenoperationen anhand konkreter Beispiele; allenfalls Begründen der Algorithmen anhand konkreter Beispiele mithilfe von Rechenregeln und Eigenschaften des dezimalen Stellenwertsystems;",
+              "text_roh": "Beschreiben der Algorithmen für die Grundrechenoperationen10 anhand konkreter Beispiele; allenfalls Begründen der Algorithmen anhand konkreter Beispiele mithilfe von Rechenregeln und Eigenschaften des dezimalen Stellenwertsystems;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.11",
+              "stufe": "K1",
+              "ordinal": 2,
+              "text": "Runden von Zahlen, Abschätzen von Rechenergebnissen, Ermitteln von Schranken(zB ⟦ABB:hauptdokument.img5is.png⟧ ist größer als ⟦ABB:hauptdokument.img6is.png⟧ und kleiner als ⟦ABB:hauptdokument.img7is.png⟧);",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img5is.png⟧",
+                  "datei": "hauptdokument.img5is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img5is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img5is.png",
+                  "breite_px": 39,
+                  "hoehe_px": 17,
+                  "sha256": "34ebb09857a9993792774430cc2521fcbca28d5ae3b5dc01917caedaaa6889c5"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img6is.png⟧",
+                  "datei": "hauptdokument.img6is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img6is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img6is.png",
+                  "breite_px": 39,
+                  "hoehe_px": 17,
+                  "sha256": "14cf3461ae7ba5560597ffc5de815b335c6a4bed025c4c6196cf5d1ad5eccfe5"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img7is.png⟧",
+                  "datei": "hauptdokument.img7is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img7is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img7is.png",
+                  "breite_px": 39,
+                  "hoehe_px": 17,
+                  "sha256": "a5c0d189d846006aac42df8fb72cc31e4a30cce56d897a92dd69327504bf2f93"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.12",
+              "stufe": "K1",
+              "ordinal": 3,
+              "text": "Erkennen, wie sich Änderungen eines Operanden (Summand, Faktor, ...) auf das Ergebnis auswirken; Nutzen dieser Einsichten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.13",
+              "stufe": "K1",
+              "ordinal": 4,
+              "text": "Veranschaulichen der Rechenoperationen, zB mittels Zahlenstrahl, Strecken, Rechtecken, Punktmuster;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.14",
+              "stufe": "K1",
+              "ordinal": 5,
+              "text": "Deuten des Addierens zB als Zusammenfügen, bei natürlichen Zahlen auch als Weiterzählen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.15",
+              "stufe": "K1",
+              "ordinal": 6,
+              "text": "Deuten des Subtrahierens zB als Abziehen, als Ergänzen, als Ermitteln des Unterschieds, als Umkehren des Addierens;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.16",
+              "stufe": "K1",
+              "ordinal": 7,
+              "text": "Deuten des Multiplizierens mit natürlichen Zahlen zB als wiederholtes Addieren, als Vervielfachen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.17",
+              "stufe": "K1",
+              "ordinal": 8,
+              "text": "Deuten des Dividierens durch natürliche Zahlen zB als Teilen, als Messen, als Umkehren des Multiplizierens;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.18",
+              "stufe": "K1",
+              "ordinal": 9,
+              "text": "Kennen, Formulieren und Anwenden der Rechengesetze sowie der Klammer- und Vorrangregeln für natürliche Zahlen und nichtnegative Dezimalzahlen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.19",
+              "stufe": "K1",
+              "ordinal": 10,
+              "text": "verbales Beschreiben von Rechenausdrücken und Darstellen verbal beschriebener Rechenanweisungen durch Rechenausdrücke;",
+              "text_roh": "verbales Beschreiben10 von Rechenausdrücken und Darstellen verbal beschriebener Rechenanweisungen durch Rechenausdrücke;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.20",
+              "stufe": "K1",
+              "ordinal": 11,
+              "text": "Lösen von Aufgaben in Sachsituationen; Beschreiben, Vergleichen und Begründen von Lösungswegen; kritisches Betrachten von Ergebnissen und ihrer Genauigkeit.",
+              "text_roh": "Lösen von Aufgaben in Sachsituationen; Beschreiben, Vergleichen und Begründen von Lösungswegen10; kritisches Betrachten von Ergebnissen und ihrer Genauigkeit.7, 13",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.ZAHLEN.K1.03",
+          "stufe": "K1",
+          "ordinal": 2,
+          "text": "Größen ein- und mehrnamig anschreiben, Maßangaben interpretieren und Umrechnungen durchführen.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.M.ZAHLEN.K2.01",
+            "AT.LP23.SEK1.M.ZAHLEN.K2.02",
+            "AT.LP23.SEK1.M.ZAHLEN.K2.03",
+            "AT.LP23.SEK1.M.ZAHLEN.K2.04"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.21",
+              "stufe": "K1",
+              "ordinal": 0,
+              "text": "Verbinden von Vorstellungen mit Maßeinheiten; Vergleichen und Messen von Größen (insbesondere Längen, Flächen- und Rauminhalte, Massen, Zeitspannen, Geldbeträge); Schätzen von Größen anhand von Stützpunktvorstellungen, dh. Vergleichen mit Größen aus dem Alltag;",
+              "text_roh": "Verbinden von Vorstellungen mit Maßeinheiten13; Vergleichen und Messen von Größen (insbesondere Längen, Flächen- und Rauminhalte, Massen, Zeitspannen, Geldbeträge); Schätzen von Größen anhand von Stützpunktvorstellungen, dh. Vergleichen mit Größen aus dem Alltag;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.22",
+              "stufe": "K1",
+              "ordinal": 1,
+              "text": "Kennen und Nutzen der ein- und mehrnamigen Schreibweise von Größen; Durchführen von Maßumrechnungen.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.ZAHLEN.K2.01",
+          "stufe": "K2",
+          "ordinal": 0,
+          "text": "mit Vielfachen und Teilern natürlicher Zahlen sowie mit Aussagen über Teilbarkeit arbeiten;",
+          "text_roh": "mit Vielfachen und Teilern natürlicher Zahlen sowie mit Aussagen über Teilbarkeit arbeiten;10",
+          "uebergreifende_themen": [
+            "Sprachliche Bildung und Lesen"
+          ],
+          "themen_marker_roh": [
+            "10"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.ZAHLEN.K1.01",
+            "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+            "AT.LP23.SEK1.M.ZAHLEN.K1.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.ZAHLEN.K3.01"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.01",
+              "stufe": "K2",
+              "ordinal": 0,
+              "text": "Kennen und Anwenden der Begriffe Vielfaches, Teiler, Teilbarkeit, Primzahl; allenfalls Durchführen von Primfaktorzerlegungen;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.02",
+              "stufe": "K2",
+              "ordinal": 1,
+              "text": "Verstehen und Anwenden gemeinsamer Vielfacher und Teiler; Ermitteln des kleinsten gemeinsamen Vielfachen und des größten gemeinsamen Teilers, allenfalls auch mit Rechenverfahren;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.03",
+              "stufe": "K2",
+              "ordinal": 2,
+              "text": "Kennen und Anwenden einfacher Teilbarkeitsregeln; allenfalls Begründen von Teilbarkeitsregeln sowie Begründen bzw. Widerlegen von Aussagen zur Teilbarkeit(zB „Jede Zahl, die durch 6 teilbar ist, ist auch durch 3 teilbar“);",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.04",
+              "stufe": "K2",
+              "ordinal": 3,
+              "text": "Anwenden von Teilern und Vielfachen in Sachsituationen.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.ZAHLEN.K2.02",
+          "stufe": "K2",
+          "ordinal": 1,
+          "text": "nichtnegative Dezimal- und Bruchzahlen sowie ganze Zahlen interpretieren, darstellen und vergleichen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.ZAHLEN.K1.01",
+            "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+            "AT.LP23.SEK1.M.ZAHLEN.K1.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.ZAHLEN.K3.01"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.05",
+              "stufe": "K2",
+              "ordinal": 0,
+              "text": "Wiederholen und Festigen: Deuten, Erweitern und Kürzen von Brüchen; Darstellen am Zahlenstrahl, Vergleichen und Ordnen nichtnegativer Dezimal- und Bruchzahlen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.02",
+              "wiederholung_von": [
+                "AT.LP23.SEK1.M.ZAHLEN.K1.01",
+                "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+                "AT.LP23.SEK1.M.ZAHLEN.K1.03"
+              ],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.06",
+              "stufe": "K2",
+              "ordinal": 1,
+              "text": "Wechseln zwischen Bruch- und Dezimaldarstellung auch bei Zahlen mit einfacher periodischer Dezimaldarstellung (zB ⟦ABB:hauptdokument.img8is.png⟧;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.02",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img8is.png⟧",
+                  "datei": "hauptdokument.img8is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img8is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img8is.png",
+                  "breite_px": 146,
+                  "hoehe_px": 17,
+                  "sha256": "f10ac66ce192699de294a304f41d0b2122b83ab8e7b5b4f6155f9610656eab5c"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.07",
+              "stufe": "K2",
+              "ordinal": 2,
+              "text": "Wechseln zwischen Bruch- und Dezimaldarstellung und Prozentdarstellung (zB ⟦ABB:hauptdokument.img9is.png⟧);",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.02",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img9is.png⟧",
+                  "datei": "hauptdokument.img9is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img9is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img9is.png",
+                  "breite_px": 118,
+                  "hoehe_px": 17,
+                  "sha256": "0b39d0ed874a87f2a0470d28eaa299209ec6e165a3efbe044e52fb0cfe16dfa1"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.08",
+              "stufe": "K2",
+              "ordinal": 3,
+              "text": "Deuten von Brüchen als relative Anteile und relative Häufigkeiten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.09",
+              "stufe": "K2",
+              "ordinal": 4,
+              "text": "Darstellen ganzer Zahlen als Punkte auf der Zahlengeraden; Interpretieren ganzer Zahlen auch in außermathematischen Situationen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.10",
+              "stufe": "K2",
+              "ordinal": 5,
+              "text": "Vergleichen und Ordnen ganzer Zahlen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.11",
+              "stufe": "K2",
+              "ordinal": 6,
+              "text": "Vergleichen der Zahlbereiche, zB hinsichtlich der Existenz von Vorgängern, Nachfolgern und Zahlen zwischen zwei Werten, sowie der Eindeutigkeit der Zahldarstellung.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.02",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.ZAHLEN.K2.03",
+          "stufe": "K2",
+          "ordinal": 2,
+          "text": "Rechenoperationen mit nichtnegativen Bruchzahlen durchführen und interpretieren; die Addition bzw. Subtraktion einer natürlichen Zahl zu bzw. von einer ganzen Zahl als Bewegung auf der Zahlengeraden deuten;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.ZAHLEN.K1.01",
+            "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+            "AT.LP23.SEK1.M.ZAHLEN.K1.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.ZAHLEN.K3.01"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.12",
+              "stufe": "K2",
+              "ordinal": 0,
+              "text": "Wiederholen und Festigen: Grundvorstellungen zu den Grundrechenoperationen; Durchführen von Rechenverfahren mit nichtnegativen Dezimalzahlen; Abschätzen von Rechenergebnissen, Ermitteln von Schranken;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.03",
+              "wiederholung_von": [
+                "AT.LP23.SEK1.M.ZAHLEN.K1.01",
+                "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+                "AT.LP23.SEK1.M.ZAHLEN.K1.03"
+              ],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.13",
+              "stufe": "K2",
+              "ordinal": 1,
+              "text": "Deuten des Multiplizierens mit Bruchzahlen, zB als Teilen und nachfolgendes Vervielfachen bzw. als Vervielfachen und nachfolgendes Teilen, oder als Ermitteln eines relativen Anteils („Von-Deutung“ der Multiplikation: zB ⟦ABB:hauptdokument.img10is.png⟧ von ⟦ABB:hauptdokument.img11is.png⟧ von ⟦ABB:hauptdokument.img12is.png⟧);",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.03",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img10is.png⟧",
+                  "datei": "hauptdokument.img10is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img10is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img10is.png",
+                  "breite_px": 5,
+                  "hoehe_px": 17,
+                  "sha256": "5b4e4fa10a68495b8fdde1f47114b82e754353051a6628789cae2c69e0937dd3"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img11is.png⟧",
+                  "datei": "hauptdokument.img11is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img11is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img11is.png",
+                  "breite_px": 154,
+                  "hoehe_px": 17,
+                  "sha256": "1af47e34acbb14f932d0a8c988ef2b5b2b6dd96b3fd01cfeeebb23305419b30e"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img12is.png⟧",
+                  "datei": "hauptdokument.img12is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img12is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img12is.png",
+                  "breite_px": 8,
+                  "hoehe_px": 17,
+                  "sha256": "d3f3b019d4405eab657d38f611eb6f0b0cef94803fa11518f7a191336db1c7b8"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.14",
+              "stufe": "K2",
+              "ordinal": 2,
+              "text": "Deuten des Dividierens durch eine Bruchzahl zB als Messen, als Umkehren des Multiplizierens;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.15",
+              "stufe": "K2",
+              "ordinal": 3,
+              "text": "schriftliches Durchführen der vier Grundrechenoperationen mit Bruchzahlen, in einfachen Fällen auch im Kopf;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.16",
+              "stufe": "K2",
+              "ordinal": 4,
+              "text": "Beschreiben und Anwenden der Rechenregeln für Bruchzahlen; Interpretieren dieser Rechenregeln durch geometrische Deutungen und in Sachsituationen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.17",
+              "stufe": "K2",
+              "ordinal": 5,
+              "text": "Erkennen, wie sich Änderungen eines Operanden (Summand, Faktor, ...) auf das Ergebnis auswirken, allenfalls im Zusammenhang mit Variablen (zB ⟦ABB:hauptdokument.img13is.png⟧wird doppelt so groß, wenn ⟦ABB:hauptdokument.img14is.png⟧ gleich bleibt und ⟦ABB:hauptdokument.img15is.png⟧ halbiert wird);",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.03",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img13is.png⟧",
+                  "datei": "hauptdokument.img13is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img13is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img13is.png",
+                  "breite_px": 9,
+                  "hoehe_px": 17,
+                  "sha256": "77e7095e4934f9c8c2a477f5d8f6fa1bda6d7170d5364523381a03338f2995ab"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img14is.png⟧",
+                  "datei": "hauptdokument.img14is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img14is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img14is.png",
+                  "breite_px": 8,
+                  "hoehe_px": 17,
+                  "sha256": "d3f3b019d4405eab657d38f611eb6f0b0cef94803fa11518f7a191336db1c7b8"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img15is.png⟧",
+                  "datei": "hauptdokument.img15is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img15is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img15is.png",
+                  "breite_px": 7,
+                  "hoehe_px": 17,
+                  "sha256": "7dbeef1e16aad1c9a4d9c90c9776d3a83ab8e968c321e8346c8935875e460c89"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.18",
+              "stufe": "K2",
+              "ordinal": 6,
+              "text": "Wissen, dass für Bruchzahlen die gleichen Rechengesetze sowie Klammer- und Vorrangregeln wie für natürliche Zahlen und nichtnegative Dezimalzahlen gelten; Anwenden dieser Gesetze und Regeln auf Rechnungen mit Bruchzahlen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.19",
+              "stufe": "K2",
+              "ordinal": 7,
+              "text": "Erkennen von Vorteilen und Nachteilen der Bruch- bzw. Dezimaldarstellung beim Durchführen von Rechenoperationen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.03",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.20",
+              "stufe": "K2",
+              "ordinal": 8,
+              "text": "Deuten und Darstellen von Additionen und Subtraktionen der Form ⟦ABB:hauptdokument.img16is.png⟧ und ⟦ABB:hauptdokument.img17is.png⟧ mit ⟦ABB:hauptdokument.img18is.png⟧ und ⟦ABB:hauptdokument.img19is.png⟧ als Bewegungen auf der Zahlengeraden; Verwenden dieser Deutung, um entsprechende Rechenaufgaben zu lösen.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.03",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img16is.png⟧",
+                  "datei": "hauptdokument.img16is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img16is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img16is.png",
+                  "breite_px": 30,
+                  "hoehe_px": 17,
+                  "sha256": "aae2d81f06b000170f7498d7139fb97b1eed45a8f50389877e2c788a2e394cc4"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img17is.png⟧",
+                  "datei": "hauptdokument.img17is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img17is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img17is.png",
+                  "breite_px": 30,
+                  "hoehe_px": 17,
+                  "sha256": "5d02b862787b90d8dff00ccd1e29f1f7496da2b36ab9d6a76b3ef7c06c56508d"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img18is.png⟧",
+                  "datei": "hauptdokument.img18is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img18is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img18is.png",
+                  "breite_px": 30,
+                  "hoehe_px": 17,
+                  "sha256": "18beea78519dbf1dd2e2740c3b56fe0337ba63b471202af8a16095dea8dc96eb"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img19is.png⟧",
+                  "datei": "hauptdokument.img19is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img19is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img19is.png",
+                  "breite_px": 33,
+                  "hoehe_px": 17,
+                  "sha256": "a550918be6dab0e72bdde36a299b91d916767d81dd765e26fc75867122622440"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.ZAHLEN.K2.04",
+          "stufe": "K2",
+          "ordinal": 3,
+          "text": "mit Proportionalitäten und Prozenten arbeiten.",
+          "text_roh": "mit Proportionalitäten und Prozenten arbeiten.12, 13",
+          "uebergreifende_themen": [
+            "Verkehrs- und Mobilitätsbildung",
+            "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+          ],
+          "themen_marker_roh": [
+            "12, 13"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.ZAHLEN.K1.01",
+            "AT.LP23.SEK1.M.ZAHLEN.K1.02",
+            "AT.LP23.SEK1.M.ZAHLEN.K1.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.ZAHLEN.K3.01"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.21",
+              "stufe": "K2",
+              "ordinal": 0,
+              "text": "Erkennen direkter und indirekter Proportionalitäten in Sachsituationen, die in Texten, durch Daten in Tabellen oder grafisch gegeben sein können; Begründen bzw. Widerlegen von Proportionalitäten;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.04",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.22",
+              "stufe": "K2",
+              "ordinal": 1,
+              "text": "Rechnen mit Prozenten in vielfältigen Situationen; Verwenden additiver und multiplikativer Berechnungen und Begründen der entsprechenden Zusammenhänge (zB Erhöhung um 20 %: ⟦ABB:hauptdokument.img20is.png⟧, oder Verringerung um 10 %: ⟦ABB:hauptdokument.img21is.png⟧);",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.04",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img20is.png⟧",
+                  "datei": "hauptdokument.img20is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img20is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img20is.png",
+                  "breite_px": 109,
+                  "hoehe_px": 17,
+                  "sha256": "f2c46e63ebcb94c123301b88d1ae0c865fd4b6273b884f77bd9c30a78a8832d2"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img21is.png⟧",
+                  "datei": "hauptdokument.img21is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img21is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img21is.png",
+                  "breite_px": 109,
+                  "hoehe_px": 17,
+                  "sha256": "5a5b7d98419ead13375323921709b7131d0c90b20080bb334405692759b16279"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K2.23",
+              "stufe": "K2",
+              "ordinal": 2,
+              "text": "Anwenden von Proportionalitäten und Prozenten in Sachsituationen; Beschreiben, Vergleichen und Begründen von Lösungswegen; kritisches Betrachten von Ergebnissen und ihrer Genauigkeit.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.04",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.ZAHLEN.K3.01",
+          "stufe": "K3",
+          "ordinal": 0,
+          "text": "rationale Zahlen darstellen, vergleichen und ordnen; Rechenoperationen durchführen und interpretieren.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.ZAHLEN.K2.01",
+            "AT.LP23.SEK1.M.ZAHLEN.K2.02",
+            "AT.LP23.SEK1.M.ZAHLEN.K2.03",
+            "AT.LP23.SEK1.M.ZAHLEN.K2.04"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.M.ZAHLEN.K4.01"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K3.01",
+              "stufe": "K3",
+              "ordinal": 0,
+              "text": "Wiederholen und Festigen: Darstellen nichtnegativer rationaler und ganzer Zahlen als Punkte auf der Zahlengeraden, Vergleichen und Ordnen dieser Zahlen, Durchführen von Rechenoperationen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K3.01",
+              "wiederholung_von": [
+                "AT.LP23.SEK1.M.ZAHLEN.K2.01",
+                "AT.LP23.SEK1.M.ZAHLEN.K2.02",
+                "AT.LP23.SEK1.M.ZAHLEN.K2.03",
+                "AT.LP23.SEK1.M.ZAHLEN.K2.04"
+              ],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K3.02",
+              "stufe": "K3",
+              "ordinal": 1,
+              "text": "Beschreiben von Zuständen (zB Temperatur, Kontostand) und von Zustandsänderungen; Darstellen dieser Zustände als Punkte und dieser Zustandsänderungen durch Pfeile auf der Zahlengeraden;",
+              "text_roh": "Beschreiben von Zuständen (zB Temperatur, Kontostand) und von Zustandsänderungen;10 Darstellen dieser Zustände als Punkte und dieser Zustandsänderungen durch Pfeile auf der Zahlengeraden;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K3.03",
+              "stufe": "K3",
+              "ordinal": 2,
+              "text": "Unterscheiden verschiedener Bedeutungen des Minuszeichens: als Rechenzeichen, als Vorzeichen, als Zeichen für das Übergehen zur Gegenzahl;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K3.04",
+              "stufe": "K3",
+              "ordinal": 3,
+              "text": "Veranschaulichen des Addierens, Subtrahierens und, in einfachen Fällen, des Multiplizierens auf der Zahlengeraden;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K3.05",
+              "stufe": "K3",
+              "ordinal": 4,
+              "text": "Kennen und Anwenden des Betrages einer Zahl;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K3.06",
+              "stufe": "K3",
+              "ordinal": 5,
+              "text": "Deuten des Subtrahierens als Addieren der Gegenzahl;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K3.07",
+              "stufe": "K3",
+              "ordinal": 6,
+              "text": "Deuten des Dividierens als Multiplizieren mit dem Kehrwert;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K3.08",
+              "stufe": "K3",
+              "ordinal": 7,
+              "text": "schriftliches Durchführen der vier Grundrechenoperationen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K3.09",
+              "stufe": "K3",
+              "ordinal": 8,
+              "text": "Deuten des Potenzierens mit einem positiven ganzzahligen Exponenten als wiederholtes Multiplizieren;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K3.10",
+              "stufe": "K3",
+              "ordinal": 9,
+              "text": "Darstellen von Zahlen unter Verwendung von Zehnerpotenzen; Anwenden der Gleitkommadarstellung.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K3.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.ZAHLEN.K4.01",
+          "stufe": "K4",
+          "ordinal": 0,
+          "text": "den Unterschied zwischen rationalen und nichtrationalen Zahlen verstehen und beschreiben; Rechenoperationen mit reellen Zahlen durchführen; mit Wurzeln und Näherungswerten arbeiten.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.ZAHLEN.K3.01"
+          ],
+          "folge": [],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K4.01",
+              "stufe": "K4",
+              "ordinal": 0,
+              "text": "Wiederholen und Festigen: Darstellen rationaler Zahlen auf der Zahlengeraden, Vergleichen und Ordnen rationaler Zahlen, Durchführen von Rechenoperationen;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K4.01",
+              "wiederholung_von": [
+                "AT.LP23.SEK1.M.ZAHLEN.K3.01"
+              ],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K4.02",
+              "stufe": "K4",
+              "ordinal": 1,
+              "text": "Wissen und allenfalls Begründen, dass es Zahlen gibt, die nicht rational sind, zB ⟦ABB:hauptdokument.img48is.png⟧;",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K4.01",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img48is.png⟧",
+                  "datei": "hauptdokument.img48is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img48is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img48is.png",
+                  "breite_px": 16,
+                  "hoehe_px": 17,
+                  "sha256": "891554393d823a98ac7ab6f67ff351ac679021f4cec6596dfc92757fcf46c703"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K4.03",
+              "stufe": "K4",
+              "ordinal": 2,
+              "text": "Wissen, dass durch die Erweiterung der rationalen Zahlen zu den reellen Zahlen die Zahlengerade lückenlos ausgefüllt wird;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K4.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K4.04",
+              "stufe": "K4",
+              "ordinal": 3,
+              "text": "näherungsweises Berechnen bzw. Schätzen von Quadratwurzeln durch systematisches Probieren; Berechnen von Quadrat- und Kubikwurzeln nur mittels Technologieeinsatz;",
+              "text_roh": "näherungsweises Berechnen bzw. Schätzen von Quadratwurzeln durch systematisches Probieren; Berechnen von Quadrat- und Kubikwurzeln nur mittels Technologieeinsatz;4",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K4.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K4.05",
+              "stufe": "K4",
+              "ordinal": 4,
+              "text": "Kennen und Anwenden der Regeln ⟦ABB:hauptdokument.img49is.png⟧ und ⟦ABB:hauptdokument.img50is.png⟧; Begründen, dass im Allgemeinen ⟦ABB:hauptdokument.img51is.png⟧ ist;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K4.01",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img49is.png⟧",
+                  "datei": "hauptdokument.img49is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img49is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img49is.png",
+                  "breite_px": 104,
+                  "hoehe_px": 17,
+                  "sha256": "a702e395f042debfc320ca2aea800258bc87fd39d6c9ac2499634905e3315e1f"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img50is.png⟧",
+                  "datei": "hauptdokument.img50is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img50is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img50is.png",
+                  "breite_px": 49,
+                  "hoehe_px": 17,
+                  "sha256": "910ef1ce4930207499cf2bc493b4540b7602367466fd79debe4a5b66dfc7208e"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img51is.png⟧",
+                  "datei": "hauptdokument.img51is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img51is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img51is.png",
+                  "breite_px": 115,
+                  "hoehe_px": 17,
+                  "sha256": "7bbf42c89da8b0a58064d9526e86d8945265690dc92371b8215d677334fbc3d8"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K4.06",
+              "stufe": "K4",
+              "ordinal": 5,
+              "text": "Durchführen von Rechenoperationen mit reellen Zahlen; Kennen der Problematik des Rechnens mit Näherungswerten (zB ⟦ABB:hauptdokument.img52is.png⟧, aber ⟦ABB:hauptdokument.img53is.png⟧).",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K4.01",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img52is.png⟧",
+                  "datei": "hauptdokument.img52is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img52is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img52is.png",
+                  "breite_px": 58,
+                  "hoehe_px": 17,
+                  "sha256": "225bc524852f3270a3b096f2ef1fdcbbf85bb348808e0cc96ce0decdb86ef2c9"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img53is.png⟧",
+                  "datei": "hauptdokument.img53is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img53is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img53is.png",
+                  "breite_px": 61,
+                  "hoehe_px": 17,
+                  "sha256": "d1c4202a09314423f16ba4999d17e6d64b910cf26a897358df1cf4a70ba5dd01"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

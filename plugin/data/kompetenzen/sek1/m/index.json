@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "lehrplan_fassung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+    "dataset_version": "2026-07-27",
+    "band": "SEK1",
+    "fach": {
+      "code": "M",
+      "name": "Mathematik"
+    },
+    "uebergreifende_themen_fach": [
+      "Entrepreneurship Education",
+      "Informatische Bildung",
+      "Interkulturelle Bildung",
+      "Medienbildung",
+      "Politische Bildung",
+      "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "Sprachliche Bildung und Lesen",
+      "Umweltbildung für nachhaltige Entwicklung",
+      "Verkehrs- und Mobilitätsbildung",
+      "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    ],
+    "uebergreifende_themen_legende": {
+      "1": "Bildungs-, Berufs- und Lebensorientierung",
+      "2": "Entrepreneurship Education",
+      "3": "Gesundheitsförderung",
+      "4": "Informatische Bildung",
+      "5": "Interkulturelle Bildung",
+      "6": "Medienbildung",
+      "7": "Politische Bildung",
+      "8": "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "9": "Sexualpädagogik",
+      "10": "Sprachliche Bildung und Lesen",
+      "11": "Umweltbildung für nachhaltige Entwicklung",
+      "12": "Verkehrs- und Mobilitätsbildung",
+      "13": "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    },
+    "differenzierungs_achse": {
+      "typ": "standard_standardplus",
+      "niveaus": [
+        "Standard",
+        "Standard AHS"
+      ],
+      "enrichment_quelle": "allenfalls",
+      "spiralprinzip_backlinks": true
+    },
+    "anwendungsbereiche_status": "item_flags",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Lehrpläne der Mittelschulen",
+      "nor": "NOR40271471",
+      "kundmachung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+      "anlage": "Anl. 1",
+      "teil": "ACHTER TEIL",
+      "stand": "2026-07-27"
+    }
+  },
+  "teile": [
+    {
+      "datei": "daten.json",
+      "typ": "kompetenzbereich",
+      "nummer": 4,
+      "slug": "DATEN",
+      "name": "Daten und Zufall",
+      "kompetenzen": 7,
+      "anwendungsitems": 23,
+      "bytes": 19957,
+      "tokens_approx": 4989
+    },
+    {
+      "datei": "figuren.json",
+      "typ": "kompetenzbereich",
+      "nummer": 3,
+      "slug": "FIGUREN",
+      "name": "Figuren und Körper",
+      "kompetenzen": 12,
+      "anwendungsitems": 65,
+      "bytes": 45655,
+      "tokens_approx": 11413
+    },
+    {
+      "datei": "variablen.json",
+      "typ": "kompetenzbereich",
+      "nummer": 2,
+      "slug": "VARIABLEN",
+      "name": "Variablen und Funktionen",
+      "kompetenzen": 12,
+      "anwendungsitems": 49,
+      "bytes": 55865,
+      "tokens_approx": 13966
+    },
+    {
+      "datei": "zahlen.json",
+      "typ": "kompetenzbereich",
+      "nummer": 1,
+      "slug": "ZAHLEN",
+      "name": "Zahlen und Maße",
+      "kompetenzen": 9,
+      "anwendungsitems": 61,
+      "bytes": 57476,
+      "tokens_approx": 14369
+    },
+    {
+      "datei": "zusatz.json",
+      "typ": "zusatz",
+      "zusatzkompetenzen": 2,
+      "digitale_technologien_vorschlaege": 39,
+      "bytes": 19199,
+      "tokens_approx": 4799
+    }
+  ]
+}
