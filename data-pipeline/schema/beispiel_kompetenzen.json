@@ -1,0 +1,266 @@
+{
+  "meta": {
+    "lehrplan_fassung": "BGBl. II Nr. 185/2012 idF BGBl. II Nr. 178/2025",
+    "dataset_version": "2026-07-27",
+    "band": "SEK1",
+    "fach": {
+      "code": "M",
+      "name": "Mathematik"
+    },
+    "uebergreifende_themen_fach": [
+      "Entrepreneurship Education",
+      "Informatische Bildung",
+      "Interkulturelle Bildung",
+      "Medienbildung",
+      "Politische Bildung",
+      "Reflexive Geschlechterpaedagogik und Gleichstellung",
+      "Sprachliche Bildung und Lesen",
+      "Umweltbildung fuer nachhaltige Entwicklung",
+      "Verkehrs- und Mobilitaetsbildung",
+      "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    ],
+    "uebergreifende_themen_legende": {
+      "1": "Bildungs-, Berufs- und Lebensorientierung",
+      "2": "Entrepreneurship Education",
+      "3": "Gesundheitsfoerderung",
+      "4": "Informatische Bildung",
+      "5": "Interkulturelle Bildung",
+      "6": "Medienbildung",
+      "7": "Politische Bildung",
+      "8": "Reflexive Geschlechterpaedagogik und Gleichstellung",
+      "9": "Sexualpaedagogik",
+      "10": "Sprachliche Bildung und Lesen",
+      "11": "Umweltbildung fuer nachhaltige Entwicklung",
+      "12": "Verkehrs- und Mobilitaetsbildung",
+      "13": "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    },
+    "differenzierungs_achse": {
+      "typ": "standard_standardplus",
+      "niveaus": [
+        "Standard",
+        "Standard AHS"
+      ],
+      "enrichment_quelle": "allenfalls",
+      "spiralprinzip_backlinks": true
+    },
+    "anwendungsbereiche_status": "item_flags",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Lehrplaene der Mittelschulen",
+      "nor": "NOR40271471",
+      "kundmachung": "BGBl. II Nr. 185/2012 idF BGBl. II Nr. 178/2025",
+      "anlage": "Anl. 1",
+      "teil": "ACHTER TEIL",
+      "stand": "2026-07-27"
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "nummer": 1,
+      "slug": "ZAHLEN",
+      "name": "Zahlen und Maße",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.SEK1.M.ZAHLEN.K1.01",
+          "band": "SEK1",
+          "fach": "M",
+          "bereich_nummer": 1,
+          "bereich_name": "Zahlen und Maße",
+          "stufe": "K1",
+          "ordinal": 0,
+          "text": "natürliche Zahlen sowie nichtnegative Dezimal- und Bruchzahlen interpretieren, darstellen und vergleichen;",
+          "text_roh": "natürliche Zahlen sowie nichtnegative Dezimal- und Bruchzahlen interpretieren, darstellen und vergleichen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.M.ZAHLEN.K2.01",
+            "AT.LP23.SEK1.M.ZAHLEN.K2.02",
+            "AT.LP23.SEK1.M.ZAHLEN.K2.03",
+            "AT.LP23.SEK1.M.ZAHLEN.K2.04"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.06",
+              "band": "SEK1",
+              "fach": "M",
+              "bereich_nummer": 1,
+              "bereich_name": "Zahlen und Maße",
+              "stufe": "K1",
+              "ordinal": 5,
+              "text": "Wechseln zwischen Bruch- und Dezimaldarstellung in einfachen Fällen (zB 0,6⟦ABB:hauptdokument.img1is.png⟧ ⟦ABB:hauptdokument.img2is.png⟧; 1,25⟦ABB:hauptdokument.img3is.png⟧; ⟦ABB:hauptdokument.img4is.png⟧;",
+              "text_roh": "Wechseln zwischen Bruch- und Dezimaldarstellung in einfachen Fällen (zB 0,6⟦ABB:hauptdokument.img1is.png⟧ ⟦ABB:hauptdokument.img2is.png⟧; 1,25⟦ABB:hauptdokument.img3is.png⟧; ⟦ABB:hauptdokument.img4is.png⟧;",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img1is.png⟧",
+                  "datei": "hauptdokument.img1is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img1is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img1is.png",
+                  "breite_px": 10,
+                  "hoehe_px": 17,
+                  "sha256": "af89dbdbebcda7236803a36deff441a37a85866876866a2b98d1a1c0d203ad7d"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img2is.png⟧",
+                  "datei": "hauptdokument.img2is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img2is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img2is.png",
+                  "breite_px": 38,
+                  "hoehe_px": 17,
+                  "sha256": "afe47c7eb57f08dfcf9cbc884e06e52f8bd63088550d51719db3c54630d0bcbb"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img3is.png⟧",
+                  "datei": "hauptdokument.img3is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img3is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img3is.png",
+                  "breite_px": 18,
+                  "hoehe_px": 17,
+                  "sha256": "4c4071d8e8dc0b7bf42bfbffc0b11c072fe41da363e9e914c48a59d1d06a20a6"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img4is.png⟧",
+                  "datei": "hauptdokument.img4is.png",
+                  "nor": "NOR40271471",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img4is.png",
+                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img4is.png",
+                  "breite_px": 64,
+                  "hoehe_px": 17,
+                  "sha256": "6eaab75451a5ab96402f78366adfd046ce6973bd6cbf5937cd64628273c1d819"
+                }
+              ]
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ZAHLEN.K1.08",
+              "band": "SEK1",
+              "fach": "M",
+              "bereich_nummer": 1,
+              "bereich_name": "Zahlen und Maße",
+              "stufe": "K1",
+              "ordinal": 7,
+              "text": "Lesen und allenfalls Schreiben römischer Zahldarstellungen; Erkennen der Vorteile des dezimalen Stellenwertsystems im Vergleich zur römischen Zahldarstellung.",
+              "text_roh": "Lesen und allenfalls Schreiben römischer Zahldarstellungen; Erkennen der Vorteile des dezimalen Stellenwertsystems im Vergleich zur römischen Zahldarstellung.",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.01",
+              "wiederholung_von": [],
+              "abbildungen": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nummer": 2,
+      "slug": "VARIABLEN",
+      "name": "Variablen und Funktionen",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.SEK1.M.VARIABLEN.K1.01",
+          "band": "SEK1",
+          "fach": "M",
+          "bereich_nummer": 2,
+          "bereich_name": "Variablen und Funktionen",
+          "stufe": "K1",
+          "ordinal": 0,
+          "text": "einfache Terme, Gleichungen und Formeln aufstellen und interpretieren;",
+          "text_roh": "einfache Terme, Gleichungen und Formeln aufstellen und interpretieren;10",
+          "uebergreifende_themen": [
+            "Sprachliche Bildung und Lesen"
+          ],
+          "themen_marker_roh": [
+            "10"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.M.VARIABLEN.K2.01",
+            "AT.LP23.SEK1.M.VARIABLEN.K2.02"
+          ],
+          "abbildungen": [],
+          "anwendungsbereiche": []
+        }
+      ]
+    },
+    {
+      "nummer": 3,
+      "slug": "FIGUREN",
+      "name": "Figuren und Körper",
+      "kompetenzen": []
+    },
+    {
+      "nummer": 4,
+      "slug": "DATEN",
+      "name": "Daten und Zufall",
+      "kompetenzen": []
+    }
+  ],
+  "zusatzkompetenzen": [
+    {
+      "id": "AT.LP23.SEK1.M.GZINTEGRATIV.K3.01",
+      "band": "SEK1",
+      "fach": "M",
+      "bereich_nummer": null,
+      "bereich_name": "Integrative Führung von Geometrisches Zeichnen",
+      "stufe": "K3",
+      "ordinal": 0,
+      "text": "Grund-, Auf- und Kreuzriss, Schrägrisse und Zentralrisse von geometrischen Objekten lesen, mit unterschiedlichen Methoden herstellen sowie die Raumvorstellung mittels Raumtransformation von geometrischen Objekten weiterentwickeln.",
+      "text_roh": "Grund-, Auf- und Kreuzriss, Schrägrisse und Zentralrisse von geometrischen Objekten lesen, mit unterschiedlichen Methoden herstellen sowie die Raumvorstellung mittels Raumtransformation von geometrischen Objekten weiterentwickeln.",
+      "uebergreifende_themen": [],
+      "themen_marker_roh": [],
+      "fussnoten_unaufgeloest": [],
+      "vorlaeufer": [],
+      "folge": [
+        "AT.LP23.SEK1.M.GZINTEGRATIV.K4.01"
+      ],
+      "abbildungen": []
+    },
+    {
+      "id": "AT.LP23.SEK1.M.GZINTEGRATIV.K4.01",
+      "band": "SEK1",
+      "fach": "M",
+      "bereich_nummer": null,
+      "bereich_name": "Integrative Führung von Geometrisches Zeichnen",
+      "stufe": "K4",
+      "ordinal": 0,
+      "text": "Geometrische Objekte in unterschiedlichen Rissen mithilfe von Raumtransformationen und Booleschen Operationen unter Verwendung von Konstruktionszeichnungen und 3D-Software erzeugen und bearbeiten sowie die Raumvorstellung stärken.",
+      "text_roh": "Geometrische Objekte in unterschiedlichen Rissen mithilfe von Raumtransformationen und Booleschen Operationen unter Verwendung von Konstruktionszeichnungen und 3D-Software erzeugen und bearbeiten sowie die Raumvorstellung stärken.",
+      "uebergreifende_themen": [],
+      "themen_marker_roh": [],
+      "fussnoten_unaufgeloest": [],
+      "vorlaeufer": [
+        "AT.LP23.SEK1.M.GZINTEGRATIV.K3.01"
+      ],
+      "folge": [],
+      "abbildungen": []
+    }
+  ],
+  "digitale_technologien_vorschlaege": [
+    {
+      "id": "AT.LP23.SEK1.M.DT.DATEN.K1.01",
+      "band": "SEK1",
+      "fach": "M",
+      "bereich_nummer": 4,
+      "bereich_name": "Daten und Zufall",
+      "stufe": "K1",
+      "ordinal": 0,
+      "text": "Überprüfen von Rechenergebnissen bzw. Lösungen;",
+      "text_roh": "Überprüfen von Rechenergebnissen bzw. Lösungen;",
+      "verbindlich": true,
+      "art": "digitale_technologien",
+      "kompetenz_id": null,
+      "wiederholung_von": [],
+      "abbildungen": []
+    }
+  ]
+}

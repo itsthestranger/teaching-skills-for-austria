@@ -1,0 +1,269 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://teaching-skills-austria.local/schema/kompetenzen.schema.json",
+  "title": "Kompetenzen-Shard (RIS Lehrplan 2023)",
+  "description": "One shard per subject x band at plugin/data/kompetenzen/<band>/<fach>.json. Amends plan-austria-plan.md section 4.9 per FINDINGS.md V-22/V-24/V-53/V-54/V-57 and data-pipeline/notes/deviations.md. Enums are tolerant defaults per plan section 0.1 / E2-16: unknown values are kept and logged, never dropped by this schema. additionalProperties is left open (true) throughout on purpose -- see the E3-01 report -- so a tolerable surprise from the live RIS source never turns into a hard schema-validation failure. The only hard failures modelled here are a missing id/stufe/text on a competence or application-area record; ID-collision detection happens in the Python pipeline, not in this schema (JSON Schema has no practical way to assert uniqueness of a field across a heterogeneous nested structure).",
+  "type": "object",
+  "required": ["meta", "kompetenzbereiche"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": [
+        "dataset_version",
+        "band",
+        "fach",
+        "differenzierungs_achse",
+        "anwendungsbereiche_status",
+        "provenienz"
+      ],
+      "properties": {
+        "lehrplan_fassung": { "type": "string" },
+        "dataset_version": { "type": "string" },
+        "band": {
+          "type": "string",
+          "enum": ["PRIM", "SEK1"],
+          "description": "Closed by design (frozen ID-grammar decision): Band = PRIM | SEK1. Not a tolerant position."
+        },
+        "fach": {
+          "type": "object",
+          "required": ["code", "name"],
+          "properties": {
+            "code": {
+              "type": "string",
+              "description": "Fach = M | D | E | SU | ... (plan section 4.8). Tolerant: deliberately not a closed enum, more subjects arrive after E3-01."
+            },
+            "name": { "type": "string" }
+          }
+        },
+        "prozesse": { "type": "array", "items": { "type": "string" } },
+        "uebergreifende_themen_fach": { "type": "array", "items": { "type": "string" } },
+        "uebergreifende_themen_legende": {
+          "type": "object",
+          "description": "Footnote-number -> theme-name map built from the per-subject legend table (FINDINGS.md V-56). Keys are the raw <super> digit strings.",
+          "additionalProperties": { "type": "string" }
+        },
+        "differenzierungs_achse": {
+          "type": "object",
+          "required": ["typ"],
+          "properties": {
+            "typ": {
+              "type": "string",
+              "description": "standard_standardplus | gers | lehrplan_generisch, tolerant (plan section 4.7)."
+            },
+            "niveaus": { "type": "array", "items": { "type": "string" } },
+            "enrichment_quelle": { "type": "string" },
+            "spiralprinzip_backlinks": { "type": "boolean" },
+            "quelle": { "type": "string" },
+            "optional_material": { "type": "string" }
+          }
+        },
+        "anwendungsbereiche_status": {
+          "type": "string",
+          "enum": ["optional_sektion", "item_flags", "keine"],
+          "description": "Amended per FINDINGS.md V-24: primary Mathematik has no Anwendungsbereiche section at all, hence 'keine'. Closed by design -- this value drives which downstream shape a consumer should expect, so an unrecognised status is a real error, not a tolerable surprise."
+        },
+        "lehrstoff_quelle": {
+          "type": "string",
+          "description": "aus_anwendungsbereichen | eigen_ausgewiesen (plan section 4.5). Lives at subject/meta level, matching parse_lehrplan.py's SubjectSpec.lehrstoff_quelle and result_to_dict() -- the plan's section 4.9 draft placed it per-competence, which the parser does not do."
+        },
+        "provenienz": { "$ref": "#/$defs/provenienz" }
+      }
+    },
+    "kompetenzbereiche": {
+      "type": "array",
+      "description": "Stays exactly the official competence areas (4 for Sek I Mathematik) -- faithful to the regulation's structure per FINDINGS.md V-57. The 2 GZ-integrative competences do NOT add a 5th entry here.",
+      "items": { "$ref": "#/$defs/kompetenzbereich" }
+    },
+    "zusatzkompetenzen": {
+      "type": "array",
+      "description": "Top-level sibling array (FINDINGS.md V-57 / deviations.md row 2026-07-27 GZINTEGRATIV): competences that fit none of the official numbered Kompetenzbereiche, e.g. 'Integrative Fuehrung von Geometrisches Zeichnen'. Entries are Kompetenz objects carrying bereich_name and bereich_nummer: null. They have no Anwendungsbereiche counterpart in the source at all -- that is expected, not an error.",
+      "items": { "$ref": "#/$defs/kompetenz" }
+    },
+    "digitale_technologien_vorschlaege": {
+      "type": "array",
+      "description": "Top-level sibling array for application-area items with art: digitale_technologien (FINDINGS.md V-54). These are the per-class-year 'Vorschlaege fuer den Einsatz digitaler Technologien' lists: they precisify no competence and carry kompetenz_id: null, so they cannot be nested inside any single Kompetenz.anwendungsbereiche[] the way praezisierung items are. Symmetric with zusatzkompetenzen[] for the same reason: content the source genuinely does not attach to a competence.",
+      "items": { "$ref": "#/$defs/anwendungsitem" }
+    }
+  },
+  "$defs": {
+    "provenienz": {
+      "type": "object",
+      "description": "Per-entry provenance block (plan section 4.9, jsonc block right after). Real values for the three pinned regulations live in data-pipeline/resources/manifest.json.",
+      "required": ["quelle", "kurztitel", "nor", "kundmachung", "anlage", "teil", "stand"],
+      "properties": {
+        "quelle": { "type": "string", "description": "e.g. 'RIS Bundesrecht konsolidiert'." },
+        "kurztitel": { "type": "string", "description": "e.g. 'Lehrplan der Volksschule' / 'Lehrplaene der Mittelschulen' -- record the live RIS value verbatim (FINDINGS.md V-51)." },
+        "nor": { "type": "string", "pattern": "^NOR[0-9]+$" },
+        "kundmachung": { "type": "string", "description": "Kundmachungsorgan, e.g. 'BGBl. II Nr. 185/2012 idF BGBl. II Nr. 178/2025'." },
+        "anlage": { "type": "string", "description": "e.g. 'Anl. 1'." },
+        "teil": { "type": "string", "description": "e.g. 'ACHTER TEIL' (Sek I) / 'NEUNTER TEIL' (primary)." },
+        "stand": { "type": "string", "description": "Retrieval date, YYYY-MM-DD." }
+      }
+    },
+    "kompetenzbereich": {
+      "type": "object",
+      "required": ["nummer", "slug", "name", "kompetenzen"],
+      "description": "Field names follow parse_lehrplan.py's Kompetenzbereich dataclass (nummer, name, slug), not the plan draft's 'id_teil' -- amended so the schema accepts real parser output.",
+      "properties": {
+        "nummer": { "type": "integer", "description": "The official Kompetenzbereich number (1-4 for Sek I Mathematik)." },
+        "slug": { "type": "string", "description": "ID segment, e.g. 'ZAHLEN'. Deterministic fallback via slugify_bereich() for unmapped area names." },
+        "name": { "type": "string" },
+        "zentrales_konzept": {
+          "type": "string",
+          "description": "Plan section 4.6 field. Not yet emitted by parse_lehrplan.py (Kompetenzbereich carries no such field) -- kept optional here for a future enrichment pass, not required."
+        },
+        "kompetenzen": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/kompetenz" }
+        }
+      }
+    },
+    "kompetenz": {
+      "type": "object",
+      "description": "A single competence description. Used both nested under kompetenzbereiche[].kompetenzen[] and in the top-level zusatzkompetenzen[] array.",
+      "required": ["id", "stufe", "text"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^AT\\.LP23\\.(PRIM|SEK1)\\.[A-Z]+\\.[A-Z][A-Z0-9]*\\.(K[1-4]|SCH[1-4])\\.[0-9]{2}$",
+          "description": "AT.LP23.<Band>.<Fach>.<Bereich>.<Stufe>.<lfd>. Structural shape only -- area codes are not enumerated here, that table belongs to data-pipeline/schema/id_schema.py (owned by a parallel task)."
+        },
+        "band": { "type": "string", "enum": ["PRIM", "SEK1"] },
+        "fach": { "type": "string" },
+        "bereich_nummer": {
+          "type": ["integer", "null"],
+          "description": "May be null (FINDINGS.md V-57): the GZ-integrative competences fit no numbered Kompetenzbereich."
+        },
+        "bereich_name": { "type": "string" },
+        "stufe": { "$ref": "#/$defs/stufe" },
+        "ordinal": { "type": "integer" },
+        "text": {
+          "type": "string",
+          "description": "Verbatim quotable sentence. May contain one or more ⟦ABB:<datei>⟧ tokens (FINDINGS.md V-53) -- such records are complete quotations, not flagged incomplete; see 'abbildungen' below."
+        },
+        "text_roh": {
+          "type": "string",
+          "description": "Same traversal as 'text' but with superscript footnote digits inlined instead of stripped (parse_lehrplan.py ExtractedText.roh). Nothing is lost."
+        },
+        "prozesse": { "type": "array", "items": { "type": "string" } },
+        "uebergreifende_themen": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Resolved theme names (footnote number -> name via meta.uebergreifende_themen_legende)."
+        },
+        "themen_marker_roh": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Raw <super> contents before resolution against the theme legend, e.g. ['6, 7']. Not yet in the plan draft; emitted by the parser."
+        },
+        "fussnoten_unaufgeloest": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Super markers that did not resolve against the theme legend (ordinary footnotes, not cross-cutting themes). Not yet in the plan draft; emitted by the parser."
+        },
+        "vorlaeufer": { "type": "array", "items": { "type": "string" } },
+        "folge": { "type": "array", "items": { "type": "string" } },
+        "bildungsstandard_deskriptoren": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Forward-looking (plan section 4.6); not yet emitted by parse_lehrplan.py -- populated by the future BiSt join step (E8)."
+        },
+        "anwendungsbereiche": {
+          "type": "array",
+          "description": "Application-area items with art: praezisierung that join to this competence. digitale_technologien items never appear here -- see the top-level digitale_technologien_vorschlaege[] array.",
+          "items": { "$ref": "#/$defs/anwendungsitem" }
+        },
+        "lehrstoff": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Only meaningfully populated when meta.lehrstoff_quelle is eigen_ausgewiesen (plan section 4.5); for aus_anwendungsbereichen subjects this stays empty/absent by design, the Anwendungsbereiche items already carry the content."
+        },
+        "typische_fehlvorstellungen": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/fehlvorstellung" }
+        },
+        "abbildungen": {
+          "type": "array",
+          "description": "One entry per ⟦ABB:...⟧ token in 'text', in document order (FINDINGS.md V-53).",
+          "items": { "$ref": "#/$defs/abbildung" }
+        },
+        "provenienz": { "$ref": "#/$defs/provenienz" }
+      }
+    },
+    "anwendungsitem": {
+      "type": "object",
+      "description": "One Anwendungsbereich/Lehrstoff precisification item, or one digitale_technologien suggestion item (FINDINGS.md V-54). The two are discriminated by 'art'.",
+      "required": ["id", "stufe", "text"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^AT\\.LP23\\.(PRIM|SEK1)\\.[A-Z]+\\.(AB|DT)\\.[A-Z][A-Z0-9]*\\.(K[1-4]|SCH[1-4])\\.[0-9]{2}$",
+          "description": "AT.LP23.<Band>.<Fach>.AB.<Bereich>.<Stufe>.<lfd> for a praezisierung item; .DT. instead of .AB. for a digitale_technologien item. Structural shape only, per the frozen ID grammar owned by data-pipeline/schema/id_schema.py."
+        },
+        "band": { "type": "string", "enum": ["PRIM", "SEK1"] },
+        "fach": { "type": "string" },
+        "bereich_nummer": { "type": ["integer", "null"] },
+        "bereich_name": { "type": "string" },
+        "stufe": { "$ref": "#/$defs/stufe" },
+        "ordinal": { "type": "integer" },
+        "text": {
+          "type": "string",
+          "description": "May contain ⟦ABB:<datei>⟧ tokens; see 'abbildungen'."
+        },
+        "text_roh": { "type": "string" },
+        "verbindlich": {
+          "type": "boolean",
+          "description": "Under anwendungsbereiche_status: item_flags, every real item carries this. Not JSON-Schema-required here: 'the only hard failures are a missing id/stufe/text' (E3-01 brief) -- a subject under optional_sektion or keine status may have no per-item binding flag at all."
+        },
+        "art": {
+          "type": "string",
+          "description": "praezisierung | digitale_technologien (FINDINGS.md V-54). Deliberately typed as a free string, not a closed enum -- tolerant per plan section 0.1/E2-16: an unknown 'art' value must still validate, not be rejected."
+        },
+        "kompetenz_id": {
+          "type": ["string", "null"],
+          "description": "null for digitale_technologien items, which precisify no competence (FINDINGS.md V-54). Present so a digitale_technologien item that ends up outside its owning competence's nested array (see digitale_technologien_vorschlaege[]) still carries an explicit, honest 'no competence' marker instead of silently omitting the field."
+        },
+        "wiederholung_von": { "type": "array", "items": { "type": "string" } },
+        "abbildungen": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/abbildung" }
+        }
+      }
+    },
+    "abbildung": {
+      "type": "object",
+      "description": "Inline formula-image metadata (FINDINGS.md V-53). One entry per ⟦ABB:<datei>⟧ token.",
+      "required": ["token", "datei", "nor", "pfad", "quelle_url", "breite_px", "hoehe_px", "sha256"],
+      "properties": {
+        "token": {
+          "type": "string",
+          "pattern": "^⟦ABB:.+⟧$",
+          "description": "The exact in-text token, e.g. ⟦ABB:hauptdokument.img1is.png⟧ (U+27E6/U+27E7)."
+        },
+        "datei": { "type": "string", "description": "Bare filename, e.g. 'hauptdokument.img1is.png'." },
+        "nor": { "type": "string", "pattern": "^NOR[0-9]+$" },
+        "pfad": { "type": "string", "description": "Plugin-relative path, e.g. 'data/abbildungen/NOR40271471/hauptdokument.img1is.png'." },
+        "quelle_url": { "type": "string", "format": "uri" },
+        "breite_px": { "type": "integer", "minimum": 1 },
+        "hoehe_px": { "type": "integer", "minimum": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "fehlvorstellung": {
+      "type": "object",
+      "description": "Curated from recognised subject-didactics literature, never LLM-generated (plan section 4.6). Forward-looking: not emitted by parse_lehrplan.py, populated by a separate human-reviewed step.",
+      "required": ["text", "amtlich"],
+      "properties": {
+        "text": { "type": "string" },
+        "lehrkraft_hinweis": { "type": "string" },
+        "quelle": { "type": "string" },
+        "amtlich": { "const": false }
+      }
+    },
+    "stufe": {
+      "type": "string",
+      "pattern": "^(K[1-4]|SCH[1-4])$",
+      "description": "Amended per FINDINGS.md V-22: primary is per school year (SCH1..SCH4), not per Grundstufe. GS1/GS2/VOR are removed entirely, not kept as alternatives. Closed by design -- 'stufe' drives ID generation and progression joins, so a value outside this set is a real error (see the negative test for a rejected 'GS1')."
+    }
+  }
+}
