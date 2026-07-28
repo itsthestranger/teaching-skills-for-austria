@@ -101,42 +101,22 @@
                 {
                   "token": "⟦ABB:hauptdokument.img1is.png⟧",
                   "datei": "hauptdokument.img1is.png",
-                  "nor": "NOR40271471",
-                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img1is.png",
-                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img1is.png",
-                  "breite_px": 10,
-                  "hoehe_px": 17,
-                  "sha256": "af89dbdbebcda7236803a36deff441a37a85866876866a2b98d1a1c0d203ad7d"
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img1is.png"
                 },
                 {
                   "token": "⟦ABB:hauptdokument.img2is.png⟧",
                   "datei": "hauptdokument.img2is.png",
-                  "nor": "NOR40271471",
-                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img2is.png",
-                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img2is.png",
-                  "breite_px": 38,
-                  "hoehe_px": 17,
-                  "sha256": "afe47c7eb57f08dfcf9cbc884e06e52f8bd63088550d51719db3c54630d0bcbb"
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img2is.png"
                 },
                 {
                   "token": "⟦ABB:hauptdokument.img3is.png⟧",
                   "datei": "hauptdokument.img3is.png",
-                  "nor": "NOR40271471",
-                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img3is.png",
-                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img3is.png",
-                  "breite_px": 18,
-                  "hoehe_px": 17,
-                  "sha256": "4c4071d8e8dc0b7bf42bfbffc0b11c072fe41da363e9e914c48a59d1d06a20a6"
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img3is.png"
                 },
                 {
                   "token": "⟦ABB:hauptdokument.img4is.png⟧",
                   "datei": "hauptdokument.img4is.png",
-                  "nor": "NOR40271471",
-                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img4is.png",
-                  "quelle_url": "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40271471/hauptdokument.img4is.png",
-                  "breite_px": 64,
-                  "hoehe_px": 17,
-                  "sha256": "6eaab75451a5ab96402f78366adfd046ce6973bd6cbf5937cd64628273c1d819"
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img4is.png"
                 }
               ]
             },

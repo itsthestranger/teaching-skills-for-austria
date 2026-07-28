@@ -53,13 +53,24 @@ def manifest() -> dict:
 
 
 @pytest.fixture(scope="module")
-def dateien_meta(parse_result: P.ParseResult, manifest: dict) -> dict[str, dict]:
-    return B.build_parts(parse_result, P.SEK1_MATHEMATIK, manifest, modus="meta")
+def registry(parse_result: P.ParseResult) -> dict[str, dict]:
+    """The abbildungen registry as it would be persisted -- built purely
+    in-memory from the parser's own output, independent of whatever is
+    already on disk at plugin/data/abbildungen/registry.json, so this test
+    module never depends on build order relative to other shards."""
+    return B.collect_abbildungen_registry_eintraege(parse_result)
 
 
 @pytest.fixture(scope="module")
-def dateien_je_datensatz(parse_result: P.ParseResult, manifest: dict) -> dict[str, dict]:
-    return B.build_parts(parse_result, P.SEK1_MATHEMATIK, manifest, modus="je_datensatz")
+def dateien_meta(parse_result: P.ParseResult, manifest: dict, registry: dict[str, dict]) -> dict[str, dict]:
+    return B.build_parts(parse_result, P.SEK1_MATHEMATIK, manifest, registry, modus="meta")
+
+
+@pytest.fixture(scope="module")
+def dateien_je_datensatz(
+    parse_result: P.ParseResult, manifest: dict, registry: dict[str, dict]
+) -> dict[str, dict]:
+    return B.build_parts(parse_result, P.SEK1_MATHEMATIK, manifest, registry, modus="je_datensatz")
 
 
 @pytest.fixture(scope="module")
@@ -402,10 +413,9 @@ def test_je_datensatz_variant_is_larger_than_meta(
 # --------------------------------------------------------------------------
 
 
-def test_abbildungen_registry_covers_every_referenced_image(
-    parse_result: P.ParseResult, combined: dict
+def test_abbildungen_registry_covers_every_referenced_image_with_all_five_fields(
+    registry: dict[str, dict], combined: dict
 ) -> None:
-    registry = B.collect_abbildungen_registry_eintraege(parse_result)
     referenzierte_dateien = set()
     for node in list(_all_kompetenzen(combined)) + list(_all_anwendungsitems(combined)):
         for a in node.get("abbildungen", []):
@@ -417,17 +427,67 @@ def test_abbildungen_registry_covers_every_referenced_image(
             assert eintrag[feld], f"registry[{datei!r}].{feld} missing or empty"
 
 
-def test_abbildungen_records_keep_full_fields_because_schema_requires_them(combined: dict) -> None:
-    """The renderers only read token/pfad/datei, but schema/kompetenzen.schema.json's
-    $defs/abbildung (frozen, not owned by this task) requires all 8 fields --
-    so records are NOT slimmed here; see build_dataset.py's module docstring."""
+def test_abbildungen_records_are_slimmed_to_the_three_render_time_fields(dateien_meta: dict[str, dict]) -> None:
+    """token/pfad/datei are the only fields a renderer reads at render time
+    (verified against render_lesson_docx.py/render_lesson_html.py/
+    lesson_common.py); the other five now live only in registry.json."""
     gefunden = False
-    for node in list(_all_kompetenzen(combined)) + list(_all_anwendungsitems(combined)):
-        for a in node.get("abbildungen", []):
-            gefunden = True
-            for feld in ("token", "datei", "nor", "pfad", "quelle_url", "breite_px", "hoehe_px", "sha256"):
-                assert feld in a, f"{node['id']}: abbildungen entry missing {feld!r}"
+    for doc in dateien_meta.values():
+        for node in list(_all_kompetenzen(doc)) + list(_all_anwendungsitems(doc)):
+            for a in node.get("abbildungen", []):
+                gefunden = True
+                assert set(a) == {"token", "datei", "pfad"}, f"{node['id']}: unexpected abbildungen fields {set(a)!r}"
     assert gefunden, "expected at least one abbildungen entry in Sek I Mathematik"
+
+
+def test_every_inline_token_and_datei_resolves_in_the_registry(
+    dateien_meta: dict[str, dict], registry: dict[str, dict]
+) -> None:
+    """Every shipped part's inline abbildungen entries must resolve in
+    registry.json -- the registry is the only place nor/quelle_url/
+    breite_px/hoehe_px/sha256 survive after slimming."""
+    for dateiname, doc in dateien_meta.items():
+        for node in list(_all_kompetenzen(doc)) + list(_all_anwendungsitems(doc)):
+            for a in node.get("abbildungen", []):
+                assert a["datei"] in registry, f"{dateiname}: {a['datei']!r} not in registry"
+                eintrag = registry[a["datei"]]
+                assert a["pfad"].endswith(a["datei"])
+                for feld in ("nor", "quelle_url", "breite_px", "hoehe_px", "sha256"):
+                    assert eintrag[feld], f"registry[{a['datei']!r}].{feld} missing or empty"
+
+
+def test_abbildungen_entry_validates_against_schema_with_three_fields(
+    validator: jsonschema.Draft202012Validator, schema: dict
+) -> None:
+    """The relaxed $defs/abbildung.required accepts a bare 3-field entry."""
+    abbildung_schema = schema["$defs"]["abbildung"]
+    slimmer_eintrag = {
+        "token": "⟦ABB:beispiel.png⟧",
+        "datei": "beispiel.png",
+        "pfad": "data/abbildungen/NOR40271471/beispiel.png",
+    }
+    jsonschema.validate(slimmer_eintrag, abbildung_schema, cls=jsonschema.Draft202012Validator)
+
+
+def test_assert_abbildungen_registry_complete_raises_on_missing_entry(parse_result: P.ParseResult) -> None:
+    with pytest.raises(B.BuildError):
+        B.assert_abbildungen_registry_complete(parse_result, {})
+
+
+def test_assert_abbildungen_registry_complete_raises_on_partial_entry(
+    parse_result: P.ParseResult, registry: dict[str, dict]
+) -> None:
+    kaputt = {datei: dict(eintrag) for datei, eintrag in registry.items()}
+    irgendeine_datei = next(iter(kaputt))
+    del kaputt[irgendeine_datei]["sha256"]
+    with pytest.raises(B.BuildError):
+        B.assert_abbildungen_registry_complete(parse_result, kaputt)
+
+
+def test_assert_abbildungen_registry_complete_passes_on_full_registry(
+    parse_result: P.ParseResult, registry: dict[str, dict]
+) -> None:
+    B.assert_abbildungen_registry_complete(parse_result, registry)  # must not raise
 
 
 # --------------------------------------------------------------------------

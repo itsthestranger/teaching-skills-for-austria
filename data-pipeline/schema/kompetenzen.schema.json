@@ -232,8 +232,8 @@
     },
     "abbildung": {
       "type": "object",
-      "description": "Inline formula-image metadata (FINDINGS.md V-53). One entry per ⟦ABB:<datei>⟧ token.",
-      "required": ["token", "datei", "nor", "pfad", "quelle_url", "breite_px", "hoehe_px", "sha256"],
+      "description": "Inline formula-image metadata (FINDINGS.md V-53). One entry per ⟦ABB:<datei>⟧ token. Required is deliberately just the three fields a renderer consumes at render time (verified against plugin/skills/at-unterrichtsplanung/scripts/render_lesson_docx.py, render_lesson_html.py and lesson_common.py's split_abbildungen/resolve_abbildung_path/abbildung_missing_marker/abbildung_alt) -- token to match the ⟦ABB:...⟧ token in text, pfad to resolve the image file, datei as the fallback label if the file is missing. plugin/data/abbildungen/registry.json, keyed by datei, is the authoritative home for nor/quelle_url/breite_px/hoehe_px/sha256 (an image's provenance and dimensions); those five remain valid, optional properties here for a record that legitimately carries its own copy (e.g. older data, or schema/beispiel_kompetenzen.json's illustrative shape prior to this slimming), but a builder is not required to inline them once they are recorded in the registry.",
+      "required": ["token", "datei", "pfad"],
       "properties": {
         "token": {
           "type": "string",

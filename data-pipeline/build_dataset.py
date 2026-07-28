@@ -52,28 +52,26 @@ purpose. Three lossless slimming rules apply to every record:
    Kompetenzbereich) are the exception: they keep ``bereich_name`` and
    ``bereich_nummer`` because that is the only place their area is recorded
    at all.
-3. **``abbildungen[]`` -- attempted, blocked by the frozen schema, resolved
-   by keeping full records and shipping a redundant registry.** Verified
-   against the actual renderers
+3. **``abbildungen[]`` entries carry only ``token``, ``datei``, ``pfad``.**
+   Verified against the actual renderers
    (``plugin/skills/at-unterrichtsplanung/scripts/render_lesson_docx.py``,
    ``render_lesson_html.py``, and the shared helpers in ``lesson_common.py``
    -- ``split_abbildungen``, ``resolve_abbildung_path``,
-   ``abbildung_missing_marker``, ``abbildung_alt``): only ``token``,
-   ``pfad`` and ``datei`` are read at render time. Image sizing is computed
-   from the theme's ``body_size`` and a fixed px/dpi ratio, never from
+   ``abbildung_missing_marker``, ``abbildung_alt``): those three fields are
+   the only ones read at render time. Image sizing is computed from the
+   theme's ``body_size`` and a fixed px/dpi ratio, never from
    ``breite_px``/``hoehe_px``; ``nor``/``quelle_url``/``sha256`` are not
-   read at all. **However** ``schema/kompetenzen.schema.json``'s
-   ``$defs/abbildung`` (frozen, not touched by this task) lists all eight
-   fields -- including ``nor``, ``quelle_url``, ``breite_px``, ``hoehe_px``,
-   ``sha256`` -- as ``required``, so a record whose ``abbildungen[]`` entry
-   carries only the three render-time fields fails schema validation. Since
-   the schema is the contract and is off-limits, records keep the **full**
-   eight-field ``abbildungen[]`` entries (no bytes saved there). A
-   ``plugin/data/abbildungen/registry.json`` (keyed by filename, the five
-   non-render fields) is still built and shipped as a standalone,
-   consolidated index -- useful on its own (e.g. an asset-integrity check
-   that doesn't want to load a shard) -- but it is additive, not a
-   replacement for the inline fields.
+   read at all. ``schema/kompetenzen.schema.json``'s ``$defs/abbildung``
+   originally required all eight fields, which blocked this slimming on
+   the first pass (records kept full width, see the superseded row in
+   ``notes/deviations.md``); the schema now requires only
+   ``["token", "datei", "pfad"]`` on the strength of the same renderer
+   audit, keeping the other five as valid-but-optional properties. Those
+   five now live **only** in ``plugin/data/abbildungen/registry.json``,
+   keyed by filename -- :func:`build_parts` asserts, before dropping
+   anything, that every ``datei`` referenced by an inline ``abbildungen``
+   entry resolves in the registry with all five fields present; a gap
+   there aborts the build rather than silently losing provenance.
 
 Provenance (E3-03) is built from real metadata -- ``resources/manifest.json``
 for NOR / Kundmachungsorgan / Anlage / retrieval date, and the subject's
@@ -227,20 +225,24 @@ def build_provenienz(spec: PL.SubjectSpec, manifest: dict) -> dict:
 # --------------------------------------------------------------------------
 
 
-def _abbildungen_slim(abbildungen: list[dict]) -> list[dict]:
-    """Pass ``abbildungen[]`` entries through unchanged.
+#: The five fields moved out of inline abbildungen entries and into
+#: registry.json -- provenance and dimensions, nothing a renderer reads.
+ABBILDUNG_REGISTRY_FELDER = ("nor", "quelle_url", "breite_px", "hoehe_px", "sha256")
 
-    The renderers only ever read ``token``/``pfad``/``datei`` at render time
-    (verified against render_lesson_docx.py / render_lesson_html.py /
-    lesson_common.py), so those three fields would be enough on their own --
-    but ``schema/kompetenzen.schema.json``'s ``$defs/abbildung`` (frozen,
-    not owned by this task) requires all eight fields including ``nor``,
-    ``quelle_url``, ``breite_px``, ``hoehe_px``, ``sha256``. A slimmed entry
-    fails schema validation, and the schema is the contract, so this stays a
-    straight pass-through; see the module docstring's slimming-rule 3 for
-    the full explanation. ``plugin/data/abbildungen/registry.json`` is still
-    built as a redundant, standalone index of the same five fields."""
-    return [dict(a) for a in abbildungen]
+
+def _abbildungen_slim(abbildungen: list[dict]) -> list[dict]:
+    """Slim ``abbildungen[]`` entries to exactly what a renderer reads at
+    render time: ``token`` (matches the ⟦ABB:...⟧ token in text), ``pfad``
+    (resolved to an absolute path), ``datei`` (fallback label for a
+    missing-image marker / alt text). Verified against
+    render_lesson_docx.py / render_lesson_html.py / lesson_common.py.
+    ``schema/kompetenzen.schema.json``'s ``$defs/abbildung`` now requires
+    only these three; the other five (``nor``, ``quelle_url``,
+    ``breite_px``, ``hoehe_px``, ``sha256``) live in
+    ``plugin/data/abbildungen/registry.json`` instead -- see
+    :func:`assert_abbildungen_registry_complete`, which must run and pass
+    before this function is ever called on real data."""
+    return [{"token": a["token"], "datei": a["datei"], "pfad": a["pfad"]} for a in abbildungen]
 
 
 def collect_abbildungen_registry_eintraege(result: PL.ParseResult) -> dict[str, dict]:
@@ -264,22 +266,65 @@ def collect_abbildungen_registry_eintraege(result: PL.ParseResult) -> dict[str, 
     return eintraege
 
 
+def load_or_build_abbildungen_registry(
+    result: PL.ParseResult, path: Path = ABBILDUNGEN_REGISTRY_PATH
+) -> dict[str, dict]:
+    """The registry that *would* be written for *result*: whatever is
+    already on disk at *path*, merged with every image *result* references,
+    sorted by filename. Does not write anything -- see
+    :func:`persist_abbildungen_registry`. Kept as a separate step so
+    :func:`assert_abbildungen_registry_complete` can check completeness
+    against the exact dict that is about to be persisted, before any
+    record is slimmed."""
+    bestehend: dict[str, dict] = {}
+    if path.exists():
+        bestehend = json.loads(path.read_text(encoding="utf-8"))
+    bestehend.update(collect_abbildungen_registry_eintraege(result))
+    return dict(sorted(bestehend.items()))
+
+
+def persist_abbildungen_registry(registry: dict[str, dict], path: Path = ABBILDUNGEN_REGISTRY_PATH) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(registry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
 def write_abbildungen_registry(
     result: PL.ParseResult, path: Path = ABBILDUNGEN_REGISTRY_PATH
 ) -> dict[str, dict]:
     """Merge *result*'s images into ``plugin/data/abbildungen/registry.json``
     and write it back, sorted by filename. Merges rather than overwrites so
     building one shard never drops another shard's already-registered
-    images."""
-    neu = collect_abbildungen_registry_eintraege(result)
-    bestehend: dict[str, dict] = {}
-    if path.exists():
-        bestehend = json.loads(path.read_text(encoding="utf-8"))
-    bestehend.update(neu)
-    geordnet = dict(sorted(bestehend.items()))
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(geordnet, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    return geordnet
+    images. Convenience wrapper combining :func:`load_or_build_abbildungen_registry`
+    and :func:`persist_abbildungen_registry`."""
+    registry = load_or_build_abbildungen_registry(result, path)
+    persist_abbildungen_registry(registry, path)
+    return registry
+
+
+def assert_abbildungen_registry_complete(result: PL.ParseResult, registry: dict[str, dict]) -> None:
+    """Hard-fail guard: before any inline ``abbildungen`` entry is slimmed
+    down to ``token``/``datei``/``pfad``, every ``datei`` it references
+    must resolve in *registry* with all five moved fields present.
+    Dropping provenance the registry doesn't have would be data loss, not
+    slimming -- this raises :class:`BuildError` (aborting the build) rather
+    than silently shipping an incomplete registry."""
+    quellen = list(result.kompetenzen) + list(result.anwendungsitems)
+    for q in quellen:
+        for a in q.abbildungen:
+            datei = a["datei"]
+            eintrag = registry.get(datei)
+            if eintrag is None:
+                raise BuildError(
+                    f"abbildung {datei!r} (referenced by {q.id}) is not registered in "
+                    f"{ABBILDUNGEN_REGISTRY_PATH} -- refusing to slim its inline entry "
+                    f"(would be provenance data loss)"
+                )
+            fehlend = [feld for feld in ABBILDUNG_REGISTRY_FELDER if not eintrag.get(feld)]
+            if fehlend:
+                raise BuildError(
+                    f"registry entry for {datei!r} is missing {fehlend!r} -- refusing to slim "
+                    f"its inline entry (would be provenance data loss)"
+                )
 
 
 # --------------------------------------------------------------------------
@@ -389,10 +434,17 @@ def build_parts(
     result: PL.ParseResult,
     spec: PL.SubjectSpec,
     manifest: dict,
+    registry: dict[str, dict],
     modus: str = "meta",
     dataset_version: str | None = None,
 ) -> dict[str, dict]:
     """Build every part file's JSON-serialisable document.
+
+    *registry* is the (already merged, about-to-be-persisted) abbildungen
+    registry -- see :func:`load_or_build_abbildungen_registry`. Checked for
+    completeness via :func:`assert_abbildungen_registry_complete` before any
+    inline ``abbildungen`` entry is slimmed; a gap raises :class:`BuildError`
+    instead of silently dropping provenance.
 
     Returns ``{"<bereich-slug-lowercase>.json": {...}, "zusatz.json": {...}}``
     -- ``index.json`` is not included here (see :func:`build_index`, which
@@ -400,6 +452,8 @@ def build_parts(
     """
     if modus not in ("meta", "je_datensatz"):
         raise BuildError(f"unknown provenienz-modus {modus!r}")
+
+    assert_abbildungen_registry_complete(result, registry)
 
     provenienz = build_provenienz(spec, manifest)
     meta = build_meta(spec, result, provenienz, dataset_version)
@@ -729,8 +783,17 @@ def _cli(argv: Sequence[str] | None = None) -> int:
     try:
         manifest = load_manifest(Path(args.manifest))
         result = PL.parse_lehrplan(source, spec)
-        dateien_meta = build_parts(result, spec, manifest, modus="meta", dataset_version=args.dataset_version)
-        dateien_je = build_parts(result, spec, manifest, modus="je_datensatz", dataset_version=args.dataset_version)
+        # Merge in-memory first (existing registry.json + this result's
+        # images); build_parts asserts completeness against *this* dict
+        # before slimming anything, and it is only persisted to disk below,
+        # once the whole build has actually succeeded.
+        registry = load_or_build_abbildungen_registry(result, ABBILDUNGEN_REGISTRY_PATH)
+        dateien_meta = build_parts(
+            result, spec, manifest, registry, modus="meta", dataset_version=args.dataset_version
+        )
+        dateien_je = build_parts(
+            result, spec, manifest, registry, modus="je_datensatz", dataset_version=args.dataset_version
+        )
     except BuildError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
@@ -771,7 +834,7 @@ def _cli(argv: Sequence[str] | None = None) -> int:
           f"({gesamt} bytes total, provenienz-modus={args.provenienz_modus})")
 
     if not args.no_registry:
-        registry = write_abbildungen_registry(result, ABBILDUNGEN_REGISTRY_PATH)
+        persist_abbildungen_registry(registry, ABBILDUNGEN_REGISTRY_PATH)
         print(f"updated {ABBILDUNGEN_REGISTRY_PATH}  ({len(registry)} images)")
 
     return 0
