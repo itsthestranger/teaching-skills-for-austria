@@ -16,10 +16,11 @@ Implementation: `data-pipeline/schema/id_schema.py` (stdlib only). Tests:
 
 ## 1. Grammar
 
-Both forms are produced by `LehrplanParser._make_id(bereich_slug, stufe, lfd,
-index, praefix="")` -- `praefix=""` for a competence, `"AB."`/`"DT."` for an
-application item. The trailing dot inside the prefix string is what turns a
-7-segment ID into an 8-segment one; it is not a separate template.
+The first two forms are produced by `LehrplanParser._make_id(bereich_slug,
+stufe, lfd, index, praefix="")` -- `praefix=""` for a competence, `"AB."`/
+`"DT."` for an application item. The trailing dot inside the prefix string
+is what turns a 7-segment ID into an 8-segment one; it is not a separate
+template.
 
 ```
 Kompetenz (competence), 7 segments:
@@ -29,12 +30,33 @@ Anwendungsitem (application item), 8 segments:
     AT.LP23.<Band>.<Fach>.<Art>.<Bereich>.<Stufe>.<lfd>
 ```
 
+A **third form** (task P3) is the **area-free application-item ID**, used
+only for `anwendungsbereiche_bindung: "stufe"` items (PRIM.D, PRIM.SU --
+see `data-pipeline/notes/deviations.md`, 2026-07-29 rows). Those items
+attach to a whole school year and to **no area at all**; inventing one
+would assert a scoping the regulation does not make. It drops the
+`Bereich` segment entirely rather than substituting a placeholder:
+
+```
+Anwendungsitem, area-free (bindung: stufe only), 7 segments:
+    AT.LP23.<Band>.<Fach>.<Art>.<Stufe>.<lfd>
+```
+
+Produced by `id_schema.format_item_id(band, fach, art, bereich, stufe, lfd)`
+with `bereich=None` (the 8-segment area-bearing form is unchanged, still
+built by passing a real area-code string). `parse_id()` accepts both
+application-item forms and reports `bereich=None` on the parsed
+`AnwendungsitemId` for the area-free one; `AnwendungsitemId.bereich` is
+typed `str | None` accordingly, and every ID parsed before this form
+existed still yields a plain string as before -- fully backwards
+compatible.
+
 | Segment | Values | Notes |
 |---|---|---|
 | `Band` | `PRIM` \| `SEK1` | |
 | `Fach` | `M` \| `D` \| `E` \| `SU` | Scoped per band -- see §2. |
-| `Art` | `AB` (Praezisierung) \| `DT` (digitale Technologien) | Application items only. `DT` items precisify no competence (`kompetenz_id: null` in the record) but still need a stable ID (FINDINGS V-54). |
-| `Bereich` | subject x band specific area code | See §3 for the full table. |
+| `Art` | `AB` (Praezisierung) \| `DT` (digitale Technologien) | Application items only. `DT` items precisify no competence (`kompetenz_id: null` in the record) but still need a stable ID (FINDINGS V-54). **Reserved out of the `Bereich` code space** (see the disambiguation note below) -- no area code may ever be minted as literally `AB` or `DT`. |
+| `Bereich` | subject x band specific area code | See §3 for the full table. Absent entirely in the area-free application-item form. |
 | `Stufe` | `K1..K4` (SEK1) \| `SCH1..SCH4` (PRIM) | **`GS1`/`GS2` and `VOR` are removed.** FINDINGS V-22 closed this empirically: both bands are per school year / class year, not per Grundstufe. The plan's §4.8 line listing `VOR \| GS1 \| GS2 [\| SCH1..SCH4]` is superseded by the source. |
 | `lfd` | two digits, zero-padded | Scoped per `(stufe, art, bereich)` -- see `LehrplanParser._emit_kompetenzen` / `_emit_anwendungsitems`. Not globally sequential. |
 
@@ -48,18 +70,47 @@ AT.LP23.SEK1.M.DT.ZAHLEN.K1.01           application item, digital technology
 AT.LP23.SEK1.M.GZINTEGRATIV.K3.01        synthetic area (V-57)
 AT.LP23.PRIM.SU.NATURWISS.SCH2.03
 AT.LP23.SEK1.D.AB.SPRACHREFLEXION.K1.01
+AT.LP23.PRIM.SU.AB.SCH1.01               application item, area-free (bindung: stufe)
+AT.LP23.PRIM.D.AB.SCH3.07                application item, area-free (bindung: stufe)
 ```
 
 Regexes (see `id_schema.py` for the exact compiled patterns):
 
 ```
-KOMPETENZ_ID_RE        ^AT\.LP23\.(PRIM|SEK1)\.(M|D|E|SU)\.([A-Z][A-Z0-9]*)\.(K[1-4]|SCH[1-4])\.(\d{2})$
-ANWENDUNGSITEM_ID_RE    ^AT\.LP23\.(PRIM|SEK1)\.(M|D|E|SU)\.(AB|DT)\.([A-Z][A-Z0-9]*)\.(K[1-4]|SCH[1-4])\.(\d{2})$
+KOMPETENZ_ID_RE                  ^AT\.LP23\.(PRIM|SEK1)\.(M|D|E|SU)\.(bereich, excl. AB/DT)\.(K[1-4]|SCH[1-4])\.(\d{2})$
+ANWENDUNGSITEM_ID_RE              ^AT\.LP23\.(PRIM|SEK1)\.(M|D|E|SU)\.(AB|DT)\.([A-Z][A-Z0-9]*)\.(K[1-4]|SCH[1-4])\.(\d{2})$
+ANWENDUNGSITEM_AREA_FREI_ID_RE    ^AT\.LP23\.(PRIM|SEK1)\.(M|D|E|SU)\.(AB|DT)\.(K[1-4]|SCH[1-4])\.(\d{2})$
 ```
 
-`parse_id()` additionally checks that the `Stufe` prefix agrees with `Band`
-(`SEK1` implies a `K` stufe, `PRIM` implies `SCH`) -- a constraint the two
-independent regex alternations cannot express by themselves.
+`parse_id()` tries all three, in that order, and additionally checks that
+the `Stufe` prefix agrees with `Band` (`SEK1` implies a `K` stufe, `PRIM`
+implies `SCH`) -- a constraint the regex alternations cannot express by
+themselves.
+
+### Disambiguation: `KOMPETENZ_ID_RE` vs `ANWENDUNGSITEM_AREA_FREI_ID_RE`
+
+Both are 7 segments, and a naive reading of the grammar looks ambiguous:
+is `AT.LP23.PRIM.SU.AB.SCH1.01` a competence with `Bereich="AB"`, or an
+area-free application item with `Art="AB"`, `Stufe="SCH1"`? The task brief
+that introduced this form called this out explicitly: `Stufe` values
+(`K1..K4`/`SCH1..SCH4`) and area codes (`[A-Z][A-Z0-9]*`) are drawn from
+regex-compatible alphabets, so a careless implementation could parse a
+`Stufe` value as a `Bereich`, or vice versa.
+
+The fix is structural, not a lookahead hack in the parsing order: **`AB`
+and `DT` are reserved and can never be minted as a `Bereich` code.**
+`BEREICH_CODE_RE` rejects the literals `AB`/`DT` outright (a code that
+merely *starts* with those letters, e.g. `ABC`, is still legal -- only the
+exact two-letter strings are reserved), `format_id()` refuses to build a
+competence ID with `bereich="AB"` or `"DT"`, and `KOMPETENZ_ID_RE`'s
+`Bereich` group carries the same exclusion via a negative lookahead. No
+entry in the frozen `AREA_CODES` table is or may ever be exactly `AB`/`DT`
+(`test_area_codes_never_shadow_art` in `test_id_schema.py` asserts this).
+Given that invariant, the two 7-segment grammars are mutually exclusive by
+construction: `KOMPETENZ_ID_RE` can never match a string whose 5th segment
+is `AB`/`DT`, and `ANWENDUNGSITEM_AREA_FREI_ID_RE` can only match a string
+whose 5th segment *is* `AB`/`DT`. `test_id_forms_never_both_match_any_generated_sample`
+verifies this exhaustively over every band/fach/art/stufe combination.
 
 ---
 

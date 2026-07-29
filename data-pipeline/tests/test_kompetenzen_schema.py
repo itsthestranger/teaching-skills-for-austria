@@ -171,6 +171,114 @@ def test_unknown_prozesse_value_still_validates(
     validator.validate(beispiel)
 
 
+# --------------------------------------------------------------------------
+# 4. E-P3: coarse Anwendungsbereiche attachment (nullable kompetenz_id,
+#    'bindung', meta.anwendungsbereiche_je_stufe, the area-free ID form)
+# --------------------------------------------------------------------------
+
+
+def test_example_exercises_anwendungsbereiche_je_stufe(beispiel: dict) -> None:
+    block = beispiel["meta"]["anwendungsbereiche_je_stufe"]
+    assert set(block) == {"SCH1"}
+    sch1 = block["SCH1"]
+    assert sch1["bindung"] == "stufe"
+    assert len(sch1["items"]) == 2
+    for item in sch1["items"]:
+        assert item["kompetenz_id"] is None
+        assert item["bindung"] == "stufe"
+        assert "bereich_name" not in item
+        assert "bereich_nummer" not in item
+
+
+def test_example_stufe_items_use_the_area_free_id_form(beispiel: dict) -> None:
+    """The E-P3 area-free form: AT.LP23.<Band>.<Fach>.<Art>.<Stufe>.<lfd>,
+    7 segments, no Bereich -- inventing one would assert a scoping the
+    regulation does not make (PRIM.D / PRIM.SU stufe-bound items)."""
+    for item in beispiel["meta"]["anwendungsbereiche_je_stufe"]["SCH1"]["items"]:
+        assert len(item["id"].split(".")) == 7
+        assert item["id"].startswith("AT.LP23.PRIM.SU.AB.SCH1.")
+
+
+def test_example_kompetenz_bound_items_carry_bindung_kompetenz(beispiel: dict) -> None:
+    for item in _first_kompetenz(beispiel)["anwendungsbereiche"]:
+        assert item["bindung"] == "kompetenz"
+        assert item["kompetenz_id"] is not None
+
+
+def test_meta_anwendungsbereiche_je_stufe_is_optional(
+    validator: jsonschema.Draft202012Validator, beispiel: dict
+) -> None:
+    """Not every shard has bindung: stufe items (only PRIM.D/PRIM.SU do) --
+    the property must be safely omittable."""
+    del beispiel["meta"]["anwendungsbereiche_je_stufe"]
+    validator.validate(beispiel)
+
+
+def test_bindung_enum_rejects_an_unrecognised_value(
+    validator: jsonschema.Draft202012Validator, beispiel: dict
+) -> None:
+    """Unlike 'art' (tolerant free string), 'bindung' is a closed enum: it
+    mirrors parse_lehrplan.py's SubjectSpec.anwendungsbereiche_bindung axis,
+    which has exactly five known values, three of which ever appear on an
+    item (kompetenz | bereich | stufe -- 'prosa' and 'keine' subjects never
+    emit an item at all, so no item ever needs to spell those out)."""
+    item = _first_anwendungsitem(beispiel)
+    item["bindung"] = "irgendwas_unbekanntes"
+    with pytest.raises(jsonschema.ValidationError):
+        validator.validate(beispiel)
+
+
+@pytest.mark.parametrize("bindung", ["kompetenz", "bereich", "stufe"])
+def test_bindung_enum_accepts_all_three_item_level_values(
+    validator: jsonschema.Draft202012Validator, beispiel: dict, bindung: str
+) -> None:
+    item = _first_anwendungsitem(beispiel)
+    item["bindung"] = bindung
+    validator.validate(beispiel)
+
+
+def test_bereich_bound_item_with_null_kompetenz_id_validates(
+    validator: jsonschema.Draft202012Validator, beispiel: dict
+) -> None:
+    """SEK1.D shape: an item attached to (bereich, stufe), not to one
+    competence -- kompetenz_id null, bereich_name/bereich_nummer set,
+    bindung: 'bereich'. Constructed inline (no live SEK1.D fixture exists
+    yet -- that shard is a later task) purely to exercise the schema shape."""
+    item = copy.deepcopy(_first_anwendungsitem(beispiel))
+    item["id"] = "AT.LP23.SEK1.D.AB.HOERENSPRECHEN.K1.01"
+    item["band"] = "SEK1"
+    item["fach"] = "D"
+    item["bereich_nummer"] = 1
+    item["bereich_name"] = "Zuhören und Sprechen"
+    item["bindung"] = "bereich"
+    item["kompetenz_id"] = None
+    beispiel["kompetenzbereiche"][0]["kompetenzen"][0]["anwendungsbereiche"].append(item)
+    validator.validate(beispiel)
+
+
+def test_item_id_pattern_accepts_the_area_free_form(
+    validator: jsonschema.Draft202012Validator, beispiel: dict
+) -> None:
+    item = copy.deepcopy(
+        beispiel["meta"]["anwendungsbereiche_je_stufe"]["SCH1"]["items"][0]
+    )
+    item["id"] = "AT.LP23.PRIM.D.AB.SCH3.07"
+    item["band"] = "PRIM"
+    item["fach"] = "D"
+    item["stufe"] = "SCH3"
+    beispiel["meta"]["anwendungsbereiche_je_stufe"]["SCH1"]["items"].append(item)
+    validator.validate(beispiel)
+
+
+def test_item_id_pattern_rejects_a_malformed_area_free_id(
+    validator: jsonschema.Draft202012Validator, beispiel: dict
+) -> None:
+    item = _first_anwendungsitem(beispiel)
+    item["id"] = "AT.LP23.PRIM.SU.AB.SCH1"  # missing lfd, even for the area-free shape
+    with pytest.raises(jsonschema.ValidationError):
+        validator.validate(beispiel)
+
+
 if __name__ == "__main__":  # pragma: no cover
     raise SystemExit(pytest.main([__file__, "-v"]))
 

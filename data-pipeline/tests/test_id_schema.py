@@ -340,6 +340,174 @@ def test_every_live_application_item_id_parses_under_the_frozen_scheme(live_resu
         assert parsed.bereich in S.alle_bereich_codes("SEK1", "M")
 
 
+# ---------------------------------------------------------------------------
+# 7. Area-free application-item ID form (E-P3, bindung: "stufe" items --
+#    PRIM.D / PRIM.SU items that attach to a whole school year, no area)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "band,fach,art,stufe,lfd",
+    [
+        ("PRIM", "SU", "AB", "SCH1", 1),
+        ("PRIM", "D", "AB", "SCH3", 7),
+        ("PRIM", "SU", "DT", "SCH4", 40),
+        ("PRIM", "D", "DT", "SCH2", 0),
+    ],
+)
+def test_format_item_id_area_free_round_trips_through_parse_id(band, fach, art, stufe, lfd):
+    ident = S.format_item_id(band, fach, art, None, stufe, lfd)
+    assert ident == f"AT.LP23.{band}.{fach}.{art}.{stufe}.{lfd:02d}"
+    assert len(ident.split(".")) == 7
+    parsed = S.parse_id(ident)
+    assert isinstance(parsed, S.AnwendungsitemId)
+    assert parsed.band == band
+    assert parsed.fach == fach
+    assert parsed.art == art
+    assert parsed.bereich is None
+    assert parsed.stufe == stufe
+    assert parsed.lfd == lfd
+    assert parsed.raw == ident
+
+
+def test_area_free_example_ids_from_the_task_brief_parse():
+    """The exact two examples from the E-P3 task brief."""
+    for ident in ("AT.LP23.PRIM.SU.AB.SCH1.01", "AT.LP23.PRIM.D.AB.SCH3.07"):
+        parsed = S.parse_id(ident)
+        assert isinstance(parsed, S.AnwendungsitemId)
+        assert parsed.bereich is None
+
+
+def test_format_item_id_area_bearing_form_unaffected_by_the_new_optional_arg():
+    """Backwards compatibility: passing a real bereich string still builds
+    the original 8-segment form exactly as before."""
+    ident = S.format_item_id("SEK1", "M", "AB", "ZAHLEN", "K2", 5)
+    assert ident == "AT.LP23.SEK1.M.AB.ZAHLEN.K2.05"
+    assert len(ident.split(".")) == 8
+    parsed = S.parse_id(ident)
+    assert isinstance(parsed, S.AnwendungsitemId)
+    assert parsed.bereich == "ZAHLEN"
+
+
+# --- The disambiguation edge case: K1/SCH1 etc. must never be mistaken for
+# --- an area code, and "AB"/"DT" must never be mistaken for an area code.
+
+
+@pytest.mark.parametrize(
+    "band,fach,art,stufe",
+    [
+        ("SEK1", "M", "AB", "K1"),
+        ("SEK1", "M", "DT", "K4"),
+        ("PRIM", "SU", "AB", "SCH1"),
+        ("PRIM", "D", "DT", "SCH2"),
+    ],
+)
+def test_area_free_item_id_never_misparsed_as_a_competence_id(band, fach, art, stufe):
+    """The core disambiguation guarantee: an area-free application-item ID
+    (7 segments, 5th segment is the reserved Art literal AB/DT) must never
+    also match the 7-segment competence grammar with Bereich=AB/DT -- the
+    exact trap the task brief calls out (Stufe values K1../SCH1.. could
+    otherwise be mis-read as sitting where a Bereich code goes)."""
+    ident = S.format_item_id(band, fach, art, None, stufe, 1)
+    assert S.KOMPETENZ_ID_RE.match(ident) is None
+    parsed = S.parse_id(ident)
+    assert isinstance(parsed, S.AnwendungsitemId)
+    assert parsed.art == art
+    assert parsed.bereich is None
+
+
+@pytest.mark.parametrize("verboten", ["AB", "DT"])
+def test_bereich_code_re_rejects_the_reserved_art_literals(verboten):
+    assert S.BEREICH_CODE_RE.match(verboten) is None
+
+
+@pytest.mark.parametrize("erlaubt", ["ABC", "ABX", "DTX", "A", "AB1"])
+def test_bereich_code_re_still_accepts_codes_that_merely_start_with_ab_dt(erlaubt):
+    """Only the exact literals AB/DT are reserved -- a longer code that
+    happens to start with those two letters is still a legal area code."""
+    assert S.BEREICH_CODE_RE.match(erlaubt) is not None
+
+
+@pytest.mark.parametrize("verboten", ["AB", "DT"])
+def test_format_id_rejects_ab_dt_as_a_bereich_code(verboten):
+    """A competence bereich can never be minted as exactly 'AB' or 'DT' --
+    that is what keeps the two 7-segment grammars unambiguous by
+    construction, not merely by accident of the current AREA_CODES table."""
+    with pytest.raises(S.IdSchemaError):
+        S.format_id("PRIM", "SU", verboten, "SCH1", 1)
+
+
+@pytest.mark.parametrize(
+    "schluessel,name,code",
+    [
+        (schluessel, name, code)
+        for schluessel, tabelle in S.AREA_CODES.items()
+        for name, code in tabelle.items()
+    ],
+)
+def test_area_codes_never_shadow_art(schluessel, name, code):
+    """No frozen area code in the shipped table is literally 'AB' or 'DT' --
+    the invariant the area-free ID form's disambiguation depends on."""
+    assert code not in ("AB", "DT"), f"{schluessel}/{name!r}: code {code!r} shadows Art"
+
+
+def test_id_forms_never_both_match_any_generated_sample():
+    """Exhaustive-ish collision-freedom check: for every band/fach/art/stufe
+    combination, the area-free application-item ID matches exactly one of
+    the three regexes (its own), never the competence regex too."""
+    for band in S.BAENDER:
+        for fach in S.BAND_FAECHER[band]:
+            for art in ("AB", "DT"):
+                for stufe in S.stufen_werte(band):
+                    ident = S.format_item_id(band, fach, art, None, stufe, 1)
+                    matches = [
+                        bool(S.KOMPETENZ_ID_RE.match(ident)),
+                        bool(S.ANWENDUNGSITEM_ID_RE.match(ident)),
+                        bool(S.ANWENDUNGSITEM_AREA_FREI_ID_RE.match(ident)),
+                    ]
+                    assert matches == [False, False, True], (ident, matches)
+
+
+# ---------------------------------------------------------------------------
+# 8. validate_ids across both application-item forms
+# ---------------------------------------------------------------------------
+
+
+def test_validate_ids_accepts_a_mix_of_all_three_forms():
+    ids = [
+        S.format_id("PRIM", "SU", "GEOGRAFIE", "SCH1", 1),
+        S.format_item_id("SEK1", "M", "AB", "ZAHLEN", "K1", 1),
+        S.format_item_id("PRIM", "SU", "AB", None, "SCH1", 1),
+        S.format_item_id("PRIM", "D", "DT", None, "SCH3", 2),
+    ]
+    result = S.validate_ids(ids)
+    assert result.ok
+    assert result.malformed == ()
+    assert result.duplicates == ()
+    assert result.total == 4
+
+
+def test_validate_ids_catches_a_duplicate_area_free_item_id():
+    dup = S.format_item_id("PRIM", "SU", "AB", None, "SCH1", 1)
+    other = S.format_item_id("PRIM", "SU", "AB", None, "SCH1", 2)
+    result = S.validate_ids([dup, other, dup])
+    assert not result.ok
+    assert result.duplicates == (dup,)
+    assert result.malformed == ()
+
+
+def test_validate_ids_area_free_and_area_bearing_never_collide_as_strings():
+    """An area-free item and an area-bearing item can share band/fach/art/
+    stufe/lfd -- they are still different strings (different segment count),
+    so no false-positive duplicate."""
+    area_free = S.format_item_id("PRIM", "SU", "AB", None, "SCH1", 1)
+    area_bearing = S.format_item_id("PRIM", "SU", "AB", "GEOGRAFIE", "SCH1", 1)
+    assert area_free != area_bearing
+    result = S.validate_ids([area_free, area_bearing])
+    assert result.ok
+    assert result.duplicates == ()
+
+
 def test_live_ids_are_globally_unique(live_result):
     """The real integration check: all 42 + 237 = 279 emitted IDs parse and
     are unique together, competences and application items in one pool --

@@ -45,6 +45,43 @@
     },
     "anwendungsbereiche_status": "item_flags",
     "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "anwendungsbereiche_je_stufe": {
+      "SCH1": {
+        "bindung": "stufe",
+        "items": [
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH1.01",
+            "band": "PRIM",
+            "fach": "SU",
+            "stufe": "SCH1",
+            "ordinal": 0,
+            "text": "Ich und Du und Wir",
+            "text_roh": "Ich und Du und Wir",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "bindung": "stufe",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH1.02",
+            "band": "PRIM",
+            "fach": "SU",
+            "stufe": "SCH1",
+            "ordinal": 1,
+            "text": "Jahr und Zeit",
+            "text_roh": "Jahr und Zeit",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "bindung": "stufe",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      }
+    },
     "provenienz": {
       "quelle": "RIS Bundesrecht konsolidiert",
       "kurztitel": "Lehrplaene der Mittelschulen",
@@ -95,6 +132,7 @@
               "text_roh": "Wechseln zwischen Bruch- und Dezimaldarstellung in einfachen Fällen (zB 0,6⟦ABB:hauptdokument.img1is.png⟧ ⟦ABB:hauptdokument.img2is.png⟧; 1,25⟦ABB:hauptdokument.img3is.png⟧; ⟦ABB:hauptdokument.img4is.png⟧;",
               "verbindlich": true,
               "art": "praezisierung",
+              "bindung": "kompetenz",
               "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.01",
               "wiederholung_von": [],
               "abbildungen": [
@@ -132,6 +170,7 @@
               "text_roh": "Lesen und allenfalls Schreiben römischer Zahldarstellungen; Erkennen der Vorteile des dezimalen Stellenwertsystems im Vergleich zur römischen Zahldarstellung.",
               "verbindlich": false,
               "art": "praezisierung",
+              "bindung": "kompetenz",
               "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.01",
               "wiederholung_von": [],
               "abbildungen": []

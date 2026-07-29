@@ -10,18 +10,23 @@ Mathematik area codes (``ZAHLEN``, ``VARIABLEN``, ``FIGUREN``, ``DATEN``) and
 the synthetic ``GZINTEGRATIV`` code are reused verbatim from
 ``parse_lehrplan.py`` because they are already in shipped IDs.
 
-Two ID grammars are in scope, both produced by
+Three ID grammars are in scope. The first two are produced by
 ``LehrplanParser._make_id`` (``praefix=""`` for competences, ``"AB."``/``"DT."``
 for application items -- the trailing dot in the prefix is what turns the
-segment count from 7 into 8):
+segment count from 7 into 8); the third is the area-free application-item
+form added in E-P3 for ``anwendungsbereiche_bindung: "stufe"`` items
+(PRIM.D, PRIM.SU), which attach to a whole school year and no area at all:
 
-    Kompetenz:       AT.LP23.<Band>.<Fach>.<Bereich>.<Stufe>.<lfd>            (7 segments)
-    Anwendungsitem:  AT.LP23.<Band>.<Fach>.<Art>.<Bereich>.<Stufe>.<lfd>      (8 segments)
+    Kompetenz:                AT.LP23.<Band>.<Fach>.<Bereich>.<Stufe>.<lfd>       (7 segments)
+    Anwendungsitem:            AT.LP23.<Band>.<Fach>.<Art>.<Bereich>.<Stufe>.<lfd> (8 segments)
+    Anwendungsitem (area-free) AT.LP23.<Band>.<Fach>.<Art>.<Stufe>.<lfd>          (7 segments)
 
     Band  = PRIM | SEK1
     Fach  = M | D | E | SU                    (scoped per band, see BAND_FAECHER)
     Art   = AB (Praezisierung) | DT (digitale Technologien)
-    Bereich = subject x band specific area code, see AREA_CODES
+    Bereich = subject x band specific area code, see AREA_CODES -- never
+              literally "AB"/"DT" (reserved for Art, see BEREICH_CODE_RE),
+              which is what keeps the two 7-segment grammars unambiguous
     Stufe = K1..K4 (SEK1) | SCH1..SCH4 (PRIM)  -- GS1/GS2/VOR are NOT in scope
             (V-22: primary is per school year, not per Grundstufe)
     lfd   = two digits, zero-padded, scoped per (stufe, art, bereich)
@@ -33,6 +38,8 @@ Examples::
     AT.LP23.SEK1.M.DT.ZAHLEN.K1.01           # application item, digital tech
     AT.LP23.SEK1.M.GZINTEGRATIV.K3.01        # synthetic area (V-57)
     AT.LP23.PRIM.SU.NATURWISS.SCH2.03
+    AT.LP23.PRIM.SU.AB.SCH1.01               # area-free application item (E-P3)
+    AT.LP23.PRIM.D.AB.SCH3.07                # area-free application item (E-P3)
 
 stdlib only. See ``notes/id-schema.md`` for the full code table, the
 rationale behind each minted area code, and the frozen-scheme rationale.
@@ -204,23 +211,63 @@ _BAND_ALT = "|".join(BAENDER)
 _FACH_ALT = "|".join(sorted(FAECHER, key=len, reverse=True))
 _STUFE_ALT = r"K[1-4]|SCH[1-4]"
 
+#: The two ``Art`` literals for application items. Reserved out of the
+#: ``Bereich`` code space (see ``_BEREICH_SEGMENT`` below) so a 7-segment
+#: area-free application-item ID (``AT.LP23.<Band>.<Fach>.<Art>.<Stufe>.<lfd>``,
+#: E-P3) can never be misparsed as a 7-segment competence ID
+#: (``AT.LP23.<Band>.<Fach>.<Bereich>.<Stufe>.<lfd>``) with ``Bereich`` equal
+#: to the literal string ``AB`` or ``DT`` -- the two grammars would otherwise
+#: overlap exactly on that one segment value. No area code in AREA_CODES is
+#: (or may ever be) exactly "AB" or "DT"; see test_area_codes_never_shadow_art.
+_ART_ALT = "AB|DT"
+
+#: One ``Bereich`` (area code) segment, used inside a full ID pattern (not
+#: anchored -- see BEREICH_CODE_RE below for the standalone validator).
+#: ASCII uppercase letters/digits, starting with a letter, and -- the
+#: disambiguation load-bearing part -- never exactly "AB" or "DT" (those are
+#: reserved for the application-item ``Art`` segment; see ``_ART_ALT``).
+_BEREICH_SEGMENT = rf"(?!(?:{_ART_ALT})\.)[A-Z][A-Z0-9]*"
+
 #: One area code: ASCII uppercase letters/digits, starting with a letter.
 #: Readable and stable by construction (see notes/id-schema.md for the
 #: minting rationale of each one); generous upper bound so a long minted
-#: name (``GZINTEGRATIV``, 12 chars) still fits comfortably.
-BEREICH_CODE_RE = re.compile(r"^[A-Z][A-Z0-9]{0,23}$")
+#: name (``GZINTEGRATIV``, 12 chars) still fits comfortably. Excludes the two
+#: reserved ``Art`` literals ``AB``/``DT`` (see ``_ART_ALT``) -- a bereich
+#: code must never collide with an application-item Art marker, or the
+#: 7-segment competence grammar and the 7-segment area-free application-item
+#: grammar (E-P3) would become ambiguous.
+BEREICH_CODE_RE = re.compile(rf"^(?!(?:{_ART_ALT})$)[A-Z][A-Z0-9]{{0,23}}$")
 
 #: Competence ID -- 7 segments: AT.LP23.<Band>.<Fach>.<Bereich>.<Stufe>.<lfd>
 KOMPETENZ_ID_RE = re.compile(
     rf"^AT\.LP23\.(?P<band>{_BAND_ALT})\.(?P<fach>{_FACH_ALT})\."
-    rf"(?P<bereich>[A-Z][A-Z0-9]*)\.(?P<stufe>{_STUFE_ALT})\.(?P<lfd>\d{{2}})$"
+    rf"(?P<bereich>{_BEREICH_SEGMENT})\.(?P<stufe>{_STUFE_ALT})\.(?P<lfd>\d{{2}})$"
 )
 
 #: Application-item ID -- 8 segments:
 #: AT.LP23.<Band>.<Fach>.<Art>.<Bereich>.<Stufe>.<lfd>, Art in {AB, DT}.
 ANWENDUNGSITEM_ID_RE = re.compile(
     rf"^AT\.LP23\.(?P<band>{_BAND_ALT})\.(?P<fach>{_FACH_ALT})\."
-    rf"(?P<art>AB|DT)\.(?P<bereich>[A-Z][A-Z0-9]*)\.(?P<stufe>{_STUFE_ALT})\.(?P<lfd>\d{{2}})$"
+    rf"(?P<art>{_ART_ALT})\.(?P<bereich>[A-Z][A-Z0-9]*)\.(?P<stufe>{_STUFE_ALT})\.(?P<lfd>\d{{2}})$"
+)
+
+#: Area-free application-item ID (E-P3) -- 7 segments, used only for
+#: ``anwendungsbereiche_bindung: "stufe"`` items (PRIM.D, PRIM.SU), which
+#: attach to a whole school year and no area at all -- inventing one would
+#: assert a scoping the regulation does not make (see
+#: data-pipeline/notes/deviations.md, 2026-07-29 rows):
+#: AT.LP23.<Band>.<Fach>.<Art>.<Stufe>.<lfd>, Art in {AB, DT}.
+#:
+#: Deliberately the same *segment count* (7) as KOMPETENZ_ID_RE, since a
+#: competence ID also has no Art segment. The two are kept unambiguous by
+#: construction: this pattern requires the 5th segment to be exactly "AB" or
+#: "DT" (reserved, never a valid Bereich code -- see BEREICH_CODE_RE), and
+#: KOMPETENZ_ID_RE's Bereich group excludes exactly those two literals. A
+#: given 7-segment string can therefore match at most one of the two
+#: grammars, never both -- see test_id_forms_never_both_match.
+ANWENDUNGSITEM_AREA_FREI_ID_RE = re.compile(
+    rf"^AT\.LP23\.(?P<band>{_BAND_ALT})\.(?P<fach>{_FACH_ALT})\."
+    rf"(?P<art>{_ART_ALT})\.(?P<stufe>{_STUFE_ALT})\.(?P<lfd>\d{{2}})$"
 )
 
 
@@ -247,14 +294,21 @@ class KompetenzId:
 
 @dataclass(frozen=True)
 class AnwendungsitemId:
-    """A parsed 8-segment application-item ID."""
+    """A parsed application-item ID -- either the 8-segment area-bearing form
+    or the 7-segment area-free form (E-P3, ``bindung: "stufe"`` items)."""
 
     band: str
     fach: str
     art: str
     """``AB`` (Praezisierung) | ``DT`` (digitale Technologien)."""
 
-    bereich: str
+    bereich: str | None
+    """``None`` for the area-free form -- inventing an area would assert a
+    scoping the regulation does not make (PRIM.D / PRIM.SU ``stufe``-bound
+    items). Existing callers that only ever saw the area-bearing form keep
+    working unchanged: this stays a plain string for every ID parsed before
+    E-P3, since only the new 7-segment form ever produces ``None`` here."""
+
     stufe: str
     lfd: int
     raw: str
@@ -268,13 +322,22 @@ def _stufe_passt_zu_band(band: str, stufe: str) -> bool:
 
 
 def parse_id(s: str) -> ParsedId:
-    """Parse *s* against both frozen grammars.
+    """Parse *s* against all three frozen grammars.
 
-    Tries the competence form first, then the application-item form. Raises
-    :class:`IdSchemaError` if neither regex matches, or if the ``stufe``
-    prefix does not agree with ``band`` (e.g. ``SEK1`` with a ``SCH`` stufe)
-    -- a case the two independent alternations in the regex cannot rule out
-    by construction.
+    Tries the competence form, then the area-bearing application-item form,
+    then the area-free application-item form (E-P3, ``bereich=None``,
+    ``bindung: "stufe"`` items). Raises :class:`IdSchemaError` if none of the
+    three regexes matches, or if the ``stufe`` prefix does not agree with
+    ``band`` (e.g. ``SEK1`` with a ``SCH`` stufe) -- a case the independent
+    regex alternations cannot rule out by construction.
+
+    The competence form and the area-free application-item form are both
+    7-segment, but never both match the same string: a ``Bereich`` segment
+    can never equal the literal ``AB``/``DT`` (reserved for ``Art``, see
+    ``BEREICH_CODE_RE``), and the area-free form requires exactly that
+    literal in the corresponding position. See
+    ``test_id_forms_never_both_match`` for the explicit collision-freedom
+    check.
     """
     m = KOMPETENZ_ID_RE.match(s)
     if m:
@@ -305,7 +368,25 @@ def parse_id(s: str) -> ParsedId:
             raw=s,
         )
 
-    raise IdSchemaError(f"{s!r} matches neither the competence nor the application-item grammar")
+    m = ANWENDUNGSITEM_AREA_FREI_ID_RE.match(s)
+    if m:
+        band, stufe = m.group("band"), m.group("stufe")
+        if not _stufe_passt_zu_band(band, stufe):
+            raise IdSchemaError(f"{s!r}: stufe {stufe!r} does not match band {band!r}")
+        return AnwendungsitemId(
+            band=band,
+            fach=m.group("fach"),
+            art=m.group("art"),
+            bereich=None,
+            stufe=stufe,
+            lfd=int(m.group("lfd")),
+            raw=s,
+        )
+
+    raise IdSchemaError(
+        f"{s!r} matches neither the competence, the application-item, "
+        "nor the area-free application-item grammar"
+    )
 
 
 # --------------------------------------------------------------------------
@@ -330,9 +411,19 @@ def format_id(band: str, fach: str, bereich: str, stufe: str, lfd: int) -> str:
     return ident
 
 
-def format_item_id(band: str, fach: str, art: str, bereich: str, stufe: str, lfd: int) -> str:
-    """Build an 8-segment application-item ID:
-    ``AT.LP23.<Band>.<Fach>.<Art>.<Bereich>.<Stufe>.<lfd>``, ``art`` in ``{AB, DT}``."""
+def format_item_id(
+    band: str, fach: str, art: str, bereich: str | None, stufe: str, lfd: int
+) -> str:
+    """Build an application-item ID, ``art`` in ``{AB, DT}``.
+
+    ``bereich`` a string builds the 8-segment area-bearing form:
+    ``AT.LP23.<Band>.<Fach>.<Art>.<Bereich>.<Stufe>.<lfd>``.
+
+    ``bereich=None`` builds the 7-segment area-free form (E-P3):
+    ``AT.LP23.<Band>.<Fach>.<Art>.<Stufe>.<lfd>`` -- for
+    ``anwendungsbereiche_bindung: "stufe"`` items (PRIM.D, PRIM.SU), which
+    attach to a whole school year and no area at all.
+    """
     if art not in ("AB", "DT"):
         raise IdSchemaError(f"art must be 'AB' or 'DT', got {art!r}")
     if fach not in FAECHER:
@@ -341,11 +432,14 @@ def format_item_id(band: str, fach: str, art: str, bereich: str, stufe: str, lfd
         raise IdSchemaError(f"unknown band {band!r}")
     if stufe not in stufen_werte(band):
         raise IdSchemaError(f"stufe {stufe!r} not valid for band {band!r}")
-    if not BEREICH_CODE_RE.match(bereich):
-        raise IdSchemaError(f"bereich {bereich!r} does not look like a valid area code")
     if not (0 <= lfd <= 99):
         raise IdSchemaError(f"lfd {lfd!r} out of range 0..99")
-    ident = f"AT.LP23.{band}.{fach}.{art}.{bereich}.{stufe}.{lfd:02d}"
+    if bereich is None:
+        ident = f"AT.LP23.{band}.{fach}.{art}.{stufe}.{lfd:02d}"
+    else:
+        if not BEREICH_CODE_RE.match(bereich):
+            raise IdSchemaError(f"bereich {bereich!r} does not look like a valid area code")
+        ident = f"AT.LP23.{band}.{fach}.{art}.{bereich}.{stufe}.{lfd:02d}"
     parse_id(ident)  # self-check: constructed ID must round-trip
     return ident
 

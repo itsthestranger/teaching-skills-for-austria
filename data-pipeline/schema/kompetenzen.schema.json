@@ -66,6 +66,11 @@
           "type": "string",
           "description": "aus_anwendungsbereichen | eigen_ausgewiesen (plan section 4.5). Lives at subject/meta level, matching parse_lehrplan.py's SubjectSpec.lehrstoff_quelle and result_to_dict() -- the plan's section 4.9 draft placed it per-competence, which the parser does not do."
         },
+        "anwendungsbereiche_je_stufe": {
+          "type": "object",
+          "description": "E-P3: the year-bound Anwendungsbereiche block for bindung: stufe subjects (PRIM.D, PRIM.SU) -- items attached to a whole school year, not to any one competence or area (data-pipeline/notes/deviations.md, 2026-07-29 design-decision row). Keyed by stufe (SCH1..SCH4 for PRIM; K1..K4 is scheme-legal but bindung: stufe never occurs outside PRIM in the six shards). By design the complete block is repeated verbatim in every area part file's meta (plan section 5 B1 contract: a skill loading one area file must see all items without reading a second file) and is deliberately never copied onto individual competence records -- that would assert a per-competence attribution the source does not make.",
+          "additionalProperties": { "$ref": "#/$defs/anwendungsbereiche_je_stufe_eintrag" }
+        },
         "provenienz": { "$ref": "#/$defs/provenienz" }
       }
     },
@@ -197,13 +202,21 @@
       "properties": {
         "id": {
           "type": "string",
-          "pattern": "^AT\\.LP23\\.(PRIM|SEK1)\\.[A-Z]+\\.(AB|DT)\\.[A-Z][A-Z0-9]*\\.(K[1-4]|SCH[1-4])\\.[0-9]{2}$",
-          "description": "AT.LP23.<Band>.<Fach>.AB.<Bereich>.<Stufe>.<lfd> for a praezisierung item; .DT. instead of .AB. for a digitale_technologien item. Structural shape only, per the frozen ID grammar owned by data-pipeline/schema/id_schema.py."
+          "pattern": "^AT\\.LP23\\.(PRIM|SEK1)\\.[A-Z]+\\.(AB|DT)\\.([A-Z][A-Z0-9]*\\.)?(K[1-4]|SCH[1-4])\\.[0-9]{2}$",
+          "description": "AT.LP23.<Band>.<Fach>.AB.<Bereich>.<Stufe>.<lfd> for a praezisierung item; .DT. instead of .AB. for a digitale_technologien item. The <Bereich> segment (and its trailing dot) is entirely absent for the area-free form (data-pipeline/schema/id_schema.py, E-P3): AT.LP23.<Band>.<Fach>.<Art>.<Stufe>.<lfd>, used only for bindung: stufe items (PRIM.D, PRIM.SU), which attach to a whole school year and no area at all -- inventing one would assert a scoping the regulation does not make. Structural shape only, per the frozen ID grammar owned by data-pipeline/schema/id_schema.py."
         },
         "band": { "type": "string", "enum": ["PRIM", "SEK1"] },
         "fach": { "type": "string" },
         "bereich_nummer": { "type": ["integer", "null"] },
-        "bereich_name": { "type": "string" },
+        "bereich_name": {
+          "type": "string",
+          "description": "Absent/omitted for bindung: stufe items (E-P3) -- the regulation attaches these to the whole school year, not to any one area; see 'bindung'."
+        },
+        "bindung": {
+          "type": "string",
+          "enum": ["kompetenz", "bereich", "stufe"],
+          "description": "E-P3: what this item is scoped to, mirroring parse_lehrplan.py's SubjectSpec.anwendungsbereiche_bindung axis so a consumer can tell what an item attaches to without guessing from which fields happen to be present. 'kompetenz' (SEK1.M only) -- attaches to one competence, kompetenz_id is set. 'bereich' (SEK1.D) -- attaches to (bereich, stufe); kompetenz_id is null, bereich_name/bereich_nummer are set. 'stufe' (PRIM.D, PRIM.SU) -- attaches to (stufe) only, no area; kompetenz_id and bereich_name/bereich_nummer are all null/absent, and the id carries the area-free form. Not JSON-Schema-required on the item itself (same tolerant-by-default reasoning as 'verbindlich' below): a subject under anwendungsbereiche_status 'keine' has no items at all, 'prosa' (SEK1.E) has a heading but zero items so no item ever needs to carry bindung: prosa, and a digitale_technologien item (art) may also omit it -- it precisifies no competence regardless of its subject's bindung axis, so none of the three values describes it more accurately than omission."
+        },
         "stufe": { "$ref": "#/$defs/stufe" },
         "ordinal": { "type": "integer" },
         "text": {
@@ -221,7 +234,7 @@
         },
         "kompetenz_id": {
           "type": ["string", "null"],
-          "description": "null for digitale_technologien items, which precisify no competence (FINDINGS.md V-54). Present so a digitale_technologien item that ends up outside its owning competence's nested array (see digitale_technologien_vorschlaege[]) still carries an explicit, honest 'no competence' marker instead of silently omitting the field."
+          "description": "Nullable (E-P3): populated only for bindung: kompetenz items (SEK1.M, the V-27 verbatim text-repetition join). null for digitale_technologien items (FINDINGS.md V-54) and for every bindung: bereich / bindung: stufe item -- the regulation attaches those to an area or a school year, not to one competence, and synthesising a link the source does not make would misattribute the content. Present so any item that ends up outside a competence's nested anwendungsbereiche[] array (see digitale_technologien_vorschlaege[] and meta.anwendungsbereiche_je_stufe) still carries an explicit, honest 'no competence' marker instead of silently omitting the field."
         },
         "wiederholung_von": { "type": "array", "items": { "type": "string" } },
         "abbildungen": {
@@ -264,6 +277,23 @@
       "type": "string",
       "pattern": "^(K[1-4]|SCH[1-4])$",
       "description": "Amended per FINDINGS.md V-22: primary is per school year (SCH1..SCH4), not per Grundstufe. GS1/GS2/VOR are removed entirely, not kept as alternatives. Closed by design -- 'stufe' drives ID generation and progression joins, so a value outside this set is a real error (see the negative test for a rejected 'GS1')."
+    },
+    "anwendungsbereiche_je_stufe_eintrag": {
+      "type": "object",
+      "description": "One school-year's worth of bindung: stufe application items (E-P3), keyed under meta.anwendungsbereiche_je_stufe by the stufe value itself.",
+      "required": ["bindung", "items"],
+      "properties": {
+        "bindung": {
+          "type": "string",
+          "const": "stufe",
+          "description": "Always 'stufe' here -- this block only ever exists for the bindung: stufe subjects (PRIM.D, PRIM.SU)."
+        },
+        "items": {
+          "type": "array",
+          "description": "Verbatim anwendungsitem objects for this school year, area-free (kompetenz_id and bereich_name/bereich_nummer null/absent, id in the area-free 7-segment form).",
+          "items": { "$ref": "#/$defs/anwendungsitem" }
+        }
+      }
     }
   }
 }
