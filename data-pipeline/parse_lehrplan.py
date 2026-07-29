@@ -1776,6 +1776,69 @@ ERWARTET_SEK1_M = {
     "kompetenzbereiche": 4,
 }
 
+#: Frozen expected counts for the five subjects P1/P2 proved out but that no
+#: shipped SubjectSpec covers yet (task P5). Measured 2026-07-29 against the
+#: checked-in resources/ documents (notes/deviations.md) and reproduced here
+#: identically against the committed, byte-exact fixtures in tests/fixtures/
+#: -- see TestNewSubjectFixtures in tests/test_parse_lehrplan.py. Same shape
+#: as ERWARTET_SEK1_M (keys match what actual_counts() computes) so a future
+#: --verify wiring only needs to add the args.spec -> table mapping, not
+#: change actual_counts() itself. ``allenfalls`` and ``wiederholen_und_festigen``
+#: are 0 for all five by construction (notes/deviations.md, 2026-07-29: both
+#: markers are SEK1.M-only; SubjectSpec.allenfalls_pruefen is False here, and
+#: WIEDERHOLUNG_RE never occurs outside SEK1.M).
+#:
+#: These six dict entries do not carry the AB-block count (16/0/4/0/4) or the
+#: anwendungsbereiche_bindung value (bereich/prosa/stufe/keine/stufe) from
+#: notes/deviations.md's measured table -- actual_counts() has no key for
+#: either, and adding one is out of this task's scope (no parser-behaviour
+#: changes). Both are asserted directly against ParseResult.bloecke and
+#: SubjectSpec.anwendungsbereiche_bindung in the fixture tests instead.
+ERWARTET_SEK1_D = {
+    "kompetenzen": 41,
+    "anwendungsitems": 54,
+    "allenfalls": 0,
+    "wiederholen_und_festigen": 0,
+    "kompetenzen_mit_super": 19,
+    "kompetenzbereiche": 4,
+}
+
+ERWARTET_SEK1_E = {
+    "kompetenzen": 37,
+    "anwendungsitems": 0,
+    "allenfalls": 0,
+    "wiederholen_und_festigen": 0,
+    "kompetenzen_mit_super": 16,
+    "kompetenzbereiche": 4,
+}
+
+ERWARTET_PRIM_D = {
+    "kompetenzen": 40,
+    "anwendungsitems": 37,
+    "allenfalls": 0,
+    "wiederholen_und_festigen": 0,
+    "kompetenzen_mit_super": 12,
+    "kompetenzbereiche": 4,
+}
+
+ERWARTET_PRIM_M = {
+    "kompetenzen": 40,
+    "anwendungsitems": 0,
+    "allenfalls": 0,
+    "wiederholen_und_festigen": 0,
+    "kompetenzen_mit_super": 0,
+    "kompetenzbereiche": 4,
+}
+
+ERWARTET_PRIM_SU = {
+    "kompetenzen": 48,
+    "anwendungsitems": 40,
+    "allenfalls": 0,
+    "wiederholen_und_festigen": 0,
+    "kompetenzen_mit_super": 17,
+    "kompetenzbereiche": 6,
+}
+
 
 def actual_counts(result: ParseResult) -> dict[str, int]:
     return {

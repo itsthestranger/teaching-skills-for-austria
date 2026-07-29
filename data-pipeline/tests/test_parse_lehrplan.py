@@ -43,6 +43,17 @@ ECHT = FIXTURES / "sek1_mathematik.xml"
 MINI = FIXTURES / "sek1_mathematik_mini.xml"
 BINDUNG_MINI = FIXTURES / "containment_bindung_mini.xml"
 
+#: P4 fixtures: the real span of each subject not yet covered by a shipped
+#: SubjectSpec, copied byte-for-byte from resources/ (gitignored) so the
+#: TestLiveContainmentSmoke counts above are reproducible without it. See
+#: notes/ris-xml-structure.md §12 for the exact child-index ranges and the
+#: extraction procedure.
+SEK1_DEUTSCH = FIXTURES / "sek1_deutsch.xml"
+SEK1_FREMDSPRACHE = FIXTURES / "sek1_fremdsprache.xml"
+PRIM_DEUTSCH = FIXTURES / "prim_deutsch.xml"
+PRIM_MATHEMATIK = FIXTURES / "prim_mathematik.xml"
+PRIM_SACHUNTERRICHT = FIXTURES / "prim_sachunterricht.xml"
+
 RESOURCES = Path(__file__).resolve().parents[1] / "resources"
 MS_LIVE = RESOURCES / "mittelschule/NOR40271471.xml"
 VS_LIVE = RESOURCES / "volksschule/NOR40271469.xml"
@@ -1095,6 +1106,148 @@ class TestLiveContainmentSmoke(unittest.TestCase):
         self.assertEqual(r.issues.by_art("ab_block_anzahl_unerwartet"), [])
         alle_ids = [k.id for k in r.kompetenzen] + [i.id for i in r.anwendungsitems]
         self.assertEqual(len(alle_ids), len(set(alle_ids)))
+
+
+# ---------------------------------------------------------------------------
+# P4: committed fixtures for the five subjects TestLiveContainmentSmoke above
+# can only exercise when resources/ happens to be present. These run the same
+# assertions -- and freeze the same measured counts (ERWARTET_SEK1_D etc. in
+# parse_lehrplan.py) -- against tests/fixtures/sek1_deutsch.xml and friends,
+# so the evidence survives a fresh clone / CI, where resources/ is gitignored
+# and TestLiveContainmentSmoke skips. See notes/ris-xml-structure.md §12 for
+# how each fixture was extracted (byte-exact span, expat CurrentByteIndex).
+# ---------------------------------------------------------------------------
+
+
+class TestNewSubjectFixtures(unittest.TestCase):
+    """One method per subject: area/competence/AB-block/AB-item counts match
+    ERWARTET_* exactly, kompetenz_id stays None throughout (none of these five
+    subjects use bindung='kompetenz'), and no two IDs collide."""
+
+    def _assert_no_kompetenz_id_and_no_collisions(self, r: P.ParseResult) -> None:
+        self.assertTrue(all(i.kompetenz_id is None for i in r.anwendungsitems))
+        self.assertTrue(all(i.join_methode is None for i in r.anwendungsitems))
+        alle_ids = [k.id for k in r.kompetenzen] + [i.id for i in r.anwendungsitems]
+        self.assertEqual(len(alle_ids), len(set(alle_ids)))
+
+    def test_sek1_deutsch(self):
+        spec = _bindung_spec(
+            "DEUTSCH", "bereich",
+            band="SEK1", fach_code="D", teil_ueberschrift="ACHTER TEIL", stufen_praefix="K",
+        )
+        r = P.parse_lehrplan(SEK1_DEUTSCH, spec)
+        self.assertEqual(len(r.bereiche), 4)
+        self.assertEqual(len(r.kompetenzen), 41)
+        self.assertEqual(len(r.bloecke), 16)
+        self.assertEqual(len(r.anwendungsitems), 54)
+        self.assertEqual(P.actual_counts(r), P.ERWARTET_SEK1_D)
+        self._assert_no_kompetenz_id_and_no_collisions(r)
+        # This is the regression check for the LEHRPLANZUSATZ DEUTSCH ALS
+        # ZWEITSPRACHE hazard (notes/deviations.md, 2026-07-28/29): the
+        # fixture carries that appendix's *own* 'Kompetenzbereich Lesen' /
+        # 'Kompetenzbereich Schreiben' headings (a second, distinct
+        # curriculum reusing the same area names). If the legend-table /
+        # LEHRPLANZUSATZ terminator ever regressed, the parser would keep
+        # scanning into that appendix -- see the extensive verification in
+        # the P4 task report (child-by-child trace + two isolated-module
+        # monkeypatch experiments): with *only* the terminator removed the
+        # 4 real areas silently balloon to 6 (spurious 'Hören'/'Sprechen'
+        # entries minted from the appendix); with the terminator *and* the
+        # SEKTION_KOMPETENZ stufe-reset both removed, parsing raises
+        # ParseError on an actual 'AT.LP23.SEK1.D.LESEN.K4.01' ID collision.
+        # Both regressions are caught by the plain assertions above (bereiche
+        # == 4, not 6; no raised exception) without needing to reproduce the
+        # monkeypatch here.
+        namen = sorted(b.name for b in r.bereiche)
+        self.assertEqual(
+            namen,
+            ["Lesen", "Schreiben", "Sprachbewusstsein und Sprachreflexion", "Zuhören und Sprechen"],
+        )
+        self.assertNotIn("Hören", namen)
+        self.assertNotIn("Sprechen", namen)
+        # The integrative area has an AB block but no competence list of its
+        # own (mirrors GZINTEGRATIV; notes/deviations.md, 2026-07-28).
+        block_namen = {b.bereich_name for b in r.bloecke}
+        self.assertIn("Sprachbewusstsein und Sprachreflexion", block_namen)
+
+    def test_sek1_fremdsprache(self):
+        spec = _bindung_spec(
+            "(ERSTE) LEBENDE FREMDSPRACHE", "prosa",
+            band="SEK1", fach_code="E", teil_ueberschrift="ACHTER TEIL", stufen_praefix="K",
+        )
+        r = P.parse_lehrplan(SEK1_FREMDSPRACHE, spec)
+        self.assertEqual(len(r.bereiche), 4)
+        self.assertEqual(len(r.kompetenzen), 37)
+        self.assertEqual(len(r.bloecke), 0)
+        self.assertEqual(len(r.anwendungsitems), 0)
+        self.assertEqual(P.actual_counts(r), P.ERWARTET_SEK1_E)
+        self._assert_no_kompetenz_id_and_no_collisions(r)
+        # 'prosa' bindung: the heading is seen and logged, not silently
+        # dropped -- zero blocks is correct, not a phantom empty one.
+        self.assertEqual(len(r.issues.by_art("anwendungsbereiche_prosa")), 4)
+
+    def test_prim_deutsch(self):
+        spec = _bindung_spec(
+            "DEUTSCH", "stufe",
+            band="PRIM", fach_code="D", teil_ueberschrift="NEUNTER TEIL", stufen_praefix="SCH",
+        )
+        r = P.parse_lehrplan(PRIM_DEUTSCH, spec)
+        self.assertEqual(len(r.bereiche), 4)
+        self.assertEqual(len(r.kompetenzen), 40)
+        self.assertEqual(len(r.bloecke), 4)
+        self.assertEqual(len(r.anwendungsitems), 37)
+        self.assertEqual(P.actual_counts(r), P.ERWARTET_PRIM_D)
+        self._assert_no_kompetenz_id_and_no_collisions(r)
+        # 'stufe' bindung: blocks attach to the school year only, never to
+        # whichever area happened to precede them.
+        for b in r.bloecke:
+            self.assertIsNone(b.bereich_nummer)
+            self.assertEqual(b.bereich_name, "")
+        for item in r.anwendungsitems:
+            self.assertIsNone(item.bereich_nummer)
+            self.assertEqual(item.bereich_name, "")
+        self.assertEqual(r.issues.by_art("ab_block_anzahl_unerwartet"), [])
+
+    def test_prim_mathematik(self):
+        spec = _bindung_spec(
+            "MATHEMATIK", "keine",
+            band="PRIM", fach_code="M", teil_ueberschrift="NEUNTER TEIL", stufen_praefix="SCH",
+            bereich_re=re.compile(r"^Kompetenzbereich\s+(?P<name>.+)$"),
+        )
+        r = P.parse_lehrplan(PRIM_MATHEMATIK, spec)
+        self.assertEqual(len(r.bereiche), 4)
+        self.assertEqual(len(r.kompetenzen), 40)
+        self.assertEqual(len(r.bloecke), 0)
+        self.assertEqual(len(r.anwendungsitems), 0)
+        self.assertEqual(P.actual_counts(r), P.ERWARTET_PRIM_M)
+        self._assert_no_kompetenz_id_and_no_collisions(r)
+
+    def test_prim_sachunterricht(self):
+        spec = _bindung_spec(
+            "SACHUNTERRICHT", "stufe",
+            band="PRIM", fach_code="SU", teil_ueberschrift="NEUNTER TEIL", stufen_praefix="SCH",
+            bereich_re=re.compile(r"^(?P<name>.+\bKompetenzbereich)$"),
+        )
+        r = P.parse_lehrplan(PRIM_SACHUNTERRICHT, spec)
+        self.assertEqual(len(r.bereiche), 6)
+        self.assertEqual(len(r.kompetenzen), 48)
+        self.assertEqual(len(r.bloecke), 4)
+        self.assertEqual(len(r.anwendungsitems), 40)
+        self.assertEqual(P.actual_counts(r), P.ERWARTET_PRIM_SU)
+        self._assert_no_kompetenz_id_and_no_collisions(r)
+        for b in r.bloecke:
+            self.assertIsNone(b.bereich_nummer)
+            self.assertEqual(b.bereich_name, "")
+        self.assertEqual(r.issues.by_art("ab_block_anzahl_unerwartet"), [])
+
+    def test_fixtures_do_not_require_resources(self):
+        # The whole point of P4: these five paths resolve under tests/fixtures/
+        # (committed), never under resources/ (gitignored).
+        for path in (SEK1_DEUTSCH, SEK1_FREMDSPRACHE, PRIM_DEUTSCH, PRIM_MATHEMATIK, PRIM_SACHUNTERRICHT):
+            with self.subTest(path=path.name):
+                self.assertTrue(path.is_file())
+                self.assertIn("fixtures", path.parts)
+                self.assertNotIn("resources", path.parts)
 
 
 # ---------------------------------------------------------------------------

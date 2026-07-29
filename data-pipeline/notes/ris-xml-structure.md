@@ -653,3 +653,51 @@ Fixtures in `tests/fixtures/`:
   `test_parse_lehrplan.py::TestLiveContainmentSmoke` additionally parses the
   real PRIM.SU/SEK1.D spans with throwaway specs and asserts the measured
   counts from §11.1's table, skipped cleanly if `resources/` is absent.
+* `sek1_deutsch.xml` (58 KB), `sek1_fremdsprache.xml` (34 KB),
+  `prim_deutsch.xml` (38 KB), `prim_mathematik.xml` (34 KB),
+  `prim_sachunterricht.xml` (44 KB) — added task P4 (2026-07-29) to move
+  `TestLiveContainmentSmoke`'s evidence onto committed fixtures, since
+  `resources/` is gitignored and that class skips on a fresh clone/CI. Each
+  is the real subject span copied byte-for-byte (children 395–515 for
+  SEK1.D, 617–725 for SEK1.E, 802–899 for PRIM.D, 1197–1293 for PRIM.M,
+  1293–1420 for PRIM.SU — see §2 and notes/deviations.md, 2026-07-29),
+  wrapped in the same stub `risdok`/`nutzdaten`/`abschnitt` document used by
+  `sek1_mathematik.xml` and flanked by a *synthetic* placeholder subject on
+  each side (not verbatim regulation text, clearly labelled as a
+  placeholder — mirrors the existing `LATEIN` stub) so the boundary logic is
+  exercised without depending on unrelated real content. `sek1_deutsch.xml`
+  additionally carries children 515–556: the start of the embedded
+  `LEHRPLANZUSATZ DEUTSCH ALS ZWEITSPRACHE` curriculum through its own
+  `Kompetenzbereich Lesen`/`Kompetenzbereich Schreiben` headings and lists —
+  the hazard §11.2 bounds the subject against (notes/deviations.md,
+  2026-07-28/29 and the further entry below). Parsed in
+  `test_parse_lehrplan.py::TestNewSubjectFixtures` with the same throwaway
+  `_bindung_spec`-shaped `SubjectSpec`s `TestLiveContainmentSmoke` uses,
+  asserting the frozen `ERWARTET_SEK1_D`/`ERWARTET_SEK1_E`/`ERWARTET_PRIM_D`/
+  `ERWARTET_PRIM_M`/`ERWARTET_PRIM_SU` tables in `parse_lehrplan.py`.
+  Every count reproduces identically against the live `resources/` document
+  for the same subject (verified directly, both ways, while building these
+  fixtures) — none of the five needed internal trimming.
+
+  **Regenerating these five** (only needed if the source is re-fetched and
+  changes): the byte-exact span for a given `[start, end)` child-index range
+  cannot be produced by re-serialising through `xml.etree.ElementTree`
+  (`ET.tostring` reorders/adds `xmlns` per element and does not reproduce
+  the source formatting byte-for-byte — verified while building these
+  fixtures). Instead, parse the source once with
+  `xml.parsers.expat.ParserCreate()` and record `parser.CurrentByteIndex` in
+  the `Start`/`EndElementHandler` callbacks for each direct child of
+  `<abschnitt>`, in document order; for an element with a separate closing
+  tag this is the *start* of `</tag>` (add `len("</tag>")`), but for a
+  self-closing element (`<x/>`) `CurrentByteIndex` at the end callback is
+  already the correct end offset (do not add anything — the two cases must
+  be told apart, e.g. by checking whether `data[idx:idx+2] == b"</"`, or
+  every self-closing element's slice overruns into its sibling). Slice the
+  raw file bytes between the recorded start/end offsets of the target
+  children and decode as UTF-8; every resulting fragment round-trips through
+  `ET.fromstring` cleanly (verified for all 2409/2261 top-level children of
+  both source documents). Wrap the slice in the same
+  `<?xml version='1.0' encoding='utf-8'?>\n<risdok xmlns="http://www.bka.gv.at"><metadaten /><nutzdaten><abschnitt nr="1" typ="ns">`
+  … `</abschnitt></nutzdaten></risdok>` stub `sek1_mathematik.xml` uses, and
+  flank it with a placeholder subject built from a fixed template (g1 name +
+  one trimmed `Kompetenzbereich`/`listelem`, explicitly not verbatim text).
