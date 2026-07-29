@@ -23,6 +23,7 @@ import hashlib
 import io
 import json
 import logging
+import re
 import sys
 import unittest
 import xml.etree.ElementTree as ET
@@ -40,6 +41,19 @@ logging.getLogger("parse_lehrplan").setLevel(logging.CRITICAL)
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
 ECHT = FIXTURES / "sek1_mathematik.xml"
 MINI = FIXTURES / "sek1_mathematik_mini.xml"
+BINDUNG_MINI = FIXTURES / "containment_bindung_mini.xml"
+
+RESOURCES = Path(__file__).resolve().parents[1] / "resources"
+MS_LIVE = RESOURCES / "mittelschule/NOR40271471.xml"
+VS_LIVE = RESOURCES / "volksschule/NOR40271469.xml"
+
+#: Tolerant pattern for the combined single-heading form used by SEK1.D/E and
+#: all three primary subjects (V-24): "Kompetenzbeschreibungen [und
+#: Anwendungsbereiche], Lehrstoff (...):" -- unlike SEK1.M, which has two
+#: separate top-level sections (see SEK1_MATHEMATIK.kompetenz_sektion_re).
+KOMBINIERTE_SEKTION_RE = re.compile(
+    r"^Kompetenzbeschreibungen(?:\s+und\s+Anwendungsbereiche)?,\s*Lehrstoff\s*\("
+)
 
 
 def parse(path: Path) -> P.ParseResult:
@@ -758,6 +772,329 @@ class TestAbbildungen(unittest.TestCase):
         item = next(a for a in m.anwendungsitems if "⟦ABB:" in a.text)
         self.assertEqual(item.abbildungen, [])
         self.assertEqual(len(m.issues.by_art("abbildung_nicht_installiert")), 1)
+
+
+# ---------------------------------------------------------------------------
+# Containment attachment (bindung 'bereich' | 'stufe' | 'prosa' | 'keine')
+# ---------------------------------------------------------------------------
+#
+# Measured 2026-07-29 (notes/deviations.md): outside SEK1.M there is no
+# text-repetition join -- application items attach to their container
+# instead. containment_bindung_mini.xml carries one small synthetic subject
+# per bindung value, each parsed here with its own throwaway SubjectSpec
+# (never added to SUBJECT_SPECS -- that is task P5).
+
+
+def _bindung_spec(fach_ueberschrift: str, bindung: str, **overrides) -> P.SubjectSpec:
+    kwargs = dict(
+        band="TEST",
+        fach_code="X",
+        fach_ueberschrift=fach_ueberschrift,
+        teil_ueberschrift="ACHTER TEIL",
+        stufen_praefix="K",
+        kompetenz_sektion_re=KOMBINIERTE_SEKTION_RE,
+        anwendung_sektion_re=None,
+        bereich_re=re.compile(r"^(?:Integrativer\s+)?Kompetenzbereich\s+(?P<name>.+)$"),
+        anwendungsbereiche_bindung=bindung,
+    )
+    kwargs.update(overrides)
+    return P.SubjectSpec(**kwargs)
+
+
+BEREICHFACH = _bindung_spec("BEREICHFACH", "bereich")
+STUFEFACH = _bindung_spec("STUFEFACH", "stufe", stufen_praefix="SCH")
+PROSAFACH = _bindung_spec("PROSAFACH", "prosa")
+KEINEFACH = _bindung_spec("KEINEFACH", "keine")
+LPZFACH = _bindung_spec("LPZFACH", "bereich")
+
+
+def parse_bindung(spec: P.SubjectSpec) -> P.ParseResult:
+    return P.parse_lehrplan(BINDUNG_MINI, spec)
+
+
+class TestBindungBereich(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.r = parse_bindung(BEREICHFACH)
+
+    def test_two_areas_one_competence(self):
+        # Zweitbereich has no competence list of its own -- the structural
+        # mirror of SEK1.D's 'Integrativer Kompetenzbereich Sprachbewusstsein
+        # und Sprachreflexion'.
+        self.assertEqual(len(self.r.bereiche), 2)
+        self.assertEqual(len(self.r.kompetenzen), 1)
+
+    def test_one_ab_block_per_area_including_the_one_without_competences(self):
+        self.assertEqual(len(self.r.bloecke), 2)
+        self.assertEqual(len(self.r.anwendungsitems), 2)
+        namen = sorted(b.bereich_name for b in self.r.bloecke)
+        self.assertEqual(namen, ["Erstbereich", "Zweitbereich"])
+
+    def test_zweitbereich_block_is_not_misbound_to_erstbereich(self):
+        block = next(b for b in self.r.bloecke if b.bereich_name == "Zweitbereich")
+        self.assertEqual(
+            [i.text for i in block.items],
+            ["Anwendungsitem zu Zweitbereich ohne eigene Kompetenzen."],
+        )
+        self.assertEqual(self.r.issues.by_art("ab_block_ohne_bereich"), [])
+
+    def test_no_kompetenz_id_is_synthesised(self):
+        # Non-negotiable per notes/deviations.md (2026-07-29): the regulation
+        # makes no per-competence link for bindung='bereich'.
+        for item in self.r.anwendungsitems:
+            self.assertIsNone(item.kompetenz_id)
+            self.assertIsNone(item.join_methode)
+
+    def test_ids_carry_the_ab_segment_and_are_unique(self):
+        ids = [i.id for i in self.r.anwendungsitems] + [k.id for k in self.r.kompetenzen]
+        self.assertEqual(len(ids), len(set(ids)))
+        for i in self.r.anwendungsitems:
+            self.assertIn(".AB.", i.id)
+
+    def test_join_stats_are_not_run(self):
+        # join_anwendungen is a no-op for non-'kompetenz' bindung.
+        s = self.r.join_stats
+        self.assertEqual(s["exact"], 0)
+        self.assertEqual(s["fuzzy"], 0)
+        self.assertEqual(s["positional"], 0)
+        self.assertEqual(s["unmatched"], 0)
+
+    def test_legend_table_terminates_the_subject(self):
+        self.assertEqual(self.r.themen_map, {"1": "Thema Eins"})
+
+
+class TestBindungStufe(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.r = parse_bindung(STUFEFACH)
+
+    def test_areas_and_competences(self):
+        self.assertEqual(len(self.r.bereiche), 2)
+        self.assertEqual(len(self.r.kompetenzen), 4)
+
+    def test_one_block_per_school_year_not_per_area(self):
+        # Beta is the last area of each year -- the block must attach to the
+        # stufe, never to Beta.
+        self.assertEqual(len(self.r.bloecke), 2)
+        self.assertEqual(sorted(b.stufe for b in self.r.bloecke), ["SCH1", "SCH2"])
+        for b in self.r.bloecke:
+            self.assertIsNone(b.bereich_nummer)
+            self.assertEqual(b.bereich_name, "")
+
+    def test_items_are_not_attached_to_the_last_area(self):
+        for item in self.r.anwendungsitems:
+            self.assertIsNone(item.bereich_nummer)
+            self.assertEqual(item.bereich_name, "")
+            self.assertIsNone(item.kompetenz_id)
+
+    def test_item_counts_per_year(self):
+        self.assertEqual(
+            sorted(i.text for i in self.r.anwendungsitems if i.stufe == "SCH1"),
+            ["Jahresthema eins.", "Jahresthema zwei."],
+        )
+        self.assertEqual(
+            [i.text for i in self.r.anwendungsitems if i.stufe == "SCH2"],
+            ["Jahresthema Jahr 2."],
+        )
+
+    def test_block_count_consistency_check_does_not_fire(self):
+        # Exactly one block per stufe here -- the discriminator assertion
+        # must stay silent.
+        self.assertEqual(self.r.issues.by_art("ab_block_anzahl_unerwartet"), [])
+
+
+class TestBindungStufeInconsistency(unittest.TestCase):
+    def test_more_than_one_block_per_stufe_is_logged_not_silent(self):
+        # Deliberately malformed: two AB-BLOCKs land under the same stufe.
+        # Not a live shape -- exercises the discriminator assertion itself.
+        xml = """<risdok xmlns="http://www.bka.gv.at"><nutzdaten><abschnitt>
+          <ueberschrift typ="g1">ACHTER TEIL</ueberschrift>
+          <ueberschrift typ="g1">DOPPELTFACH</ueberschrift>
+          <ueberschrift typ="erll">Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. Schulstufe):</ueberschrift>
+          <ueberschrift typ="erll">1. Schulstufe:</ueberschrift>
+          <ueberschrift typ="erll">Kompetenzbereich Alpha</ueberschrift>
+          <absatz typ="abs">Die Schülerinnen und Schüler können</absatz>
+          <liste><aufzaehlung><listelem><symbol stellen="1">-</symbol>Alpha.</listelem></aufzaehlung></liste>
+          <absatz typ="abs">Anwendungsbereiche</absatz>
+          <liste><aufzaehlung><listelem><symbol stellen="1">-</symbol>erstes Jahresthema.</listelem></aufzaehlung></liste>
+          <ueberschrift typ="erll">Kompetenzbereich Beta</ueberschrift>
+          <absatz typ="abs">Die Schülerinnen und Schüler können</absatz>
+          <liste><aufzaehlung><listelem><symbol stellen="1">-</symbol>Beta.</listelem></aufzaehlung></liste>
+          <absatz typ="abs">Anwendungsbereiche</absatz>
+          <liste><aufzaehlung><listelem><symbol stellen="1">-</symbol>zweites Jahresthema.</listelem></aufzaehlung></liste>
+        </abschnitt></nutzdaten></risdok>"""
+        spec = _bindung_spec("DOPPELTFACH", "stufe", stufen_praefix="SCH")
+        r = P.LehrplanParser(spec).parse_root(ET.fromstring(xml))
+        self.assertEqual(len(r.bloecke), 2)
+        self.assertEqual(len(r.issues.by_art("ab_block_anzahl_unerwartet")), 1)
+
+
+class TestBindungProsa(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.r = parse_bindung(PROSAFACH)
+
+    def test_zero_items_is_correct_not_a_failure(self):
+        self.assertEqual(len(self.r.anwendungsitems), 0)
+        self.assertEqual(len(self.r.kompetenzen), 1)
+
+    def test_no_phantom_block_is_created(self):
+        # Measured shape (SEK1.E): 0 blocks, not a zero-item block.
+        self.assertEqual(len(self.r.bloecke), 0)
+
+    def test_section_existence_is_recorded_in_the_issue_log(self):
+        issues = self.r.issues.by_art("anwendungsbereiche_prosa")
+        self.assertEqual(len(issues), 1)
+
+
+class TestBindungKeine(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.r = parse_bindung(KEINEFACH)
+
+    def test_no_anwendungsbereiche_at_all(self):
+        self.assertEqual(len(self.r.kompetenzen), 1)
+        self.assertEqual(len(self.r.anwendungsitems), 0)
+        self.assertEqual(len(self.r.bloecke), 0)
+
+    def test_legend_table_still_terminates_the_subject(self):
+        # The terminator does not depend on an AB block having existed.
+        self.assertEqual(self.r.themen_map, {"1": "Thema Eins"})
+
+
+class TestLehrplanzusatzTerminator(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.r = parse_bindung(LPZFACH)
+
+    def test_subject_ends_at_the_lehrplanzusatz_heading(self):
+        # No legend table in this subject -- only the belt-and-braces
+        # LEHRPLANZUSATZ terminator can end it.
+        self.assertEqual(len(self.r.kompetenzen), 1)
+        self.assertEqual(len(self.r.anwendungsitems), 1)
+        self.assertEqual(len(self.r.bloecke), 1)
+
+    def test_content_after_the_terminator_is_never_reached(self):
+        # The re-used 'Kompetenzbereich Epsilon' heading inside the
+        # Lehrplanzusatz would collide if it were parsed under the same
+        # subject -- proving it never is.
+        texte = [k.text for k in self.r.kompetenzen] + [
+            i.text for i in self.r.anwendungsitems
+        ]
+        self.assertNotIn("sollte nie gezählt werden, gehört zum Lehrplanzusatz.", texte)
+
+
+class TestBereichAusAbsatzFlag(unittest.TestCase):
+    """P1: bereich_aus_absatz defaults to False; only SEK1.M sets it True.
+
+    With it off, an absatz/@typ="abs" can never be classified as an area
+    heading, so the 11 known prose false positives (e.g. "In allen vier
+    Kompetenzbereichen wird das Zielniveau A1/A2 angestrebt") are impossible
+    by construction rather than suppressed by a state guard.
+    """
+
+    def test_absatz_form_area_heading_is_not_recognised_without_the_flag(self):
+        spec = P.SubjectSpec(
+            band="TEST",
+            fach_code="X",
+            fach_ueberschrift="PROSATEST",
+            stufen_praefix="K",
+            kompetenz_sektion_re=P.SEK1_MATHEMATIK.kompetenz_sektion_re,
+            anwendung_sektion_re=P.SEK1_MATHEMATIK.anwendung_sektion_re,
+            # bereich_aus_absatz left at its default (False).
+        )
+        parser = P.LehrplanParser(spec)
+        parser.state = P.State.ANWENDUNGSBEREICHE
+        el = ET.fromstring(
+            '<absatz typ="abs" xmlns="http://www.bka.gv.at">'
+            "Kompetenzbereich 1: Zahlen und Maße</absatz>"
+        )
+        ev = parser._classify(0, el)
+        self.assertIsNot(ev.token, P.Token.BEREICH)
+
+    def test_sek1_mathematik_sets_the_flag(self):
+        self.assertTrue(P.SEK1_MATHEMATIK.bereich_aus_absatz)
+
+    def test_default_is_false(self):
+        self.assertFalse(BEREICHFACH.bereich_aus_absatz)
+
+
+class TestAllenfallsPruefenFlag(unittest.TestCase):
+    """P1: allenfalls_pruefen defaults to False; only SEK1.M sets it True."""
+
+    def test_allenfalls_text_stays_verbindlich_without_the_flag(self):
+        # The fixture itself has no 'allenfalls' occurrence at all (measured:
+        # zero outside SEK1.M) -- check the exact helper the parser uses to
+        # decide 'verbindlich' for every non-kompetenz-bindung item.
+        parser = P.LehrplanParser(BEREICHFACH)
+        self.assertTrue(parser._verbindlich("allenfalls etwas nicht verbindliches."))
+
+    def test_sek1_mathematik_sets_the_flag(self):
+        self.assertTrue(P.SEK1_MATHEMATIK.allenfalls_pruefen)
+
+    def test_default_is_false(self):
+        self.assertFalse(BEREICHFACH.allenfalls_pruefen)
+
+
+# ---------------------------------------------------------------------------
+# Live smoke test: PRIM.SU / SEK1.D reproduce the measured containment counts
+# ---------------------------------------------------------------------------
+#
+# Proves P1+P2 actually work against the real source, not just the synthetic
+# fixture above. These throwaway SubjectSpecs live in this test file only --
+# adding the shipped SEK1.D/PRIM.SU specs is task P5.
+
+
+@unittest.skipUnless(
+    MS_LIVE.exists() and VS_LIVE.exists(),
+    "data-pipeline/resources/ is gitignored and not available in this checkout",
+)
+class TestLiveContainmentSmoke(unittest.TestCase):
+    def test_sek1_deutsch_matches_the_measured_counts(self):
+        # notes/deviations.md, 2026-07-29: SEK1.D 4 areas / 41 competences /
+        # 16 AB blocks / 54 items, bindung='bereich'.
+        spec = _bindung_spec(
+            "DEUTSCH",
+            "bereich",
+            band="SEK1",
+            fach_code="D",
+            teil_ueberschrift="ACHTER TEIL",
+            stufen_praefix="K",
+        )
+        r = P.parse_lehrplan(MS_LIVE, spec)
+        self.assertEqual(len(r.bereiche), 4)
+        self.assertEqual(len(r.kompetenzen), 41)
+        self.assertEqual(len(r.bloecke), 16)
+        self.assertEqual(len(r.anwendungsitems), 54)
+        self.assertTrue(all(i.kompetenz_id is None for i in r.anwendungsitems))
+        alle_ids = [k.id for k in r.kompetenzen] + [i.id for i in r.anwendungsitems]
+        self.assertEqual(len(alle_ids), len(set(alle_ids)))
+        # The 'Integrativer Kompetenzbereich Sprachbewusstsein und
+        # Sprachreflexion' area has an AB block but no competence list.
+        namen = {b.bereich_name for b in r.bloecke}
+        self.assertIn("Sprachbewusstsein und Sprachreflexion", namen)
+
+    def test_prim_sachunterricht_matches_the_measured_counts(self):
+        # notes/deviations.md, 2026-07-29: PRIM.SU 6 areas / 48 competences /
+        # 4 AB blocks / 40 items, bindung='stufe'.
+        spec = _bindung_spec(
+            "SACHUNTERRICHT",
+            "stufe",
+            band="PRIM",
+            fach_code="SU",
+            teil_ueberschrift="NEUNTER TEIL",
+            stufen_praefix="SCH",
+            bereich_re=re.compile(r"^(?P<name>.+\bKompetenzbereich)$"),
+        )
+        r = P.parse_lehrplan(VS_LIVE, spec)
+        self.assertEqual(len(r.bereiche), 6)
+        self.assertEqual(len(r.kompetenzen), 48)
+        self.assertEqual(len(r.bloecke), 4)
+        self.assertEqual(len(r.anwendungsitems), 40)
+        self.assertTrue(all(i.kompetenz_id is None for i in r.anwendungsitems))
+        self.assertEqual(r.issues.by_art("ab_block_anzahl_unerwartet"), [])
+        alle_ids = [k.id for k in r.kompetenzen] + [i.id for i in r.anwendungsitems]
+        self.assertEqual(len(alle_ids), len(set(alle_ids)))
 
 
 # ---------------------------------------------------------------------------

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SYNTHETIC fixture. Not RIS content.
+
+     Exercises the P2 containment-attachment mechanism for the four
+     non-'kompetenz' anwendungsbereiche_bindung values, against the combined
+     single-heading grammar used by SEK1.D/E and all three primary subjects
+     (unlike sek1_mathematik_mini.xml, which is SEK1.M's own two-section
+     shape). Each subject below is parsed with its own throwaway SubjectSpec
+     in test_parse_lehrplan.py, these are not shipped specs.
+
+       BEREICHFACH  bindung='bereich': one AB block per area, and (mirroring
+                    SEK1.D's 'Integrativer Kompetenzbereich Sprachbewusstsein
+                    und Sprachreflexion') a second area with an AB block but
+                    no competence list of its own.
+       STUFEFACH    bindung='stufe': one AB block per school year, after
+                    the last area, attached to the stufe only (never to
+                    Beta, the last area seen).
+       PROSAFACH    bindung='prosa': 'Anwendungsbereiche' followed by prose,
+                    no liste: zero items, section existence only logged.
+       KEINEFACH    bindung='keine': no Anwendungsbereiche marker at all.
+       LPZFACH      bindung='bereich': ends via the LEHRPLANZUSATZ
+                    belt-and-braces terminator (no legend table), proving
+                    the content after it is never reached, let alone
+                    double-counted under a colliding area name.
+
+     BEREICHFACH, STUFEFACH and PROSAFACH each end with the per-subject
+     footnote legend table (the general terminator); KEINEFACH does too, to
+     confirm the terminator does not depend on an AB block ever having
+     existed. LPZFACH instead relies solely on the second terminator.
+-->
+<risdok xmlns="http://www.bka.gv.at">
+  <metadaten/>
+  <nutzdaten>
+    <abschnitt nr="1" typ="ns">
+
+      <ueberschrift typ="g1">ACHTER TEIL</ueberschrift>
+
+      <ueberschrift typ="g1">BEREICHFACH</ueberschrift>
+      <ueberschrift typ="erll">Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. bis 1. Klasse):</ueberschrift>
+      <absatz typ="erltext">1. Klasse:</absatz>
+      <ueberschrift typ="erll">Kompetenzbereich Erstbereich</ueberschrift>
+      <absatz typ="abs">Die Schülerinnen und Schüler können</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>erste Kompetenz.</listelem>
+      </aufzaehlung></liste>
+      <absatz typ="abs">Anwendungsbereiche</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>Anwendungsitem zu Erstbereich.</listelem>
+      </aufzaehlung></liste>
+      <ueberschrift typ="erll">Integrativer Kompetenzbereich Zweitbereich</ueberschrift>
+      <absatz typ="abs">Die Beschreibungen werden in den anderen Bereichen integrativ formuliert, kein eigener Kompetenzblock.</absatz>
+      <absatz typ="abs">Anwendungsbereiche</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>Anwendungsitem zu Zweitbereich ohne eigene Kompetenzen.</listelem>
+      </aufzaehlung></liste>
+      <table>
+        <tr><td><absatz typ="tabtext"><super>1</super>Thema Eins</absatz></td></tr>
+      </table>
+
+      <ueberschrift typ="g1">STUFEFACH</ueberschrift>
+      <ueberschrift typ="erll">Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. bis 2. Schulstufe):</ueberschrift>
+      <ueberschrift typ="erll">1. Schulstufe:</ueberschrift>
+      <ueberschrift typ="erll">Kompetenzbereich Alpha</ueberschrift>
+      <absatz typ="abs">Die Schülerinnen und Schüler können</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>Alpha-Kompetenz Jahr 1.</listelem>
+      </aufzaehlung></liste>
+      <ueberschrift typ="erll">Kompetenzbereich Beta</ueberschrift>
+      <absatz typ="abs">Die Schülerinnen und Schüler können</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>Beta-Kompetenz Jahr 1.</listelem>
+      </aufzaehlung></liste>
+      <absatz typ="abs">Anwendungsbereiche</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>Jahresthema eins.</listelem>
+        <listelem ct="text"><symbol stellen="1">–</symbol>Jahresthema zwei.</listelem>
+      </aufzaehlung></liste>
+      <ueberschrift typ="erll">2. Schulstufe:</ueberschrift>
+      <ueberschrift typ="erll">Kompetenzbereich Alpha</ueberschrift>
+      <absatz typ="abs">Die Schülerinnen und Schüler können</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>Alpha-Kompetenz Jahr 2.</listelem>
+      </aufzaehlung></liste>
+      <ueberschrift typ="erll">Kompetenzbereich Beta</ueberschrift>
+      <absatz typ="abs">Die Schülerinnen und Schüler können</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>Beta-Kompetenz Jahr 2.</listelem>
+      </aufzaehlung></liste>
+      <absatz typ="abs">Anwendungsbereiche</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>Jahresthema Jahr 2.</listelem>
+      </aufzaehlung></liste>
+      <table>
+        <tr><td><absatz typ="tabtext"><super>1</super>Thema Eins</absatz></td></tr>
+      </table>
+
+      <ueberschrift typ="g1">PROSAFACH</ueberschrift>
+      <ueberschrift typ="erll">Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. bis 1. Klasse):</ueberschrift>
+      <absatz typ="erltext">1. Klasse:</absatz>
+      <ueberschrift typ="erll">Kompetenzbereich Gamma</ueberschrift>
+      <absatz typ="abs">Die Schülerinnen und Schüler können</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>Gamma-Kompetenz.</listelem>
+      </aufzaehlung></liste>
+      <absatz typ="abs">Anwendungsbereiche</absatz>
+      <absatz typ="abs">Beschreibender Fließtext, der die Anwendungsbereiche nur umschreibt, ohne Liste.</absatz>
+      <table>
+        <tr><td><absatz typ="tabtext"><super>1</super>Thema Eins</absatz></td></tr>
+      </table>
+
+      <ueberschrift typ="g1">KEINEFACH</ueberschrift>
+      <ueberschrift typ="erll">Kompetenzbeschreibungen, Lehrstoff (1. bis 1. Klasse):</ueberschrift>
+      <absatz typ="erltext">1. Klasse:</absatz>
+      <ueberschrift typ="erll">Kompetenzbereich Delta</ueberschrift>
+      <absatz typ="abs">Die Schülerinnen und Schüler können</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>Delta-Kompetenz.</listelem>
+      </aufzaehlung></liste>
+      <table>
+        <tr><td><absatz typ="tabtext"><super>1</super>Thema Eins</absatz></td></tr>
+      </table>
+
+      <ueberschrift typ="g1">LPZFACH</ueberschrift>
+      <ueberschrift typ="erll">Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. bis 1. Klasse):</ueberschrift>
+      <absatz typ="erltext">1. Klasse:</absatz>
+      <ueberschrift typ="erll">Kompetenzbereich Epsilon</ueberschrift>
+      <absatz typ="abs">Die Schülerinnen und Schüler können</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>Epsilon-Kompetenz.</listelem>
+      </aufzaehlung></liste>
+      <absatz typ="abs">Anwendungsbereiche</absatz>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>Epsilon-Anwendungsitem.</listelem>
+      </aufzaehlung></liste>
+      <ueberschrift typ="erll">LEHRPLANZUSATZ EPSILON ALS ZWEITFACH FÜR ORDENTLICHE SCHÜLERINNEN UND SCHÜLER</ueberschrift>
+      <ueberschrift typ="erll">Kompetenzbereich Epsilon</ueberschrift>
+      <liste><aufzaehlung ebene="2" art="normal">
+        <listelem ct="text"><symbol stellen="1">–</symbol>sollte nie gezählt werden, gehört zum Lehrplanzusatz.</listelem>
+      </aufzaehlung></liste>
+
+    </abschnitt>
+  </nutzdaten>
+</risdok>

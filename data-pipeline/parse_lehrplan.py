@@ -286,6 +286,23 @@ ALLENFALLS_RE = re.compile(r"\ballenfalls\b", re.IGNORECASE)
 #: ``Vorschläge für den Einsatz digitaler Technologien4 in der 1. Klasse``.
 DIGITALE_TECHNOLOGIEN_RE = re.compile(r"^Vorschl(?:ä|ae)ge f(?:ü|ue)r den Einsatz digitaler Technologien")
 
+#: The inline ``Anwendungsbereiche`` sub-heading used by every subject except
+#: SEK1.M (which has a separate top-level ``Anwendungsbereiche (…):`` section
+#: instead -- matched by ``SubjectSpec.anwendung_sektion_re``). This one is
+#: the bare word, no parenthetical, marking the start of an AB-BLOCK inside
+#: the combined competence/application section -- see
+#: notes/deviations.md, 2026-07-29.
+AB_BLOCK_RE = re.compile(r"^Anwendungsbereiche\s*:?\s*$")
+
+#: ``LEHRPLANZUSATZ DEUTSCH ALS ZWEITSPRACHE …`` -- an embedded second
+#: curriculum that follows some subjects' main one on the same ``erll``
+#: element type as an ordinary in-subject heading (so it does not open a new
+#: ``g1`` subject span). Belt-and-braces subject terminator alongside the
+#: legend-table terminator (both derived from notes/deviations.md,
+#: 2026-07-29) -- prevents duplicate-area ID collisions (e.g. SEK1.D's
+#: ``Lesen``/``Schreiben`` recurring inside the DaZ Lehrplanzusatz).
+LEHRPLANZUSATZ_RE = re.compile(r"^LEHRPLANZUSATZ\b")
+
 #: ``Dieser Lehrplan greift folgende übergreifende Themen auf: …``
 THEMEN_SATZ_RE = re.compile(r"^Dieser Lehrplan greift folgende (?:ü|ue)bergreifende Themen auf\s*:\s*(?P<liste>.+)$")
 
@@ -373,6 +390,39 @@ class SubjectSpec:
     lehrstoff_quelle: str = "aus_anwendungsbereichen"
     """``aus_anwendungsbereichen`` | ``eigen_ausgewiesen`` (plan section 4.5)."""
 
+    anwendungsbereiche_bindung: str = "kompetenz"
+    """How application-area items attach to the rest of the structure.
+
+    ``kompetenz`` -- verbatim text-repetition join to one competence (SEK1.M
+    only -- see :data:`AREA_NUMMERIERT_RE`/:func:`join_anwendungen`; V-27).
+    ``bereich`` -- the ``Anwendungsbereiche`` block follows an area's
+    competence list and attaches to ``(bereich, stufe)`` (SEK1.D).
+    ``stufe`` -- the block follows the *last* area of a school year and
+    attaches to ``(stufe)`` only, never to an area (PRIM.D, PRIM.SU).
+    ``prosa`` -- the ``Anwendungsbereiche`` heading is followed by descriptive
+    prose, not a ``liste``; no items exist to capture (SEK1.E).
+    ``keine`` -- the subject has no Anwendungsbereiche at all (PRIM.M).
+
+    Measured 2026-07-29 (see notes/deviations.md): there is no text-repetition
+    join outside SEK1.M -- everywhere else attachment is by XML containment.
+    For ``bereich``/``stufe`` a per-competence ``kompetenz_id`` must **not**
+    be synthesised; the source does not make that link."""
+
+    bereich_aus_absatz: bool = False
+    """Whether an ``absatz/@typ="abs"`` may ever be classified as an area
+    heading (the SEK1.M element-type trap -- see notes/ris-xml-structure.md
+    §3). ``False`` by construction makes the 11 known prose false positives
+    in the other five subjects (e.g. "In allen vier Kompetenzbereichen wird
+    das Zielniveau A1/A2 angestrebt") impossible rather than merely
+    suppressed by a state guard. ``True`` only for SEK1.M."""
+
+    allenfalls_pruefen: bool = False
+    """Whether application items are scanned for the ``allenfalls`` marker to
+    set ``verbindlich``. ``allenfalls`` occurs zero times in the competence
+    sections of the five subjects other than SEK1.M -- do not scan for it
+    there (it would report a meaningless 0/N split) and leave ``verbindlich``
+    ``True`` unconditionally. ``True`` only for SEK1.M."""
+
 
 SEK1_MATHEMATIK = SubjectSpec(
     band="SEK1",
@@ -391,6 +441,9 @@ SEK1_MATHEMATIK = SubjectSpec(
     },
     anwendungsbereiche_status="item_flags",
     lehrstoff_quelle="aus_anwendungsbereichen",
+    anwendungsbereiche_bindung="kompetenz",
+    bereich_aus_absatz=True,
+    allenfalls_pruefen=True,
 )
 
 #: Registry keyed ``<BAND>.<FACH>``.  Five more entries belong here later.
@@ -481,7 +534,20 @@ class Anwendungsitem:
 
 @dataclass
 class Anwendungsblock:
-    """One repeated competence sentence plus the item list that follows it."""
+    """A group of application items and how they attach to the rest.
+
+    Two shapes, keyed by ``SubjectSpec.anwendungsbereiche_bindung``:
+
+    * ``kompetenz`` (SEK1.M) -- ``satz`` is the repeated competence sentence
+      the block is matched against (V-27); ``kompetenz_id``/``join_methode``/
+      ``join_score`` are filled in by :func:`join_anwendungen`.
+    * ``bereich``/``stufe`` -- attachment is by containment, not by a
+      repeated sentence: ``satz`` is empty and ``kompetenz_id``/
+      ``join_methode``/``join_score`` stay at their ``None`` default, never
+      computed. For ``stufe`` blocks, ``bereich_nummer``/``bereich_name`` are
+      likewise left empty/``None`` -- the block attaches to the school year
+      only, not to whichever area happened to precede it (see
+      notes/ris-xml-structure.md §11)."""
 
     stufe: str
     bereich_nummer: int | None
@@ -554,9 +620,14 @@ class Token(Enum):
     """Classification of one flat child element."""
 
     FACH_UEBERSCHRIFT = "fach_ueberschrift"
+    LEHRPLANZUSATZ = "lehrplanzusatz"
     SEKTION_KOMPETENZ = "sektion_kompetenz"
     SEKTION_ANWENDUNG = "sektion_anwendung"
     SEKTION_GZ_INTEGRATIV = "sektion_gz_integrativ"
+    AB_BLOCK = "ab_block"
+    """The inline ``Anwendungsbereiche`` sub-heading (bindung ``bereich`` |
+    ``stufe`` | ``prosa``) -- see :data:`AB_BLOCK_RE`."""
+
     BEREICH = "bereich"
     STUFE = "stufe"
     STAMMSATZ = "stammsatz"
@@ -637,6 +708,17 @@ class LehrplanParser:
         self.anwendungsitems: list[Anwendungsitem] = []
         self._offener_block: Anwendungsblock | None = None
         self._digital_offen = False
+        self._offener_ab_block: Anwendungsblock | None = None
+        """Containment-attachment AB-BLOCK currently open (bindung 'bereich'
+        or 'stufe') -- see :meth:`_oeffne_ab_block`. Distinct from
+        ``_offener_block``, which is SEK1.M's text-join-based mechanism; the
+        two are never active for the same spec."""
+
+        self._ab_block_prosa_offen = False
+        """A bindung='prosa' AB-BLOCK is open (SEK1.E): the heading was seen
+        and logged, but it captures no items by design -- see
+        :meth:`_oeffne_ab_block`."""
+
         self._block_ordinal = 0
         self._komp_ordinal = 0
         self._ids: dict[str, int] = {}
@@ -658,6 +740,8 @@ class LehrplanParser:
             if typ in ("g1", "g1min"):
                 return Ereignis(Token.FACH_UEBERSCHRIFT, index, el, ex)
             if typ == "erll":
+                if LEHRPLANZUSATZ_RE.match(text):
+                    return Ereignis(Token.LEHRPLANZUSATZ, index, el, ex)
                 # The level marker is `absatz/@typ="erltext"` in the Sek I
                 # document but `ueberschrift/@typ="erll"` in the primary one
                 # (35 of 40 occurrences).  Accept both element types.
@@ -685,10 +769,21 @@ class LehrplanParser:
                                                                  "einheit": m.group("einheit")})
                 return Ereignis(Token.TEXT, index, el, ex)
             if typ == "abs":
+                # The inline "Anwendungsbereiche" sub-heading (bindung
+                # bereich/stufe/prosa) -- only meaningful while inside the
+                # combined competence section; gated by state exactly like
+                # the element-type trap below, for the same reason.
+                if self.state is State.KOMPETENZBEREICHE and AB_BLOCK_RE.match(text):
+                    return Ereignis(Token.AB_BLOCK, index, el, ex)
                 # THE TRAP: in the Anwendungsbereiche section the area heading
-                # is an ordinary body paragraph, not an <ueberschrift>.
+                # is an ordinary body paragraph, not an <ueberschrift>. Opt-in
+                # per SubjectSpec (bereich_aus_absatz) -- True only for
+                # SEK1.M, which is the only subject where this form occurs;
+                # False elsewhere makes the 11 known prose false positives
+                # (e.g. "In allen vier Kompetenzbereichen wird das
+                # Zielniveau A1/A2 angestrebt") impossible by construction.
                 m = self.spec.bereich_re.match(text)
-                if m and self.state is State.ANWENDUNGSBEREICHE:
+                if self.spec.bereich_aus_absatz and m and self.state is State.ANWENDUNGSBEREICHE:
                     return Ereignis(Token.BEREICH, index, el, ex, self._bereich_daten(m, text))
                 if DIGITALE_TECHNOLOGIEN_RE.match(text):
                     return Ereignis(Token.DIGITALE_TECHNOLOGIEN, index, el, ex)
@@ -743,6 +838,7 @@ class LehrplanParser:
         # Any further g1 heading ends the subject, whatever state we are in.
         if ev.token is Token.FACH_UEBERSCHRIFT:
             self._close_block()
+            self._schliesse_ab_block()
             if self.state in (State.KOMPETENZBEREICHE, State.ANWENDUNGSBEREICHE):
                 self.issues.add(
                     "sektion_nicht_geschlossen",
@@ -750,6 +846,42 @@ class LehrplanParser:
                     ev.index,
                     ev.extracted.text[:80],
                 )
+            self.state = State.NACH_FACH
+            return
+
+        # A LEHRPLANZUSATZ heading also ends the subject -- belt-and-braces
+        # second terminator alongside the legend table below (see
+        # LEHRPLANZUSATZ_RE). In the live document the legend table normally
+        # fires first and this branch never triggers, but it must not depend
+        # on that ordering.
+        if ev.token is Token.LEHRPLANZUSATZ:
+            self._close_block()
+            self._schliesse_ab_block()
+            if self.state in (State.KOMPETENZBEREICHE, State.ANWENDUNGSBEREICHE):
+                self.issues.add(
+                    "sektion_nicht_geschlossen",
+                    f"subject ended (LEHRPLANZUSATZ) while still in {self.state.value}",
+                    ev.index,
+                    ev.extracted.text[:80],
+                )
+            self.state = State.NACH_FACH
+            return
+
+        # The per-subject footnote legend table is the general subject
+        # terminator (notes/deviations.md, 2026-07-29): every one of the six
+        # target subjects ends its main curriculum with exactly one 18-cell
+        # legend table, immediately before the next subject or insert. Parse
+        # it for the theme map, then leave the subject -- this bounds e.g.
+        # SEK1.D at child 514 without a hardcoded index, structurally
+        # preventing the LEHRPLANZUSATZ duplicate-area ID collision.
+        if ev.token is Token.TABELLE and state in (
+            State.KOMPETENZBEREICHE,
+            State.ANWENDUNGSBEREICHE,
+            State.KOMPETENZ_GZ_INTEGRATIV,
+        ):
+            self._themen_map.update(self._parse_themen_tabelle(ev.element))
+            self._close_block()
+            self._schliesse_ab_block()
             self.state = State.NACH_FACH
             return
 
@@ -809,17 +941,33 @@ class LehrplanParser:
 
     def _kompetenzbereiche(self, ev: Ereignis) -> None:
         if ev.token is Token.STUFE:
+            self._schliesse_ab_block()
             self.stufe = self._stufe_code(ev)
             self.bereich = None
             return
         if ev.token is Token.BEREICH:
+            self._schliesse_ab_block()
             self.bereich = self._bereich(ev)
             self._komp_ordinal = 0
             return
+        if ev.token is Token.AB_BLOCK:
+            self._oeffne_ab_block(ev)
+            return
         if ev.token is Token.LISTE:
-            self._emit_kompetenzen(ev)
+            if self._offener_ab_block is not None:
+                self._emit_ab_items(ev)
+            elif self._ab_block_prosa_offen:
+                self.issues.add(
+                    "anwendungsliste_bei_prosa_bindung",
+                    "list found after a prosa-bindung Anwendungsbereiche "
+                    "heading; not expected for this spec, skipping",
+                    ev.index,
+                )
+            else:
+                self._emit_kompetenzen(ev)
             return
         if ev.token is Token.ANDERE_UEBERSCHRIFT:
+            self._schliesse_ab_block()
             self._verlasse_sektion(ev)
             return
 
@@ -879,7 +1027,9 @@ class LehrplanParser:
         (ignored, same as in KOMPETENZBEREICHE), then one ``LISTE`` of
         competences for that class year. ``self.bereich`` was fixed to the
         synthetic GZ area when this state was entered and never changes
-        here; only ``self.stufe`` and the per-stufe ordinal reset.
+        here; only ``self.stufe`` and the per-stufe ordinal reset. The
+        trailing footnote-legend ``TABELLE`` is handled generically in
+        :meth:`_step` (the legend-table subject terminator), not here.
         """
         if ev.token is Token.STUFE:
             self.stufe = self._stufe_code(ev)
@@ -891,11 +1041,6 @@ class LehrplanParser:
         if ev.token is Token.ANDERE_UEBERSCHRIFT:
             self._verlasse_sektion(ev)
             return
-        if ev.token is Token.TABELLE:
-            # The per-subject footnote legend table follows directly after
-            # this appendix in the live document, with no intervening
-            # heading -- see notes/ris-xml-structure.md §6.
-            self._themen_map.update(self._parse_themen_tabelle(ev.element))
 
     def _fach_anhang(self, ev: Ereignis) -> None:
         """Capture, without interpreting, anything after the two sections."""
@@ -1107,7 +1252,7 @@ class LehrplanParser:
                 ordinal=len(block.items) if block is not None else 0,
                 text=ex.text,
                 text_roh=ex.roh,
-                verbindlich=not bool(ALLENFALLS_RE.search(ex.text)),
+                verbindlich=self._verbindlich(ex.text),
                 art=art,
                 ist_wiederholung=bool(WIEDERHOLUNG_RE.match(ex.text)),
                 abbildungen=self._abbildung_eintraege(ex.abbildungen, ev.index),
@@ -1126,6 +1271,146 @@ class LehrplanParser:
             self.bloecke.append(self._offener_block)
             self._offener_block = None
         self._digital_offen = False
+
+    # -- containment attachment (bindung 'bereich' | 'stufe' | 'prosa') --
+
+    def _verbindlich(self, text: str) -> bool:
+        """Whether an application item is binding.
+
+        The ``allenfalls`` marker is SEK1.M-only (measured 2026-07-29: zero
+        occurrences in the competence/application sections of the other five
+        subjects). Per :attr:`SubjectSpec.allenfalls_pruefen`, the regex is
+        not even evaluated for those subjects -- ``verbindlich`` is simply
+        always ``True``, rather than reporting a meaningless 0/N split."""
+        if not self.spec.allenfalls_pruefen:
+            return True
+        return not bool(ALLENFALLS_RE.search(text))
+
+    def _oeffne_ab_block(self, ev: Ereignis) -> None:
+        """Open the AB-BLOCK following an ``Anwendungsbereiche`` marker.
+
+        Keyed per :attr:`SubjectSpec.anwendungsbereiche_bindung`:
+
+        * ``bereich`` -- attaches to the current ``(bereich, stufe)``. The
+          area may have no competence list of its own (SEK1.D's
+          'Integrativer Kompetenzbereich Sprachbewusstsein und
+          Sprachreflexion', mirroring GZINTEGRATIV) -- ``self.bereich`` is
+          set unconditionally by the BEREICH token handler regardless of
+          whether a competence list followed, so this never mis-binds to a
+          stale, previously-seen area.
+        * ``stufe`` -- attaches to ``(stufe)`` only; the area is deliberately
+          ignored even though ``self.bereich`` is normally non-``None`` here
+          (the block follows the *last* area of the year) -- attaching it to
+          an area the source does not scope it to would be exactly the
+          per-competence misattribution the join-honesty rule forbids.
+        * ``prosa`` -- no block object at all; only a ``ParseIssue`` records
+          that the section was seen (matches the measured "0 blocks / 4
+          prose heads" shape, not a phantom zero-item block).
+        """
+        self._schliesse_ab_block()
+        bindung = self.spec.anwendungsbereiche_bindung
+        if bindung == "prosa":
+            self.issues.add(
+                "anwendungsbereiche_prosa",
+                "Anwendungsbereiche heading followed by descriptive prose "
+                "only; no items captured for bindung='prosa'",
+                ev.index,
+            )
+            self._ab_block_prosa_offen = True
+            return
+        if bindung == "stufe":
+            bereich_nummer: int | None = None
+            bereich_name = ""
+        else:  # "bereich" (or an unrecognised value -- fall back safely)
+            if bindung != "bereich":
+                self.issues.add(
+                    "unbekannte_anwendungsbereiche_bindung",
+                    f"anwendungsbereiche_bindung={bindung!r} not recognised; "
+                    "treating as 'bereich'",
+                    ev.index,
+                )
+            if self.bereich is None:
+                self.issues.add(
+                    "ab_block_ohne_bereich",
+                    "Anwendungsbereiche block (bindung='bereich') with no "
+                    "preceding area heading",
+                    ev.index,
+                )
+            bereich_nummer = self.bereich.nummer if self.bereich else None
+            bereich_name = self.bereich.name if self.bereich else ""
+        self._offener_ab_block = Anwendungsblock(
+            stufe=self.stufe or "",
+            bereich_nummer=bereich_nummer,
+            bereich_name=bereich_name,
+            ordinal=self._block_ordinal,
+            satz="",
+            quell_index=ev.index,
+        )
+        self._block_ordinal += 1
+
+    def _schliesse_ab_block(self) -> None:
+        if self._offener_ab_block is not None:
+            self.bloecke.append(self._offener_ab_block)
+            self._offener_ab_block = None
+        self._ab_block_prosa_offen = False
+
+    def _emit_ab_items(self, ev: Ereignis) -> None:
+        """Emit items for an open containment-attachment AB-BLOCK.
+
+        Deliberately does **not** set ``kompetenz_id``/``join_methode`` --
+        those stay at their ``None`` default. Per notes/deviations.md
+        (2026-07-29): synthesising a per-competence link here, where the
+        regulation makes none, would be a factual misstatement about a legal
+        text."""
+        block = self._offener_ab_block
+        if block is None:  # pragma: no cover - guarded by the caller
+            self.issues.add(
+                "anwendungsliste_ohne_block",
+                "Anwendungsbereiche list with no open AB block; skipped",
+                ev.index,
+            )
+            return
+        if self.stufe is None:
+            self.issues.add(
+                "anwendungsliste_ohne_stufe",
+                "application list before any class-year marker; skipped",
+                ev.index,
+            )
+            return
+        bereich_obj = self.bereiche.get(block.bereich_name) if block.bereich_name else None
+        bereich_slug = bereich_obj.slug if bereich_obj else "ALLGEMEIN"
+        for el in ev.element.findall(".//" + NS + "listelem"):
+            ex = element_text(el)
+            self._require(ex.text, "text", ev.index)
+            # Counted across *all* items sharing (bereich_name, stufe), not
+            # just this block's own -- if bindung='stufe' ever sees more than
+            # one AB-BLOCK per school year (the malformed shape the
+            # 'ab_block_anzahl_unerwartet' check in _finish flags), this
+            # keeps numbering sequential instead of colliding with the first
+            # block's IDs.
+            lfd = len([
+                i for i in self.anwendungsitems
+                if i.stufe == block.stufe and i.bereich_name == block.bereich_name
+            ]) + 1
+            ident = self._make_id(bereich_slug, block.stufe, lfd, ev.index, "AB.")
+            item = Anwendungsitem(
+                id=ident,
+                band=self.spec.band,
+                fach=self.spec.fach_code,
+                bereich_nummer=block.bereich_nummer,
+                bereich_name=block.bereich_name,
+                stufe=block.stufe,
+                ordinal=len(block.items),
+                text=ex.text,
+                text_roh=ex.roh,
+                verbindlich=self._verbindlich(ex.text),
+                art="praezisierung",
+                ist_wiederholung=bool(WIEDERHOLUNG_RE.match(ex.text)),
+                abbildungen=self._abbildung_eintraege(ex.abbildungen, ev.index),
+                quell_index=ev.index,
+            )
+            self.anwendungsitems.append(item)
+            block.items.append(item)
 
     # -- cross-cutting themes -------------------------------------------
 
@@ -1189,6 +1474,22 @@ class LehrplanParser:
 
     def _finish(self) -> ParseResult:
         self._close_block()
+        self._schliesse_ab_block()
+        if self.spec.anwendungsbereiche_bindung == "stufe":
+            # Discriminator vs 'bereich' is the spec value, not a heuristic --
+            # but assert internal consistency: a 'stufe'-bound AB-BLOCK
+            # attaches once per school year (after its last area), so no
+            # stufe should ever end up with more than one block.
+            je_stufe: dict[str, int] = {}
+            for b in self.bloecke:
+                je_stufe[b.stufe] = je_stufe.get(b.stufe, 0) + 1
+            for stufe, anzahl in je_stufe.items():
+                if anzahl > 1:
+                    self.issues.add(
+                        "ab_block_anzahl_unerwartet",
+                        f"bindung='stufe' but {anzahl} AB blocks attached to "
+                        f"{stufe!r} (expected at most 1 per school year)",
+                    )
         if not self._themen_map:
             self.issues.add("keine_themenlegende", "no cross-cutting-theme legend found")
         else:
@@ -1238,8 +1539,32 @@ def join_anwendungen(result: ParseResult, issues: IssueLog | None = None) -> dic
 
     The source repeats competence sentences with small editorial drift
     ("sowie" -> "und", a dropped noun), which is why 1 alone is insufficient.
+
+    Only meaningful for ``anwendungsbereiche_bindung == "kompetenz"``
+    (SEK1.M). For ``bereich``/``stufe``/``prosa``/``keine`` this is a no-op:
+    there is no text-repetition join to run (measured 2026-07-29, see
+    notes/deviations.md) and running the exact/fuzzy/positional cascade
+    against those blocks' empty ``satz`` would risk a spurious positional
+    match, i.e. synthesising exactly the per-competence link the source does
+    not make.
     """
     log = issues if issues is not None else result.issues
+    if result.spec.anwendungsbereiche_bindung != "kompetenz":
+        stats = {
+            "bloecke": len(result.bloecke),
+            "kompetenzen": len(result.kompetenzen),
+            "exact": 0,
+            "fuzzy": 0,
+            "positional": 0,
+            "unmatched": 0,
+            "exact_rate": 0.0,
+            "fuzzy_rate": 0.0,
+            "positional_rate": 0.0,
+            "unmatched_rate": 0.0,
+        }
+        result.join_stats = stats
+        return stats
+
     eimer: dict[tuple[str, int | None], list[Kompetenz]] = {}
     for k in result.kompetenzen:
         eimer.setdefault((k.stufe, k.bereich_nummer), []).append(k)

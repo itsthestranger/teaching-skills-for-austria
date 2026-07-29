@@ -58,7 +58,7 @@ ueberschrift/g1min   3    absatz/satz         1    ueberschrift/erlz    1
 |---|---|---|
 | `<symbol stellen="1">–</symbol>` | The list bullet glyph, first child of every `listelem` | Dropped. It is presentation, not text. |
 | `<super>4</super>`, `<super>6, 7</super>` | Superscript footnote marker referring to the 13 cross-cutting themes. **One `<super>` may hold several numbers.** | Removed from the quotable `text`; preserved in `text_roh` and in `themen_marker_roh`; resolved against the theme map. |
-| `<binary><src>/Dokumente/…/hauptdokument.img1is.png</src></binary>` | An inline PNG — fractions and formulae are shipped as images | **Trap:** `itertext()` splices the *file path* into the sentence. Replaced by the token `⟦ABB:hauptdokument.img1is.png⟧`; the image is fetched, shipped and its metadata attached — see §11. 25 Sek I maths application items (63 images) are affected within this parser's scope. |
+| `<binary><src>/Dokumente/…/hauptdokument.img1is.png</src></binary>` | An inline PNG — fractions and formulae are shipped as images | **Trap:** `itertext()` splices the *file path* into the sentence. Replaced by the token `⟦ABB:hauptdokument.img1is.png⟧`; the image is fetched, shipped and its metadata attached — see §10. 25 Sek I maths application items (63 images) are affected within this parser's scope. |
 | `<feld>`, `<tab>` | Page furniture in headers/footers | Outside the content range. |
 
 ---
@@ -118,7 +118,7 @@ table               the 13-theme footnote legend                     [1071]
 ```
 
 **Section 3** was originally left unrecognised (fell into `FACH_ANHANG`/`zusatzbloecke`); it is now
-promoted into the main dataset by a dedicated `KOMPETENZ_GZ_INTEGRATIV` state — see §11.
+promoted into the main dataset by a dedicated `KOMPETENZ_GZ_INTEGRATIV` state — see §10.
 
 ### Section 1 — `Kompetenzbereiche` (the competence descriptions)
 
@@ -302,7 +302,7 @@ competence. They are emitted with `art: "digitale_technologien"` and
 Mathematik-Lehrplan bei integrativer Führung von Geometrisches Zeichnen (1.
 bis 4. Klasse):`, one for K3 and one for K4) that belong to none of the four
 numbered Kompetenzbereiche. Decision taken (FINDINGS.md V-57): promoted into
-the main dataset rather than left in `zusatzbloecke` — see §11.
+the main dataset rather than left in `zusatzbloecke` — see §10.
 
 `Wiederholen und Festigen` backlinks are positional: same area, class year − 1.
 The source gives no identifier. It is Sek-I-only — **zero** occurrences in the
@@ -315,7 +315,7 @@ primary document, so primary progression must be derived positionally.
 States: `VOR_FACH → FACH_PRAEAMBEL → KOMPETENZBEREICHE ⇄ ANWENDUNGSBEREICHE →
 KOMPETENZ_GZ_INTEGRATIV → FACH_ANHANG → NACH_FACH`. Every element is first
 classified into a `Token`, then handled by exactly one per-state handler;
-there are no implicit transitions. `KOMPETENZ_GZ_INTEGRATIV` (§11) mirrors
+there are no implicit transitions. `KOMPETENZ_GZ_INTEGRATIV` (§10) mirrors
 `KOMPETENZBEREICHE`'s shape (class-year marker, bare stem, list) but for one
 fixed, synthetic area rather than the four numbered ones, and is entered from
 whatever state precedes it (in the live document, `ANWENDUNGSBEREICHE`) via
@@ -326,16 +326,16 @@ generic `ANDERE_UEBERSCHRIFT` fallback anymore.
 
 | `art` | Trigger |
 |---|---|
-| `unbekannte_ueberschrift` | An `erll` heading inside a section that is neither an area, a known section, nor the GZ-integrative appendix → leaves the section into `FACH_ANHANG`, content kept in `zusatzbloecke`. Fires **zero** times on the live document since the GZ-integrative promotion (§11); still exercised by the mini fixture's synthetic unrelated trailing heading. |
+| `unbekannte_ueberschrift` | An `erll` heading inside a section that is neither an area, a known section, nor the GZ-integrative appendix → leaves the section into `FACH_ANHANG`, content kept in `zusatzbloecke`. Fires **zero** times on the live document since the GZ-integrative promotion (§10); still exercised by the mini fixture's synthetic unrelated trailing heading. |
 | `bereich_ohne_slug` | Area name with no configured ID segment → deterministic slug derived |
 | `unerwartete_stufeneinheit` | `Schulstufe` seen where `Klasse` expected, or vice versa |
 | `bereichsnummer_wechselt` | Same area name appears with a different number |
 | `liste_ohne_kontext`, `anwendungsliste_ohne_stufe`, `anwendungsliste_ohne_satz` | Structural surprise around a list |
 | `join_fuzzy`, `join_positional`, `join_fehlgeschlagen` | Every non-exact join |
-| `kompetenz_ohne_anwendungsblock` | A competence with no joined Anwendungsblock. Fires exactly twice on the live document: the 2 promoted GZ-integrative competences, which have no Anwendungsbereiche counterpart at all (§11) — not a join failure. |
+| `kompetenz_ohne_anwendungsblock` | A competence with no joined Anwendungsblock. Fires exactly twice on the live document: the 2 promoted GZ-integrative competences, which have no Anwendungsbereiche counterpart at all (§10) — not a join failure. |
 | `fachueberschrift_im_falschen_teil` | Subject heading found under the wrong TEIL |
 | `thema_ohne_nummer`, `keine_themenlegende` | Theme map incomplete |
-| `abbildung_nicht_installiert` | A `<binary>/<src>` path parses (matches the expected RIS shape) but no file is shipped under `plugin/data/abbildungen/<nor>/` for it — see §11. Fires **zero** times against the live document once images are installed; the mini fixture's synthetic `NOR00000000` reference exercises it. |
+| `abbildung_nicht_installiert` | A `<binary>/<src>` path parses (matches the expected RIS shape) but no file is shipped under `plugin/data/abbildungen/<nor>/` for it — see §10. Fires **zero** times against the live document once images are installed; the mini fixture's synthetic `NOR00000000` reference exercises it. |
 | `abbildung_pfad_unerwartet` | A `<binary>/<src>` path does not match `/Dokumente/Bundesnormen/<NOR>/<filename>` → skipped rather than guessed at. |
 
 **Hard failures (`ParseError`):** a missing required field (`id`, `stufe`,
@@ -349,59 +349,88 @@ the configured subject heading not occurring at all.
 `AT.LP23.SEK1.M.AB.ZAHLEN.K2.05` (precisification),
 `AT.LP23.SEK1.M.DT.ZAHLEN.K1.01` (digital-technology suggestion).
 Area segments for Sek I maths: `ZAHLEN`, `VARIABLEN`, `FIGUREN`, `DATEN`, plus
-the synthetic `GZINTEGRATIV` for the 2 promoted competences (§11) — e.g.
+the synthetic `GZINTEGRATIV` for the 2 promoted competences (§10) — e.g.
 `AT.LP23.SEK1.M.GZINTEGRATIV.K3.01`.
 
 ---
 
-## 9. What will be hard when extending to primary
+## 9. Extending beyond Sek I Mathematik — measured, not projected
 
-Do not fan out before reading this list.
+**Superseded 2026-07-29.** This section used to be titled "What will be hard
+when extending to primary" and projected what *might* be hard, written before
+any of the other five subjects had been measured. It got one big thing
+wrong: it expected a re-measured version of the SEK1.M text-repetition join
+(§5) to be needed for primary and predicted a `liste`-position or
+repeated-stem heuristic to find it. **There is no join to find.** Scanning
+all five remaining subjects (SEK1.D, SEK1.E, PRIM.D, PRIM.M, PRIM.SU)
+against the checked-in XML showed the competence sentence is never repeated
+as an `absatz` outside SEK1.M — V-27's mechanism is unique to that one
+subject. See `notes/deviations.md`, 2026-07-29, and §11 below for what
+actually happens instead (containment attachment, keyed by a new
+`SubjectSpec.anwendungsbereiche_bindung` axis).
 
-1. **Sections are merged.** Sek I has two headings; primary has one combined
-   heading whose wording varies *by subject within the band*:
-   * primary Mathematik: `Kompetenzbeschreibungen, Lehrstoff (1. bis 4. Schulstufe):`
-     — **no Anwendungsbereiche at all** (`anwendungsbereiche_status` needs a
-     third value, `keine`);
-   * primary Deutsch and Sachunterricht:
-     `Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. bis 4. Schulstufe):`.
-   With one merged section, the element-type disambiguation of §3 has nothing
-   to disambiguate *with* — competence descriptions and application items may
-   sit in sibling `liste` elements under the same area heading. Expect to
-   distinguish them by list position or by the presence of a repeated stem
-   sentence, and re-measure the join from scratch.
+What this section got *right*, still true and still load-bearing:
+
+1. **Sections are merged.** Sek I Mathematik has two top-level headings
+   (`Kompetenzbereiche (…):` then `Anwendungsbereiche (…):`); every other
+   subject has one combined heading whose wording varies *by subject*:
+   * primary Mathematik: `Kompetenzbeschreibungen, Lehrstoff (1. bis 4.
+     Schulstufe):` — no Anwendungsbereiche at all (`anwendungsbereiche_bindung
+     = "keine"`);
+   * SEK1.D, SEK1.E, primary Deutsch and Sachunterricht:
+     `Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. bis 4.
+     Klasse/Schulstufe):`.
+   With one merged section the parser never enters `State.ANWENDUNGSBEREICHE`
+   at all for these five subjects — `SubjectSpec.anwendung_sektion_re` is
+   `None`, and everything (areas, competences, application items) is handled
+   from inside `State.KOMPETENZBEREICHE`. §3's element-type disambiguation is
+   therefore moot for them: the `absatz`-as-area-heading trap only exists in
+   SEK1.M's separate Anwendungsbereiche section, so `SubjectSpec.
+   bereich_aus_absatz` (§11) simply stays `False`.
 2. **Sachunterricht area headings are adjective-first** —
    `Sozialwissenschaftlicher Kompetenzbereich`, `Naturwissenschaftlicher …`,
    `Geografischer …`, `Historischer …`, `Technischer …`, `Wirtschaftlicher …`
-   (six, not four). `^Kompetenzbereich ` matches **zero** of them. Primary
-   Mathematik meanwhile uses `Kompetenzbereich Zahlen und Daten` — the word
-   first but **no number and no colon**. Three different shapes in the same
-   band. `SubjectSpec.bereich_re` exists for exactly this; give each subject
-   its own pattern rather than one clever regex, and make sure `nummer` is
+   (six, not four). `^Kompetenzbereich ` matches **zero** of them. SEK1.D uses
+   yet another shape, `Kompetenzbereich <Name>` with no number and no colon
+   (`Kompetenzbereich Zuhören und Sprechen`, `Kompetenzbereich Lesen`, …), and
+   primary Mathematik uses `Kompetenzbereich Zahlen und Daten` — the word
+   first, again no number. Three different shapes across the five subjects.
+   `SubjectSpec.bereich_re` exists for exactly this; give each subject its
+   own pattern rather than one clever regex, and make sure `nummer` is
    allowed to be `None` (the ID slug then has to come from `bereich_slugs`).
-3. **Area headings also appear in prose.** In Sachunterricht the six area names
-   occur first as `absatz/@typ="abs"` paragraphs inside the *Kompetenzmodell*
-   subsection (VS children 1319–1329), before the competence section starts.
-   A "contains *Kompetenzbereich* and is an `absatz`" rule fires on all of them.
-   Keep the state guard: only treat an `absatz` as an area heading inside the
-   application/competence section.
+3. **Area headings also appear in prose.** In Sachunterricht the six area
+   names occur first as `absatz/@typ="abs"` paragraphs inside the
+   *Kompetenzmodell* subsection (VS children 1319–1329), before the
+   competence section starts; `Kompetenzbereich` also appears in ordinary
+   prose 11 times across the five subjects (measured 2026-07-29: SEK1.E 8,
+   SEK1.D 2, PRIM.SU 1 — e.g. *"In allen vier Kompetenzbereichen wird das
+   Zielniveau A1/A2 angestrebt"*). This is exactly what
+   `SubjectSpec.bereich_aus_absatz` (default `False`, §11) makes impossible
+   by construction rather than merely state-guarded: with it off, an
+   `absatz` is *never* classified as an area heading, full stop.
 4. **Level markers are `ueberschrift/@typ="erll"` in primary** (§4). Already
-   handled, but it means a level marker and an area heading are now the *same*
+   handled, but it means a level marker and an area heading are the *same*
    element type in the *same* state — ordering of the checks in `_classify`
    matters and is load-bearing.
 5. **Subject headings repeat across TEILs and are not always ALL CAPS** (§2).
    Set `teil_ueberschrift` on every primary `SubjectSpec`.
-6. **No `Wiederholen und Festigen` in primary** — zero occurrences. Progression
-   must come from the positional `vorlaeufer`/`folge` links, which the parser
-   already fills for every competence.
+6. **No `Wiederholen und Festigen` outside SEK1.M** — measured 2026-07-29:
+   24 occurrences in the Mittelschule document, 7 in the Volksschule one, but
+   **zero** inside the competence/application spans of SEK1.D, SEK1.E,
+   PRIM.D, PRIM.M or PRIM.SU. Progression there is purely the positional
+   `vorlaeufer`/`folge` links, which the parser already fills for every
+   competence regardless of subject.
 7. **`<super>` markers are far more numerous in primary** (577 across the VS
-   document vs a handful per Sek I subject) and there they genuinely mix theme
-   references with ordinary footnotes. `fussnoten_unaufgeloest` is empty for
-   Sek I maths; expect it not to be for primary, and expect the per-subject
-   theme sentence to be the better filter than the 13-entry legend table.
-8. **Primary Anwendungsbereiche are optional as a whole**, not item-by-item —
-   `anwendungsbereiche_status: "optional_sektion"`, so `verbindlich` per item
-   is meaningless there. Do not reuse the `allenfalls` flag blindly.
+   document vs a handful per Sek I subject) and there they genuinely mix
+   theme references with ordinary footnotes. `fussnoten_unaufgeloest` is
+   empty for Sek I maths; expect it not to be for primary.
+8. **`allenfalls` is SEK1.M-only.** Measured 2026-07-29: 24× in the
+   Mittelschule document and 7× in the Volksschule one, but every in-scope
+   occurrence sits inside SEK1.M's own Anwendungsbereiche span (children
+   950–1001) — zero inside the other five subjects' competence/application
+   sections. `SubjectSpec.allenfalls_pruefen` (default `False`, §11) turns
+   the scan off entirely for them, rather than running it and reporting a
+   meaningless 0/N split as if it were measured signal.
 
 ---
 
@@ -492,7 +521,109 @@ bucket key).
 
 ---
 
-## 11. Running it
+## 11. The `anwendungsbereiche_bindung` axis and the legend-table terminator
+
+Two mechanisms added 2026-07-29 (P1/P2 of the parser-generalisation work) on
+top of the original SEK1.M-only parser, both derived from measuring all five
+remaining subjects against the checked-in XML rather than projected — see
+`notes/deviations.md`, 2026-07-29 (both rows), and the retired §9.
+
+### 11.1 There is no join outside SEK1.M — attachment is by containment
+
+`SubjectSpec.anwendungsbereiche_bindung` names how a subject's application
+items attach to the rest of its structure. Five values, one measured example
+each:
+
+| Value | Subject | Attaches to | Measured (areas / competences / AB blocks / items) |
+|---|---|---|---|
+| `kompetenz` | SEK1.M | one competence, by the V-27 text-repetition join (§5) | 4 / 42 / 40 / 237 |
+| `bereich` | SEK1.D | `(bereich, stufe)` | 4 / 41 / 16 / 54 |
+| `stufe` | PRIM.D, PRIM.SU | `(stufe)` only, never an area | PRIM.D 4/40/4/37; PRIM.SU 6/48/4/40 |
+| `prosa` | SEK1.E | nothing — the heading is followed by prose, not a `liste` | 4 / 37 / 0 blocks (4 prose heads) / 0 |
+| `keine` | PRIM.M | nothing — no Anwendungsbereiche at all | 4 / 40 / 0 / 0 |
+
+`kompetenz` is the only value with a join to run; `join_anwendungen` is a
+no-op for the other four (it would otherwise risk a spurious positional match
+against an AB-BLOCK's empty `satz`, i.e. synthesising exactly the
+per-competence link the source does not make — the reason
+`Anwendungsitem.kompetenz_id` stays `None` for `bereich`/`stufe` by
+construction, never computed and discarded).
+
+For `bereich`/`stufe`/`prosa`, the grammar all five combined-heading subjects
+share is:
+
+```
+SUBJECT    := g1-heading  preamble*  SECTION-HEADING  YEAR-BLOCK*  LEGEND-TABLE
+YEAR-BLOCK := year-marker(erll|erltext)  AREA-BLOCK*  [AB-BLOCK]      # AB here => bindung=stufe
+AREA-BLOCK := area-heading(erll)  [stem-absatz  liste]  [AB-BLOCK]    # AB here => bindung=bereich
+AB-BLOCK   := absatz/@typ="abs" whose text is exactly "Anwendungsbereiche"  then (liste | prosa*)
+```
+
+Because the heading is combined, `SubjectSpec.anwendung_sektion_re` is `None`
+for all five and the parser never leaves `State.KOMPETENZBEREICHE` — the
+`AB_BLOCK` token (`AB_BLOCK_RE`, gated to that state) opens a containment
+block, a following `LISTE` fills it (`_emit_ab_items`), and it closes again
+on the next `STUFE`/`BEREICH`/heading/subject-terminator
+(`_schliesse_ab_block`). SEK1.D's `Integrativer Kompetenzbereich
+Sprachbewusstsein und Sprachreflexion` — an area with an AB block but no
+competence list of its own (`notes/deviations.md`, 2026-07-28) — falls out
+for free: the `BEREICH` token handler sets `self.bereich` unconditionally,
+whether or not a competence list follows, so a `bereich`-bound AB-BLOCK can
+never mis-attach to a stale, previously-seen area.
+
+`stufe` deliberately **ignores** `self.bereich` even though it is normally
+non-`None` at the point the marker fires (the block follows the *last* area
+of the year) — attaching it to that area would be the exact per-competence
+misattribution the honesty rule forbids. The discriminator between `bereich`
+and `stufe` is the `SubjectSpec` value, not a heuristic, but `_finish` still
+asserts internal consistency: more than one AB-BLOCK landing under the same
+`stufe` for a `stufe`-bound subject logs `ab_block_anzahl_unerwartet` rather
+than failing silently.
+
+Two other axes were found to be **SEK1.M-only** in the same measurement pass
+and are now opt-in per `SubjectSpec`, defaulting to off:
+
+* `bereich_aus_absatz` (default `False`) — whether an `absatz/@typ="abs"` may
+  ever be classified as an area heading at all (the §3 element-type trap).
+  `Kompetenzbereich` appears in ordinary prose 11 times across the other five
+  subjects; with the flag off this is impossible by construction, not merely
+  suppressed by the `State.ANWENDUNGSBEREICHE` guard SEK1.M still relies on
+  (`bereich_aus_absatz=True` there, the only subject where the separate
+  Anwendungsbereiche section — and hence this form — exists).
+* `allenfalls_pruefen` (default `False`) — whether application items are even
+  scanned for the `allenfalls` marker. Zero occurrences in the
+  competence/application spans of the other five subjects; leaving the flag
+  off keeps `verbindlich` unconditionally `True` there instead of reporting a
+  meaningless 0/N split as if it were measured signal.
+
+### 11.2 The legend table is the general subject terminator
+
+Every one of the six target subjects ends its main curriculum with exactly
+one 18-cell footnote legend table (§6, kind 3), immediately before the next
+subject or insert: SEK1.M child 1071, SEK1.D **514**, SEK1.E 724, PRIM.D 897,
+PRIM.M 1291, PRIM.SU 1418. On `Token.TABELLE` while in
+`State.KOMPETENZBEREICHE`, `State.ANWENDUNGSBEREICHE` or
+`State.KOMPETENZ_GZ_INTEGRATIV`, `_step` now parses it with the existing
+`_parse_themen_tabelle` (unchanged) and then transitions straight to
+`State.NACH_FACH` — a general rule, not special-cased per subject or state
+(it replaces what used to be ad hoc handling inside
+`_kompetenz_gz_integrativ` and does not touch `_fach_anhang`'s, which stays
+local to that already-exited state).
+
+This is what structurally bounds SEK1.D at child 514, immediately before
+`LEHRPLANZUSATZ DEUTSCH ALS ZWEITSPRACHE FÜR ORDENTLICHE SCHÜLERINNEN UND
+SCHÜLER` at child 515 — an embedded second curriculum (an
+`ueberschrift/@typ="erll"`, not a `g1`, so §2's subject-boundary detection
+never sees it) carrying its own `Lesen`/`Schreiben` Kompetenzbereich
+headings that would otherwise mint duplicate IDs and trip the parser's only
+ID-collision hard failure. No index is hardcoded anywhere in this. A second,
+cheap terminator exists belt-and-braces: an `ueberschrift/@typ="erll"` whose
+text matches `^LEHRPLANZUSATZ` also ends the subject (`Token.LEHRPLANZUSATZ`),
+independent of the legend table having fired first.
+
+---
+
+## 12. Running it
 
 ```bash
 python3 data-pipeline/fetch_ris_resources.py           # fetch XML/PDF + images, write manifest
@@ -514,3 +645,11 @@ Fixtures in `tests/fixtures/`:
 * `sek1_mathematik_mini.xml` (7 KB) — synthetic, same shape at 1/50th the size,
   and carries the cases the live document lacks (notably a join only the
   positional fallback can resolve).
+* `containment_bindung_mini.xml` — synthetic, the combined single-heading
+  grammar (§11.1) with one small subject per `anwendungsbereiche_bindung`
+  value (`bereich`, `stufe`, `prosa`, `keine`) plus one exercising the
+  `LEHRPLANZUSATZ` terminator, each parsed in `test_parse_lehrplan.py` with
+  its own throwaway `SubjectSpec` (never added to `SUBJECT_SPECS`).
+  `test_parse_lehrplan.py::TestLiveContainmentSmoke` additionally parses the
+  real PRIM.SU/SEK1.D spans with throwaway specs and asserts the measured
+  counts from §11.1's table, skipped cleanly if `resources/` is absent.
