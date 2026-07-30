@@ -701,3 +701,66 @@ Fixtures in `tests/fixtures/`:
   … `</abschnitt></nutzdaten></risdok>` stub `sek1_mathematik.xml` uses, and
   flank it with a placeholder subject built from a fixed template (g1 name +
   one trimmed `Kompetenzbereich`/`listelem`, explicitly not verbatim text).
+
+---
+
+## 13. The competence stem is not always boilerplate
+
+Measured 2026-07-30 while auditing the five not-yet-shipped subjects. Two
+facts here, both of which invalidate assumptions the SEK1.M-only parser could
+safely make.
+
+### 13.1 SEK1.E qualifies its stem, and the qualifier is load-bearing
+
+The paragraph introducing a competence list is normally the bare stem
+`Die Schülerinnen und Schüler können`, which the parser drops from each
+`listelem`'s text because it is shared boilerplate. In **(Erste) Lebende
+Fremdsprache** it is not boilerplate. Child 655 of NOR40271471, verbatim:
+
+```
+Die Schülerinnen und Schüler können, wenn sehr langsam, klar und deutlich
+in Standardsprache gesprochen wird,
+```
+
+That condition qualifies every competence in the block that follows — it is
+the CEFR performance condition (FINDINGS V-41) expressed in prose. Dropping
+it produces a quotation the regulation does not make.
+
+**Measured:** 10 such qualified stems in SEK1.E. Zero in SEK1.M, SEK1.D,
+PRIM.D, PRIM.M, PRIM.SU — every other subject's stem is the bare form. The
+state machine already emits a distinct `KOMPETENZSATZ` token for the
+qualified shape; before the fix, no handler consumed it (see §13.3).
+
+→ **Decided, not yet implemented (backlog E12-06).** The stem sentence is to
+be captured per block as `Kompetenz.stammsatz` for **every** subject, bare or
+qualified, so that a faithful quotation is `stammsatz` + the item `text` —
+neither alone is the published sentence. Until E12-06 lands, SEK1.E's
+qualifiers are absent from the parser's output entirely. Recorded as a
+decision in `notes/deviations.md`, 2026-07-30.
+
+### 13.2 Only SEK1.M numbers its Kompetenzbereiche
+
+`Kompetenzbereich <n>: <Name>` is a Sek I mathematics form. Every other
+subject uses an unnumbered heading — `Kompetenzbereich Lesen` (SEK1.D,
+SEK1.E, PRIM.D, PRIM.M) or the adjective-first
+`Sozialwissenschaftlicher Kompetenzbereich` (PRIM.SU, §3). So
+`Kompetenzbereich.nummer` is `None` for **every area in five of six shards**,
+and `_bereich_daten`'s `int(m.group(1))` falls through to `None` by design.
+
+`bereich_nummer` is therefore **data, not a join key**. The stable identity
+across all six subjects is the area **slug**, which is always populated
+(from `SubjectSpec.bereich_slugs`, itself wired from
+`id_schema.AREA_CODES`). Anything that buckets, routes or joins on
+`bereich_nummer` is silently wrong outside SEK1.M — measured consequences
+were cross-area progression links (382–720 per subject), a `KeyError: None`
+in the shard build, and a schema that rejected five of the six shards.
+
+### 13.3 Unhandled tokens must be logged, not swallowed
+
+The per-state handlers are `if`-chains over `Token` values with no final
+`else`. A token that reaches a handler with no matching branch disappears
+with no `ParseIssue` — which is how §13.1's content loss stayed invisible.
+This contradicts the module's tolerant-**but-logged** philosophy: tolerance
+means carrying a surprise forward with a warning, never dropping it in
+silence. **Decided, not yet implemented (backlog E12-06):** both handlers are
+to log an issue for any token they do not consume.
