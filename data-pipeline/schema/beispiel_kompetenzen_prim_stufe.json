@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "lehrplan_fassung": "BGBl. II Nr. 113/2020 idF BGBl. II Nr. 1/2023",
+    "dataset_version": "2026-07-30",
+    "band": "PRIM",
+    "fach": {
+      "code": "SU",
+      "name": "Sachunterricht"
+    },
+    "differenzierungs_achse": {
+      "typ": "lehrplan_generisch",
+      "niveaus": ["grundlegend", "erweitert", "vertiefend"]
+    },
+    "anwendungsbereiche_status": "item_flags",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "anwendungsbereiche_bindung": "stufe",
+    "bildungsstandard_bezug": "keine_verordnung",
+    "anwendungsbereiche_bloecke": {
+      "SCH1": {
+        "bindung": "stufe",
+        "items": [
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH1.01",
+            "band": "PRIM",
+            "fach": "SU",
+            "stufe": "SCH1",
+            "ordinal": 0,
+            "text": "Ich und Du und Wir",
+            "text_roh": "Ich und Du und Wir",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "bindung": "stufe",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH1.02",
+            "band": "PRIM",
+            "fach": "SU",
+            "stufe": "SCH1",
+            "ordinal": 1,
+            "text": "Jahr und Zeit",
+            "text_roh": "Jahr und Zeit",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "bindung": "stufe",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      }
+    },
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Lehrplan der Volksschule",
+      "nor": "NOR40271469",
+      "kundmachung": "BGBl. II Nr. 113/2020 idF BGBl. II Nr. 1/2023",
+      "anlage": "Anl. 1",
+      "teil": "NEUNTER TEIL",
+      "stand": "2026-07-30"
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "nummer": null,
+      "slug": "SOZIALWISS",
+      "name": "Sozialwissenschaftlicher Kompetenzbereich",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.PRIM.SU.SOZIALWISS.SCH1.01",
+          "band": "PRIM",
+          "fach": "SU",
+          "bereich_nummer": null,
+          "bereich_name": "Sozialwissenschaftlicher Kompetenzbereich",
+          "stufe": "SCH1",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "eigene Bedürfnisse und die anderer Kinder in der Klassen- und Schulgemeinschaft wahrnehmen und respektvoll damit umgehen;",
+          "text_roh": "eigene Bedürfnisse und die anderer Kinder in der Klassen- und Schulgemeinschaft wahrnehmen und respektvoll damit umgehen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.PRIM.SU.SOZIALWISS.SCH2.01"
+          ],
+          "abbildungen": []
+        }
+      ]
+    },
+    {
+      "nummer": null,
+      "slug": "HISTORISCH",
+      "name": "Historischer Kompetenzbereich",
+      "kompetenzen": []
+    }
+  ]
+}

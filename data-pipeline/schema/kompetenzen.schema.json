@@ -66,10 +66,20 @@
           "type": "string",
           "description": "aus_anwendungsbereichen | eigen_ausgewiesen (plan section 4.5). Lives at subject/meta level, matching parse_lehrplan.py's SubjectSpec.lehrstoff_quelle and result_to_dict() -- the plan's section 4.9 draft placed it per-competence, which the parser does not do."
         },
-        "anwendungsbereiche_je_stufe": {
+        "anwendungsbereiche_bloecke": {
           "type": "object",
-          "description": "E-P3: the year-bound Anwendungsbereiche block for bindung: stufe subjects (PRIM.D, PRIM.SU) -- items attached to a whole school year, not to any one competence or area (data-pipeline/notes/deviations.md, 2026-07-29 design-decision row). Keyed by stufe (SCH1..SCH4 for PRIM; K1..K4 is scheme-legal but bindung: stufe never occurs outside PRIM in the six shards). By design the complete block is repeated verbatim in every area part file's meta (plan section 5 B1 contract: a skill loading one area file must see all items without reading a second file) and is deliberately never copied onto individual competence records -- that would assert a per-competence attribution the source does not make.",
-          "additionalProperties": { "$ref": "#/$defs/anwendungsbereiche_je_stufe_eintrag" }
+          "description": "The application-block container for the two coarse-attachment binding axes: bindung: stufe (PRIM.D, PRIM.SU -- items attached to a whole school year, not to any one competence or area) and bindung: bereich (SEK1.D -- items attached to (bereich, stufe), not to one competence). Renamed from meta.anwendungsbereiche_je_stufe (data-pipeline/notes/deviations.md, 2026-07-30 row): the old name lied for SEK1.D, whose blocks are area-bound, not year-bound. Keyed by stufe (SCH1..SCH4 for PRIM; K1..K4 for SEK1.D). The two block shapes are structurally identical, so a single $defs entry (anwendungsbereiche_block_eintrag) covers both -- a second parallel $defs would duplicate a shape without adding information. But a recombined document must not depend on 'the area is implied by the file it came from': a bereich-bound entry therefore states its own area explicitly via bereich_name/bereich_slug, enforced by that $defs entry's if/then. By design the complete block is repeated verbatim in every area part file's meta (plan section 5 B1 contract: a skill loading one area file must see all items without reading a second file) and is deliberately never copied onto individual competence records -- that would assert a per-competence attribution the source does not make.",
+          "additionalProperties": { "$ref": "#/$defs/anwendungsbereiche_block_eintrag" }
+        },
+        "anwendungsbereiche_bindung": {
+          "type": "string",
+          "enum": ["kompetenz", "bereich", "stufe", "prosa", "keine"],
+          "description": "E12-02/V-58 audit: mirrors parse_lehrplan.py's SubjectSpec.anwendungsbereiche_bindung verbatim, so a consumer loading one part file can tell 'the regulation offers only prose / nothing here' (prosa/keine) from 'the build dropped the items', without guessing from which fields happen to be present. kompetenz = SEK1.M (per-competence join); bereich = SEK1.D (per-(bereich,stufe) block); stufe = PRIM.D, PRIM.SU (per-school-year block); prosa = SEK1.E (a heading followed by prose, zero items); keine = PRIM.M (no Anwendungsbereiche section at all). NOT YET REQUIRED: build_dataset.py does not emit this field yet (E12-11); it becomes required once it does, so the already-shipped SEK1.M shard does not go schema-invalid in the meantime. Valid but optional for now."
+        },
+        "bildungsstandard_bezug": {
+          "type": "string",
+          "enum": ["verordnet", "keine_verordnung"],
+          "description": "E12-02 audit: lets finde_bildungsstandard_bezug read a data fact instead of hardcoding the Sachunterricht exception -- Sachunterricht has no Bildungsstandard verordnet at all, every other of the six shards does. NOT YET REQUIRED: build_dataset.py does not emit this field yet (E12-11); it becomes required once it does. Valid but optional for now."
         },
         "provenienz": { "$ref": "#/$defs/provenienz" }
       }
@@ -110,7 +120,10 @@
       "required": ["nummer", "slug", "name", "kompetenzen"],
       "description": "Field names follow parse_lehrplan.py's Kompetenzbereich dataclass (nummer, name, slug), not the plan draft's 'id_teil' -- amended so the schema accepts real parser output.",
       "properties": {
-        "nummer": { "type": "integer", "description": "The official Kompetenzbereich number (1-4 for Sek I Mathematik)." },
+        "nummer": {
+          "type": ["integer", "null"],
+          "description": "The official Kompetenzbereich number (1-4 for Sek I Mathematik). Nullable (FINDINGS.md V-59/V-62): measured against the live documents, only SEK1.M numbers its Kompetenzbereiche ('Kompetenzbereich <n>: <Name>') -- every other subject's area heading is unnumbered ('Kompetenzbereich Lesen', 'Sozialwissenschaftlicher Kompetenzbereich'), so 'nummer' is null for every area in five of six shards. Stays required: the field must be present and explicitly null rather than omitted, so a consumer can tell 'this area has no official number' from 'the build forgot the field'. The stable area identity across all six shards is 'slug', never 'nummer'."
+        },
         "slug": { "type": "string", "description": "ID segment, e.g. 'ZAHLEN'. Deterministic fallback via slugify_bereich() for unmapped area names." },
         "name": { "type": "string" },
         "zentrales_konzept": {
@@ -142,9 +155,10 @@
         "bereich_name": { "type": "string" },
         "stufe": { "$ref": "#/$defs/stufe" },
         "ordinal": { "type": "integer" },
+        "stammsatz": { "$ref": "#/$defs/kompetenz.stammsatz" },
         "text": {
           "type": "string",
-          "description": "Verbatim quotable sentence. May contain one or more ⟦ABB:<datei>⟧ tokens (FINDINGS.md V-53) -- such records are complete quotations, not flagged incomplete; see 'abbildungen' below."
+          "description": "Verbatim quotable sentence. May contain one or more ⟦ABB:<datei>⟧ tokens (FINDINGS.md V-53) -- such records are complete quotations, not flagged incomplete; see 'abbildungen' below. NOT a complete quotation on its own: the published sentence is 'stammsatz' + 'text' -- see 'stammsatz'."
         },
         "text_roh": {
           "type": "string",
@@ -278,20 +292,47 @@
       "pattern": "^(K[1-4]|SCH[1-4])$",
       "description": "Amended per FINDINGS.md V-22: primary is per school year (SCH1..SCH4), not per Grundstufe. GS1/GS2/VOR are removed entirely, not kept as alternatives. Closed by design -- 'stufe' drives ID generation and progression joins, so a value outside this set is a real error (see the negative test for a rejected 'GS1')."
     },
-    "anwendungsbereiche_je_stufe_eintrag": {
+    "kompetenz.stammsatz": {
+      "type": "string",
+      "description": "The competence stem paragraph verbatim as published (FINDINGS.md V-58, data-pipeline/notes/deviations.md 2026-07-30 row). Normally the bare 'Die Schuelerinnen und Schueler koennen', but in Sek I (Erste) Lebende Fremdsprache it carries a load-bearing CEFR performance condition -- verbatim from the source: 'Die Schuelerinnen und Schueler koennen, wenn sehr langsam, klar und deutlich in Standardsprache gesprochen wird,' -- which qualifies every competence in the block that follows. A faithful quotation of the competence is 'stammsatz' + the item 'text'; neither field alone is the published sentence, and any consumer (renderer, skill, crosswalk) that quotes 'text' without 'stammsatz' produces an incomplete and potentially misleading quotation. This is a consumer obligation, not decoration. NOT YET REQUIRED on kompetenz: build_dataset.py does not emit this field yet (E12-11/E12-06); it becomes required once it does, so the already-shipped SEK1.M shard does not go schema-invalid in the meantime. Valid but optional for now."
+    },
+    "anwendungsbereiche_block_eintrag": {
       "type": "object",
-      "description": "One school-year's worth of bindung: stufe application items (E-P3), keyed under meta.anwendungsbereiche_je_stufe by the stufe value itself.",
+      "description": "One meta.anwendungsbereiche_bloecke entry, keyed by stufe: one school-year's or one (area, school-year)'s worth of coarsely-attached application items, covering both bindung: stufe (PRIM.D, PRIM.SU -- items attached to a whole school year, no area) and bindung: bereich (SEK1.D -- items attached to (bereich, stufe), no single competence). Renamed from anwendungsbereiche_je_stufe_eintrag (data-pipeline/notes/deviations.md, 2026-07-30 row). The two shapes are structurally identical, so one $defs entry covers both rather than duplicating the shape across two parallel definitions -- but a recombined document must not depend on 'the area is implied by the file it came from', so a bereich-bound entry states its own area explicitly via bereich_name/bereich_slug (enforced below, not merely documented), while a stufe-bound entry must NOT carry them -- attaching a year-bound block to an area is exactly the misattribution this design exists to prevent.",
       "required": ["bindung", "items"],
       "properties": {
         "bindung": {
           "type": "string",
-          "const": "stufe",
-          "description": "Always 'stufe' here -- this block only ever exists for the bindung: stufe subjects (PRIM.D, PRIM.SU)."
+          "enum": ["stufe", "bereich"],
+          "description": "'stufe' (PRIM.D, PRIM.SU): the block attaches to a whole school year, no area. 'bereich' (SEK1.D): the block attaches to (bereich, stufe) -- see bereich_name/bereich_slug below, both required in that case."
+        },
+        "bereich_name": {
+          "description": "Required (and typed string) when bindung == 'bereich'; must be absent or null when bindung == 'stufe' -- see the if/then/else below. No bare 'type' here on purpose, the two branches set it."
+        },
+        "bereich_slug": {
+          "description": "Required (and typed string) when bindung == 'bereich'; must be absent or null when bindung == 'stufe' -- see the if/then/else below. No bare 'type' here on purpose, the two branches set it."
         },
         "items": {
           "type": "array",
-          "description": "Verbatim anwendungsitem objects for this school year, area-free (kompetenz_id and bereich_name/bereich_nummer null/absent, id in the area-free 7-segment form).",
+          "description": "Verbatim anwendungsitem objects for this block. For bindung: stufe, items are area-free (kompetenz_id and bereich_name/bereich_nummer null/absent, id in the area-free 7-segment form). For bindung: bereich, items carry bereich_name/bereich_nummer matching this block's area and kompetenz_id null.",
           "items": { "$ref": "#/$defs/anwendungsitem" }
+        }
+      },
+      "if": {
+        "properties": { "bindung": { "const": "bereich" } },
+        "required": ["bindung"]
+      },
+      "then": {
+        "required": ["bereich_name", "bereich_slug"],
+        "properties": {
+          "bereich_name": { "type": "string" },
+          "bereich_slug": { "type": "string" }
+        }
+      },
+      "else": {
+        "properties": {
+          "bereich_name": { "type": "null" },
+          "bereich_slug": { "type": "null" }
         }
       }
     }

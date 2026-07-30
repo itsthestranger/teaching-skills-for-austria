@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "lehrplan_fassung": "BGBl. II Nr. 185/2012 idF BGBl. II Nr. 178/2025",
+    "dataset_version": "2026-07-30",
+    "band": "SEK1",
+    "fach": {
+      "code": "D",
+      "name": "Deutsch"
+    },
+    "differenzierungs_achse": {
+      "typ": "standard_standardplus",
+      "niveaus": ["Standard", "Standard AHS"],
+      "gilt_ab_stufe": "K2"
+    },
+    "anwendungsbereiche_status": "optional_sektion",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "anwendungsbereiche_bindung": "bereich",
+    "bildungsstandard_bezug": "verordnet",
+    "anwendungsbereiche_bloecke": {
+      "K1": {
+        "bindung": "bereich",
+        "bereich_name": "Lesen",
+        "bereich_slug": "LESEN",
+        "items": [
+          {
+            "id": "AT.LP23.SEK1.D.AB.LESEN.K1.01",
+            "band": "SEK1",
+            "fach": "D",
+            "bereich_nummer": null,
+            "bereich_name": "Lesen",
+            "stufe": "K1",
+            "ordinal": 0,
+            "text": "einfache literarische und pragmatische Texte sinnerfassend lesen und deren Kernaussagen wiedergeben;",
+            "text_roh": "einfache literarische und pragmatische Texte sinnerfassend lesen und deren Kernaussagen wiedergeben;",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "bindung": "bereich",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      }
+    },
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Lehrplaene der Mittelschulen",
+      "nor": "NOR40271471",
+      "kundmachung": "BGBl. II Nr. 185/2012 idF BGBl. II Nr. 178/2025",
+      "anlage": "Anl. 1",
+      "teil": "ACHTER TEIL",
+      "stand": "2026-07-30"
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "nummer": null,
+      "slug": "LESEN",
+      "name": "Lesen",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.SEK1.D.LESEN.K1.01",
+          "band": "SEK1",
+          "fach": "D",
+          "bereich_nummer": null,
+          "bereich_name": "Lesen",
+          "stufe": "K1",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "verschiedene Lesestrategien situationsangemessen anwenden;",
+          "text_roh": "verschiedene Lesestrategien situationsangemessen anwenden;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.D.LESEN.K2.01"
+          ],
+          "abbildungen": []
+        }
+      ]
+    },
+    {
+      "nummer": null,
+      "slug": "SCHREIBEN",
+      "name": "Schreiben",
+      "kompetenzen": []
+    }
+  ]
+}

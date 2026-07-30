@@ -22,6 +22,19 @@ import pytest
 
 SCHEMA_PATH = Path(__file__).resolve().parents[1] / "schema" / "kompetenzen.schema.json"
 BEISPIEL_PATH = Path(__file__).resolve().parents[1] / "schema" / "beispiel_kompetenzen.json"
+BEISPIEL_PRIM_STUFE_PATH = (
+    Path(__file__).resolve().parents[1] / "schema" / "beispiel_kompetenzen_prim_stufe.json"
+)
+BEISPIEL_SEK1_BEREICH_PATH = (
+    Path(__file__).resolve().parents[1] / "schema" / "beispiel_kompetenzen_sek1_bereich.json"
+)
+
+#: Every example file shipped under data-pipeline/schema/, discovered by glob
+#: rather than hardcoded, so a future added example is picked up automatically
+#: by the "every example validates" / "no example mixes two shards" tests.
+ALLE_BEISPIEL_PFADE = sorted(
+    Path(__file__).resolve().parents[1].joinpath("schema").glob("beispiel_kompetenzen*.json")
+)
 
 
 @pytest.fixture(scope="module")
@@ -38,6 +51,68 @@ def validator(schema: dict) -> jsonschema.Draft202012Validator:
 def beispiel() -> dict:
     # Fresh copy per test so mutations in one test never leak into another.
     return json.loads(BEISPIEL_PATH.read_text(encoding="utf-8"))
+
+
+@pytest.fixture()
+def beispiel_prim_stufe() -> dict:
+    """PRIM.SU shape: bindung: stufe, area-free items, nummer: null areas."""
+    return json.loads(BEISPIEL_PRIM_STUFE_PATH.read_text(encoding="utf-8"))
+
+
+@pytest.fixture()
+def beispiel_sek1_bereich() -> dict:
+    """SEK1.D shape: bindung: bereich, block carries bereich_name/bereich_slug."""
+    return json.loads(BEISPIEL_SEK1_BEREICH_PATH.read_text(encoding="utf-8"))
+
+
+def _minimal_dokument(*, band: str, fach_code: str, fach_name: str, bindung: str) -> dict:
+    """The smallest meta+kompetenzbereiche shape that satisfies the schema's
+    required fields, used to exercise the 'prosa' (SEK1.E) and 'keine'
+    (PRIM.M) bindung values, for which no example file exists -- those
+    subjects carry zero Anwendungsbereiche items by design, so there is no
+    novel block shape worth a standalone example file (only the axis value
+    itself differs)."""
+    stufe = "K1" if band == "SEK1" else "SCH1"
+    status = "keine" if bindung == "keine" else "optional_sektion"
+    return {
+        "meta": {
+            "dataset_version": "2026-07-30",
+            "band": band,
+            "fach": {"code": fach_code, "name": fach_name},
+            "differenzierungs_achse": {"typ": "lehrplan_generisch"},
+            "anwendungsbereiche_status": status,
+            "anwendungsbereiche_bindung": bindung,
+            "bildungsstandard_bezug": "verordnet",
+            "provenienz": {
+                "quelle": "RIS Bundesrecht konsolidiert",
+                "kurztitel": f"Lehrplan Beispiel {fach_name}",
+                "nor": "NOR40271471",
+                "kundmachung": "BGBl. II Nr. 185/2012 idF BGBl. II Nr. 178/2025",
+                "anlage": "Anl. 1",
+                "teil": "ACHTER TEIL" if band == "SEK1" else "NEUNTER TEIL",
+                "stand": "2026-07-30",
+            },
+        },
+        "kompetenzbereiche": [
+            {
+                "nummer": None,
+                "slug": "BEISPIEL",
+                "name": "Beispielbereich",
+                "kompetenzen": [
+                    {
+                        "id": f"AT.LP23.{band}.{fach_code}.BEISPIEL.{stufe}.01",
+                        "band": band,
+                        "fach": fach_code,
+                        "bereich_nummer": None,
+                        "bereich_name": "Beispielbereich",
+                        "stufe": stufe,
+                        "ordinal": 0,
+                        "text": "ein Beispielsatz für diese Kompetenz formulieren;",
+                    }
+                ],
+            }
+        ],
+    }
 
 
 def _first_kompetenz(doc: dict) -> dict:
@@ -172,13 +247,16 @@ def test_unknown_prozesse_value_still_validates(
 
 
 # --------------------------------------------------------------------------
-# 4. E-P3: coarse Anwendungsbereiche attachment (nullable kompetenz_id,
-#    'bindung', meta.anwendungsbereiche_je_stufe, the area-free ID form)
+# 4. E-P3 / E12-02: coarse Anwendungsbereiche attachment (nullable
+#    kompetenz_id, 'bindung', meta.anwendungsbereiche_bloecke, the area-free
+#    ID form)
 # --------------------------------------------------------------------------
 
 
-def test_example_exercises_anwendungsbereiche_je_stufe(beispiel: dict) -> None:
-    block = beispiel["meta"]["anwendungsbereiche_je_stufe"]
+def test_example_exercises_anwendungsbereiche_bloecke_stufe(
+    beispiel_prim_stufe: dict,
+) -> None:
+    block = beispiel_prim_stufe["meta"]["anwendungsbereiche_bloecke"]
     assert set(block) == {"SCH1"}
     sch1 = block["SCH1"]
     assert sch1["bindung"] == "stufe"
@@ -190,11 +268,11 @@ def test_example_exercises_anwendungsbereiche_je_stufe(beispiel: dict) -> None:
         assert "bereich_nummer" not in item
 
 
-def test_example_stufe_items_use_the_area_free_id_form(beispiel: dict) -> None:
+def test_example_stufe_items_use_the_area_free_id_form(beispiel_prim_stufe: dict) -> None:
     """The E-P3 area-free form: AT.LP23.<Band>.<Fach>.<Art>.<Stufe>.<lfd>,
     7 segments, no Bereich -- inventing one would assert a scoping the
     regulation does not make (PRIM.D / PRIM.SU stufe-bound items)."""
-    for item in beispiel["meta"]["anwendungsbereiche_je_stufe"]["SCH1"]["items"]:
+    for item in beispiel_prim_stufe["meta"]["anwendungsbereiche_bloecke"]["SCH1"]["items"]:
         assert len(item["id"].split(".")) == 7
         assert item["id"].startswith("AT.LP23.PRIM.SU.AB.SCH1.")
 
@@ -205,12 +283,13 @@ def test_example_kompetenz_bound_items_carry_bindung_kompetenz(beispiel: dict) -
         assert item["kompetenz_id"] is not None
 
 
-def test_meta_anwendungsbereiche_je_stufe_is_optional(
+def test_meta_anwendungsbereiche_bloecke_is_optional(
     validator: jsonschema.Draft202012Validator, beispiel: dict
 ) -> None:
-    """Not every shard has bindung: stufe items (only PRIM.D/PRIM.SU do) --
-    the property must be safely omittable."""
-    del beispiel["meta"]["anwendungsbereiche_je_stufe"]
+    """Not every shard has coarsely-attached items (only PRIM.D/PRIM.SU/
+    SEK1.D do) -- the property must be safely omittable, as it already is
+    on the SEK1.M (bindung: kompetenz) example."""
+    assert "anwendungsbereiche_bloecke" not in beispiel["meta"]
     validator.validate(beispiel)
 
 
@@ -242,8 +321,9 @@ def test_bereich_bound_item_with_null_kompetenz_id_validates(
 ) -> None:
     """SEK1.D shape: an item attached to (bereich, stufe), not to one
     competence -- kompetenz_id null, bereich_name/bereich_nummer set,
-    bindung: 'bereich'. Constructed inline (no live SEK1.D fixture exists
-    yet -- that shard is a later task) purely to exercise the schema shape."""
+    bindung: 'bereich'. Constructed inline purely to exercise the item-level
+    schema shape (the block-level shape is exercised by
+    beispiel_kompetenzen_sek1_bereich.json instead)."""
     item = copy.deepcopy(_first_anwendungsitem(beispiel))
     item["id"] = "AT.LP23.SEK1.D.AB.HOERENSPRECHEN.K1.01"
     item["band"] = "SEK1"
@@ -257,26 +337,303 @@ def test_bereich_bound_item_with_null_kompetenz_id_validates(
 
 
 def test_item_id_pattern_accepts_the_area_free_form(
-    validator: jsonschema.Draft202012Validator, beispiel: dict
+    validator: jsonschema.Draft202012Validator, beispiel_prim_stufe: dict
 ) -> None:
     item = copy.deepcopy(
-        beispiel["meta"]["anwendungsbereiche_je_stufe"]["SCH1"]["items"][0]
+        beispiel_prim_stufe["meta"]["anwendungsbereiche_bloecke"]["SCH1"]["items"][0]
     )
     item["id"] = "AT.LP23.PRIM.D.AB.SCH3.07"
     item["band"] = "PRIM"
     item["fach"] = "D"
     item["stufe"] = "SCH3"
-    beispiel["meta"]["anwendungsbereiche_je_stufe"]["SCH1"]["items"].append(item)
-    validator.validate(beispiel)
+    beispiel_prim_stufe["meta"]["anwendungsbereiche_bloecke"]["SCH1"]["items"].append(item)
+    validator.validate(beispiel_prim_stufe)
 
 
 def test_item_id_pattern_rejects_a_malformed_area_free_id(
+    validator: jsonschema.Draft202012Validator, beispiel_prim_stufe: dict
+) -> None:
+    block = beispiel_prim_stufe["meta"]["anwendungsbereiche_bloecke"]["SCH1"]
+    block["items"][0]["id"] = "AT.LP23.PRIM.SU.AB.SCH1"  # missing lfd
+    with pytest.raises(jsonschema.ValidationError):
+        validator.validate(beispiel_prim_stufe)
+
+
+# --------------------------------------------------------------------------
+# 5. E12-02: kompetenzbereich.nummer nullable (V-62 regression)
+# --------------------------------------------------------------------------
+
+
+def test_kompetenzbereich_nummer_null_validates(
     validator: jsonschema.Draft202012Validator, beispiel: dict
 ) -> None:
-    item = _first_anwendungsitem(beispiel)
-    item["id"] = "AT.LP23.PRIM.SU.AB.SCH1"  # missing lfd, even for the area-free shape
+    """V-62: measured against the live documents, only SEK1.M numbers its
+    Kompetenzbereiche -- every other subject's area heading is unnumbered,
+    so 'nummer: null' must validate, not be rejected as 'not of type
+    integer'."""
+    beispiel["kompetenzbereiche"][0]["nummer"] = None
+    validator.validate(beispiel)
+
+
+def test_kompetenzbereich_missing_nummer_still_fails(
+    validator: jsonschema.Draft202012Validator, beispiel: dict
+) -> None:
+    """'nummer' stays required -- it must be present and explicitly null,
+    not omitted."""
+    del beispiel["kompetenzbereiche"][0]["nummer"]
     with pytest.raises(jsonschema.ValidationError):
         validator.validate(beispiel)
+
+
+def test_example_prim_stufe_areas_are_all_unnumbered(beispiel_prim_stufe: dict) -> None:
+    for bereich in beispiel_prim_stufe["kompetenzbereiche"]:
+        assert bereich["nummer"] is None
+
+
+def test_example_sek1_bereich_areas_are_all_unnumbered(beispiel_sek1_bereich: dict) -> None:
+    for bereich in beispiel_sek1_bereich["kompetenzbereiche"]:
+        assert bereich["nummer"] is None
+
+
+# --------------------------------------------------------------------------
+# 6. E12-02: anwendungsbereiche_block_eintrag if/then -- bereich requires its
+#    own area, stufe must not carry one
+# --------------------------------------------------------------------------
+
+
+def test_bereich_block_missing_bereich_name_and_slug_fails(
+    validator: jsonschema.Draft202012Validator, beispiel_sek1_bereich: dict
+) -> None:
+    block = beispiel_sek1_bereich["meta"]["anwendungsbereiche_bloecke"]["K1"]
+    del block["bereich_name"]
+    del block["bereich_slug"]
+    with pytest.raises(jsonschema.ValidationError):
+        validator.validate(beispiel_sek1_bereich)
+
+
+def test_bereich_block_missing_only_bereich_name_fails(
+    validator: jsonschema.Draft202012Validator, beispiel_sek1_bereich: dict
+) -> None:
+    del beispiel_sek1_bereich["meta"]["anwendungsbereiche_bloecke"]["K1"]["bereich_name"]
+    with pytest.raises(jsonschema.ValidationError):
+        validator.validate(beispiel_sek1_bereich)
+
+
+def test_stufe_block_carrying_bereich_name_fails(
+    validator: jsonschema.Draft202012Validator, beispiel_prim_stufe: dict
+) -> None:
+    """A stufe-bound block must not carry an area -- attaching a year-bound
+    block to an area is exactly the misattribution this design prevents."""
+    beispiel_prim_stufe["meta"]["anwendungsbereiche_bloecke"]["SCH1"]["bereich_name"] = (
+        "Sozialwissenschaftlicher Kompetenzbereich"
+    )
+    with pytest.raises(jsonschema.ValidationError):
+        validator.validate(beispiel_prim_stufe)
+
+
+def test_stufe_block_carrying_bereich_slug_fails(
+    validator: jsonschema.Draft202012Validator, beispiel_prim_stufe: dict
+) -> None:
+    beispiel_prim_stufe["meta"]["anwendungsbereiche_bloecke"]["SCH1"]["bereich_slug"] = (
+        "SOZIALWISS"
+    )
+    with pytest.raises(jsonschema.ValidationError):
+        validator.validate(beispiel_prim_stufe)
+
+
+def test_stufe_block_with_explicit_null_bereich_fields_validates(
+    validator: jsonschema.Draft202012Validator, beispiel_prim_stufe: dict
+) -> None:
+    """'must be absent or null' -- both are legal, not just omission."""
+    beispiel_prim_stufe["meta"]["anwendungsbereiche_bloecke"]["SCH1"]["bereich_name"] = None
+    beispiel_prim_stufe["meta"]["anwendungsbereiche_bloecke"]["SCH1"]["bereich_slug"] = None
+    validator.validate(beispiel_prim_stufe)
+
+
+def test_bereich_block_validates_with_its_area_fields(
+    validator: jsonschema.Draft202012Validator, beispiel_sek1_bereich: dict
+) -> None:
+    validator.validate(beispiel_sek1_bereich)
+
+
+# --------------------------------------------------------------------------
+# 7. E12-02: meta.anwendungsbereiche_bindung -- five-value enum, optional
+#    for now (build_dataset.py does not emit it yet, see E12-11)
+# --------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("bindung", ["kompetenz", "bereich", "stufe", "prosa", "keine"])
+def test_meta_anwendungsbereiche_bindung_accepts_all_five_values(
+    validator: jsonschema.Draft202012Validator, beispiel: dict, bindung: str
+) -> None:
+    beispiel["meta"]["anwendungsbereiche_bindung"] = bindung
+    validator.validate(beispiel)
+
+
+def test_meta_anwendungsbereiche_bindung_rejects_an_unknown_value(
+    validator: jsonschema.Draft202012Validator, beispiel: dict
+) -> None:
+    beispiel["meta"]["anwendungsbereiche_bindung"] = "irgendwas_unbekanntes"
+    with pytest.raises(jsonschema.ValidationError):
+        validator.validate(beispiel)
+
+
+def test_meta_anwendungsbereiche_bindung_is_not_yet_required(
+    validator: jsonschema.Draft202012Validator, beispiel: dict
+) -> None:
+    """Sequencing constraint (E12-02 brief): build_dataset.py does not emit
+    this field yet, so the already-shipped SEK1.M shard -- which lacks it --
+    must stay schema-valid until E12-11 promotes it to required."""
+    assert "anwendungsbereiche_bindung" not in beispiel["meta"]
+    validator.validate(beispiel)
+
+
+def test_meta_bildungsstandard_bezug_accepts_both_values(
+    validator: jsonschema.Draft202012Validator, beispiel: dict
+) -> None:
+    for wert in ("verordnet", "keine_verordnung"):
+        beispiel["meta"]["bildungsstandard_bezug"] = wert
+        validator.validate(beispiel)
+
+
+def test_meta_bildungsstandard_bezug_rejects_an_unknown_value(
+    validator: jsonschema.Draft202012Validator, beispiel: dict
+) -> None:
+    beispiel["meta"]["bildungsstandard_bezug"] = "irgendwas_unbekanntes"
+    with pytest.raises(jsonschema.ValidationError):
+        validator.validate(beispiel)
+
+
+def test_meta_bildungsstandard_bezug_is_not_yet_required(
+    validator: jsonschema.Draft202012Validator, beispiel: dict
+) -> None:
+    assert "bildungsstandard_bezug" not in beispiel["meta"]
+    validator.validate(beispiel)
+
+
+# --------------------------------------------------------------------------
+# 8. E12-02: kompetenz.stammsatz -- optional for now, holds the verbatim stem
+# --------------------------------------------------------------------------
+
+
+def test_kompetenz_stammsatz_validates_when_present(
+    validator: jsonschema.Draft202012Validator, beispiel: dict
+) -> None:
+    _first_kompetenz(beispiel)["stammsatz"] = (
+        "Die Schülerinnen und Schüler können, wenn sehr langsam, klar und "
+        "deutlich in Standardsprache gesprochen wird,"
+    )
+    validator.validate(beispiel)
+
+
+def test_kompetenz_stammsatz_is_not_yet_required(
+    validator: jsonschema.Draft202012Validator, beispiel: dict
+) -> None:
+    assert "stammsatz" not in _first_kompetenz(beispiel)
+    validator.validate(beispiel)
+
+
+def test_kompetenz_stammsatz_must_be_a_string(
+    validator: jsonschema.Draft202012Validator, beispiel: dict
+) -> None:
+    _first_kompetenz(beispiel)["stammsatz"] = 123
+    with pytest.raises(jsonschema.ValidationError):
+        validator.validate(beispiel)
+
+
+# --------------------------------------------------------------------------
+# 9. E12-02: one document per bindung value (all five), plus every shipped
+#    example file
+# --------------------------------------------------------------------------
+
+
+def test_bindung_kompetenz_document_validates(
+    validator: jsonschema.Draft202012Validator, beispiel: dict
+) -> None:
+    assert beispiel["meta"].get("lehrstoff_quelle") == "aus_anwendungsbereichen"
+    validator.validate(beispiel)
+
+
+def test_bindung_bereich_document_validates(
+    validator: jsonschema.Draft202012Validator, beispiel_sek1_bereich: dict
+) -> None:
+    assert beispiel_sek1_bereich["meta"]["anwendungsbereiche_bindung"] == "bereich"
+    validator.validate(beispiel_sek1_bereich)
+
+
+def test_bindung_stufe_document_validates(
+    validator: jsonschema.Draft202012Validator, beispiel_prim_stufe: dict
+) -> None:
+    assert beispiel_prim_stufe["meta"]["anwendungsbereiche_bindung"] == "stufe"
+    validator.validate(beispiel_prim_stufe)
+
+
+def test_bindung_prosa_document_validates(
+    validator: jsonschema.Draft202012Validator,
+) -> None:
+    """SEK1.E: a heading followed by prose, zero application items."""
+    doc = _minimal_dokument(
+        band="SEK1", fach_code="E", fach_name="(Erste) Lebende Fremdsprache", bindung="prosa"
+    )
+    validator.validate(doc)
+
+
+def test_bindung_keine_document_validates(
+    validator: jsonschema.Draft202012Validator,
+) -> None:
+    """PRIM.M: no Anwendungsbereiche section at all."""
+    doc = _minimal_dokument(band="PRIM", fach_code="M", fach_name="Mathematik", bindung="keine")
+    validator.validate(doc)
+
+
+@pytest.mark.parametrize("pfad", ALLE_BEISPIEL_PFADE, ids=lambda p: p.name)
+def test_every_example_file_validates(
+    validator: jsonschema.Draft202012Validator, pfad: Path
+) -> None:
+    doc = json.loads(pfad.read_text(encoding="utf-8"))
+    validator.validate(doc)
+
+
+def _bands_and_fachs(doc: dict) -> set[tuple[str, str]]:
+    """Every (band, fach) pair mentioned anywhere in the document -- at meta
+    level and on every nested record that carries its own band/fach copy."""
+    gefunden: set[tuple[str, str]] = set()
+    meta_band = doc["meta"]["band"]
+    meta_fach = doc["meta"]["fach"]["code"]
+    gefunden.add((meta_band, meta_fach))
+
+    def _besuche(knoten):
+        if isinstance(knoten, dict):
+            if "band" in knoten and "fach" in knoten:
+                band, fach = knoten["band"], knoten["fach"]
+                if isinstance(band, str) and isinstance(fach, str):
+                    gefunden.add((band, fach))
+            for wert in knoten.values():
+                _besuche(wert)
+        elif isinstance(knoten, list):
+            for eintrag in knoten:
+                _besuche(eintrag)
+
+    _besuche(doc)
+    return gefunden
+
+
+@pytest.mark.parametrize("pfad", ALLE_BEISPIEL_PFADE, ids=lambda p: p.name)
+def test_no_example_file_mixes_two_shards(pfad: Path) -> None:
+    doc = json.loads(pfad.read_text(encoding="utf-8"))
+    paare = _bands_and_fachs(doc)
+    assert len(paare) == 1, (
+        f"{pfad.name} mixes more than one (band, fach) shard: {paare}"
+    )
+
+
+def test_at_least_two_dedicated_example_files_exist() -> None:
+    """Guards against silently deleting the prim_stufe / sek1_bereich
+    example files this task added -- 'every example validates' would
+    otherwise pass vacuously on just the original SEK1.M file."""
+    namen = {p.name for p in ALLE_BEISPIEL_PFADE}
+    assert "beispiel_kompetenzen_prim_stufe.json" in namen
+    assert "beispiel_kompetenzen_sek1_bereich.json" in namen
 
 
 if __name__ == "__main__":  # pragma: no cover
