@@ -158,8 +158,10 @@ AREA_CODES: dict[str, dict[str, str]] = {
         # formuliert.") but carries its own Anwendungsbereiche items, so it
         # still needs an ID segment -- the mirror image of GZINTEGRATIV
         # (competences with no application block vs. an application block
-        # with no competence of its own).
-        "Integrativer Kompetenzbereich Sprachbewusstsein und Sprachreflexion": "SPRACHREFLEXION",
+        # with no competence of its own). Key is the parser-extracted short
+        # name (minus the generic "Kompetenzbereich" prefix), matching the
+        # convention for SEK1.M and other subjects.
+        "Sprachbewusstsein und Sprachreflexion": "SPRACHREFLEXION",
     },
     "SEK1.E": {
         "Hören": "HOEREN",

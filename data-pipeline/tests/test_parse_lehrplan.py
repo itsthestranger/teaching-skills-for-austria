@@ -263,6 +263,25 @@ class TestAreaDetection(unittest.TestCase):
         self.assertEqual(P.slugify_bereich("Sozialwissenschaftlicher"), "SOZIALWISSEN")
         self.assertEqual(P.slugify_bereich("Zahlen und Maße"), "ZAHLENUNDMAS")
 
+    def test_slugify_bereich_never_mints_the_reserved_art_literals(self):
+        """Guard against inventing an area code that collides with the
+        reserved Art literals 'AB' or 'DT'. These are reserved to keep the
+        7-segment competence ID and the 7-segment area-free application-item
+        ID grammars unambiguous by construction (see id_schema.py). A
+        pathological area name that folds to exactly 'AB' or 'DT' must be
+        disambiguated."""
+        # Test the exact pathological names that would fold to AB/DT.
+        self.assertEqual(P.slugify_bereich("AB"), "ABX")
+        self.assertEqual(P.slugify_bereich("DT"), "DTX")
+        # Test synthetic names that include only ASCII letters that would
+        # produce these exact outputs.
+        self.assertEqual(P.slugify_bereich("A B"), "ABX")
+        self.assertEqual(P.slugify_bereich("D T"), "DTX")
+        # Non-pathological cases stay unchanged.
+        self.assertEqual(P.slugify_bereich("ABC"), "ABC")
+        self.assertEqual(P.slugify_bereich("DTX"), "DTX")
+        self.assertEqual(P.slugify_bereich("Arbeitsblätter"), "ARBEITSBLATT")  # Ends at 12-char limit
+
 
 # ---------------------------------------------------------------------------
 # Class-year detection

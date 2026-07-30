@@ -453,7 +453,16 @@ SUBJECT_SPECS: dict[str, SubjectSpec] = {
 
 
 def slugify_bereich(name: str) -> str:
-    """Deterministic fallback ID segment for an unmapped competence area."""
+    """Deterministic fallback ID segment for an unmapped competence area.
+
+    Never returns the reserved literals ``"AB"`` or ``"DT"``, which are
+    reserved for the Anwendungsitem Art segment (id_schema.py::_ART_ALT).
+    If the folded name would collapse to exactly one of those literals,
+    appends a disambiguating suffix to ensure a valid and collision-free
+    area code. See id_schema.py for the reserved-literal invariant and its
+    role in keeping the 7-segment competence and area-free application-item
+    ID grammars unambiguous by construction.
+    """
     folded = (
         unicodedata.normalize("NFKD", name)
         .replace("ß", "ss")
@@ -461,7 +470,11 @@ def slugify_bereich(name: str) -> str:
         .decode("ascii")
         .upper()
     )
-    return re.sub(r"[^A-Z0-9]+", "", folded)[:12] or "BEREICH"
+    slug = re.sub(r"[^A-Z0-9]+", "", folded)[:12] or "BEREICH"
+    # Guard against the reserved Art literals AB and DT.
+    if slug in ("AB", "DT"):
+        slug = slug + "X"
+    return slug
 
 
 # --------------------------------------------------------------------------

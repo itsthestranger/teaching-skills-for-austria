@@ -123,6 +123,16 @@ def test_sek1_deutsch_lesen_and_schreiben_are_single_entries():
         assert list(S.AREA_CODES["SEK1.D"]).count(name) == 1
 
 
+def test_sek1_deutsch_sprachreflexion_keyed_on_short_name():
+    """Decision D2: re-keyed to the parser-extracted short name (minus the
+    generic 'Kompetenzbereich' prefix), not the full heading. The code
+    remains SPRACHREFLEXION and nothing already shipped moves."""
+    assert "Sprachbewusstsein und Sprachreflexion" in S.AREA_CODES["SEK1.D"]
+    assert S.AREA_CODES["SEK1.D"]["Sprachbewusstsein und Sprachreflexion"] == "SPRACHREFLEXION"
+    # The full heading key is gone.
+    assert "Integrativer Kompetenzbereich Sprachbewusstsein und Sprachreflexion" not in S.AREA_CODES["SEK1.D"]
+
+
 # ---------------------------------------------------------------------------
 # 2. Stufen
 # ---------------------------------------------------------------------------
