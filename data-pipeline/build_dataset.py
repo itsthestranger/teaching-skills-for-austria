@@ -385,6 +385,12 @@ def _anwendungsitem_zu_dict(
     d["text"] = a.text
     if a.text_roh != a.text:
         d["text_roh"] = a.text_roh
+    if a.uebergreifende_themen:
+        d["uebergreifende_themen"] = list(a.uebergreifende_themen)
+    if a.themen_marker_roh:
+        d["themen_marker_roh"] = list(a.themen_marker_roh)
+    if a.fussnoten_unaufgeloest:
+        d["fussnoten_unaufgeloest"] = list(a.fussnoten_unaufgeloest)
     d["verbindlich"] = a.verbindlich
     d["art"] = a.art
     d["kompetenz_id"] = a.kompetenz_id

@@ -12,6 +12,7 @@ items are reachable from nowhere but zusatz.json's top-level array.
 
 from __future__ import annotations
 
+import dataclasses
 import json
 import logging
 import sys
@@ -283,6 +284,53 @@ def test_anwendungsitem_text_is_byte_identical_to_parser_output(
         assert item["text"].encode("utf-8") == quelle.text.encode("utf-8")
         geprueft += 1
     assert geprueft == 237
+
+
+def test_anwendungsitem_themes_are_preserved_from_parser_output(
+    parse_result: P.ParseResult, combined: dict
+) -> None:
+    """Every built item keeps the parser's resolved, raw and unresolved
+    theme fields; ordinary unmarked items omit the whole trio compactly."""
+    by_id = {a.id: a for a in parse_result.anwendungsitems}
+    marked = 0
+    unmarked = 0
+    for item in _all_anwendungsitems(combined):
+        quelle = by_id[item["id"]]
+        if quelle.themen_marker_roh:
+            marked += 1
+            for field in (
+                "uebergreifende_themen",
+                "themen_marker_roh",
+                "fussnoten_unaufgeloest",
+            ):
+                assert item.get(field, []) == getattr(quelle, field)
+            assert item["uebergreifende_themen"]
+            assert item["themen_marker_roh"]
+        else:
+            unmarked += 1
+            assert "uebergreifende_themen" not in item
+            assert "themen_marker_roh" not in item
+            assert "fussnoten_unaufgeloest" not in item
+    assert marked == 21
+    assert unmarked == 216
+
+
+def test_anwendungsitem_keeps_an_unresolved_footnote_when_other_theme_arrays_are_empty(
+    parse_result: P.ParseResult,
+) -> None:
+    """Sparse serialization must not mistake an unresolved marker for no data."""
+    quelle = dataclasses.replace(
+        parse_result.anwendungsitems[0],
+        uebergreifende_themen=[],
+        themen_marker_roh=[],
+        fussnoten_unaufgeloest=["99"],
+    )
+    item = B._anwendungsitem_zu_dict(
+        quelle, {}, "meta", mit_bereich_attribution=False
+    )
+    assert item["fussnoten_unaufgeloest"] == ["99"]
+    assert "uebergreifende_themen" not in item
+    assert "themen_marker_roh" not in item
 
 
 def test_bereich_names_are_byte_identical_to_parser_output(

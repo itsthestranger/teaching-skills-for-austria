@@ -64,8 +64,8 @@
       "name": "Daten und Zufall",
       "kompetenzen": 7,
       "anwendungsitems": 23,
-      "bytes": 19957,
-      "tokens_approx": 4989
+      "bytes": 21035,
+      "tokens_approx": 5258
     },
     {
       "datei": "figuren.json",
@@ -75,8 +75,8 @@
       "name": "Figuren und Körper",
       "kompetenzen": 12,
       "anwendungsitems": 65,
-      "bytes": 44024,
-      "tokens_approx": 11006
+      "bytes": 44567,
+      "tokens_approx": 11141
     },
     {
       "datei": "variablen.json",
@@ -86,8 +86,8 @@
       "name": "Variablen und Funktionen",
       "kompetenzen": 12,
       "anwendungsitems": 49,
-      "bytes": 45737,
-      "tokens_approx": 11434
+      "bytes": 47050,
+      "tokens_approx": 11762
     },
     {
       "datei": "zahlen.json",
@@ -97,8 +97,8 @@
       "name": "Zahlen und Maße",
       "kompetenzen": 9,
       "anwendungsitems": 61,
-      "bytes": 48654,
-      "tokens_approx": 12163
+      "bytes": 49904,
+      "tokens_approx": 12476
     },
     {
       "datei": "zusatz.json",

@@ -238,6 +238,21 @@
           "description": "May contain ⟦ABB:<datei>⟧ tokens; see 'abbildungen'."
         },
         "text_roh": { "type": "string" },
+        "uebergreifende_themen": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Resolved cross-cutting-theme names for this application item (footnote number -> name via meta.uebergreifende_themen_legende). Optional: omission means this array is empty."
+        },
+        "themen_marker_roh": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Raw <super> contents from this application item before resolution against the subject theme legend, for example ['6, 7']. Optional: omission means this array is empty."
+        },
+        "fussnoten_unaufgeloest": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Application-item superscript markers that do not resolve against the subject theme legend (ordinary footnotes, not cross-cutting themes). Optional: omission means this array is empty."
+        },
         "verbindlich": {
           "type": "boolean",
           "description": "Under anwendungsbereiche_status: item_flags, every real item carries this. Not JSON-Schema-required here: 'the only hard failures are a missing id/stufe/text' (E3-01 brief) -- a subject under optional_sektion or keine status may have no per-item binding flag at all."

@@ -711,6 +711,12 @@
               "ordinal": 1,
               "text": "Beschreiben von Eigenschaften ähnlicher Figuren; Kennen und Anwenden des Ähnlichkeitsfaktors; Anwenden und allenfalls Begründen, dass Dreiecke mit paarweise gleich großen Winkeln zueinander ähnlich sind;",
               "text_roh": "Beschreiben von Eigenschaften ähnlicher Figuren10; Kennen und Anwenden des Ähnlichkeitsfaktors; Anwenden und allenfalls Begründen, dass Dreiecke mit paarweise gleich großen Winkeln zueinander ähnlich sind;",
+              "uebergreifende_themen": [
+                "Sprachliche Bildung und Lesen"
+              ],
+              "themen_marker_roh": [
+                "10"
+              ],
               "verbindlich": false,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K3.02",
@@ -756,6 +762,12 @@
               "ordinal": 0,
               "text": "Kennen und Beschreiben grundlegender Eigenschaften von geraden Prismen und von Pyramiden;",
               "text_roh": "Kennen und Beschreiben grundlegender Eigenschaften von geraden Prismen und von Pyramiden;10",
+              "uebergreifende_themen": [
+                "Sprachliche Bildung und Lesen"
+              ],
+              "themen_marker_roh": [
+                "10"
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K3.03",
@@ -1013,6 +1025,12 @@
               "ordinal": 1,
               "text": "Beschreiben grundlegender Eigenschaften von Drehzylindern und Drehkegeln;",
               "text_roh": "Beschreiben grundlegender Eigenschaften von Drehzylindern und Drehkegeln;10",
+              "uebergreifende_themen": [
+                "Sprachliche Bildung und Lesen"
+              ],
+              "themen_marker_roh": [
+                "10"
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.FIGUREN.K4.03",

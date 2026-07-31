@@ -108,6 +108,13 @@
               "ordinal": 2,
               "text": "Darstellen von Daten in Tabellen und durch Säulen- oder Balkendiagramme;",
               "text_roh": "Darstellen von Daten4, 6 in Tabellen und durch Säulen- oder Balkendiagramme;",
+              "uebergreifende_themen": [
+                "Informatische Bildung",
+                "Medienbildung"
+              ],
+              "themen_marker_roh": [
+                "4, 6"
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K1.01",
@@ -120,6 +127,12 @@
               "ordinal": 3,
               "text": "Ablesen und Interpretieren von Daten aus Tabellen und grafischen Darstellungen (zB Säulen- und Balkendiagramme, Piktogramme);",
               "text_roh": "Ablesen und Interpretieren von Daten13 aus Tabellen und grafischen Darstellungen (zB Säulen- und Balkendiagramme, Piktogramme);",
+              "uebergreifende_themen": [
+                "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+              ],
+              "themen_marker_roh": [
+                "13"
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K1.01",
@@ -250,6 +263,12 @@
               "ordinal": 3,
               "text": "Ablesen und Interpretieren relativer Häufigkeiten aus Tabellen und grafischen Darstellungen;",
               "text_roh": "Ablesen und Interpretieren relativer Häufigkeiten aus Tabellen und grafischen Darstellungen;10",
+              "uebergreifende_themen": [
+                "Sprachliche Bildung und Lesen"
+              ],
+              "themen_marker_roh": [
+                "10"
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K2.01",
@@ -366,6 +385,13 @@
               "ordinal": 0,
               "text": "Verwenden eines intuitiven Wahrscheinlichkeitsbegriffs zur Quantifizierung von Sicherheit;",
               "text_roh": "Verwenden eines intuitiven Wahrscheinlichkeitsbegriffs zur Quantifizierung von Sicherheit;7, 13",
+              "uebergreifende_themen": [
+                "Politische Bildung",
+                "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+              ],
+              "themen_marker_roh": [
+                "7, 13"
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K3.02",
@@ -389,6 +415,13 @@
               "ordinal": 2,
               "text": "Ermitteln von Laplace-Wahrscheinlichkeiten bei einstufigen Zufallsexperimenten (zB Münzwurf, Würfeln); Interpretieren solcher Wahrscheinlichkeiten als Vorhersagewertfür relative Häufigkeiten.",
               "text_roh": "Ermitteln von Laplace-Wahrscheinlichkeiten bei einstufigen Zufallsexperimenten (zB Münzwurf, Würfeln); Interpretieren solcher Wahrscheinlichkeiten als Vorhersagewert7, 13 für relative Häufigkeiten.",
+              "uebergreifende_themen": [
+                "Politische Bildung",
+                "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+              ],
+              "themen_marker_roh": [
+                "7, 13 "
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.DATEN.K3.02",

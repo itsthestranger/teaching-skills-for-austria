@@ -87,6 +87,12 @@
               "ordinal": 0,
               "text": "Aufstellen einfacher Terme bzw. Gleichungen zu vorgegebenen Texten; Formulieren von Textenzu vorgegebenen einfachen Termen bzw. Gleichungen;",
               "text_roh": "Aufstellen einfacher Terme bzw. Gleichungen zu vorgegebenen Texten; Formulieren von Texten10 zu vorgegebenen einfachen Termen bzw. Gleichungen;",
+              "uebergreifende_themen": [
+                "Sprachliche Bildung und Lesen"
+              ],
+              "themen_marker_roh": [
+                "10 "
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K1.01",
@@ -185,6 +191,12 @@
               "ordinal": 1,
               "text": "Aufstellen von Gleichungen zu vorgegebenen Texten; Formulieren von Texten zu vorgegebenen Gleichungen;",
               "text_roh": "Aufstellen von Gleichungen zu vorgegebenen Texten; Formulieren von Texten10 zu vorgegebenen Gleichungen;",
+              "uebergreifende_themen": [
+                "Sprachliche Bildung und Lesen"
+              ],
+              "themen_marker_roh": [
+                "10"
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K2.01",
@@ -266,6 +278,13 @@
               "ordinal": 3,
               "text": "Anwenden linearer Gleichungen in Sachsituationen; kritisches Betrachten der Angemessenheit der mathematischen Beschreibung, der Ergebnisse und ihrer Genauigkeit.",
               "text_roh": "Anwenden linearer Gleichungen in Sachsituationen; kritisches Betrachten6, 7 der Angemessenheit der mathematischen Beschreibung, der Ergebnisse und ihrer Genauigkeit.",
+              "uebergreifende_themen": [
+                "Medienbildung",
+                "Politische Bildung"
+              ],
+              "themen_marker_roh": [
+                "6, 7"
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K2.02",
@@ -621,6 +640,12 @@
               "ordinal": 3,
               "text": "Anwenden von Gleichungen in Sachsituationen; kritisches Betrachten der Angemessenheit der mathematischen Beschreibung, der Ergebnisse und ihrer Genauigkeit;",
               "text_roh": "Anwenden von Gleichungen in Sachsituationen; kritisches Betrachten7 der Angemessenheit der mathematischen Beschreibung, der Ergebnisse und ihrer Genauigkeit;",
+              "uebergreifende_themen": [
+                "Politische Bildung"
+              ],
+              "themen_marker_roh": [
+                "7"
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.03",
@@ -725,6 +750,12 @@
               "ordinal": 3,
               "text": "Aufstellen von Formeln im Zusammenhang mit Zinsen bzw. Zinseszinsen;",
               "text_roh": "Aufstellen von Formeln im Zusammenhang mit Zinsen bzw. Zinseszinsen;13",
+              "uebergreifende_themen": [
+                "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+              ],
+              "themen_marker_roh": [
+                "13"
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.04",
@@ -737,6 +768,12 @@
               "ordinal": 4,
               "text": "Bearbeiten von Aufgaben im Kontext von Wachstums- und Abnahmeprozessen mit einem Tabellenkalkulationsprogramm, insbesondere bei konstanter prozentueller Änderung pro Zeiteinheit.",
               "text_roh": "Bearbeiten von Aufgaben im Kontext von Wachstums- und Abnahmeprozessen mit einem Tabellenkalkulationsprogramm4, insbesondere bei konstanter prozentueller Änderung pro Zeiteinheit.",
+              "uebergreifende_themen": [
+                "Informatische Bildung"
+              ],
+              "themen_marker_roh": [
+                "4"
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.04",
@@ -976,6 +1013,12 @@
               "ordinal": 3,
               "text": "Anwenden von linearen Funktionen in Sachsituationen; kritisches Betrachten der Angemessenheit der Modellierung mit linearen Funktionen;",
               "text_roh": "Anwenden von linearen Funktionen in Sachsituationen; kritisches Betrachten13 der Angemessenheit der Modellierung mit linearen Funktionen;",
+              "uebergreifende_themen": [
+                "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+              ],
+              "themen_marker_roh": [
+                "13"
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K4.03",

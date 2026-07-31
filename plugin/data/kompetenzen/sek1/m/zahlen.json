@@ -223,6 +223,12 @@
               "ordinal": 1,
               "text": "Beschreiben der Algorithmen für die Grundrechenoperationen anhand konkreter Beispiele; allenfalls Begründen der Algorithmen anhand konkreter Beispiele mithilfe von Rechenregeln und Eigenschaften des dezimalen Stellenwertsystems;",
               "text_roh": "Beschreiben der Algorithmen für die Grundrechenoperationen10 anhand konkreter Beispiele; allenfalls Begründen der Algorithmen anhand konkreter Beispiele mithilfe von Rechenregeln und Eigenschaften des dezimalen Stellenwertsystems;",
+              "uebergreifende_themen": [
+                "Sprachliche Bildung und Lesen"
+              ],
+              "themen_marker_roh": [
+                "10"
+              ],
               "verbindlich": false,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.02",
@@ -339,6 +345,12 @@
               "ordinal": 10,
               "text": "verbales Beschreiben von Rechenausdrücken und Darstellen verbal beschriebener Rechenanweisungen durch Rechenausdrücke;",
               "text_roh": "verbales Beschreiben10 von Rechenausdrücken und Darstellen verbal beschriebener Rechenanweisungen durch Rechenausdrücke;",
+              "uebergreifende_themen": [
+                "Sprachliche Bildung und Lesen"
+              ],
+              "themen_marker_roh": [
+                "10"
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.02",
@@ -351,6 +363,16 @@
               "ordinal": 11,
               "text": "Lösen von Aufgaben in Sachsituationen; Beschreiben, Vergleichen und Begründen von Lösungswegen; kritisches Betrachten von Ergebnissen und ihrer Genauigkeit.",
               "text_roh": "Lösen von Aufgaben in Sachsituationen; Beschreiben, Vergleichen und Begründen von Lösungswegen10; kritisches Betrachten von Ergebnissen und ihrer Genauigkeit.7, 13",
+              "uebergreifende_themen": [
+                "Sprachliche Bildung und Lesen",
+                "Politische Bildung",
+                "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+              ],
+              "themen_marker_roh": [
+                "10",
+                "7,",
+                "13"
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.02",
@@ -382,6 +404,12 @@
               "ordinal": 0,
               "text": "Verbinden von Vorstellungen mit Maßeinheiten; Vergleichen und Messen von Größen (insbesondere Längen, Flächen- und Rauminhalte, Massen, Zeitspannen, Geldbeträge); Schätzen von Größen anhand von Stützpunktvorstellungen, dh. Vergleichen mit Größen aus dem Alltag;",
               "text_roh": "Verbinden von Vorstellungen mit Maßeinheiten13; Vergleichen und Messen von Größen (insbesondere Längen, Flächen- und Rauminhalte, Massen, Zeitspannen, Geldbeträge); Schätzen von Größen anhand von Stützpunktvorstellungen, dh. Vergleichen mit Größen aus dem Alltag;",
+              "uebergreifende_themen": [
+                "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+              ],
+              "themen_marker_roh": [
+                "13"
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K1.03",
@@ -870,6 +898,12 @@
               "ordinal": 1,
               "text": "Beschreiben von Zuständen (zB Temperatur, Kontostand) und von Zustandsänderungen; Darstellen dieser Zustände als Punkte und dieser Zustandsänderungen durch Pfeile auf der Zahlengeraden;",
               "text_roh": "Beschreiben von Zuständen (zB Temperatur, Kontostand) und von Zustandsänderungen;10 Darstellen dieser Zustände als Punkte und dieser Zustandsänderungen durch Pfeile auf der Zahlengeraden;",
+              "uebergreifende_themen": [
+                "Sprachliche Bildung und Lesen"
+              ],
+              "themen_marker_roh": [
+                "10"
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K3.01",
@@ -1027,6 +1061,12 @@
               "ordinal": 3,
               "text": "näherungsweises Berechnen bzw. Schätzen von Quadratwurzeln durch systematisches Probieren; Berechnen von Quadrat- und Kubikwurzeln nur mittels Technologieeinsatz;",
               "text_roh": "näherungsweises Berechnen bzw. Schätzen von Quadratwurzeln durch systematisches Probieren; Berechnen von Quadrat- und Kubikwurzeln nur mittels Technologieeinsatz;4",
+              "uebergreifende_themen": [
+                "Informatische Bildung"
+              ],
+              "themen_marker_roh": [
+                "4"
+              ],
               "verbindlich": true,
               "art": "praezisierung",
               "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K4.01",

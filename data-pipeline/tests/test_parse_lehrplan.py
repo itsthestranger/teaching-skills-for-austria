@@ -582,6 +582,46 @@ class TestThemen(unittest.TestCase):
         k = next(k for k in self.mini.kompetenzen if k.themen_marker_roh)
         self.assertEqual(k.uebergreifende_themen, ["Informatische Bildung"])
 
+    def test_application_items_resolve_markers_after_the_legend_is_read(self):
+        xml = """<risdok xmlns="http://www.bka.gv.at"><nutzdaten><abschnitt>
+          <ueberschrift typ="g1">ACHTER TEIL</ueberschrift>
+          <ueberschrift typ="g1">MATHEMATIK</ueberschrift>
+          <ueberschrift typ="erll">Kompetenzbereiche (1. bis 4. Klasse):</ueberschrift>
+          <absatz typ="erltext">1. Klasse:</absatz>
+          <ueberschrift typ="erll">Kompetenzbereich 1: Zahlen und Maße</ueberschrift>
+          <absatz typ="abs">Die Schülerinnen und Schüler können</absatz>
+          <liste><aufzaehlung><listelem>eine Kompetenz.</listelem></aufzaehlung></liste>
+          <ueberschrift typ="erll">Anwendungsbereiche (1. bis 4. Klasse):</ueberschrift>
+          <absatz typ="erltext">1. Klasse:</absatz>
+          <absatz typ="abs">Kompetenzbereich 1: Zahlen und Maße</absatz>
+          <absatz typ="abs">Die Schülerinnen und Schüler können eine Kompetenz.</absatz>
+          <liste><aufzaehlung><listelem>Anwendungsinhalt;<super>4, 99</super></listelem></aufzaehlung></liste>
+          <table><tr><td><absatz typ="tabtext"><super>4</super>Informatische Bildung</absatz></td></tr></table>
+        </abschnitt></nutzdaten></risdok>"""
+        result = P.LehrplanParser(P.SEK1_MATHEMATIK).parse_root(ET.fromstring(xml))
+        item = result.anwendungsitems[0]
+        self.assertEqual(item.text, "Anwendungsinhalt;")
+        self.assertEqual(item.text_roh, "Anwendungsinhalt;4, 99")
+        self.assertEqual(item.themen_marker_roh, ["4, 99"])
+        self.assertEqual(item.uebergreifende_themen, ["Informatische Bildung"])
+        self.assertEqual(item.fussnoten_unaufgeloest, ["99"])
+        serialised = P.result_to_dict(result)["anwendungsitems"][0]
+        self.assertEqual(
+            {
+                name: serialised[name]
+                for name in (
+                    "uebergreifende_themen",
+                    "themen_marker_roh",
+                    "fussnoten_unaufgeloest",
+                )
+            },
+            {
+                "uebergreifende_themen": ["Informatische Bildung"],
+                "themen_marker_roh": ["4, 99"],
+                "fussnoten_unaufgeloest": ["99"],
+            },
+        )
+
 
 # ---------------------------------------------------------------------------
 # Tolerance and hard failures
@@ -1492,6 +1532,18 @@ class TestNewSubjectFixtures(unittest.TestCase):
         alle_ids = [k.id for k in r.kompetenzen] + [i.id for i in r.anwendungsitems]
         self.assertEqual(len(alle_ids), len(set(alle_ids)))
 
+    def _assert_item_theme_counts(self, r: P.ParseResult, erwartet_markiert: int) -> None:
+        """Freeze E12-07's item-theme counts on each containment fixture.
+
+        These subjects emit through _emit_ab_items rather than SEK1.M's
+        _emit_anwendungsitems path, so they need their own regression guard.
+        """
+        markiert = [i for i in r.anwendungsitems if i.themen_marker_roh]
+        self.assertEqual(len(markiert), erwartet_markiert)
+        self.assertEqual(sum(bool(i.uebergreifende_themen) for i in r.anwendungsitems), erwartet_markiert)
+        self.assertEqual(sum(bool(i.fussnoten_unaufgeloest) for i in r.anwendungsitems), 0)
+        self.assertTrue(all(i.themen_marker_roh for i in markiert))
+
     def test_sek1_deutsch(self):
         spec = _bindung_spec(
             "DEUTSCH", "bereich",
@@ -1504,6 +1556,7 @@ class TestNewSubjectFixtures(unittest.TestCase):
         self.assertEqual(len(r.anwendungsitems), 54)
         self.assertEqual(P.actual_counts(r), P.ERWARTET_SEK1_D)
         self._assert_no_kompetenz_id_and_no_collisions(r)
+        self._assert_item_theme_counts(r, 15)
         # The first Lesen list element is a fused stem carried by
         # ``<symbol stellen="3">Die</symbol>``. It must classify as a stem,
         # never as a spurious competence, so the real K2 entries start at .01.
@@ -1570,6 +1623,7 @@ class TestNewSubjectFixtures(unittest.TestCase):
         self.assertEqual(len(r.anwendungsitems), 37)
         self.assertEqual(P.actual_counts(r), P.ERWARTET_PRIM_D)
         self._assert_no_kompetenz_id_and_no_collisions(r)
+        self._assert_item_theme_counts(r, 11)
         # 'stufe' bindung: blocks attach to the school year only, never to
         # whichever area happened to precede them.
         for b in r.bloecke:
@@ -1607,6 +1661,7 @@ class TestNewSubjectFixtures(unittest.TestCase):
         self.assertEqual(len(r.anwendungsitems), 40)
         self.assertEqual(P.actual_counts(r), P.ERWARTET_PRIM_SU)
         self._assert_no_kompetenz_id_and_no_collisions(r)
+        self._assert_item_theme_counts(r, 1)
         for b in r.bloecke:
             self.assertIsNone(b.bereich_nummer)
             self.assertEqual(b.bereich_name, "")

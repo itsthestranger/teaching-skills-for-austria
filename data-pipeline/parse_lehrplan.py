@@ -571,6 +571,10 @@ class Anwendungsitem:
     class year only).  Both are ``listelem`` children of the Anwendungsbereiche
     section and both are counted in the section total."""
 
+    uebergreifende_themen: list[str] = field(default_factory=list)
+    themen_marker_roh: list[str] = field(default_factory=list)
+    fussnoten_unaufgeloest: list[str] = field(default_factory=list)
+
     kompetenz_id: str | None = None
     join_methode: str | None = None
     """``exact`` | ``fuzzy`` | ``positional`` | ``None`` (no competence)."""
@@ -1505,6 +1509,7 @@ class LehrplanParser:
         for el in ev.element.findall(".//" + NS + "listelem"):
             ex = element_text(el)
             self._require(ex.text, "text", ev.index)
+            themen, offen, roh = self._resolve_super(ex.super_marker, ev.index)
             lfd = len([i for i in self.anwendungsitems
                        if i.stufe == self.stufe and i.art == art
                        and i.bereich_name == self.bereich.name]) + 1
@@ -1522,6 +1527,9 @@ class LehrplanParser:
                 text_roh=ex.roh,
                 verbindlich=self._verbindlich(ex.text),
                 art=art,
+                uebergreifende_themen=themen,
+                themen_marker_roh=roh,
+                fussnoten_unaufgeloest=offen,
                 ist_wiederholung=bool(WIEDERHOLUNG_RE.match(ex.text)),
                 abbildungen=self._abbildung_eintraege(ex.abbildungen, ev.index),
                 quell_index=ev.index,
@@ -1662,6 +1670,7 @@ class LehrplanParser:
         for el in ev.element.findall(".//" + NS + "listelem"):
             ex = element_text(el)
             self._require(ex.text, "text", ev.index)
+            themen, offen, roh = self._resolve_super(ex.super_marker, ev.index)
             # Counted across *all* items sharing (bereich_name, stufe), not
             # just this block's own -- if bindung='stufe' ever sees more than
             # one AB-BLOCK per school year (the malformed shape the
@@ -1686,6 +1695,9 @@ class LehrplanParser:
                 text_roh=ex.roh,
                 verbindlich=self._verbindlich(ex.text),
                 art="praezisierung",
+                uebergreifende_themen=themen,
+                themen_marker_roh=roh,
+                fussnoten_unaufgeloest=offen,
                 ist_wiederholung=bool(WIEDERHOLUNG_RE.match(ex.text)),
                 abbildungen=self._abbildung_eintraege(ex.abbildungen, ev.index),
                 quell_index=ev.index,
@@ -1779,6 +1791,12 @@ class LehrplanParser:
                 themen, offen, _ = self._resolve_super(k.themen_marker_roh, k.quell_index)
                 k.uebergreifende_themen = themen
                 k.fussnoten_unaufgeloest = offen
+            for item in self.anwendungsitems:
+                themen, offen, _ = self._resolve_super(
+                    item.themen_marker_roh, item.quell_index
+                )
+                item.uebergreifende_themen = themen
+                item.fussnoten_unaufgeloest = offen
         if not self.kompetenzen:
             self.issues.add("keine_kompetenzen", "no competences extracted")
         return ParseResult(

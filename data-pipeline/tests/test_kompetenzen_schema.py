@@ -238,6 +238,32 @@ def test_unknown_art_value_still_validates(
     validator.validate(beispiel)  # must not raise -- tolerant, not a closed enum
 
 
+def test_anwendungsitem_theme_fields_validate_when_present(
+    validator: jsonschema.Draft202012Validator, beispiel: dict
+) -> None:
+    item = _first_anwendungsitem(beispiel)
+    item["uebergreifende_themen"] = ["Informatische Bildung"]
+    item["themen_marker_roh"] = ["4, 99"]
+    item["fussnoten_unaufgeloest"] = ["99"]
+    validator.validate(beispiel)
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("uebergreifende_themen", "Informatische Bildung"),
+        ("themen_marker_roh", "4, 99"),
+        ("fussnoten_unaufgeloest", "99"),
+    ],
+)
+def test_anwendungsitem_theme_fields_must_be_arrays_when_present(
+    validator: jsonschema.Draft202012Validator, beispiel: dict, field: str, value: str
+) -> None:
+    _first_anwendungsitem(beispiel)[field] = value
+    with pytest.raises(jsonschema.ValidationError):
+        validator.validate(beispiel)
+
+
 def test_unknown_prozesse_value_still_validates(
     validator: jsonschema.Draft202012Validator, beispiel: dict
 ) -> None:

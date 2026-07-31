@@ -816,3 +816,23 @@ three real `LESEN.K2` entries are `.01`–`.03`, and all six subjects have zero
 empty `stammsatz` values and zero `kompetenz_ohne_stammsatz` issues. The full
 suite is 419 tests. SEK1.M's parser serialization is byte-identical before
 and after the change.
+
+### 13.5 Application items use the same trailing theme legend
+
+`<super>` markers occur on application items as well as competences. Measured
+across both live documents, the item totals / marked-item counts are SEK1.M
+237 / 21, SEK1.D 54 / 15, PRIM.D 37 / 11 and PRIM.SU 40 / 1; SEK1.E and
+PRIM.M emit no application items. The marker number has the same meaning and
+is resolved through the same trailing subject-level legend. Because that
+legend appears after the content, `_finish` must re-resolve application items
+as well as competences. After E12-07 all 48 marked items resolve and none has
+an unresolved footnote.
+
+The in-memory `Anwendungsitem` contract always carries
+`uebergreifende_themen`, `themen_marker_roh` and
+`fussnoten_unaufgeloest`. Shipped JSON serializes each array only when it is
+non-empty; an omitted optional property therefore means an empty array. This
+is deliberately per-field rather than an all-or-nothing group, so a future
+unresolved-only item remains representable. On SEK1.M this keeps every shard
+below its soft size target: 21 of 237 items gain theme data, while the other
+216 do not gain three redundant empty arrays.
