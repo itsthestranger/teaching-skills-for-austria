@@ -497,6 +497,7 @@ class Kompetenz:
     fach: str
     bereich_nummer: int | None
     bereich_name: str
+    bereich_slug: str
     stufe: str
     ordinal: int
     text: str
@@ -521,6 +522,7 @@ class Anwendungsitem:
     fach: str
     bereich_nummer: int | None
     bereich_name: str
+    bereich_slug: str
     stufe: str
     ordinal: int
     text: str
@@ -1215,6 +1217,7 @@ class LehrplanParser:
                     fach=self.spec.fach_code,
                     bereich_nummer=self.bereich.nummer,
                     bereich_name=self.bereich.name,
+                    bereich_slug=self.bereich.slug,
                     stufe=self.stufe,
                     ordinal=self._komp_ordinal,
                     text=ex.text,
@@ -1261,6 +1264,7 @@ class LehrplanParser:
                 fach=self.spec.fach_code,
                 bereich_nummer=self.bereich.nummer if self.bereich else None,
                 bereich_name=self.bereich.name if self.bereich else "",
+                bereich_slug=bereich_slug,
                 stufe=self.stufe,
                 ordinal=len(block.items) if block is not None else 0,
                 text=ex.text,
@@ -1412,6 +1416,7 @@ class LehrplanParser:
                 fach=self.spec.fach_code,
                 bereich_nummer=block.bereich_nummer,
                 bereich_name=block.bereich_name,
+                bereich_slug=bereich_slug,
                 stufe=block.stufe,
                 ordinal=len(block.items),
                 text=ex.text,
@@ -1684,9 +1689,9 @@ def link_wiederholungen(result: ParseResult, issues: IssueLog | None = None) -> 
     such phrase at all, so primary progression will be purely positional.)
     """
     log = issues if issues is not None else result.issues
-    nach_stufe_bereich: dict[tuple[str, int | None], list[Kompetenz]] = {}
+    nach_stufe_bereich: dict[tuple[str, str], list[Kompetenz]] = {}
     for k in result.kompetenzen:
-        nach_stufe_bereich.setdefault((k.stufe, k.bereich_nummer), []).append(k)
+        nach_stufe_bereich.setdefault((k.stufe, k.bereich_slug), []).append(k)
 
     praefix = result.spec.stufen_praefix
     verlinkt = 0
@@ -1707,11 +1712,11 @@ def link_wiederholungen(result: ParseResult, issues: IssueLog | None = None) -> 
                 item.text[:90],
             )
             continue
-        vorige = nach_stufe_bereich.get((f"{praefix}{nr - 1}", item.bereich_nummer), [])
+        vorige = nach_stufe_bereich.get((f"{praefix}{nr - 1}", item.bereich_slug), [])
         if not vorige:
             log.add(
                 "wiederholung_ohne_ziel",
-                f"no competences in {praefix}{nr - 1} / area {item.bereich_nummer}",
+                f"no competences in {praefix}{nr - 1} / area {item.bereich_slug}",
                 item.quell_index,
                 item.text[:90],
             )
@@ -1725,8 +1730,8 @@ def link_wiederholungen(result: ParseResult, issues: IssueLog | None = None) -> 
         if not m:
             continue
         nr = int(m.group(1))
-        k.vorlaeufer = [p.id for p in nach_stufe_bereich.get((f"{praefix}{nr - 1}", k.bereich_nummer), [])]
-        k.folge = [p.id for p in nach_stufe_bereich.get((f"{praefix}{nr + 1}", k.bereich_nummer), [])]
+        k.vorlaeufer = [p.id for p in nach_stufe_bereich.get((f"{praefix}{nr - 1}", k.bereich_slug), [])]
+        k.folge = [p.id for p in nach_stufe_bereich.get((f"{praefix}{nr + 1}", k.bereich_slug), [])]
     return verlinkt
 
 

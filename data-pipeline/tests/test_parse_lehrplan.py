@@ -933,6 +933,45 @@ class TestBindungStufe(unittest.TestCase):
         self.assertEqual(self.r.issues.by_art("ab_block_anzahl_unerwartet"), [])
 
 
+class TestProgressionBucketsOnAreaSlug(unittest.TestCase):
+    """V-59 / E12-04: link_wiederholungen must bucket on bereich_slug, not
+    bereich_nummer. STUFEFACH's Alpha and Beta are both unnumbered
+    (bereich_nummer is None for every competence, exactly the shape of five
+    of the six real subjects) -- before the fix, both areas fell into the
+    same (stufe, None) bucket and progression fanned out across them."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.r = parse_bindung(STUFEFACH)
+
+    def test_both_areas_are_unnumbered(self):
+        # The bug precondition: bucketing on bereich_nummer alone cannot
+        # distinguish Alpha from Beta here.
+        self.assertTrue(all(k.bereich_nummer is None for k in self.r.kompetenzen))
+
+    def test_bucketing_key_is_the_slug_not_the_number(self):
+        alpha = next(k for k in self.r.kompetenzen if k.bereich_name == "Alpha")
+        beta = next(k for k in self.r.kompetenzen if k.bereich_name == "Beta")
+        self.assertIsNone(alpha.bereich_nummer)
+        self.assertIsNone(beta.bereich_nummer)
+        self.assertNotEqual(alpha.bereich_slug, beta.bereich_slug)
+
+    def test_progression_never_crosses_an_area_boundary(self):
+        alpha1 = next(k for k in self.r.kompetenzen if k.stufe == "SCH1" and k.bereich_name == "Alpha")
+        alpha2 = next(k for k in self.r.kompetenzen if k.stufe == "SCH2" and k.bereich_name == "Alpha")
+        beta1 = next(k for k in self.r.kompetenzen if k.stufe == "SCH1" and k.bereich_name == "Beta")
+        beta2 = next(k for k in self.r.kompetenzen if k.stufe == "SCH2" and k.bereich_name == "Beta")
+
+        self.assertEqual(alpha2.vorlaeufer, [alpha1.id])
+        self.assertEqual(alpha1.folge, [alpha2.id])
+        self.assertEqual(beta2.vorlaeufer, [beta1.id])
+        self.assertEqual(beta1.folge, [beta2.id])
+
+        # Neither area's progression ever names a competence from the other.
+        self.assertNotIn(beta1.id, alpha2.vorlaeufer)
+        self.assertNotIn(alpha1.id, beta2.vorlaeufer)
+
+
 class TestBindungStufeInconsistency(unittest.TestCase):
     def test_more_than_one_block_per_stufe_is_logged_not_silent(self):
         # Deliberately malformed: two AB-BLOCKs land under the same stufe.
