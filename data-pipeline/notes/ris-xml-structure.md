@@ -56,8 +56,8 @@ ueberschrift/g1min   3    absatz/satz         1    ueberschrift/erlz    1
 
 | Element | What it is | What the parser does |
 |---|---|---|
-| `<symbol stellen="1">–</symbol>` | The list bullet glyph, first child of most `listelem`s | Dropped. It is presentation, not text. |
-| `<symbol stellen="3">Die</symbol>` etc. | **`<symbol>` does not always hold a bullet.** It also carries real sentence words and enumeration labels (`1)`, `2.1)`, `Siehe`) | ⚠️ **Currently dropped too — that is a bug (V-69, backlog E12-06a).** `element_text` drops `<symbol>` unconditionally, so real words are deleted from the sentence. See §13.4. |
+| `<symbol stellen="1">–</symbol>` | The list bullet glyph, first child of most `listelem`s. One live outlier uses `stellen="2"` with the same standalone dash. | Dropped by glyph content (`–`/`-`), not by `stellen`; it is presentation, not text. |
+| `<symbol stellen="3">Die</symbol>` etc. | **`<symbol>` does not always hold a bullet.** It also carries real sentence words and enumeration labels (`1)`, `2.1)`, `Siehe`). | Preserved regardless of `stellen`; an omitted lexical boundary between a symbol word and its tail is restored. Fixed by E12-06a (V-69). See §13.4. |
 | `<super>4</super>`, `<super>6, 7</super>` | Superscript footnote marker referring to the 13 cross-cutting themes. **One `<super>` may hold several numbers.** | Removed from the quotable `text`; preserved in `text_roh` and in `themen_marker_roh`; resolved against the theme map. |
 | `<binary><src>/Dokumente/…/hauptdokument.img1is.png</src></binary>` | An inline PNG — fractions and formulae are shipped as images | **Trap:** `itertext()` splices the *file path* into the sentence. Replaced by the token `⟦ABB:hauptdokument.img1is.png⟧`; the image is fetched, shipped and its metadata attached — see §10. 25 Sek I maths application items (63 images) are affected within this parser's scope. |
 | `<feld>`, `<tab>` | Page furniture in headers/footers | Outside the content range. |
@@ -774,35 +774,45 @@ unhandled tokens today.
 
 ### 13.4 `<symbol>` is not always a bullet — and dropping it deletes real words
 
-**Measured 2026-07-31 (V-69, backlog E12-06a).** §2's table long described
-`<symbol>` as the list bullet glyph, and `element_text` drops it
-unconditionally as "presentation, not text". That is right for the bullet
+**Measured 2026-07-31; fixed the same day (V-69, E12-06a).** §2's table long
+described `<symbol>` as the list bullet glyph, and `element_text` dropped it
+unconditionally as "presentation, not text". That was right for the bullet
 form and **wrong in general**. NOR40271471 child 465, verbatim:
 
 ```xml
 <listelem ct="text"><symbol stellen="3">Die</symbol>Schülerinnen und Schüler können</listelem>
 ```
 
-The `stellen` attribute is the discriminator: `stellen="1"` is the bullet
-`–`; `stellen="3"` here holds the real word `Die`. Because the parser
-deletes it, the extracted text is `Schülerinnen und Schüler können`, which
-`STEM_RE` does not match — so a well-formed stem is not recognised as one
-and is emitted as a spurious competence instead.
+The original diagnosis treated `stellen` as the discriminator. A complete
+live inventory corrected that assumption: 2,977 symbols use
+`stellen="1">–`, but one presentation-only bullet is
+`stellen="2">– </symbol>`. The reliable discriminator is the symbol content:
+a standalone `–`/`-` is presentation and is dropped; words and enumeration
+labels are retained regardless of `stellen`. When a retained symbol word and
+its tail are adjacent alphanumeric runs (`Die</symbol>Schülerinnen`),
+`element_text` restores the lexical space.
 
 Two structural facts worth keeping separate:
 
-1. **A stem may be the first `<listelem>` of the competence `<liste>`**
+1. **A stem may be a `<listelem>` of the competence `<liste>`**
    rather than a preceding `<absatz>`. Measured at children 465 and 552,
    both under a `Kompetenzbereich Lesen` heading (552 sits inside the
-   `LEHRPLANZUSATZ` appendix, which the parser terminates before). This
-   variation is harmless on its own.
+   `LEHRPLANZUSATZ` appendix, which the parser terminates before). The outer
+   state machine classifies only the enclosing `<liste>`, so
+   `_emit_kompetenzen` now classifies every list item semantically and consumes
+   a bare `STAMMSATZ` at any source-order position. This is not a child-465 or
+   first-item special case.
 2. **`<symbol>` carries non-bullet content elsewhere too** — enumeration
    labels `1)`, `2.1)`, `1.`, `Siehe` at children 205-390 and 2132. All are
-   outside the six shards' competence sections, so nothing ships wrong from
-   them today, but the same unconditional drop applies.
+   outside the six shards' competence sections, so they did not affect shard
+   counts, but the old unconditional deletion still violated the general text
+   extraction contract. They are retained after E12-06a.
 
-The fix belongs in `element_text` (keep `<symbol>` when it carries words,
-drop it when it is a bullet), **not** in a special case for bare-stem first
-list items — that would patch one shape and leave the general deletion in
-place. Predicted: SEK1.D goes 41 → 40 competences once fixed, so its frozen
-`ERWARTET` count encodes the bug and must be re-measured before E12-08.
+The fix therefore has two general parts: `element_text` keeps symbol content
+unless it is exactly a standalone dash, and competence-list emission consumes
+any bare stem item through the existing `STAMMSATZ` semantics. Measured after
+the fix against both full live documents: SEK1.D is **40** competences, its
+three real `LESEN.K2` entries are `.01`–`.03`, and all six subjects have zero
+empty `stammsatz` values and zero `kompetenz_ohne_stammsatz` issues. The full
+suite is 419 tests. SEK1.M's parser serialization is byte-identical before
+and after the change.

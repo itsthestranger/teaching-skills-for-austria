@@ -80,11 +80,38 @@ def parse(path: Path) -> P.ParseResult:
 
 class TestTextExtraction(unittest.TestCase):
     def test_bullet_symbol_is_dropped(self):
+        for stellen, glyph in (("1", "–"), ("2", "– "), ("1", "-")):
+            with self.subTest(stellen=stellen, glyph=glyph):
+                el = ET.fromstring(
+                    '<listelem xmlns="http://www.bka.gv.at">'
+                    f'<symbol stellen="{stellen}">{glyph}</symbol>Text der Kompetenz.</listelem>'
+                )
+                self.assertEqual(P.element_text(el).text, "Text der Kompetenz.")
+
+    def test_real_symbol_text_and_its_tail_are_retained_in_order(self):
+        # Unlike the presentation-only list bullet, ``stellen=3`` carries a
+        # source word. RIS omits literal XML whitespace at this run boundary;
+        # extraction restores the lexical boundary without reflowing prose.
         el = ET.fromstring(
             '<listelem xmlns="http://www.bka.gv.at">'
-            '<symbol stellen="1">–</symbol>Text der Kompetenz.</listelem>'
+            '<symbol stellen="3">Die</symbol>Schülerinnen und Schüler können</listelem>'
         )
-        self.assertEqual(P.element_text(el).text, "Text der Kompetenz.")
+        ex = P.element_text(el)
+        self.assertEqual(ex.text, "Die Schülerinnen und Schüler können")
+        self.assertEqual(ex.roh, "Die Schülerinnen und Schüler können")
+        label = ET.fromstring(
+            '<listelem xmlns="http://www.bka.gv.at">'
+            '<symbol stellen="3">1)</symbol>Eintrag</listelem>'
+        )
+        self.assertEqual(P.element_text(label).text, "1)Eintrag")
+        mislabeled_word = ET.fromstring(
+            '<listelem xmlns="http://www.bka.gv.at">'
+            '<symbol stellen="1">Die</symbol>Schülerinnen und Schüler können</listelem>'
+        )
+        self.assertEqual(
+            P.element_text(mislabeled_word).text,
+            "Die Schülerinnen und Schüler können",
+        )
 
     def test_super_removed_from_text_but_kept_separately(self):
         el = ET.fromstring(
@@ -1287,6 +1314,32 @@ class TestStammsatz(unittest.TestCase):
         self.assertEqual(sehen.stammsatz, "")
         self.assertEqual(len(r.issues.by_art("kompetenz_ohne_stammsatz")), 1)
 
+    def test_bare_stem_in_a_nonfirst_list_item_governs_later_items(self):
+        # The known V-69 occurrence is first, but list-item stem recognition
+        # is semantic: it must not depend on a child index or list position.
+        # The preceding item correctly remains stemless; the restored stem
+        # governs only source-order entries that follow it.
+        xml = """<risdok xmlns="http://www.bka.gv.at"><nutzdaten><abschnitt>
+          <ueberschrift typ="g1">ACHTER TEIL</ueberschrift>
+          <ueberschrift typ="g1">LISTENFACH</ueberschrift>
+          <ueberschrift typ="erll">Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. Klasse):</ueberschrift>
+          <absatz typ="erltext">1. Klasse:</absatz>
+          <ueberschrift typ="erll">Kompetenzbereich Hoeren</ueberschrift>
+          <liste><aufzaehlung>
+            <listelem>Kompetenz vor dem Stamm.</listelem>
+            <listelem><symbol stellen="3">Die</symbol>Schülerinnen und Schüler können</listelem>
+            <listelem>Kompetenz nach dem Stamm.</listelem>
+          </aufzaehlung></liste>
+        </abschnitt></nutzdaten></risdok>"""
+        r = P.LehrplanParser(_bindung_spec("LISTENFACH", "prosa")).parse_root(ET.fromstring(xml))
+        self.assertEqual([k.text for k in r.kompetenzen], [
+            "Kompetenz vor dem Stamm.",
+            "Kompetenz nach dem Stamm.",
+        ])
+        self.assertEqual(r.kompetenzen[0].stammsatz, "")
+        self.assertEqual(r.kompetenzen[1].stammsatz, "Die Schülerinnen und Schüler können")
+        self.assertEqual(len(r.issues.by_art("kompetenz_ohne_stammsatz")), 1)
+
     def test_gz_integrativ_stem_is_also_captured(self):
         # _kompetenz_gz_integrativ used to drop the stem too (its own
         # docstring called it "ignored, same as in KOMPETENZBEREICHE") --
@@ -1371,8 +1424,8 @@ class TestUnbehandelterToken(unittest.TestCase):
 )
 class TestLiveContainmentSmoke(unittest.TestCase):
     def test_sek1_deutsch_matches_the_measured_counts(self):
-        # notes/deviations.md, 2026-07-29: SEK1.D 4 areas / 41 competences /
-        # 16 AB blocks / 54 items, bindung='bereich'.
+        # SEK1.D has 4 areas / 40 competences / 16 AB blocks / 54 items,
+        # bindung='bereich'.
         spec = _bindung_spec(
             "DEUTSCH",
             "bereich",
@@ -1383,7 +1436,7 @@ class TestLiveContainmentSmoke(unittest.TestCase):
         )
         r = P.parse_lehrplan(MS_LIVE, spec)
         self.assertEqual(len(r.bereiche), 4)
-        self.assertEqual(len(r.kompetenzen), 41)
+        self.assertEqual(len(r.kompetenzen), 40)
         self.assertEqual(len(r.bloecke), 16)
         self.assertEqual(len(r.anwendungsitems), 54)
         self.assertTrue(all(i.kompetenz_id is None for i in r.anwendungsitems))
@@ -1446,11 +1499,21 @@ class TestNewSubjectFixtures(unittest.TestCase):
         )
         r = P.parse_lehrplan(SEK1_DEUTSCH, spec)
         self.assertEqual(len(r.bereiche), 4)
-        self.assertEqual(len(r.kompetenzen), 41)
+        self.assertEqual(len(r.kompetenzen), 40)
         self.assertEqual(len(r.bloecke), 16)
         self.assertEqual(len(r.anwendungsitems), 54)
         self.assertEqual(P.actual_counts(r), P.ERWARTET_SEK1_D)
         self._assert_no_kompetenz_id_and_no_collisions(r)
+        # The first Lesen list element is a fused stem carried by
+        # ``<symbol stellen="3">Die</symbol>``. It must classify as a stem,
+        # never as a spurious competence, so the real K2 entries start at .01.
+        lesen_k2 = [
+            k for k in r.kompetenzen
+            if k.bereich_slug == "LESEN" and k.stufe == "K2"
+        ]
+        self.assertEqual([k.id.rsplit(".", 1)[-1] for k in lesen_k2], ["01", "02", "03"])
+        self.assertTrue(all(k.stammsatz == "Die Schülerinnen und Schüler können" for k in lesen_k2))
+        self.assertEqual(r.issues.by_art("kompetenz_ohne_stammsatz"), [])
         # This is the regression check for the LEHRPLANZUSATZ DEUTSCH ALS
         # ZWEITSPRACHE hazard (notes/deviations.md, 2026-07-28/29): the
         # fixture carries that appendix's *own* 'Kompetenzbereich Lesen' /

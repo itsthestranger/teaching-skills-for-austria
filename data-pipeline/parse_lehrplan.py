@@ -117,7 +117,9 @@ class ExtractedText:
 def element_text(el: ET.Element) -> ExtractedText:
     """Extract text from *el* verbatim, with three documented interventions.
 
-    1. ``<symbol>`` -- the list bullet glyph ("--").  Presentation, not text.
+    1. ``<symbol>`` list bullet glyphs (a standalone ``–``/``-``) --
+       presentation, not text. Other ``<symbol>`` elements carry source text
+       and are kept regardless of their ``stellen`` attribute.
     2. ``<binary>`` -- an inline PNG (fraction/formula graphic).  ``itertext()``
        would otherwise splice the *file path* from ``<src>`` into the sentence.
        Replaced by the token :func:`abbildung_token` builds (e.g.
@@ -129,9 +131,10 @@ def element_text(el: ET.Element) -> ExtractedText:
        cutting themes.  Removed from ``text`` (a raised "4" is not part of the
        sentence) and preserved verbatim in ``super_marker`` and ``roh``.
 
-    Nothing else is touched: no reflowing, no whitespace collapsing, no
-    gender-reforming.  Fragments are joined and the result is stripped at the
-    ends only.
+    Apart from restoring a lexical space when a retained symbol word and its
+    tail are adjacent alphanumeric runs, nothing else is touched: no
+    reflowing, no whitespace collapsing, no gender-reforming. Fragments are
+    joined and the result is stripped at the ends only.
     """
     clean: list[str] = []
     roh: list[str] = []
@@ -147,6 +150,25 @@ def element_text(el: ET.Element) -> ExtractedText:
         name = localname(node)
         if not is_root:
             if name == "symbol":
+                # RIS normally uses ``stellen="1"`` for presentation-only
+                # list bullets, but NOR40271471 also has one ``stellen="2"``
+                # en dash. The glyph itself, not the position attribute, is
+                # the reliable discriminator: other runs may hold words or
+                # enumeration labels and must survive extraction.
+                symbol_text = node.text or ""
+                if symbol_text.strip() in {"–", "-"}:
+                    emit(node.tail)
+                    return
+                emit(symbol_text)
+                for child in node:
+                    walk(child, is_root=False)
+                # A symbol run may split two lexical words without XML
+                # whitespace (``<symbol>Die</symbol>Schülerinnen``). Restore
+                # that word boundary while retaining the tail in document
+                # order; no other whitespace is reflowed.
+                if (node.text and node.tail and node.text[-1].isalnum()
+                        and node.tail[0].isalnum()):
+                    emit(" ")
                 emit(node.tail)
                 return
             if name == "binary":
@@ -876,6 +898,16 @@ class LehrplanParser:
 
         if name == "liste":
             return Ereignis(Token.LISTE, index, el, ex)
+        if name == "listelem":
+            # Lists normally contain competences, but the source may place a
+            # bare stem in one of their items.  Classify the item by its text
+            # rather than by its position in the list (V-69).
+            rest = strip_stem(text)
+            if rest != text:
+                if rest.strip(" .:;"):
+                    return Ereignis(Token.KOMPETENZSATZ, index, el, ex, {"rest": rest})
+                return Ereignis(Token.STAMMSATZ, index, el, ex)
+            return Ereignis(Token.TEXT, index, el, ex)
         if name == "table":
             return Ereignis(Token.TABELLE, index, el, ex)
         return Ereignis(Token.IGNORIEREN, index, el, ex)
@@ -1386,23 +1418,21 @@ class LehrplanParser:
             )
             return
         stammsatz = self._stammsatz
-        if stammsatz is None:
-            # No STAMMSATZ/KOMPETENZSATZ token opened a stem before this list
-            # -- this is exactly V-58's failure mode without the fix (see the
-            # STAMMSATZ/KOMPETENZSATZ branches in _kompetenzbereiche and
-            # _kompetenz_gz_integrativ). Log once for the whole list (same
-            # granularity as liste_ohne_kontext above) rather than storing ""
-            # silently -- every source document measured produces zero of
-            # these; a nonzero count is a real structural surprise.
-            self.issues.add(
-                "kompetenz_ohne_stammsatz",
-                "competence list emitted with no stem paragraph currently "
-                "open; stammsatz will be empty for every item in this list",
-                ev.index,
-            )
-            stammsatz = ""
+        fehlender_stammsatz = False
         for el in ev.element.findall(".//" + NS + "listelem"):
-            ex = element_text(el)
+            item_ev = self._classify(ev.index, el)
+            if item_ev.token is Token.STAMMSATZ:
+                # A stem may live inside a competence list. This is a normal
+                # token classification, not a first-item/source-shape special
+                # case: it governs only the following entries in document
+                # order, exactly like an outer STAMMSATZ event would.
+                stammsatz = item_ev.extracted.text
+                self._stammsatz = stammsatz
+                continue
+            if stammsatz is None:
+                fehlender_stammsatz = True
+                stammsatz = ""
+            ex = item_ev.extracted
             self._require(ex.text, "text", ev.index)
             self._require(self.stufe, "stufe", ev.index)
             themen, offen, roh = self._resolve_super(ex.super_marker, ev.index)
@@ -1429,6 +1459,16 @@ class LehrplanParser:
                 )
             )
             self._komp_ordinal += 1
+        if fehlender_stammsatz:
+            # Log once for the whole list (same granularity as
+            # liste_ohne_kontext above), but only after giving an embedded
+            # STAMMSATZ a chance to open the scope.
+            self.issues.add(
+                "kompetenz_ohne_stammsatz",
+                "competence list emitted with no stem paragraph currently "
+                "open; stammsatz will be empty for one or more items in this list",
+                ev.index,
+            )
 
     def _emit_anwendungsitems(self, ev: Ereignis) -> None:
         if self.stufe is None:
@@ -2036,7 +2076,7 @@ ERWARTET_SEK1_M = {
 #: changes). Both are asserted directly against ParseResult.bloecke and
 #: SubjectSpec.anwendungsbereiche_bindung in the fixture tests instead.
 ERWARTET_SEK1_D = {
-    "kompetenzen": 41,
+    "kompetenzen": 40,
     "anwendungsitems": 54,
     "allenfalls": 0,
     "wiederholen_und_festigen": 0,
