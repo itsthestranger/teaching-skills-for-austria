@@ -44,7 +44,16 @@ Anwendungsitem, area-free (bindung: stufe only), 7 segments:
 
 Produced by `id_schema.format_item_id(band, fach, art, bereich, stufe, lfd)`
 with `bereich=None` (the 8-segment area-bearing form is unchanged, still
-built by passing a real area-code string). `parse_id()` accepts both
+built by passing a real area-code string). **Actually emitted since
+2026-07-31 (E12-05).** Until then this form was fully specified and tested
+but had no caller, and the parser minted the placeholder segment
+`ALLGEMEIN` instead. `parse_lehrplan._make_id` now takes an optional area
+segment and **delegates to `format_id`/`format_item_id` for the six frozen
+shards**, so every minted ID is round-trip-checked against the grammar at
+construction; it hand-builds the identical string only for the `band="TEST"`
+fixture specs, which these constructors reject by design (see the
+2026-07-31 row in `deviations.md`). Measured live across all six shards: 0
+IDs containing `ALLGEMEIN`, 0 round-trip failures, 0 `lfd` collisions. `parse_id()` accepts both
 application-item forms and reports `bereich=None` on the parsed
 `AnwendungsitemId` for the area-free one; `AnwendungsitemId.bereich` is
 typed `str | None` accordingly, and every ID parsed before this form

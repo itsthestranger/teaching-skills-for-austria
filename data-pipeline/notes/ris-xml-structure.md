@@ -56,7 +56,8 @@ ueberschrift/g1min   3    absatz/satz         1    ueberschrift/erlz    1
 
 | Element | What it is | What the parser does |
 |---|---|---|
-| `<symbol stellen="1">–</symbol>` | The list bullet glyph, first child of every `listelem` | Dropped. It is presentation, not text. |
+| `<symbol stellen="1">–</symbol>` | The list bullet glyph, first child of most `listelem`s | Dropped. It is presentation, not text. |
+| `<symbol stellen="3">Die</symbol>` etc. | **`<symbol>` does not always hold a bullet.** It also carries real sentence words and enumeration labels (`1)`, `2.1)`, `Siehe`) | ⚠️ **Currently dropped too — that is a bug (V-69, backlog E12-06a).** `element_text` drops `<symbol>` unconditionally, so real words are deleted from the sentence. See §13.4. |
 | `<super>4</super>`, `<super>6, 7</super>` | Superscript footnote marker referring to the 13 cross-cutting themes. **One `<super>` may hold several numbers.** | Removed from the quotable `text`; preserved in `text_roh` and in `themen_marker_roh`; resolved against the theme map. |
 | `<binary><src>/Dokumente/…/hauptdokument.img1is.png</src></binary>` | An inline PNG — fractions and formulae are shipped as images | **Trap:** `itertext()` splices the *file path* into the sentence. Replaced by the token `⟦ABB:hauptdokument.img1is.png⟧`; the image is fetched, shipped and its metadata attached — see §10. 25 Sek I maths application items (63 images) are affected within this parser's scope. |
 | `<feld>`, `<tab>` | Page furniture in headers/footers | Outside the content range. |
@@ -762,5 +763,46 @@ The per-state handlers are `if`-chains over `Token` values with no final
 with no `ParseIssue` — which is how §13.1's content loss stayed invisible.
 This contradicts the module's tolerant-**but-logged** philosophy: tolerance
 means carrying a surprise forward with a warning, never dropping it in
-silence. **Decided, not yet implemented (backlog E12-06):** both handlers are
-to log an issue for any token they do not consume.
+silence. **Implemented 2026-07-31 (E12-06).** `_kompetenzbereiche`,
+`_anwendungsbereiche` **and** `_kompetenz_gz_integrativ` each end in a
+fallback that logs `unbehandeltes_token_<handler>`, gated by an explicit
+allow-list of tokens each handler has a documented reason to ignore
+(`TEXT`, `IGNORIEREN` — justified inline at the definition). Measured: the
+fallback logs **zero** new issues across all six shards, so the allow-list
+is narrow enough to be honest and the live documents genuinely produce no
+unhandled tokens today.
+
+### 13.4 `<symbol>` is not always a bullet — and dropping it deletes real words
+
+**Measured 2026-07-31 (V-69, backlog E12-06a).** §2's table long described
+`<symbol>` as the list bullet glyph, and `element_text` drops it
+unconditionally as "presentation, not text". That is right for the bullet
+form and **wrong in general**. NOR40271471 child 465, verbatim:
+
+```xml
+<listelem ct="text"><symbol stellen="3">Die</symbol>Schülerinnen und Schüler können</listelem>
+```
+
+The `stellen` attribute is the discriminator: `stellen="1"` is the bullet
+`–`; `stellen="3"` here holds the real word `Die`. Because the parser
+deletes it, the extracted text is `Schülerinnen und Schüler können`, which
+`STEM_RE` does not match — so a well-formed stem is not recognised as one
+and is emitted as a spurious competence instead.
+
+Two structural facts worth keeping separate:
+
+1. **A stem may be the first `<listelem>` of the competence `<liste>`**
+   rather than a preceding `<absatz>`. Measured at children 465 and 552,
+   both under a `Kompetenzbereich Lesen` heading (552 sits inside the
+   `LEHRPLANZUSATZ` appendix, which the parser terminates before). This
+   variation is harmless on its own.
+2. **`<symbol>` carries non-bullet content elsewhere too** — enumeration
+   labels `1)`, `2.1)`, `1.`, `Siehe` at children 205-390 and 2132. All are
+   outside the six shards' competence sections, so nothing ships wrong from
+   them today, but the same unconditional drop applies.
+
+The fix belongs in `element_text` (keep `<symbol>` when it carries words,
+drop it when it is a bullet), **not** in a special case for bare-stem first
+list items — that would patch one shape and leave the general deletion in
+place. Predicted: SEK1.D goes 41 → 40 competences once fixed, so its frozen
+`ERWARTET` count encodes the bug and must be re-measured before E12-08.
