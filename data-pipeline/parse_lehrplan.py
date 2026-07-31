@@ -46,6 +46,9 @@ from typing import Iterator, Sequence
 
 import abbildungen as ABB
 
+sys.path.insert(0, str(Path(__file__).resolve().parent / "schema"))
+import id_schema  # noqa: E402 -- reused: format_id()/format_item_id() for ID minting (E12-05)
+
 # --------------------------------------------------------------------------
 # XML primitives
 # --------------------------------------------------------------------------
@@ -1130,11 +1133,58 @@ class LehrplanParser:
         self.bereiche[name] = bereich
         return bereich
 
-    def _make_id(self, bereich_slug: str, stufe: str, lfd: int, index: int, praefix: str = "") -> str:
-        ident = (
-            f"AT.LP23.{self.spec.band}.{self.spec.fach_code}."
-            f"{praefix}{bereich_slug}.{stufe}.{lfd:02d}"
-        )
+    def _make_id(
+        self,
+        bereich_slug: str | None,
+        stufe: str,
+        lfd: int,
+        index: int,
+        art: str | None = None,
+    ) -> str:
+        """Mint an ID following the grammar frozen in ``id_schema.py``.
+
+        ``art`` is ``None`` for a competence ID (7 segments, no ``Art``
+        marker) or ``"AB"``/``"DT"`` for an application-item ID.
+        ``bereich_slug=None`` is only valid together with an ``art`` -- it
+        mints the area-free 7-segment form for
+        ``anwendungsbereiche_bindung: "stufe"`` items (E12-05/D3).
+
+        For one of the frozen six shards (``id_schema.ist_gueltige_kombination``),
+        this **delegates** to :func:`id_schema.format_id`/
+        :func:`id_schema.format_item_id`, which self-check the constructed
+        ID by round-tripping it through :func:`id_schema.parse_id`. Outside
+        that set -- exactly the throwaway ``band="TEST"``/``fach="X"``
+        containment-bindung specs in ``tests/test_parse_lehrplan.py``,
+        deliberately kept off the frozen ``id_schema`` tables so test
+        fixtures can never touch them -- the two constructors reject the
+        band/fach outright, so the ID is hand-built instead, following the
+        identical grammar (mirrored string-for-string below). The delegating
+        path is exercised end-to-end, including the ``id_schema.parse_id``
+        self-check, by ``TestE1205AreaFreeItemIds`` (real ``PRIM.D``/
+        ``SEK1.D``); the hand-built path is exercised by every
+        ``TestBindung*`` test (``band="TEST"``).
+        """
+        if id_schema.ist_gueltige_kombination(self.spec.band, self.spec.fach_code):
+            if art is None:
+                assert bereich_slug is not None, "competence IDs always carry an area"
+                ident = id_schema.format_id(
+                    self.spec.band, self.spec.fach_code, bereich_slug, stufe, lfd
+                )
+            else:
+                ident = id_schema.format_item_id(
+                    self.spec.band, self.spec.fach_code, art, bereich_slug, stufe, lfd
+                )
+        else:
+            if art is None:
+                assert bereich_slug is not None, "competence IDs always carry an area"
+                ident = f"AT.LP23.{self.spec.band}.{self.spec.fach_code}.{bereich_slug}.{stufe}.{lfd:02d}"
+            elif bereich_slug is None:
+                ident = f"AT.LP23.{self.spec.band}.{self.spec.fach_code}.{art}.{stufe}.{lfd:02d}"
+            else:
+                ident = (
+                    f"AT.LP23.{self.spec.band}.{self.spec.fach_code}."
+                    f"{art}.{bereich_slug}.{stufe}.{lfd:02d}"
+                )
         if ident in self._ids:
             raise ParseError(
                 f"ID collision {ident!r}: child index {index} collides with {self._ids[ident]}"
@@ -1248,22 +1298,34 @@ class LehrplanParser:
                 "digital-technology heading before it; kept as unattached",
                 ev.index,
             )
-        bereich_slug = self.bereich.slug if self.bereich else "ALLGEMEIN"
+        if self.bereich is None:
+            # Reachable only for anwendungsbereiche_bindung == "kompetenz"
+            # (the sole spec with a dedicated SEKTION_ANWENDUNG heading, see
+            # SubjectSpec.anwendung_sektion_re) -- for that binding an item
+            # with no preceding area heading is a genuine structural anomaly,
+            # not an expected shape (E12-05/D3): synthesising the literal
+            # area "ALLGEMEIN" here would assert a scoping the source does
+            # not make, exactly the join-honesty violation D3 forbids.
+            raise ParseError(
+                f"application item at child index {ev.index} has no preceding "
+                "area heading (bindung='kompetenz'); refusing to invent one"
+            )
+        bereich_slug = self.bereich.slug
         art = "digitale_technologien" if digital else "praezisierung"
-        praefix = "DT." if digital else "AB."
+        id_art = "DT" if digital else "AB"
         for el in ev.element.findall(".//" + NS + "listelem"):
             ex = element_text(el)
             self._require(ex.text, "text", ev.index)
             lfd = len([i for i in self.anwendungsitems
                        if i.stufe == self.stufe and i.art == art
-                       and i.bereich_name == (self.bereich.name if self.bereich else "")]) + 1
-            ident = self._make_id(bereich_slug, self.stufe, lfd, ev.index, praefix)
+                       and i.bereich_name == self.bereich.name]) + 1
+            ident = self._make_id(bereich_slug, self.stufe, lfd, ev.index, id_art)
             item = Anwendungsitem(
                 id=ident,
                 band=self.spec.band,
                 fach=self.spec.fach_code,
-                bereich_nummer=self.bereich.nummer if self.bereich else None,
-                bereich_name=self.bereich.name if self.bereich else "",
+                bereich_nummer=self.bereich.nummer,
+                bereich_name=self.bereich.name,
                 bereich_slug=bereich_slug,
                 stufe=self.stufe,
                 ordinal=len(block.items) if block is not None else 0,
@@ -1395,7 +1457,19 @@ class LehrplanParser:
             )
             return
         bereich_obj = self.bereiche.get(block.bereich_name) if block.bereich_name else None
+        # bereich_slug: the E12-04 progression-bucketing field on the record
+        # (Kompetenz/Anwendungsitem.bereich_slug) -- untouched by E12-05, the
+        # "ALLGEMEIN" sentinel there is deliberate (see the field's docstring
+        # and the 2026-07-31 deviations.md row) so area-less records still
+        # bucket together for vorlaeufer/folge linking.
         bereich_slug = bereich_obj.slug if bereich_obj else "ALLGEMEIN"
+        # id_bereich_slug: the *ID* segment (E12-05/D3). None whenever no
+        # area is actually known -- always the case for bindung='stufe'
+        # (block.bereich_name is always "" there, see _oeffne_ab_block) and
+        # also covers the defensive bindung='bereich' anomaly already logged
+        # as 'ab_block_ohne_bereich'. Never the literal "ALLGEMEIN": that
+        # would assert a scoping the source does not make.
+        id_bereich_slug = bereich_obj.slug if bereich_obj else None
         for el in ev.element.findall(".//" + NS + "listelem"):
             ex = element_text(el)
             self._require(ex.text, "text", ev.index)
@@ -1409,7 +1483,7 @@ class LehrplanParser:
                 i for i in self.anwendungsitems
                 if i.stufe == block.stufe and i.bereich_name == block.bereich_name
             ]) + 1
-            ident = self._make_id(bereich_slug, block.stufe, lfd, ev.index, "AB.")
+            ident = self._make_id(id_bereich_slug, block.stufe, lfd, ev.index, "AB")
             item = Anwendungsitem(
                 id=ident,
                 band=self.spec.band,

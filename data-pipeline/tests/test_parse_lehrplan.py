@@ -30,8 +30,10 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "schema"))
 
 import abbildungen as ABB  # noqa: E402
+import id_schema as ID  # noqa: E402
 import parse_lehrplan as P  # noqa: E402
 
 # The parser mirrors every tolerated deviation to logging.WARNING; that is the
@@ -996,6 +998,91 @@ class TestBindungStufeInconsistency(unittest.TestCase):
         r = P.LehrplanParser(spec).parse_root(ET.fromstring(xml))
         self.assertEqual(len(r.bloecke), 2)
         self.assertEqual(len(r.issues.by_art("ab_block_anzahl_unerwartet")), 1)
+
+
+class TestE1205AreaFreeItemIds(unittest.TestCase):
+    """E12-05 / D3: 'ALLGEMEIN' must never appear in a minted ID again --
+    bindung='stufe' items get the area-free 7-segment form instead. These
+    two cases reuse the containment_bindung_mini.xml sections (STUFEFACH,
+    BEREICHFACH) but override band/fach_code to a real six-shard pair
+    (PRIM.D is genuinely 'stufe'-bound, SEK1.D genuinely 'bereich'-bound),
+    so _make_id takes the id_schema-delegating path and every ID is checked
+    against the real frozen grammar, not just hand-built and eyeballed."""
+
+    def test_stufe_bindung_mints_the_area_free_seven_segment_form(self):
+        spec = _bindung_spec(
+            "STUFEFACH", "stufe",
+            band="PRIM", fach_code="D", stufen_praefix="SCH",
+        )
+        r = P.parse_lehrplan(BINDUNG_MINI, spec)
+        self.assertEqual(len(r.anwendungsitems), 3)  # 2 (SCH1) + 1 (SCH2)
+        for item in r.anwendungsitems:
+            self.assertNotIn("ALLGEMEIN", item.id)
+            self.assertEqual(len(item.id.split(".")), 7)
+            parsed = ID.parse_id(item.id)
+            self.assertIsInstance(parsed, ID.AnwendungsitemId)
+            self.assertIsNone(parsed.bereich)
+            self.assertEqual(parsed.art, "AB")
+        # The record's own bereich_slug (E12-04 progression-bucketing field)
+        # keeps carrying the "ALLGEMEIN" sentinel -- E12-05 only touches the
+        # minted ID, never this field.
+        self.assertTrue(all(i.bereich_slug == "ALLGEMEIN" for i in r.anwendungsitems))
+        # Competences are unaffected: still the area-bearing 7-segment form.
+        for k in r.kompetenzen:
+            self.assertNotIn("ALLGEMEIN", k.id)
+            parsed = ID.parse_id(k.id)
+            self.assertIsInstance(parsed, ID.KompetenzId)
+
+    def test_bereich_bindung_still_mints_the_area_bearing_eight_segment_form(self):
+        spec = _bindung_spec(
+            "BEREICHFACH", "bereich",
+            band="SEK1", fach_code="D", stufen_praefix="K",
+        )
+        r = P.parse_lehrplan(BINDUNG_MINI, spec)
+        self.assertEqual(len(r.anwendungsitems), 2)
+        for item in r.anwendungsitems:
+            self.assertNotIn("ALLGEMEIN", item.id)
+            self.assertEqual(len(item.id.split(".")), 8)
+            parsed = ID.parse_id(item.id)
+            self.assertIsInstance(parsed, ID.AnwendungsitemId)
+            self.assertIsNotNone(parsed.bereich)
+            self.assertEqual(parsed.art, "AB")
+        # Zweitbereich has no competence list of its own but still carries
+        # its own area code in the item ID (the case the fixture exists for).
+        zweit = next(i for i in r.anwendungsitems if i.bereich_name == "Zweitbereich")
+        self.assertIn(".ZWEITBEREICH.", zweit.id)
+
+
+class TestE1205SiteAUnreachableBecomesParseError(unittest.TestCase):
+    """E12-05 / D3: the second, kompetenz-path 'ALLGEMEIN' fallback
+    (_emit_anwendungsitems, reachable only via bindung='kompetenz''s own
+    SEKTION_ANWENDUNG heading -- see SubjectSpec.anwendung_sektion_re) is
+    unreachable in every live document (confirmed by --verify and the full
+    suite staying green), but is a genuine structural anomaly if it ever
+    did fire: an application item with no preceding area heading. It must
+    raise ParseError, not synthesise "ALLGEMEIN"."""
+
+    def test_item_with_no_preceding_area_heading_raises(self):
+        xml = """<risdok xmlns="http://www.bka.gv.at"><nutzdaten><abschnitt>
+          <ueberschrift typ="g1">ACHTER TEIL</ueberschrift>
+          <ueberschrift typ="g1">KOMPETENZFACH</ueberschrift>
+          <ueberschrift typ="erll">Kompetenzbereiche (1. Klasse):</ueberschrift>
+          <ueberschrift typ="erll">1. Klasse:</ueberschrift>
+          <ueberschrift typ="erll">Kompetenzbereich Alpha</ueberschrift>
+          <absatz typ="abs">Die Schülerinnen und Schüler können</absatz>
+          <liste><aufzaehlung><listelem><symbol stellen="1">-</symbol>Alpha.</listelem></aufzaehlung></liste>
+          <ueberschrift typ="erll">Anwendungsbereiche (1. Klasse):</ueberschrift>
+          <ueberschrift typ="erll">1. Klasse:</ueberschrift>
+          <absatz typ="abs">Die Schülerinnen und Schüler können rechnen.</absatz>
+          <liste><aufzaehlung><listelem><symbol stellen="1">-</symbol>Item ohne Bereich.</listelem></aufzaehlung></liste>
+        </abschnitt></nutzdaten></risdok>"""
+        spec = _bindung_spec(
+            "KOMPETENZFACH", "kompetenz",
+            kompetenz_sektion_re=re.compile(r"^Kompetenzbereiche\s*\("),
+            anwendung_sektion_re=re.compile(r"^Anwendungsbereiche\s*\("),
+        )
+        with self.assertRaises(P.ParseError):
+            P.LehrplanParser(spec).parse_root(ET.fromstring(xml))
 
 
 class TestBindungProsa(unittest.TestCase):
