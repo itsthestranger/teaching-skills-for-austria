@@ -1193,6 +1193,170 @@ class TestAllenfallsPruefenFlag(unittest.TestCase):
 
 
 # ---------------------------------------------------------------------------
+# E12-06 / V-58: Kompetenz.stammsatz -- the stem paragraph, verbatim
+# ---------------------------------------------------------------------------
+
+
+class TestStammsatz(unittest.TestCase):
+    """The competence stem paragraph is captured verbatim on every Kompetenz,
+    for every subject -- not a SEK1.E-only patch (notes/deviations.md,
+    2026-07-30 row). 'text'/'text_roh' never gain the stem; a faithful
+    quotation is 'stammsatz' + 'text'."""
+
+    def test_bare_stem_is_captured_verbatim(self):
+        # BEREICHFACH (containment_bindung_mini.xml) uses the plain,
+        # five-subject form.
+        r = parse_bindung(BEREICHFACH)
+        erste = next(k for k in r.kompetenzen if k.text == "erste Kompetenz.")
+        self.assertEqual(erste.stammsatz, "Die Schülerinnen und Schüler können")
+
+    def test_qualified_sek1e_style_stem_is_captured_verbatim(self):
+        # The real trailing-comma form measured in NOR40271471 (FINDINGS.md
+        # V-58, child 655) -- quoted here, not paraphrased.
+        xml = """<risdok xmlns="http://www.bka.gv.at"><nutzdaten><abschnitt>
+          <ueberschrift typ="g1">ACHTER TEIL</ueberschrift>
+          <ueberschrift typ="g1">FREMDSPRACHENFACH</ueberschrift>
+          <ueberschrift typ="erll">Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. Klasse):</ueberschrift>
+          <absatz typ="erltext">1. Klasse:</absatz>
+          <ueberschrift typ="erll">Kompetenzbereich Hoeren</ueberschrift>
+          <absatz typ="abs">Die Schülerinnen und Schüler können, wenn sehr langsam, klar und deutlich in Standardsprache gesprochen wird,</absatz>
+          <liste><aufzaehlung><listelem><symbol stellen="1">-</symbol>einzelne vertraute Wörter und ganz einfache Sätze verstehen.</listelem></aufzaehlung></liste>
+        </abschnitt></nutzdaten></risdok>"""
+        spec = _bindung_spec("FREMDSPRACHENFACH", "prosa")
+        r = P.LehrplanParser(spec).parse_root(ET.fromstring(xml))
+        self.assertEqual(len(r.kompetenzen), 1)
+        self.assertEqual(
+            r.kompetenzen[0].stammsatz,
+            "Die Schülerinnen und Schüler können, wenn sehr langsam, klar und "
+            "deutlich in Standardsprache gesprochen wird,",
+        )
+        # The stem is never folded into 'text'/'text_roh' (rejected
+        # alternative in the 2026-07-30 deviations.md decision row).
+        self.assertEqual(
+            r.kompetenzen[0].text,
+            "einzelne vertraute Wörter und ganz einfache Sätze verstehen.",
+        )
+
+    def test_stem_does_not_leak_across_a_stufe_boundary(self):
+        # Same area name recurs in the second Klasse, this time with no stem
+        # paragraph of its own -- a stale stem from the first Klasse must
+        # not silently attach to it.
+        xml = """<risdok xmlns="http://www.bka.gv.at"><nutzdaten><abschnitt>
+          <ueberschrift typ="g1">ACHTER TEIL</ueberschrift>
+          <ueberschrift typ="g1">GRENZFACH</ueberschrift>
+          <ueberschrift typ="erll">Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. bis 2. Klasse):</ueberschrift>
+          <absatz typ="erltext">1. Klasse:</absatz>
+          <ueberschrift typ="erll">Kompetenzbereich Hoeren</ueberschrift>
+          <absatz typ="abs">Die Schülerinnen und Schüler können, wenn sehr langsam, klar und deutlich in Standardsprache gesprochen wird,</absatz>
+          <liste><aufzaehlung><listelem><symbol stellen="1">-</symbol>Woerter Jahr 1 verstehen.</listelem></aufzaehlung></liste>
+          <absatz typ="erltext">2. Klasse:</absatz>
+          <ueberschrift typ="erll">Kompetenzbereich Hoeren</ueberschrift>
+          <liste><aufzaehlung><listelem><symbol stellen="1">-</symbol>Woerter Jahr 2 verstehen.</listelem></aufzaehlung></liste>
+        </abschnitt></nutzdaten></risdok>"""
+        spec = _bindung_spec("GRENZFACH", "prosa")
+        r = P.LehrplanParser(spec).parse_root(ET.fromstring(xml))
+        self.assertEqual(len(r.kompetenzen), 2)
+        jahr1 = next(k for k in r.kompetenzen if k.text == "Woerter Jahr 1 verstehen.")
+        jahr2 = next(k for k in r.kompetenzen if k.text == "Woerter Jahr 2 verstehen.")
+        self.assertTrue(jahr1.stammsatz.startswith("Die Schülerinnen und Schüler können, wenn"))
+        # Not the leaked Jahr-1 stem, and not silently invented -- empty,
+        # with the gap logged.
+        self.assertEqual(jahr2.stammsatz, "")
+        self.assertEqual(len(r.issues.by_art("kompetenz_ohne_stammsatz")), 1)
+
+    def test_stem_does_not_leak_across_a_bereich_boundary(self):
+        # Second area, same Klasse, no stem of its own -- the first area's
+        # stem must not attach to it either.
+        xml = """<risdok xmlns="http://www.bka.gv.at"><nutzdaten><abschnitt>
+          <ueberschrift typ="g1">ACHTER TEIL</ueberschrift>
+          <ueberschrift typ="g1">GRENZFACH2</ueberschrift>
+          <ueberschrift typ="erll">Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. Klasse):</ueberschrift>
+          <absatz typ="erltext">1. Klasse:</absatz>
+          <ueberschrift typ="erll">Kompetenzbereich Hoeren</ueberschrift>
+          <absatz typ="abs">Die Schülerinnen und Schüler können, wenn sehr langsam, klar und deutlich in Standardsprache gesprochen wird,</absatz>
+          <liste><aufzaehlung><listelem><symbol stellen="1">-</symbol>Hoeren-Kompetenz.</listelem></aufzaehlung></liste>
+          <ueberschrift typ="erll">Kompetenzbereich Sehen</ueberschrift>
+          <liste><aufzaehlung><listelem><symbol stellen="1">-</symbol>Sehen-Kompetenz.</listelem></aufzaehlung></liste>
+        </abschnitt></nutzdaten></risdok>"""
+        spec = _bindung_spec("GRENZFACH2", "prosa")
+        r = P.LehrplanParser(spec).parse_root(ET.fromstring(xml))
+        self.assertEqual(len(r.kompetenzen), 2)
+        hoeren = next(k for k in r.kompetenzen if k.text == "Hoeren-Kompetenz.")
+        sehen = next(k for k in r.kompetenzen if k.text == "Sehen-Kompetenz.")
+        self.assertTrue(hoeren.stammsatz.startswith("Die Schülerinnen und Schüler können, wenn"))
+        self.assertEqual(sehen.stammsatz, "")
+        self.assertEqual(len(r.issues.by_art("kompetenz_ohne_stammsatz")), 1)
+
+    def test_gz_integrativ_stem_is_also_captured(self):
+        # _kompetenz_gz_integrativ used to drop the stem too (its own
+        # docstring called it "ignored, same as in KOMPETENZBEREICHE") --
+        # SEK1.M's 2 promoted GZ competences must carry a stammsatz like
+        # every other competence, not be the only ones without one.
+        r = P.parse_lehrplan(ECHT, P.SEK1_MATHEMATIK)
+        gz = [k for k in r.kompetenzen if k.bereich_slug == P.GZ_INTEGRATIV_BEREICH_SLUG]
+        self.assertEqual(len(gz), 2)
+        for k in gz:
+            self.assertEqual(k.stammsatz, "Die Schülerinnen und Schüler können")
+
+
+# ---------------------------------------------------------------------------
+# E12-06 / V-68: an unmatched token must be logged, never silently dropped
+# ---------------------------------------------------------------------------
+
+
+class TestUnbehandelterToken(unittest.TestCase):
+    """_kompetenzbereiche and _anwendungsbereiche now fall back to a logged
+    ParseIssue for any token their explicit branches and ignore-set do not
+    cover, instead of silently discarding it (the exact mechanism that made
+    V-58 invisible). The events are constructed directly so the test does
+    not depend on whether today's _classify happens to produce this
+    token/state combination from real markup -- it tests the dispatch
+    methods' own fallback contract."""
+
+    @staticmethod
+    def _ereignis(token):
+        el = ET.fromstring('<absatz xmlns="http://www.bka.gv.at" typ="abs">Text</absatz>')
+        return P.Ereignis(token, 0, el, P.element_text(el))
+
+    def test_kompetenzbereiche_logs_an_unexpected_token(self):
+        parser = P.LehrplanParser(BEREICHFACH)
+        parser._reset()
+        parser.state = P.State.KOMPETENZBEREICHE
+        # DIGITALE_TECHNOLOGIEN has a branch only in _anwendungsbereiche;
+        # it is not in _kompetenzbereiche's ignore set either.
+        parser._kompetenzbereiche(self._ereignis(P.Token.DIGITALE_TECHNOLOGIEN))
+        issues = parser.issues.by_art("unbehandeltes_token_kompetenzbereiche")
+        self.assertEqual(len(issues), 1)
+        self.assertIn("digitale_technologien", issues[0].nachricht)
+
+    def test_anwendungsbereiche_logs_an_unexpected_token(self):
+        parser = P.LehrplanParser(BEREICHFACH)
+        parser._reset()
+        parser.state = P.State.ANWENDUNGSBEREICHE
+        # AB_BLOCK is only ever classified while in KOMPETENZBEREICHE (see
+        # AB_BLOCK_RE's state guard in _classify) and has no branch in
+        # _anwendungsbereiche.
+        parser._anwendungsbereiche(self._ereignis(P.Token.AB_BLOCK))
+        issues = parser.issues.by_art("unbehandeltes_token_anwendungsbereiche")
+        self.assertEqual(len(issues), 1)
+        self.assertIn("ab_block", issues[0].nachricht)
+
+    def test_ignorable_tokens_are_not_logged(self):
+        # TEXT/IGNORIEREN are the explicit, justified allow-list (ordinary
+        # prose and non-interpreted element types) -- logging these would
+        # be exactly the noise the design note warns against.
+        parser = P.LehrplanParser(BEREICHFACH)
+        parser._reset()
+        parser.state = P.State.KOMPETENZBEREICHE
+        parser._kompetenzbereiche(self._ereignis(P.Token.TEXT))
+        parser._kompetenzbereiche(self._ereignis(P.Token.IGNORIEREN))
+        parser.state = P.State.ANWENDUNGSBEREICHE
+        parser._anwendungsbereiche(self._ereignis(P.Token.TEXT))
+        parser._anwendungsbereiche(self._ereignis(P.Token.IGNORIEREN))
+        self.assertEqual(len(parser.issues), 0)
+
+
+# ---------------------------------------------------------------------------
 # Live smoke test: PRIM.SU / SEK1.D reproduce the measured containment counts
 # ---------------------------------------------------------------------------
 #

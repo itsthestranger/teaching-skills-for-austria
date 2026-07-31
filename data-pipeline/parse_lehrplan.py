@@ -516,6 +516,18 @@ class Kompetenz:
     quell_index: int = -1
     vorlaeufer: list[str] = field(default_factory=list)
     folge: list[str] = field(default_factory=list)
+    stammsatz: str = ""
+    """The competence stem paragraph, verbatim as published (FINDINGS.md
+    V-58, notes/deviations.md 2026-07-30 row) -- schema/kompetenzen.schema
+    .json $defs/kompetenz.stammsatz. Normally the bare 'Die Schülerinnen und
+    Schüler können'; in Sek I (Erste) Lebende Fremdsprache it carries a
+    load-bearing CEFR performance condition inline. A faithful quotation of
+    the competence is 'stammsatz' + 'text' -- neither field alone. NOT
+    prepended into 'text'/'text_roh', which stay byte-identical (that split
+    is deliberate, see the decision row). Empty only if no stem was open
+    when the competence was emitted, which is itself a logged ParseIssue
+    ('kompetenz_ohne_stammsatz') -- never the silent default for a subject
+    that simply has one."""
 
 
 @dataclass
@@ -671,6 +683,44 @@ class Ereignis:
     daten: dict = field(default_factory=dict)
 
 
+# --------------------------------------------------------------------------
+# V-68 -- explicit, justified ignore-sets for the two unfallbacked handlers
+# --------------------------------------------------------------------------
+#
+# Both `_kompetenzbereiche` and `_anwendungsbereiche` are if-chains with no
+# catch-all, so a token reaching either without a matching branch used to
+# vanish with no ParseIssue (this is the exact mechanism that made V-58
+# invisible). The fix is a fallback branch in each -- but logging every
+# unmatched token indiscriminately would flood the issue log with tokens
+# that are genuine, expected no-ops in that section (plain prose between
+# headings, for instance), burying anything actually unexpected. Each set
+# below is therefore an explicit allow-list, not "everything seen so far":
+# a token belongs here only if its handler has a documented reason to do
+# nothing with it, not merely because it happened not to occur in the six
+# live documents measured against.
+
+_KOMPETENZBEREICHE_IGNORIERBAR = frozenset({
+    # Ordinary didactic prose between a heading and the next list/heading
+    # (e.g. the Kompetenzmodell-adjacent narrative sentences some subjects
+    # repeat inside the competence section) -- carries no structured field.
+    Token.TEXT,
+    # `_classify` reaches this branch only for element types the module does
+    # not attempt to interpret in any section (e.g. `absatz` typs outside
+    # `erltext`/`abs`) -- true structural filler, not competence data.
+    Token.IGNORIEREN,
+})
+
+_ANWENDUNGSBEREICHE_IGNORIERBAR = frozenset({
+    # Same reasoning as _KOMPETENZBEREICHE_IGNORIERBAR above: descriptive
+    # prose and non-interpreted element types carry no Anwendungsbereiche
+    # data. STAMMSATZ is deliberately *not* in this set -- it already has its
+    # own branch below that logs `bloßer_stammsatz_in_anwendungsbereichen`,
+    # so routing it through the generic fallback would double-log it.
+    Token.TEXT,
+    Token.IGNORIEREN,
+})
+
+
 class LehrplanParser:
     """Sequential state machine over the flat ``<abschnitt>`` child list."""
 
@@ -736,6 +786,17 @@ class LehrplanParser:
         """A bindung='prosa' AB-BLOCK is open (SEK1.E): the heading was seen
         and logged, but it captures no items by design -- see
         :meth:`_oeffne_ab_block`."""
+
+        self._stammsatz: str | None = None
+        """The currently-open competence stem paragraph, verbatim as
+        published (FINDINGS.md V-58, notes/deviations.md 2026-07-30 row) --
+        set by a ``STAMMSATZ``/``KOMPETENZSATZ`` token in
+        :meth:`_kompetenzbereiche`/:meth:`_kompetenz_gz_integrativ`, attached
+        to every :class:`Kompetenz` emitted while it is open (it governs the
+        whole list, or lists, that follow it -- not just the next one).
+        ``None`` means no stem has been seen yet for the current scope; reset
+        to ``None`` at every ``STUFE``/``BEREICH`` boundary and on section
+        entry/exit so a stem from one block can never leak onto another."""
 
         self._block_ordinal = 0
         self._komp_ordinal = 0
@@ -857,6 +918,7 @@ class LehrplanParser:
         if ev.token is Token.FACH_UEBERSCHRIFT:
             self._close_block()
             self._schliesse_ab_block()
+            self._stammsatz = None
             if self.state in (State.KOMPETENZBEREICHE, State.ANWENDUNGSBEREICHE):
                 self.issues.add(
                     "sektion_nicht_geschlossen",
@@ -875,6 +937,7 @@ class LehrplanParser:
         if ev.token is Token.LEHRPLANZUSATZ:
             self._close_block()
             self._schliesse_ab_block()
+            self._stammsatz = None
             if self.state in (State.KOMPETENZBEREICHE, State.ANWENDUNGSBEREICHE):
                 self.issues.add(
                     "sektion_nicht_geschlossen",
@@ -900,6 +963,7 @@ class LehrplanParser:
             self._themen_map.update(self._parse_themen_tabelle(ev.element))
             self._close_block()
             self._schliesse_ab_block()
+            self._stammsatz = None
             self.state = State.NACH_FACH
             return
 
@@ -908,6 +972,7 @@ class LehrplanParser:
             self.state = State.KOMPETENZBEREICHE
             self.stufe = None
             self.bereich = None
+            self._stammsatz = None
             return
 
         if ev.token is Token.SEKTION_ANWENDUNG:
@@ -916,12 +981,14 @@ class LehrplanParser:
             self.stufe = None
             self.bereich = None
             self._block_ordinal = 0
+            self._stammsatz = None
             return
 
         if ev.token is Token.SEKTION_GZ_INTEGRATIV:
             self._close_block()
             self.state = State.KOMPETENZ_GZ_INTEGRATIV
             self.stufe = None
+            self._stammsatz = None
             # Fixed, synthetic area for the life of this appendix -- not
             # registered in self.bereiche (see GZ_INTEGRATIV_RE docstring),
             # so it never appears as a 5th entry in ParseResult.bereiche.
@@ -962,14 +1029,37 @@ class LehrplanParser:
             self._schliesse_ab_block()
             self.stufe = self._stufe_code(ev)
             self.bereich = None
+            # A stem qualifies the block it introduces, never a later class
+            # year (V-58/2026-07-30 deviations row) -- reset at every STUFE
+            # boundary so a stale stem can never leak forward.
+            self._stammsatz = None
             return
         if ev.token is Token.BEREICH:
             self._schliesse_ab_block()
             self.bereich = self._bereich(ev)
             self._komp_ordinal = 0
+            # Same reasoning as STUFE above: a new area starts a fresh
+            # competence list and must not inherit the previous area's stem.
+            self._stammsatz = None
             return
         if ev.token is Token.AB_BLOCK:
             self._oeffne_ab_block(ev)
+            return
+        if ev.token is Token.STAMMSATZ:
+            # Bare "Die Schülerinnen und Schüler können" -- the five-subject
+            # case. Stored verbatim (ev.extracted.text, not a reconstruction)
+            # and stays open across every following LISTE until the next
+            # STUFE/BEREICH boundary or section exit -- see _emit_kompetenzen.
+            self._stammsatz = ev.extracted.text
+            return
+        if ev.token is Token.KOMPETENZSATZ:
+            # SEK1.E: the stem paragraph carries an inline qualifying
+            # performance condition (FINDINGS.md V-58), e.g. "..., wenn sehr
+            # langsam, klar und deutlich in Standardsprache gesprochen wird,".
+            # Store the whole paragraph verbatim -- never ev.daten["rest"],
+            # which is the stem-*stripped* continuation and would silently
+            # drop the "Die Schülerinnen und Schüler können" opening.
+            self._stammsatz = ev.extracted.text
             return
         if ev.token is Token.LISTE:
             if self._offener_ab_block is not None:
@@ -988,6 +1078,15 @@ class LehrplanParser:
             self._schliesse_ab_block()
             self._verlasse_sektion(ev)
             return
+        if ev.token in _KOMPETENZBEREICHE_IGNORIERBAR:
+            return
+        self.issues.add(
+            "unbehandeltes_token_kompetenzbereiche",
+            f"token {ev.token.value!r} reached _kompetenzbereiche with no "
+            "matching branch; discarded (V-68)",
+            ev.index,
+            ev.extracted.text[:80],
+        )
 
     def _anwendungsbereiche(self, ev: Ereignis) -> None:
         if ev.token is Token.STUFE:
@@ -1037,21 +1136,42 @@ class LehrplanParser:
                 "bare stem paragraph inside Anwendungsbereiche (expected inline form)",
                 ev.index,
             )
+            return
+        if ev.token in _ANWENDUNGSBEREICHE_IGNORIERBAR:
+            return
+        self.issues.add(
+            "unbehandeltes_token_anwendungsbereiche",
+            f"token {ev.token.value!r} reached _anwendungsbereiche with no "
+            "matching branch; discarded (V-68)",
+            ev.index,
+            ev.extracted.text[:80],
+        )
 
     def _kompetenz_gz_integrativ(self, ev: Ereignis) -> None:
         """The integrative-Geometrisches-Zeichnen appendix (promoted).
 
-        Shape: ``STUFE`` (3. Klasse / 4. Klasse), a bare stem paragraph
-        (ignored, same as in KOMPETENZBEREICHE), then one ``LISTE`` of
-        competences for that class year. ``self.bereich`` was fixed to the
-        synthetic GZ area when this state was entered and never changes
-        here; only ``self.stufe`` and the per-stufe ordinal reset. The
-        trailing footnote-legend ``TABELLE`` is handled generically in
-        :meth:`_step` (the legend-table subject terminator), not here.
+        Shape: ``STUFE`` (3. Klasse / 4. Klasse), a bare stem paragraph, then
+        one ``LISTE`` of competences for that class year. ``self.bereich``
+        was fixed to the synthetic GZ area when this state was entered and
+        never changes here; only ``self.stufe`` and the per-stufe ordinal
+        reset. The trailing footnote-legend ``TABELLE`` is handled
+        generically in :meth:`_step` (the legend-table subject terminator),
+        not here.
+
+        The stem paragraph is captured (V-58/2026-07-30 deviations row),
+        not ignored -- SEK1.M's 2 promoted GZ competences would otherwise be
+        the only ones in the dataset with no ``stammsatz``, while the other
+        40 competences (from :meth:`_kompetenzbereiche`) have one.
         """
         if ev.token is Token.STUFE:
             self.stufe = self._stufe_code(ev)
             self._komp_ordinal = 0
+            # New class year, fresh stem -- same reasoning as the STUFE
+            # branch in _kompetenzbereiche.
+            self._stammsatz = None
+            return
+        if ev.token is Token.STAMMSATZ:
+            self._stammsatz = ev.extracted.text
             return
         if ev.token is Token.LISTE:
             self._emit_kompetenzen(ev)
@@ -1059,6 +1179,15 @@ class LehrplanParser:
         if ev.token is Token.ANDERE_UEBERSCHRIFT:
             self._verlasse_sektion(ev)
             return
+        if ev.token in _KOMPETENZBEREICHE_IGNORIERBAR:
+            return
+        self.issues.add(
+            "unbehandeltes_token_kompetenz_gz_integrativ",
+            f"token {ev.token.value!r} reached _kompetenz_gz_integrativ with "
+            "no matching branch; discarded (V-68)",
+            ev.index,
+            ev.extracted.text[:80],
+        )
 
     def _fach_anhang(self, ev: Ereignis) -> None:
         """Capture, without interpreting, anything after the two sections."""
@@ -1097,6 +1226,9 @@ class LehrplanParser:
         self.state = State.FACH_ANHANG
         self._zusatz_titel = ev.extracted.text
         self._zusatz_stufe = None
+        # Section exit -- a competence stem never governs anything outside
+        # the section it was opened in (V-58/2026-07-30 deviations row).
+        self._stammsatz = None
 
     def _stufe_code(self, ev: Ereignis) -> str:
         nr = ev.daten["nr"]
@@ -1253,6 +1385,22 @@ class LehrplanParser:
                 ev.index,
             )
             return
+        stammsatz = self._stammsatz
+        if stammsatz is None:
+            # No STAMMSATZ/KOMPETENZSATZ token opened a stem before this list
+            # -- this is exactly V-58's failure mode without the fix (see the
+            # STAMMSATZ/KOMPETENZSATZ branches in _kompetenzbereiche and
+            # _kompetenz_gz_integrativ). Log once for the whole list (same
+            # granularity as liste_ohne_kontext above) rather than storing ""
+            # silently -- every source document measured produces zero of
+            # these; a nonzero count is a real structural surprise.
+            self.issues.add(
+                "kompetenz_ohne_stammsatz",
+                "competence list emitted with no stem paragraph currently "
+                "open; stammsatz will be empty for every item in this list",
+                ev.index,
+            )
+            stammsatz = ""
         for el in ev.element.findall(".//" + NS + "listelem"):
             ex = element_text(el)
             self._require(ex.text, "text", ev.index)
@@ -1277,6 +1425,7 @@ class LehrplanParser:
                     fussnoten_unaufgeloest=offen,
                     abbildungen=self._abbildung_eintraege(ex.abbildungen, ev.index),
                     quell_index=ev.index,
+                    stammsatz=stammsatz,
                 )
             )
             self._komp_ordinal += 1
