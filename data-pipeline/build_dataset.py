@@ -110,9 +110,12 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import re
 import sys
+import unicodedata
+from collections import defaultdict
 from pathlib import Path
-from typing import Sequence
+from typing import Iterator, Sequence
 
 import parse_lehrplan as PL
 
@@ -812,10 +815,178 @@ def combine_parts(dateien: dict[str, dict]) -> dict:
     }
 
 
+# --------------------------------------------------------------------------
+# stichwort_index (E12-12, FINDINGS V-67)
+#
+# V-67: index.json carried per-part counts/sizes but nothing mapping a search
+# term to a part, so the plan's own worked example --
+# finde_kompetenz(fach=M, stufe=K2, stichworte=["Bruch"]) -- forced loading
+# every part of a shard to answer a single keyword lookup. This section adds
+# a term -> part-filenames map built from the same text a shard ships (never
+# from anything not already in the parts), so that lookup can resolve without
+# reading a single part file.
+# --------------------------------------------------------------------------
+
+#: Word tokens: runs of Unicode letters, no digits/underscore. `re` is
+#: Unicode-aware by default for `str` patterns, so this splits German words
+#: (incl. umlauts/ß) correctly without a hand-rolled character class.
+_WORT_RE = re.compile(r"[^\W\d_]+")
+
+#: Minimum token length, kept deliberately short. Measured on SEK1.M
+#: (mittelschule/NOR40271471.xml, all 4 area parts + zusatz.json, 818 distinct
+#: tokens before this filter): every token of length <= 3 is either a German
+#: function word (der, die, das, und, mit, von, aus, bei, dem, den, des, ein,
+#: für, wie, ist, zur, als, ...) or a stray artifact from an unstripped
+#: ⟦ABB:...⟧ marker (abb, img, png -- see the marker-stripping note below); no
+#: legitimate curriculum term in that shard is <= 3 letters. 4 is the floor,
+#: not e.g. 5, because it is the shortest length that still keeps "Bruch" --
+#: the plan's own V-67 worked example -- indexable.
+STICHWORT_MIN_LEN = 4
+
+#: Curated German function/connector words, dropped regardless of measured
+#: document frequency. STICHWORT_MAX_DATEIEN below already removes most
+#: cross-part boilerplate statistically, but that is a per-shard measurement;
+#: this list is a fixed backstop for a shard small enough, or a term rare
+#: enough, that a function word could otherwise slip under the cap by chance.
+#: Assembled from the words actually observed at document-frequency ==
+#: n_parts or n_parts-1 on SEK1.M (23 and 31 terms respectively, measured
+#: 2026-08-02), generalised to their other inflected forms.
+STICHWORT_STOPWORDS = frozenset(
+    """
+    aber alle allem allen aller alles allenfalls allgemeinen also anhand
+    auch bzw dabei dadurch dafür damit dass dessen deren dieser diese
+    dieses diesem diesen dies doch durch eben einem einen einer eines
+    einige einigen einiger etwa gegebenenfalls gegen gemäß gilt hierzu
+    hierbei hinsichtlich ihre ihrem ihren ihrer immer indem insbesondere
+    jede jedem jeden jeder jedes jeweils jeweilige kann können mithilfe
+    muss müssen nach ohne schüler schülerinnen sich sind sofern sollen
+    sowie sowohl soweit über unter unterschiedlichen unterschiedlicher
+    verschiedene verschiedenen verschiedener viele vielen wenn werden
+    wird wobei wodurch wurde wurden zwischen
+    """.split()
+)
+
+#: A term whose postings would name more than this many part files is
+#: dropped entirely -- never silently truncated to this many, which would
+#: make the index claim completeness it does not have. Measured on SEK1.M (5
+#: parts): 23 terms occur in literally every part and 31 more occur in 4 of
+#: 5 -- both boilerplate ("schülerinnen", "können", generic verbs like
+#: "berechnen"/"darstellen") that cannot route a lookup anywhere useful. The
+#: effect is stronger on the two "stufe"-bound shards (PRIM.D, PRIM.SU):
+#: their meta.anwendungsbereiche_bloecke are repeated verbatim in every area
+#: part (decision of 2026-07-29), so without this cap 169 of PRIM.D's 480
+#: distinct terms and 94 of PRIM.SU's 440 would resolve to "every area part",
+#: which is not routing. 2 is chosen over 1 because 1 would also drop terms
+#: that legitimately span exactly two areas -- e.g. SEK1.M's "bruch", found
+#: in both daten.json and zahlen.json.
+STICHWORT_MAX_DATEIEN = 2
+
+
+def _stichworte_aus_text(text: str) -> Iterator[str]:
+    """Yield normalised candidate index terms from one text field.
+
+    Casefolding mirrors :func:`parse_lehrplan.normalise_for_match` (NFC, then
+    ``casefold()``) -- reused rather than reinvented -- but applied per token:
+    that function's dash/quote/space-folding and competence-stem stripping
+    operate on whole sentences and are meaningless once text has already been
+    split into single-word tokens by ``_WORT_RE``.
+
+    ⟦ABB:<dateiname>⟧ inline image markers (parse_lehrplan.ABBILDUNG_TOKEN_RE)
+    are stripped first: left in, they seed the index with junk terms from the
+    embedded filename -- measured on SEK1.M/figuren.json, whose text contains
+    literal ``⟦ABB:hauptdokument.img45is.png⟧`` tokens, which without this
+    strip would contribute "abb"/"hauptdokument"/"img45is"/"png" as if they
+    were curriculum vocabulary.
+    """
+    text = PL.ABBILDUNG_TOKEN_RE.sub(" ", text)
+    for wort in _WORT_RE.findall(text):
+        if len(wort) < STICHWORT_MIN_LEN:
+            continue
+        normalisiert = unicodedata.normalize("NFC", wort).casefold()
+        if normalisiert in STICHWORT_STOPWORDS:
+            continue
+        yield normalisiert
+
+
+def _stichworte_je_datei(doc: dict) -> set[str]:
+    """Every candidate index term appearing anywhere in one part document.
+
+    Walks every text field a part actually carries: competence text and
+    stammsatz, their nested anwendungsbereiche (bindung=kompetenz), the
+    zusatz.json zusatzkompetenzen and their nested items,
+    digitale_technologien_vorschlaege, and this part's own copy of
+    meta.anwendungsbereiche_bloecke (bindung=bereich/stufe). Deliberately not
+    narrowed per :data:`parse_lehrplan.SubjectSpec.anwendungsbereiche_bindung`
+    -- which fields are populated already varies by axis (see
+    tests/test_build_six_shards.py), and STICHWORT_MAX_DATEIEN is what prunes
+    the axis-specific non-discriminating case (the "stufe" blocks, identical
+    in every area part) rather than a special case here.
+    """
+    begriffe: set[str] = set()
+
+    def _sammle(text: str) -> None:
+        begriffe.update(_stichworte_aus_text(text))
+
+    for bereich in doc.get("kompetenzbereiche", []):
+        for k in bereich["kompetenzen"]:
+            _sammle(k.get("text", ""))
+            _sammle(k.get("stammsatz", ""))
+            for a in k.get("anwendungsbereiche", []):
+                _sammle(a.get("text", ""))
+    for k in doc.get("zusatzkompetenzen", []):
+        _sammle(k.get("text", ""))
+        _sammle(k.get("stammsatz", ""))
+        for a in k.get("anwendungsbereiche", []):
+            _sammle(a.get("text", ""))
+    for a in doc.get("digitale_technologien_vorschlaege", []):
+        _sammle(a.get("text", ""))
+    for eintrag in doc.get("meta", {}).get("anwendungsbereiche_bloecke", {}).values():
+        for item in eintrag.get("items", []):
+            _sammle(item.get("text", ""))
+    return begriffe
+
+
+def _baue_stichwort_index(dateien: dict[str, dict]) -> dict[str, str]:
+    """term -> comma-joined, sorted part filenames that contain it.
+
+    A plain comma-joined string, not a JSON array: the whole index.json is
+    written with ``indent=2`` (see :func:`write_parts`/:func:`_dump`), under
+    which a list value explodes onto one line per element while a string
+    value stays on the key's own line. Measured on SEK1.M at the thresholds
+    above (673 kept terms): list-encoded postings serialise to ~31KB,
+    string-encoded to ~23KB for the identical content. Filenames never
+    contain a comma, so the join is unambiguous and needs no escaping.
+
+    Sorted at every level (dict comprehension over ``sorted(...)``, postings
+    joined from a sorted list) so the output is byte-identical for identical
+    input.
+    """
+    df: dict[str, set[str]] = defaultdict(set)
+    for dateiname in sorted(dateien):
+        for begriff in _stichworte_je_datei(dateien[dateiname]):
+            df[begriff].add(dateiname)
+    return {
+        begriff: ",".join(sorted(dateinamen))
+        for begriff, dateinamen in sorted(df.items())
+        if len(dateinamen) <= STICHWORT_MAX_DATEIEN
+    }
+
+
 def build_index(spec: PL.SubjectSpec, dateien: dict[str, dict]) -> dict:
     """The discovery file: meta + per-part filename/area/counts/size, so a
-    skill can decide which part to load without loading any of them."""
-    meta = next(iter(dateien.values()))["meta"]
+    skill can decide which part to load without loading any of them. Also
+    carries ``stichwort_index`` (E12-12, V-67): term -> parts containing it,
+    so a keyword lookup can resolve to a part without loading any part either."""
+    # index.json is the *discovery* file: it is read first, on every query, to
+    # decide which part to load. meta.anwendungsbereiche_bloecke is therefore
+    # dropped here -- it carries the full verbatim application items, which is
+    # exactly what the reader is trying to avoid paying for until it has picked
+    # a part. Measured 2026-08-02: it was 20,460 of PRIM.D's 23,382-byte index
+    # meta, 12,505 of PRIM.SU's and 7,035 of SEK1.D's. The items are not lost --
+    # every area part file carries the complete container (plan section 5 B1),
+    # which is where a consumer reads them.
+    meta = {k: v for k, v in next(iter(dateien.values()))["meta"].items()
+            if k != "anwendungsbereiche_bloecke"}
     teile: list[dict] = []
     for dateiname in sorted(dateien):
         doc = dateien[dateiname]
@@ -849,7 +1020,7 @@ def build_index(spec: PL.SubjectSpec, dateien: dict[str, dict]) -> dict:
                     "tokens_approx": tokens,
                 }
             )
-    return {"meta": meta, "teile": teile}
+    return {"meta": meta, "teile": teile, "stichwort_index": _baue_stichwort_index(dateien)}
 
 
 # --------------------------------------------------------------------------
