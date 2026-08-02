@@ -132,11 +132,16 @@ BAND_MANIFEST_KEY: dict[str, str] = {
     "PRIM": "volksschule",
 }
 
-#: <Spec key> -> default RIS XML source. Grows as more SubjectSpecs land in
-#: parse_lehrplan.SUBJECT_SPECS; today only SEK1.M is registered there.
-DEFAULT_SOURCES: dict[str, Path] = {
-    "SEK1.M": HERE / "resources" / "mittelschule" / "NOR40271471.xml",
-}
+def default_source(spec_key: str) -> Path | None:
+    """Default RIS XML source for *spec_key*, or ``None`` if unregistered.
+
+    Delegates to :func:`parse_lehrplan.default_source` rather than keeping a
+    second band->document table here (E12-13): two tables would be two things
+    to keep in step, and the parser's is the one the parser CLI already uses.
+    """
+    if spec_key not in PL.SUBJECT_SPECS:
+        return None
+    return PL.default_source(spec_key)
 
 #: Differentiation axis per <band>.<fach>. **From the regulation, not plan
 #: section 4.7** (V-61, E12-11): the plan assigned `gers` to "the language
@@ -234,6 +239,50 @@ ERWARTET_SEK1_M: dict[str, int] = {
     "digitale_technologien": 39,
     "allenfalls": 32,
     "wiederholen_und_festigen": 16,
+}
+
+#: Expected build counts per shard, in the build's own vocabulary (E12-13).
+#: **Measured 2026-08-02** against both live documents, and reproduced exactly
+#: from the committed fixtures in `tests/fixtures/` -- the two agree for all six
+#: shards on every key, so a fresh clone verifies the same numbers as a run
+#: against `resources/`.
+#:
+#: Reading the shape: `kompetenzen_gesamt` = `kompetenzen_in_bereichen` +
+#: `zusatzkompetenzen`, and the 2 zusatzkompetenzen are SEK1.M's GZ-integrative
+#: pair (V-57) -- every other shard has 0, because "zusatzkompetenz" means
+#: "belongs to no official Kompetenzbereich" (V-59/E12-09), not "has no area
+#: number". `allenfalls` and `wiederholen_und_festigen` are 0 outside SEK1.M by
+#: construction: both markers are SEK1.M-only (measured), and
+#: `SubjectSpec.allenfalls_pruefen` is False elsewhere. `digitale_technologien`
+#: is 0 outside SEK1.M for the same reason (V-54/V-64) -- so `praezisierung`
+#: equals `anwendungsitems_gesamt` there.
+ERWARTET_BUILD: dict[str, dict[str, int]] = {
+    "SEK1.M": ERWARTET_SEK1_M,
+    "SEK1.D": {
+        "kompetenzbereiche": 4, "kompetenzen_gesamt": 40, "kompetenzen_in_bereichen": 40,
+        "zusatzkompetenzen": 0, "anwendungsitems_gesamt": 54, "praezisierung": 54,
+        "digitale_technologien": 0, "allenfalls": 0, "wiederholen_und_festigen": 0,
+    },
+    "SEK1.E": {
+        "kompetenzbereiche": 4, "kompetenzen_gesamt": 37, "kompetenzen_in_bereichen": 37,
+        "zusatzkompetenzen": 0, "anwendungsitems_gesamt": 0, "praezisierung": 0,
+        "digitale_technologien": 0, "allenfalls": 0, "wiederholen_und_festigen": 0,
+    },
+    "PRIM.D": {
+        "kompetenzbereiche": 4, "kompetenzen_gesamt": 40, "kompetenzen_in_bereichen": 40,
+        "zusatzkompetenzen": 0, "anwendungsitems_gesamt": 37, "praezisierung": 37,
+        "digitale_technologien": 0, "allenfalls": 0, "wiederholen_und_festigen": 0,
+    },
+    "PRIM.M": {
+        "kompetenzbereiche": 4, "kompetenzen_gesamt": 40, "kompetenzen_in_bereichen": 40,
+        "zusatzkompetenzen": 0, "anwendungsitems_gesamt": 0, "praezisierung": 0,
+        "digitale_technologien": 0, "allenfalls": 0, "wiederholen_und_festigen": 0,
+    },
+    "PRIM.SU": {
+        "kompetenzbereiche": 6, "kompetenzen_gesamt": 48, "kompetenzen_in_bereichen": 48,
+        "zusatzkompetenzen": 0, "anwendungsitems_gesamt": 40, "praezisierung": 40,
+        "digitale_technologien": 0, "allenfalls": 0, "wiederholen_und_festigen": 0,
+    },
 }
 
 #: §6.7 soft targets, checked per **part** file now that the shard is split
@@ -1088,7 +1137,7 @@ def build_report(
     shard is split (each part must be independently loadable, plan section
     5 / B1)."""
     ist = zaehle(result)
-    soll = ERWARTET_SEK1_M if f"{spec.band}.{spec.fach_code}" == "SEK1.M" else {}
+    soll = ERWARTET_BUILD.get(f"{spec.band}.{spec.fach_code}", {})
 
     def gesamt_bytes(dateien: dict[str, dict]) -> int:
         return sum(len(_dump(doc).encode("utf-8")) for doc in dateien.values())
@@ -1219,7 +1268,7 @@ def _cli(argv: Sequence[str] | None = None) -> int:
         return 2
 
     spec = PL.SUBJECT_SPECS[args.spec]
-    source = Path(args.source) if args.source else DEFAULT_SOURCES.get(args.spec)
+    source = Path(args.source) if args.source else default_source(args.spec)
     if source is None:
         print(f"error: no default source registered for {args.spec!r}; pass --source", file=sys.stderr)
         return 2
@@ -1253,7 +1302,13 @@ def _cli(argv: Sequence[str] | None = None) -> int:
 
     if args.verify:
         ist = zaehle(result)
-        soll = ERWARTET_SEK1_M if args.spec == "SEK1.M" else {}
+        soll = ERWARTET_BUILD.get(args.spec, {})
+        if not soll:
+            # An empty table used to mean "no mismatches", so --verify printed
+            # VERIFY OK for five of the six shards without checking anything
+            # (E12-13). Silence is the one thing a verifier must never do.
+            print(f"VERIFY FAILED: no expected build counts for {args.spec}", file=sys.stderr)
+            return 1
         bad = {k: (v, ist.get(k)) for k, v in soll.items() if ist.get(k) != v}
         if bad:
             print("VERIFY FAILED", bad, file=sys.stderr)

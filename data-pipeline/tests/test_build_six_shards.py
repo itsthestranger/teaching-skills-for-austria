@@ -79,6 +79,13 @@ FAKE_MANIFEST = {
 }
 
 
+def _schreibe_manifest(tmp_path: Path) -> Path:
+    """FAKE_MANIFEST on disk, so the CLI's --manifest can point at it."""
+    pfad = tmp_path / "manifest.json"
+    pfad.write_text(json.dumps(FAKE_MANIFEST, ensure_ascii=False), encoding="utf-8")
+    return pfad
+
+
 def _baue(spec_key: str, fixture: str) -> dict[str, dict]:
     spec = P.SUBJECT_SPECS[spec_key]
     result = P.parse_lehrplan(FIXTURES / fixture, spec)
@@ -446,3 +453,71 @@ def test_sek1_e_stems_reach_the_shard_verbatim():
     qualifiziert = [s for s in stems if s != "Die Schülerinnen und Schüler können"]
     assert len(qualifiziert) >= 8, sorted(stems)
     assert any("Standardsprache gesprochen wird" in s for s in qualifiziert)
+
+
+# ---------------------------------------------------------------------------
+# E12-13: build CLI breadth -- expected counts and --verify for all six
+# ---------------------------------------------------------------------------
+
+
+def test_expected_build_counts_cover_every_registered_spec():
+    assert set(B.ERWARTET_BUILD) == set(P.SUBJECT_SPECS)
+    for schluessel, soll in B.ERWARTET_BUILD.items():
+        assert soll, f"{schluessel}: an empty table makes --verify pass vacuously"
+        assert set(soll) == set(B.ERWARTET_BUILD["SEK1.M"]), f"{schluessel}: tables must share one shape"
+
+
+@pytest.mark.parametrize("spec_key,fixture,n_komp,n_bereiche,n_zusatz", SHARDS)
+def test_expected_build_counts_match_the_fixtures(spec_key, fixture, n_komp, n_bereiche, n_zusatz):
+    """The frozen table must agree with what the committed fixtures produce.
+
+    Measured 2026-08-02: the fixtures reproduce the live documents exactly on
+    every key, so a fresh clone verifies the same numbers as a run against the
+    gitignored resources/.
+    """
+    result = P.parse_lehrplan(FIXTURES / fixture, P.SUBJECT_SPECS[spec_key])
+    assert B.zaehle(result) == B.ERWARTET_BUILD[spec_key]
+
+
+@pytest.mark.parametrize("spec_key,fixture,n_komp,n_bereiche,n_zusatz", SHARDS)
+def test_verify_fails_loudly_on_a_real_regression(spec_key, fixture, n_komp, n_bereiche, n_zusatz, monkeypatch, tmp_path):
+    """The E12-13 acceptance criterion.
+
+    Before E12-13, `soll` was `ERWARTET_SEK1_M if spec == "SEK1.M" else {}`, and
+    an empty table yields no mismatches -- so --verify printed VERIFY OK for
+    five of the six shards without comparing anything. Perturbing the expected
+    table proves the comparison actually runs for *this* spec.
+    """
+    kaputt = dict(B.ERWARTET_BUILD[spec_key])
+    kaputt["kompetenzen_gesamt"] += 1
+    monkeypatch.setitem(B.ERWARTET_BUILD, spec_key, kaputt)
+    code = B._cli(["--spec", spec_key, "--source", str(FIXTURES / fixture),
+                   "--manifest", str(_schreibe_manifest(tmp_path)), "--verify"])
+    assert code == 1
+
+
+@pytest.mark.parametrize("spec_key,fixture,n_komp,n_bereiche,n_zusatz", SHARDS)
+def test_verify_passes_on_the_frozen_counts(spec_key, fixture, n_komp, n_bereiche, n_zusatz, tmp_path):
+    code = B._cli(["--spec", spec_key, "--source", str(FIXTURES / fixture),
+                   "--manifest", str(_schreibe_manifest(tmp_path)), "--verify"])
+    assert code == 0
+
+
+def test_verify_fails_rather_than_passes_for_an_unregistered_spec(monkeypatch, tmp_path):
+    """Silence is the one thing a verifier must never do."""
+    ohne = {k: v for k, v in B.ERWARTET_BUILD.items() if k != "PRIM.M"}
+    monkeypatch.setattr(B, "ERWARTET_BUILD", ohne)
+    code = B._cli(["--spec", "PRIM.M", "--source", str(FIXTURES / "prim_mathematik.xml"),
+                   "--manifest", str(_schreibe_manifest(tmp_path)), "--verify"])
+    assert code == 1
+
+
+def test_default_source_is_not_a_second_table():
+    """E12-13: reuse parse_lehrplan's band->document mapping, do not mint another.
+
+    Two tables would be two things to keep in step.
+    """
+    for spec_key in P.SUBJECT_SPECS:
+        assert B.default_source(spec_key) == P.default_source(spec_key)
+    assert B.default_source("SEK1.ZZ") is None
+    assert not hasattr(B, "DEFAULT_SOURCES"), "the second table should be gone"
