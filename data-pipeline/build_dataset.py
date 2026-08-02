@@ -339,6 +339,7 @@ def _kompetenz_zu_dict(
     modus: str,
     *,
     ist_zusatz: bool,
+    kompetenz_gebundene_items: bool,
 ) -> dict:
     """One Kompetenz record, slimmed. Verbatim text copied straight through.
 
@@ -370,7 +371,13 @@ def _kompetenz_zu_dict(
     # section for it. A zusatzkompetenz (GZINTEGRATIV) has no such section
     # in the source at all (FINDINGS V-57 / deviations.md) and omits the
     # key entirely unless items were nevertheless joined to it.
-    if not ist_zusatz or anwendungsbereiche:
+    #
+    # Under the coarse binding axes the key is omitted outright unless items
+    # really were joined: the source attaches those items to an area or a
+    # school year (they live in meta.anwendungsbereiche_bloecke), so an empty
+    # per-competence array would imply the regulation looked for items for
+    # *this* competence and found none -- an attribution it never makes.
+    if anwendungsbereiche or (kompetenz_gebundene_items and not ist_zusatz):
         d["anwendungsbereiche"] = anwendungsbereiche
     if modus == "je_datensatz":
         d["provenienz"] = provenienz
@@ -456,6 +463,85 @@ def build_meta(
 _ERWARTETE_ZUSATZ_SLUGS = frozenset({PL.GZ_INTEGRATIV_BEREICH_SLUG})
 
 
+def _block_key(block: PL.Anwendungsblock, bindung: str, slug: str | None) -> str:
+    """Key for one ``meta.anwendungsbereiche_bloecke`` entry.
+
+    ``bindung: stufe`` -- the school year alone (``SCH1``): PRIM.D and PRIM.SU
+    have exactly one block per year, so the year is already unique.
+
+    ``bindung: bereich`` -- ``<SLUG>.<STUFE>`` (``LESEN.K1``). **Measured
+    2026-08-02:** SEK1.D has 16 blocks, four per class year (one per area), so
+    the plain school-year key the schema description assumed collides four ways
+    the moment a document holds more than one area's blocks -- which the
+    recombined document always does. The area is stated inside the entry too
+    (``bereich_slug``, required by the schema for this binding), so the composite
+    key is redundant-but-unique rather than load-bearing, and part files and the
+    recombined document can share one shape. See notes/deviations.md.
+    """
+    if bindung == "bereich":
+        return f"{slug}.{block.stufe}"
+    return block.stufe
+
+
+def build_anwendungsbereiche_bloecke(
+    result: PL.ParseResult,
+    spec: PL.SubjectSpec,
+    provenienz: dict,
+    modus: str,
+    *,
+    nur_bereich_slug: str | None = None,
+) -> dict[str, dict]:
+    """``meta.anwendungsbereiche_bloecke`` for one part file.
+
+    Only the two *coarse* binding axes produce entries. Under
+    ``bindung: kompetenz`` (SEK1.M) every item already nests under the competence
+    it precisifies, and under ``prosa``/``keine`` there are no items at all --
+    all three return ``{}``.
+
+    *nur_bereich_slug* restricts the result to one area's blocks, which is what
+    ``bindung: bereich`` wants: each area part file carries its own blocks and no
+    others. For ``bindung: stufe`` it is ignored -- those blocks attach to the
+    school year across all areas, so the **complete** set is repeated verbatim in
+    every area part file (decision of 2026-07-29): a skill loading a single part
+    under the plan section 5 B1 contract must see all of that year's items
+    without reading a second file.
+    """
+    bindung = spec.anwendungsbereiche_bindung
+    if bindung not in ("bereich", "stufe"):
+        return {}
+
+    slug_je_name = {b.name: b.slug for b in result.bereiche}
+    bloecke: dict[str, dict] = {}
+    for block in result.bloecke:
+        slug = slug_je_name.get(block.bereich_name) if bindung == "bereich" else None
+        if bindung == "bereich":
+            if slug is None:
+                # Never invent an area code: an unmapped area name would ship a
+                # made-up attribution. Loud, and skipped rather than guessed.
+                LOG.warning(
+                    "anwendungsblock (stufe %s) has area %r with no matching Kompetenzbereich -- skipped",
+                    block.stufe, block.bereich_name,
+                )
+                continue
+            if nur_bereich_slug is not None and slug != nur_bereich_slug:
+                continue
+        eintrag: dict = {"bindung": bindung}
+        if bindung == "bereich":
+            eintrag["bereich_name"] = block.bereich_name
+            eintrag["bereich_slug"] = slug
+        eintrag["items"] = [
+            _anwendungsitem_zu_dict(a, provenienz, modus, mit_bereich_attribution=False)
+            for a in block.items
+        ]
+        schluessel = _block_key(block, bindung, slug)
+        if schluessel in bloecke:
+            LOG.warning("duplicate anwendungsbereiche_bloecke key %r -- entries merged", schluessel)
+            bloecke[schluessel]["items"] += eintrag["items"]
+        else:
+            bloecke[schluessel] = eintrag
+    return bloecke
+
+
 def build_parts(
     result: PL.ParseResult,
     spec: PL.SubjectSpec,
@@ -484,20 +570,41 @@ def build_parts(
     provenienz = build_provenienz(spec, manifest)
     meta = build_meta(spec, result, provenienz, dataset_version)
 
-    # --- Partition application items: praezisierung (nest under owning
-    # competence) vs. digitale_technologien (zusatz.json, top-level --
-    # precisify nothing, E2-19). kompetenz_id is None for every
-    # digitale_technologien item (FINDINGS V-54); guard on kompetenz_id too
-    # so a future surprise value never gets silently mis-attributed.
+    # --- Partition application items three ways (V-64, E12-10):
+    #
+    #   art == digitale_technologien -> zusatz.json, top-level (precisify
+    #     nothing, E2-19).
+    #   bindung == kompetenz         -> nested under the competence they
+    #     precisify, via kompetenz_id.
+    #   bindung bereich/stufe        -> meta.anwendungsbereiche_bloecke; the
+    #     source attaches them to an area or a school year, never to one
+    #     competence, so they are never pushed onto a record.
+    #
+    # ``art`` **alone** decides digitale_technologien. The old test also treated
+    # ``kompetenz_id is None`` as digital, which is true of every item under the
+    # coarse binding axes: all 54 SEK1.D + 37 PRIM.D + 40 PRIM.SU items would
+    # have shipped as digital-technology suggestions, none of which carries that
+    # art (V-64). Only the V-59 crash stopped it.
     items_je_kompetenz: dict[str, list[dict]] = {}
     digitale_technologien: list[dict] = []
     for a in result.anwendungsitems:
-        ist_digital = a.art == "digitale_technologien" or a.kompetenz_id is None
-        rec = _anwendungsitem_zu_dict(a, provenienz, modus, mit_bereich_attribution=ist_digital)
-        if ist_digital:
-            digitale_technologien.append(rec)
-        else:
-            items_je_kompetenz.setdefault(a.kompetenz_id, []).append(rec)
+        if a.art == "digitale_technologien":
+            digitale_technologien.append(
+                _anwendungsitem_zu_dict(a, provenienz, modus, mit_bereich_attribution=True)
+            )
+        elif spec.anwendungsbereiche_bindung == "kompetenz":
+            if a.kompetenz_id is None:
+                # Under bindung: kompetenz an unjoined praezisierung has no
+                # home at all -- surfacing it beats silently dropping it.
+                LOG.warning("praezisierung %s has no kompetenz_id -- routed to zusatz.json", a.id)
+                digitale_technologien.append(
+                    _anwendungsitem_zu_dict(a, provenienz, modus, mit_bereich_attribution=True)
+                )
+            else:
+                items_je_kompetenz.setdefault(a.kompetenz_id, []).append(
+                    _anwendungsitem_zu_dict(a, provenienz, modus, mit_bereich_attribution=False)
+                )
+        # else: emitted through meta.anwendungsbereiche_bloecke below.
 
     # --- Kompetenzbereiche: exactly the official areas, order preserved.
     #
@@ -520,7 +627,9 @@ def build_parts(
         # other five it is 0: every competence sits under a real area.
         ziel = kompetenzen_je_bereich.get(k.bereich_slug)
         rec = _kompetenz_zu_dict(
-            k, items_je_kompetenz.get(k.id, []), provenienz, modus, ist_zusatz=ziel is None
+            k, items_je_kompetenz.get(k.id, []), provenienz, modus,
+            ist_zusatz=ziel is None,
+            kompetenz_gebundene_items=spec.anwendungsbereiche_bindung == "kompetenz",
         )
         if ziel is None:
             if k.bereich_slug not in _ERWARTETE_ZUSATZ_SLUGS:
@@ -539,8 +648,15 @@ def build_parts(
     dateien: dict[str, dict] = {}
     for nummer, slug, name in bereich_infos:
         dateiname = f"{slug.lower()}.json"
+        # meta is per-part, not one shared object: under bindung: bereich each
+        # area file carries only its own blocks, so the meta blocks differ file
+        # by file. Under bindung: stufe every file carries the same complete set.
+        bloecke = build_anwendungsbereiche_bloecke(
+            result, spec, provenienz, modus, nur_bereich_slug=slug
+        )
+        teil_meta = {**meta, "anwendungsbereiche_bloecke": bloecke} if bloecke else meta
         dateien[dateiname] = {
-            "meta": meta,
+            "meta": teil_meta,
             "kompetenzbereiche": [
                 {
                     "nummer": nummer,
@@ -551,6 +667,10 @@ def build_parts(
             ],
         }
 
+    # zusatz.json deliberately carries no anwendungsbereiche_bloecke: it holds no
+    # Kompetenzbereich, and the B1 contract is about a skill loading an *area*
+    # part. Repeating every block here would add bytes no consumer of this file
+    # reads.
     dateien["zusatz.json"] = {
         "meta": meta,
         "kompetenzbereiche": [],
@@ -566,12 +686,28 @@ def combine_parts(dateien: dict[str, dict]) -> dict:
     reproduces the complete dataset exactly."""
     bereiche = []
     meta = None
+    bloecke: dict[str, dict] = {}
     zusatzkompetenzen: list[dict] = []
     digitale_technologien: list[dict] = []
     for dateiname in sorted(dateien):
         doc = dateien[dateiname]
         if meta is None:
             meta = doc["meta"]
+        # Merge the block containers across parts (E12-10). The two axes differ:
+        # under bindung: stufe every area file repeats the *same* complete set,
+        # so identical keys must collapse to one entry (else PRIM.D's 37 items
+        # would recombine to 4x37); under bindung: bereich the files hold
+        # *disjoint* areas, so their keys union. The composite <SLUG>.<STUFE>
+        # key makes both cases the same dict update -- a plain school-year key
+        # would silently overwrite three of SEK1.D's four areas per year.
+        for schluessel, eintrag in doc["meta"].get("anwendungsbereiche_bloecke", {}).items():
+            vorhanden = bloecke.get(schluessel)
+            if vorhanden is not None and vorhanden != eintrag:
+                raise BuildError(
+                    f"anwendungsbereiche_bloecke key {schluessel!r} appears in more than one part "
+                    f"with different content -- refusing to recombine"
+                )
+            bloecke[schluessel] = eintrag
         if dateiname == "zusatz.json":
             zusatzkompetenzen = doc.get("zusatzkompetenzen", [])
             digitale_technologien = doc.get("digitale_technologien_vorschlaege", [])
@@ -582,6 +718,8 @@ def combine_parts(dateien: dict[str, dict]) -> dict:
     # unnumbered shards *every* nummer is None, and (True, None) < (True, None)
     # raises TypeError on the None comparison (V-59, E12-09).
     bereiche.sort(key=lambda b: (b["nummer"] is None, b["nummer"] or 0, b["slug"]))
+    if bloecke:
+        meta = {**meta, "anwendungsbereiche_bloecke": bloecke}
     return {
         "meta": meta,
         "kompetenzbereiche": bereiche,

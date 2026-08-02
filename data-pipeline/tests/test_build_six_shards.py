@@ -1,4 +1,4 @@
-"""Build breadth across all six shards (E12-09).
+"""Build breadth across all six shards (E12-09, E12-10).
 
 Run:  .venv/bin/python -m pytest data-pipeline/tests -q
 
@@ -7,11 +7,20 @@ shard from ``resources/`` and is skipped entirely when that gitignored
 directory is absent -- these tests run against the **committed** fixtures in
 ``tests/fixtures/``, so build breadth stays covered in a fresh clone and in CI.
 
-What they pin down is V-59: routing keys on the area **slug**, not on
-``bereich_nummer``. Only SEK1.M numbers its Kompetenzbereiche, so before E12-09
-``build_parts`` raised ``KeyError: None`` for the other five, and
-``zusatzkompetenzen`` -- defined as "has no area number" -- would have
-swallowed every competence of those shards had the KeyError not fired first.
+Two bugs are pinned down here, both invisible while SEK1.M was the only
+registered spec:
+
+* **V-59 (E12-09)** -- routing keys on the area **slug**, not on
+  ``bereich_nummer``. Only SEK1.M numbers its Kompetenzbereiche, so
+  ``build_parts`` raised ``KeyError: None`` for the other five, and
+  ``zusatzkompetenzen`` -- defined as "has no area number" -- would have
+  swallowed every competence of those shards had the crash not fired first.
+* **V-64 (E12-10)** -- ``art`` alone decides ``digitale_technologien``. The old
+  partition also treated ``kompetenz_id is None`` as digital, which is true of
+  every item under the coarse binding axes, so all 54 SEK1.D + 37 PRIM.D + 40
+  PRIM.SU items would have shipped as digital-technology suggestions. Those
+  items now live in ``meta.anwendungsbereiche_bloecke`` and are never pushed
+  onto a competence record.
 """
 
 from __future__ import annotations
@@ -21,6 +30,7 @@ import logging
 import sys
 from pathlib import Path
 
+import jsonschema
 import pytest
 
 _HERE = Path(__file__).resolve().parent
@@ -106,10 +116,18 @@ def test_area_records_omit_bereich_nummer(spec_key, fixture, n_komp, n_bereiche,
 
     This is the regression that the old ``ist_zusatz = bereich_nummer is None``
     test would have caused for the five unnumbered shards: every record would
-    have been written as a zusatzkompetenz, carrying a null ``bereich_nummer``
-    and omitting the (possibly empty) ``anwendungsbereiche`` key.
+    have been written as a zusatzkompetenz, carrying a null ``bereich_nummer``.
+
+    The ``anwendungsbereiche`` key follows the binding axis (E12-10): under
+    ``bindung: kompetenz`` every area record carries it, possibly empty, because
+    the source really does attach items per competence. Under the coarse axes
+    the key is absent -- those items live in ``meta.anwendungsbereiche_bloecke``,
+    and an empty per-competence array would imply an attribution the regulation
+    never makes.
     """
     dateien = _baue(spec_key, fixture)
+    spec = P.SUBJECT_SPECS[spec_key]
+    erwartet_key = spec.anwendungsbereiche_bindung == "kompetenz"
     for dateiname, doc in dateien.items():
         if dateiname == "zusatz.json":
             continue
@@ -117,7 +135,7 @@ def test_area_records_omit_bereich_nummer(spec_key, fixture, n_komp, n_bereiche,
             for k in bereich["kompetenzen"]:
                 assert "bereich_nummer" not in k, (dateiname, k["id"])
                 assert "bereich_name" not in k, (dateiname, k["id"])
-                assert "anwendungsbereiche" in k, (dateiname, k["id"])
+                assert ("anwendungsbereiche" in k) == erwartet_key, (dateiname, k["id"])
 
 
 @pytest.mark.parametrize("spec_key,fixture,n_komp,n_bereiche,n_zusatz", SHARDS)
@@ -163,3 +181,162 @@ def test_report_counts_agree_with_what_was_built(spec_key, fixture, n_komp, n_be
     assert zahlen["zusatzkompetenzen"] == n_zusatz
     assert zahlen["kompetenzen_gesamt"] == n_komp
     assert zahlen["kompetenzbereiche"] == n_bereiche
+
+
+# ---------------------------------------------------------------------------
+# E12-10: meta.anwendungsbereiche_bloecke and the item partition (V-64)
+# ---------------------------------------------------------------------------
+
+SCHEMA_PATH = _DATA_PIPELINE / "schema" / "kompetenzen.schema.json"
+
+#: spec key -> (fixture, total application items, expected block entries).
+#: Blocks exist only under the two coarse binding axes; SEK1.M nests its items
+#: under competences and SEK1.E/PRIM.M have no items at all.
+ITEMS = [
+    ("SEK1.M", "sek1_mathematik.xml", 237, 0),
+    ("SEK1.D", "sek1_deutsch.xml", 54, 16),
+    ("SEK1.E", "sek1_fremdsprache.xml", 0, 0),
+    ("PRIM.D", "prim_deutsch.xml", 37, 4),
+    ("PRIM.M", "prim_mathematik.xml", 0, 0),
+    ("PRIM.SU", "prim_sachunterricht.xml", 40, 4),
+]
+
+
+def _alle_item_ids(gesamt: dict) -> list[str]:
+    """Every application item id reachable in a recombined document."""
+    ids: list[str] = []
+    for bereich in gesamt["kompetenzbereiche"]:
+        for k in bereich["kompetenzen"]:
+            ids += [i["id"] for i in k.get("anwendungsbereiche", [])]
+    for k in gesamt["zusatzkompetenzen"]:
+        ids += [i["id"] for i in k.get("anwendungsbereiche", [])]
+    ids += [i["id"] for i in gesamt["digitale_technologien_vorschlaege"]]
+    for eintrag in gesamt["meta"].get("anwendungsbereiche_bloecke", {}).values():
+        ids += [i["id"] for i in eintrag["items"]]
+    return ids
+
+
+@pytest.mark.parametrize("spec_key,fixture,n_items,n_bloecke", ITEMS)
+def test_every_item_survives_recombination_exactly_once(spec_key, fixture, n_items, n_bloecke):
+    """The headline E12-10 criterion.
+
+    Both failure modes are real: under ``bindung: stufe`` the identical block is
+    repeated in every area file, so a naive merge would multiply PRIM.D's 37
+    items by 4; under ``bindung: bereich`` the files hold disjoint areas, so a
+    plain school-year key would drop three of SEK1.D's four areas per year.
+    """
+    dateien = _baue(spec_key, fixture)
+    ids = _alle_item_ids(B.combine_parts(dateien))
+    assert len(ids) == n_items
+    assert len(set(ids)) == n_items
+
+
+@pytest.mark.parametrize("spec_key,fixture,n_items,n_bloecke", ITEMS)
+def test_no_praezisierung_ships_as_a_digital_suggestion(spec_key, fixture, n_items, n_bloecke):
+    """V-64: ``art`` alone decides, never ``kompetenz_id is None``.
+
+    Before E12-10 all 54 SEK1.D + 37 PRIM.D + 40 PRIM.SU items would have shipped
+    as digital-technology suggestions; none of the 131 carries that art.
+    """
+    dateien = _baue(spec_key, fixture)
+    dt = dateien["zusatz.json"]["digitale_technologien_vorschlaege"]
+    assert [i for i in dt if i["art"] != "digitale_technologien"] == []
+
+
+@pytest.mark.parametrize("spec_key,fixture,n_items,n_bloecke", ITEMS)
+def test_block_container_matches_the_binding_axis(spec_key, fixture, n_items, n_bloecke):
+    dateien = _baue(spec_key, fixture)
+    gesamt = B.combine_parts(dateien)
+    bloecke = gesamt["meta"].get("anwendungsbereiche_bloecke", {})
+    assert len(bloecke) == n_bloecke
+    bindung = P.SUBJECT_SPECS[spec_key].anwendungsbereiche_bindung
+    if bindung not in ("bereich", "stufe"):
+        # Nothing coarse-attached exists, so the key must be absent entirely --
+        # not present-and-empty, which would imply the axis applies here.
+        assert "anwendungsbereiche_bloecke" not in gesamt["meta"]
+    for eintrag in bloecke.values():
+        assert eintrag["bindung"] == bindung
+        if bindung == "bereich":
+            # A recombined document must not depend on "the area is implied by
+            # the file it came from".
+            assert eintrag["bereich_name"]
+            assert eintrag["bereich_slug"]
+        else:
+            assert "bereich_name" not in eintrag
+            assert "bereich_slug" not in eintrag
+
+
+@pytest.mark.parametrize("spec_key,fixture,n_items,n_bloecke", ITEMS)
+def test_coarse_items_are_never_pushed_onto_a_competence(spec_key, fixture, n_items, n_bloecke):
+    """No competence record may carry an invented link.
+
+    Under ``bindung: bereich``/``stufe`` the regulation attaches items to an area
+    or a school year across all competences; asserting a per-competence link is
+    precisely the misattribution the verbatim discipline exists to prevent.
+    """
+    if P.SUBJECT_SPECS[spec_key].anwendungsbereiche_bindung == "kompetenz":
+        pytest.skip("bindung: kompetenz genuinely does attach items per competence")
+    dateien = _baue(spec_key, fixture)
+    for dateiname, doc in dateien.items():
+        for bereich in doc.get("kompetenzbereiche", []):
+            for k in bereich["kompetenzen"]:
+                assert "anwendungsbereiche" not in k, (dateiname, k["id"])
+        for k in doc.get("zusatzkompetenzen", []):
+            assert "anwendungsbereiche" not in k, (dateiname, k["id"])
+
+
+def test_stufe_blocks_are_repeated_verbatim_in_every_area_part():
+    """Plan section 5 B1: a skill loading one area file sees all of that year's
+    items without reading a second file (decision of 2026-07-29)."""
+    dateien = _baue("PRIM.D", "prim_deutsch.xml")
+    area_parts = {n: d for n, d in dateien.items() if n != "zusatz.json"}
+    assert len(area_parts) == 4
+    referenz = None
+    for name, doc in area_parts.items():
+        bloecke = doc["meta"]["anwendungsbereiche_bloecke"]
+        assert sorted(bloecke) == ["SCH1", "SCH2", "SCH3", "SCH4"], name
+        if referenz is None:
+            referenz = bloecke
+        assert bloecke == referenz, f"{name} differs from the other area parts"
+    # ... and zusatz.json carries none of it: it holds no Kompetenzbereich.
+    assert "anwendungsbereiche_bloecke" not in dateien["zusatz.json"]["meta"]
+
+
+def test_bereich_blocks_are_area_specific_and_keyed_without_collision():
+    """SEK1.D has 16 blocks, four per class year -- one per area.
+
+    Measured 2026-08-02: a plain school-year key collides four ways, so the key
+    is ``<SLUG>.<STUFE>``. Each area part carries only its own four blocks.
+    """
+    dateien = _baue("SEK1.D", "sek1_deutsch.xml")
+    area_parts = {n: d for n, d in dateien.items() if n != "zusatz.json"}
+    assert len(area_parts) == 4
+    gesehen: set[str] = set()
+    for name, doc in area_parts.items():
+        bloecke = doc["meta"]["anwendungsbereiche_bloecke"]
+        assert len(bloecke) == 4, name
+        slug = doc["kompetenzbereiche"][0]["slug"]
+        assert sorted(bloecke) == sorted(f"{slug}.K{n}" for n in (1, 2, 3, 4)), name
+        assert all(e["bereich_slug"] == slug for e in bloecke.values()), name
+        assert not (gesehen & set(bloecke)), f"{name} repeats another area's keys"
+        gesehen |= set(bloecke)
+    assert len(gesehen) == 16
+
+
+def test_combine_parts_rejects_conflicting_block_entries():
+    """Same key, different content must fail loudly rather than pick a winner."""
+    dateien = _baue("PRIM.D", "prim_deutsch.xml")
+    namen = [n for n in dateien if n != "zusatz.json"]
+    kaputt = json.loads(json.dumps(dateien[namen[0]]))
+    kaputt["meta"]["anwendungsbereiche_bloecke"]["SCH1"]["items"] = []
+    with pytest.raises(B.BuildError, match="different content"):
+        B.combine_parts({**dateien, namen[0]: kaputt})
+
+
+@pytest.mark.parametrize("spec_key,fixture,n_items,n_bloecke", ITEMS)
+def test_every_part_validates_against_the_schema(spec_key, fixture, n_items, n_bloecke):
+    schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    validator = jsonschema.Draft202012Validator(schema)
+    for dateiname, doc in _baue(spec_key, fixture).items():
+        fehler = [f"{list(e.path)}: {e.message}" for e in validator.iter_errors(doc)]
+        assert fehler == [], f"{spec_key}/{dateiname}: {fehler[:3]}"
