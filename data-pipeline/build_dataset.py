@@ -337,9 +337,17 @@ def _kompetenz_zu_dict(
     anwendungsbereiche: list[dict],
     provenienz: dict,
     modus: str,
+    *,
+    ist_zusatz: bool,
 ) -> dict:
-    """One Kompetenz record, slimmed. Verbatim text copied straight through."""
-    ist_zusatz = k.bereich_nummer is None
+    """One Kompetenz record, slimmed. Verbatim text copied straight through.
+
+    *ist_zusatz* is decided by the caller on **area identity** and passed in,
+    not re-derived here from ``bereich_nummer is None`` (V-59, E12-09): only
+    SEK1.M numbers its areas, so that test would mark every competence of the
+    other five shards as a zusatzkompetenz and write a null ``bereich_nummer``
+    onto all of them.
+    """
     d: dict = {"id": k.id}
     if ist_zusatz:
         # zusatzkompetenzen[] lives in zusatz.json, outside any single
@@ -436,6 +444,18 @@ def build_meta(
 # --------------------------------------------------------------------------
 
 
+#: The one area slug *expected* to fall outside ``result.bereiche`` and so route
+#: to ``zusatzkompetenzen`` without a warning: the synthetic SEK1.M area that is
+#: deliberately not a fifth Kompetenzbereich (FINDINGS V-57).
+#:
+#: Note ``ALLGEMEIN`` -- the sentinel an area-less record carries (E12-04) -- is
+#: deliberately **not** listed. Measured across all six shards, no competence
+#: carries it, so warning costs no noise; and a competence the parser could
+#: attribute to no area is exactly the structural surprise that should stay
+#: visible rather than being quietly absorbed into zusatzkompetenzen.
+_ERWARTETE_ZUSATZ_SLUGS = frozenset({PL.GZ_INTEGRATIV_BEREICH_SLUG})
+
+
 def build_parts(
     result: PL.ParseResult,
     spec: PL.SubjectSpec,
@@ -480,27 +500,38 @@ def build_parts(
             items_je_kompetenz.setdefault(a.kompetenz_id, []).append(rec)
 
     # --- Kompetenzbereiche: exactly the official areas, order preserved.
-    kompetenzen_je_bereich: dict[int, list[dict]] = {
-        b.nummer: [] for b in result.bereiche if b.nummer is not None
-    }
+    #
+    # Routing keys on the area **slug**, not on bereich_nummer (V-59, E12-09):
+    # only SEK1.M numbers its Kompetenzbereiche, so for the other five every
+    # nummer is None and a number-keyed dict collapses all areas into one
+    # bucket -- or, as it did before this change, raises KeyError(None).
+    # The slug is the area's identity in every shard; it is also what the ID
+    # scheme and the progression buckets already key on (E12-04).
+    kompetenzen_je_bereich: dict[str, list[dict]] = {b.slug: [] for b in result.bereiche}
     bereich_infos = [(b.nummer, b.slug, b.name) for b in result.bereiche]
 
     zusatzkompetenzen: list[dict] = []
     for k in result.kompetenzen:
-        rec = _kompetenz_zu_dict(k, items_je_kompetenz.get(k.id, []), provenienz, modus)
-        if k.bereich_nummer is None:
-            zusatzkompetenzen.append(rec)
-            continue
-        ziel = kompetenzen_je_bereich.get(k.bereich_nummer)
+        # "zusatzkompetenz" means *belongs to no official Kompetenzbereich* --
+        # not "has no area number". For SEK1.M that is still exactly the 2
+        # GZ-integrative competences: they carry the synthetic GZINTEGRATIV
+        # slug, which is deliberately not in result.bereiche (FINDINGS V-57),
+        # so they route here on identity rather than on a null number. For the
+        # other five it is 0: every competence sits under a real area.
+        ziel = kompetenzen_je_bereich.get(k.bereich_slug)
+        rec = _kompetenz_zu_dict(
+            k, items_je_kompetenz.get(k.id, []), provenienz, modus, ist_zusatz=ziel is None
+        )
         if ziel is None:
-            # Tolerant fallback: an area number with no matching
-            # Kompetenzbereich header is a structural surprise, not a hard
-            # failure -- keep the competence discoverable in
-            # zusatzkompetenzen rather than silently dropping it.
-            LOG.warning(
-                "kompetenz %s references unknown bereich_nummer %r -- routed to zusatzkompetenzen",
-                k.id, k.bereich_nummer,
-            )
+            if k.bereich_slug not in _ERWARTETE_ZUSATZ_SLUGS:
+                # Tolerant fallback: an area slug with no matching
+                # Kompetenzbereich header is a structural surprise, not a hard
+                # failure -- keep the competence discoverable in
+                # zusatzkompetenzen rather than silently dropping it.
+                LOG.warning(
+                    "kompetenz %s references unknown bereich_slug %r -- routed to zusatzkompetenzen",
+                    k.id, k.bereich_slug,
+                )
             zusatzkompetenzen.append(rec)
         else:
             ziel.append(rec)
@@ -515,7 +546,7 @@ def build_parts(
                     "nummer": nummer,
                     "slug": slug,
                     "name": name,
-                    "kompetenzen": kompetenzen_je_bereich[nummer],
+                    "kompetenzen": kompetenzen_je_bereich[slug],
                 }
             ],
         }
@@ -546,7 +577,11 @@ def combine_parts(dateien: dict[str, dict]) -> dict:
             digitale_technologien = doc.get("digitale_technologien_vorschlaege", [])
         else:
             bereiche.extend(doc["kompetenzbereiche"])
-    bereiche.sort(key=lambda b: (b["nummer"] is None, b["nummer"]))
+    # Numbered areas first, in number order (SEK1.M); unnumbered areas after,
+    # in slug order. The second element must never be a bare None: for the five
+    # unnumbered shards *every* nummer is None, and (True, None) < (True, None)
+    # raises TypeError on the None comparison (V-59, E12-09).
+    bereiche.sort(key=lambda b: (b["nummer"] is None, b["nummer"] or 0, b["slug"]))
     return {
         "meta": meta,
         "kompetenzbereiche": bereiche,
@@ -600,13 +635,26 @@ def build_index(spec: PL.SubjectSpec, dateien: dict[str, dict]) -> dict:
 # --------------------------------------------------------------------------
 
 
+def _offizielle_slugs(result: PL.ParseResult) -> frozenset[str]:
+    """The slugs of the official Kompetenzbereiche of this shard.
+
+    A competence belongs to an area iff its ``bereich_slug`` is in here; this
+    is the single identity test shared by :func:`build_parts` and
+    :func:`zaehle`, so the report can never disagree with what was written
+    (V-59, E12-09).
+    """
+    return frozenset(b.slug for b in result.bereiche)
+
+
 def zaehle(result: PL.ParseResult) -> dict[str, int]:
     """Record counts and join statistics for the build report."""
+    offiziell = _offizielle_slugs(result)
     return {
         "kompetenzbereiche": len(result.bereiche),
         "kompetenzen_gesamt": len(result.kompetenzen),
-        "kompetenzen_in_bereichen": sum(1 for k in result.kompetenzen if k.bereich_nummer is not None),
-        "zusatzkompetenzen": sum(1 for k in result.kompetenzen if k.bereich_nummer is None),
+        # Area identity, not area number -- same rule as build_parts (V-59).
+        "kompetenzen_in_bereichen": sum(1 for k in result.kompetenzen if k.bereich_slug in offiziell),
+        "zusatzkompetenzen": sum(1 for k in result.kompetenzen if k.bereich_slug not in offiziell),
         "anwendungsitems_gesamt": len(result.anwendungsitems),
         "praezisierung": sum(1 for a in result.anwendungsitems if a.art == "praezisierung"),
         "digitale_technologien": sum(1 for a in result.anwendungsitems if a.art == "digitale_technologien"),
