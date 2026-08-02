@@ -1,4 +1,4 @@
-"""Build breadth across all six shards (E12-09, E12-10).
+"""Build breadth across all six shards (E12-09, E12-10, E12-11).
 
 Run:  .venv/bin/python -m pytest data-pipeline/tests -q
 
@@ -21,6 +21,11 @@ registered spec:
   PRIM.SU items would have shipped as digital-technology suggestions. Those
   items now live in ``meta.anwendungsbereiche_bloecke`` and are never pushed
   onto a competence record.
+* **V-61 / V-58 (E12-11)** -- the differentiation axis comes from the regulation,
+  not plan section 4.7, and ``kompetenz.stammsatz`` reaches the shard at all. The
+  parser had captured the stem since E12-06, but the build's key whitelist
+  dropped it, so the CEFR performance conditions that V-58 was raised about still
+  did not ship.
 """
 
 from __future__ import annotations
@@ -340,3 +345,104 @@ def test_every_part_validates_against_the_schema(spec_key, fixture, n_items, n_b
     for dateiname, doc in _baue(spec_key, fixture).items():
         fehler = [f"{list(e.path)}: {e.message}" for e in validator.iter_errors(doc)]
         assert fehler == [], f"{spec_key}/{dateiname}: {fehler[:3]}"
+
+
+# ---------------------------------------------------------------------------
+# E12-11: meta completeness and the shipped competence stem (V-61, V-58)
+# ---------------------------------------------------------------------------
+
+#: spec key -> (fixture, axis typ, gilt_ab_stufe or None, bildungsstandard_bezug).
+#: From the regulation, not plan section 4.7 (V-61): all three Sek I subjects
+#: carry standard_standardplus from the 6. Schulstufe. Bildungsstandard coverage
+#: measured 2026-08-02 against NOR40255561: "Sachunterricht" occurs 0 times.
+META = [
+    ("SEK1.M", "sek1_mathematik.xml", "standard_standardplus", "K2", "verordnet"),
+    ("SEK1.D", "sek1_deutsch.xml", "standard_standardplus", "K2", "verordnet"),
+    ("SEK1.E", "sek1_fremdsprache.xml", "standard_standardplus", "K2", "verordnet"),
+    ("PRIM.D", "prim_deutsch.xml", "lehrplan_generisch", None, "verordnet"),
+    ("PRIM.M", "prim_mathematik.xml", "lehrplan_generisch", None, "verordnet"),
+    ("PRIM.SU", "prim_sachunterricht.xml", "lehrplan_generisch", None, "keine_verordnung"),
+]
+
+
+@pytest.mark.parametrize("spec_key,fixture,typ,gilt_ab,bist", META)
+def test_differentiation_axis_follows_the_regulation(spec_key, fixture, typ, gilt_ab, bist):
+    """V-61 corrects plan section 4.7, which gave `gers` to the language
+    subjects and `standard_standardplus` to mathematics alone."""
+    meta = next(iter(_baue(spec_key, fixture).values()))["meta"]
+    achse = meta["differenzierungs_achse"]
+    assert achse["typ"] == typ
+    assert achse.get("gilt_ab_stufe") == gilt_ab
+    if typ == "standard_standardplus":
+        assert achse["niveaus"] == ["Standard", "Standard AHS"]
+
+
+def test_no_shard_falls_back_to_the_generic_axis_with_a_warning(caplog):
+    """The acceptance criterion. An unregistered subject warns and takes the
+    generic axis; the three primary shards take it by explicit registration, so
+    the warning stays meaningful."""
+    with caplog.at_level(logging.WARNING, logger="build_dataset"):
+        for spec_key, fixture, *_ in META:
+            _baue(spec_key, fixture)
+    verdaechtig = [r.message for r in caplog.records if "differentiation axis" in r.message]
+    assert verdaechtig == []
+    for spec_key, *_ in META:
+        assert spec_key in B.DIFFERENZIERUNGS_ACHSEN
+
+
+def test_only_sek1_e_carries_the_cefr_sub_axis():
+    """CEFR is an *additional* axis for SEK1.E, not a replacement (V-61)."""
+    for spec_key, fixture, *_ in META:
+        achse = next(iter(_baue(spec_key, fixture).values()))["meta"]["differenzierungs_achse"]
+        assert ("gers" in achse) == (spec_key == "SEK1.E"), spec_key
+    gers = B.DIFFERENZIERUNGS_ACHSEN["SEK1.E"]["gers"]
+    assert gers["niveaus"] == ["A1", "A2", "B1"]
+    # The source does state a target level per class year in prose, but nothing
+    # extracts those paragraphs yet (V-41). The axis must not imply otherwise.
+    assert gers["je_stufe_ausgewiesen"] is False
+
+
+@pytest.mark.parametrize("spec_key,fixture,typ,gilt_ab,bist", META)
+def test_bildungsstandard_bezug_is_data_not_a_hardcoded_exception(spec_key, fixture, typ, gilt_ab, bist):
+    """E4-05 must read a data fact rather than special-casing Sachunterricht."""
+    meta = next(iter(_baue(spec_key, fixture).values()))["meta"]
+    assert meta["bildungsstandard_bezug"] == bist
+
+
+@pytest.mark.parametrize("spec_key,fixture,typ,gilt_ab,bist", META)
+def test_meta_mirrors_the_binding_axis(spec_key, fixture, typ, gilt_ab, bist):
+    spec = P.SUBJECT_SPECS[spec_key]
+    for dateiname, doc in _baue(spec_key, fixture).items():
+        assert doc["meta"]["anwendungsbereiche_bindung"] == spec.anwendungsbereiche_bindung, dateiname
+
+
+@pytest.mark.parametrize("spec_key,fixture,n_komp,n_bereiche,n_zusatz", SHARDS)
+def test_every_competence_ships_a_nonempty_stammsatz(spec_key, fixture, n_komp, n_bereiche, n_zusatz):
+    """The E12-11 acceptance criterion, and the point of V-58.
+
+    The parser has captured the stem since E12-06, but the build's key whitelist
+    dropped it, so it reached no shard. A faithful quotation is stammsatz + text;
+    for SEK1.E the stem carries a load-bearing CEFR performance condition.
+    """
+    n = 0
+    for doc in _baue(spec_key, fixture).values():
+        records = [k for b in doc.get("kompetenzbereiche", []) for k in b["kompetenzen"]]
+        records += doc.get("zusatzkompetenzen", [])
+        for k in records:
+            assert k.get("stammsatz"), (spec_key, k["id"])
+            assert not k["text"].startswith(k["stammsatz"]), (
+                f"{k['id']}: stammsatz must not be fused into text"
+            )
+            n += 1
+    assert n == n_komp
+
+
+def test_sek1_e_stems_reach_the_shard_verbatim():
+    """V-58's regression: the qualifiers must survive into the built shard."""
+    stems = set()
+    for doc in _baue("SEK1.E", "sek1_fremdsprache.xml").values():
+        for b in doc.get("kompetenzbereiche", []):
+            stems |= {k["stammsatz"] for k in b["kompetenzen"]}
+    qualifiziert = [s for s in stems if s != "Die Schülerinnen und Schüler können"]
+    assert len(qualifiziert) >= 8, sorted(stems)
+    assert any("Standardsprache gesprochen wird" in s for s in qualifiziert)

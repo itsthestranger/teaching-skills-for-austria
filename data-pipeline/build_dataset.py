@@ -135,17 +135,72 @@ DEFAULT_SOURCES: dict[str, Path] = {
     "SEK1.M": HERE / "resources" / "mittelschule" / "NOR40271471.xml",
 }
 
-#: Differentiation axis per <band>.<fach> (plan section 4.7). Take the exact
-#: shape from the plan; subjects not yet listed here fall back to the
-#: generic curriculum axis (plan section 4.7, third jsonc block) with a
-#: logged warning -- tolerant per E2-16, not a hard failure.
+#: Differentiation axis per <band>.<fach>. **From the regulation, not plan
+#: section 4.7** (V-61, E12-11): the plan assigned `gers` to "the language
+#: subjects" and `standard_standardplus` to mathematics alone. NOR40271471 says
+#: otherwise, verbatim:
+#:
+#:   "In den differenzierten Pflichtgegenständen Deutsch, Mathematik und Lebende
+#:    Fremdsprache erfolgt ab der 6. Schulstufe eine Unterscheidung nach den zwei
+#:    Leistungsniveaus "Standard" und "Standard AHS"."
+#:
+#: So all three Sek I subjects carry `standard_standardplus`, and it applies from
+#: the 6. Schulstufe -- K2..K4, never K1, hence `gilt_ab_stufe`. CEFR is an
+#: *additional* axis for SEK1.E, not a replacement. Primary subjects have no such
+#: axis in the source and take the generic curriculum axis explicitly, rather
+#: than by falling through to a warned fallback.
+_SEK1_LEISTUNGSNIVEAUS: dict = {
+    "typ": "standard_standardplus",
+    "niveaus": ["Standard", "Standard AHS"],
+    "gilt_ab_stufe": "K2",
+}
+
 DIFFERENZIERUNGS_ACHSEN: dict[str, dict] = {
     "SEK1.M": {
-        "typ": "standard_standardplus",
-        "niveaus": ["Standard", "Standard AHS"],
+        **_SEK1_LEISTUNGSNIVEAUS,
         "enrichment_quelle": "allenfalls",
         "spiralprinzip_backlinks": True,
     },
+    "SEK1.D": dict(_SEK1_LEISTUNGSNIVEAUS),
+    "SEK1.E": {
+        **_SEK1_LEISTUNGSNIVEAUS,
+        # The CEFR sub-axis. `niveaus` here is the subject-level statement the
+        # regulation makes outright ("orientiert sich an den ... Kompetenzniveaus
+        # A1 und A2 sowie an ausgewählten Deskriptoren des Kompetenzniveaus B1"),
+        # measured 2026-08-02.
+        #
+        # It is deliberately NOT a per-class-year mapping. The source does state
+        # a target level per class year in prose ("In allen vier
+        # Kompetenzbereichen wird das Zielniveau A2+ angestrebt"), with values
+        # A1/A2, A2, A2+ and "A2+ mit ausgewählten Deskriptoren aus B1" -- but
+        # nothing extracts those paragraphs yet, and inventing the year->level
+        # assignment here would assert an attribution the dataset cannot support.
+        # That extraction is V-41 / E8.
+        "gers": {
+            "typ": "gers",
+            "referenzrahmen": "Gemeinsamer Europäischer Referenzrahmen (GeR)",
+            "niveaus": ["A1", "A2", "B1"],
+            "je_stufe_ausgewiesen": False,
+        },
+    },
+    "PRIM.D": {},   # filled from GENERISCHE_ACHSE below
+    "PRIM.M": {},
+    "PRIM.SU": {},
+}
+
+#: Which shards have a Bildungsstandard verordnet at all, so
+#: `finde_bildungsstandard_bezug` reads a data fact instead of hardcoding the
+#: Sachunterricht exception (E4-05). **Measured 2026-08-02** against
+#: `resources/bildungsstandards/NOR40255561.xml`: "Sachunterricht" occurs **0**
+#: times in the whole regulation, while Deutsch, Mathematik and (Erste) Lebende
+#: Fremdsprache / Englisch all appear (V-13: D4/M4/D8/M8/E8).
+BILDUNGSSTANDARD_BEZUG: dict[str, str] = {
+    "SEK1.M": "verordnet",
+    "SEK1.D": "verordnet",
+    "SEK1.E": "verordnet",
+    "PRIM.D": "verordnet",
+    "PRIM.M": "verordnet",
+    "PRIM.SU": "keine_verordnung",
 }
 
 GENERISCHE_ACHSE: dict = {
@@ -154,6 +209,15 @@ GENERISCHE_ACHSE: dict = {
     "quelle": "Kompetenzbeschreibungen + Anwendungsbereiche je Schulstufe",
     "optional_material": "docs/",
 }
+
+# The three primary shards take the generic axis by an explicit registration,
+# not by falling through the unregistered-subject fallback: the source really
+# has no Leistungsniveaus axis for them, which is a finding, whereas the
+# fallback means "nobody has looked yet" and warns. Registering them keeps the
+# warning meaningful (V-61, E12-11).
+for _fach in ("PRIM.D", "PRIM.M", "PRIM.SU"):
+    DIFFERENZIERUNGS_ACHSEN[_fach] = dict(GENERISCHE_ACHSE)
+del _fach
 
 #: Measured on NOR40271471, Sek I Mathematik (mirrors parse_lehrplan.py's
 #: ERWARTET_SEK1_M, expressed in the shard's own vocabulary for --verify).
@@ -357,6 +421,13 @@ def _kompetenz_zu_dict(
         d["bereich_name"] = k.bereich_name
     d["stufe"] = k.stufe
     d["ordinal"] = k.ordinal
+    # The competence stem, verbatim (E12-06 captures it; E12-11 ships it). It is
+    # never prepended to `text`: a faithful quotation is stammsatz + text, and
+    # fusing them would make the two indistinguishable. Omitting it entirely is
+    # what made SEK1.E's CEFR performance conditions vanish from the product
+    # (V-58) -- the whole point of capturing it was that it reaches a shard.
+    if k.stammsatz:
+        d["stammsatz"] = k.stammsatz
     d["text"] = k.text
     if k.text_roh != k.text:
         d["text_roh"] = k.text_roh
@@ -435,9 +506,22 @@ def build_meta(
             f"{spec.band}.{spec.fach_code}", GENERISCHE_ACHSE
         ),
         "anwendungsbereiche_status": spec.anwendungsbereiche_status,
+        # Mirrors SubjectSpec.anwendungsbereiche_bindung verbatim, so a consumer
+        # can tell "the regulation offers only prose / nothing here" from "the
+        # build dropped the items" without guessing from which fields happen to
+        # be present (E12-11; deviations.md, 2026-07-30).
+        "anwendungsbereiche_bindung": spec.anwendungsbereiche_bindung,
+        "bildungsstandard_bezug": BILDUNGSSTANDARD_BEZUG.get(
+            f"{spec.band}.{spec.fach_code}", "keine_verordnung"
+        ),
         "lehrstoff_quelle": spec.lehrstoff_quelle,
         "provenienz": provenienz,
     }
+    if f"{spec.band}.{spec.fach_code}" not in BILDUNGSSTANDARD_BEZUG:
+        LOG.warning(
+            "no Bildungsstandard-Bezug registered for %s.%s -- assuming keine_verordnung",
+            spec.band, spec.fach_code,
+        )
     if f"{spec.band}.{spec.fach_code}" not in DIFFERENZIERUNGS_ACHSEN:
         LOG.warning(
             "no plan-section-4.7 differentiation axis registered for %s.%s -- using the generic fallback",
