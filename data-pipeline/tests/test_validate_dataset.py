@@ -84,6 +84,32 @@ def _zusatz_doc(zusatzkompetenzen=None, digitale_technologien=None, **meta_kw) -
     }
 
 
+# --------------------------------------------------------------------------
+# meta.anwendungsbereiche_bloecke fixture helpers (E12-14): the coarse-
+# attachment container for bindung: bereich (SEK1.D) and bindung: stufe
+# (PRIM.D, PRIM.SU) items -- see kompetenzen.schema.json's
+# anwendungsbereiche_block_eintrag and build_dataset.py's
+# build_anwendungsbereiche_bloecke.
+# --------------------------------------------------------------------------
+
+
+def _block_item(ident: str, *, stufe: str = "SCH1", text: str = "Ein Blockitem.", **extra) -> dict:
+    d = {"id": ident, "stufe": stufe, "text": text}
+    d.update(extra)
+    return d
+
+
+def _doc_with_bloecke(
+    nummer: int | None, slug: str, name: str, kompetenzen: list[dict], bloecke: dict, **meta_kw
+) -> dict:
+    meta = _meta(**meta_kw)
+    meta["anwendungsbereiche_bloecke"] = bloecke
+    return {
+        "meta": meta,
+        "kompetenzbereiche": [{"nummer": nummer, "slug": slug, "name": name, "kompetenzen": kompetenzen}],
+    }
+
+
 def write_shard(tmp_path: Path, parts: dict[str, dict], *, band: str = "sek1", fach: str = "m", index: dict | None = None) -> Path:
     """Write *parts* (filename -> document) under
     ``tmp_path/kompetenzen/<band>/<fach>/`` and return the ``kompetenzen``
@@ -283,7 +309,13 @@ def test_strict_never_promotes_informational_findings(tmp_path: Path) -> None:
             }
         ],
     }
-    root = write_shard(tmp_path, parts, index=index)
+    # Shard placed under a band.fach combination outside the six frozen
+    # shards (id_schema.AREA_CODES / parse_lehrplan.ERWARTET_BY_SPEC do not
+    # cover "SEK1.ZZ") on purpose: this test isolates the unknown-enum-value
+    # tolerance, and a single-competence fixture would otherwise also trip
+    # the E12-14 area-code and frozen-count soft rules, which are a
+    # different concern with their own dedicated tests below.
+    root = write_shard(tmp_path, parts, index=index, band="sek1", fach="zz")
     report = _run(tmp_path, root)
 
     # No index-missing noise (a real index.json is provided, byte-for-byte
@@ -399,6 +431,299 @@ def test_malformed_id_is_soft_not_hard(tmp_path: Path) -> None:
     hits = [f for f in report.soft if f.rule == V.RULE_MALFORMED_ID]
     assert len(hits) == 1
     assert hits[0].record_id == "NOT-A-VALID-ID"
+
+
+# --------------------------------------------------------------------------
+# E12-14 rule 1 -- meta.anwendungsbereiche_bloecke is walked for the hard
+# missing-required-field rule. Previously not walked at all: a missing
+# id/stufe/text inside a block went undetected.
+# --------------------------------------------------------------------------
+
+
+def test_missing_required_field_inside_anwendungsbereiche_bloecke_is_hard(tmp_path: Path) -> None:
+    item = _block_item("AT.LP23.PRIM.D.AB.SCH1.01")
+    del item["text"]
+    block = {"bindung": "stufe", "items": [item]}
+    doc = _doc_with_bloecke(
+        None, "LESEN", "Lesen",
+        [_kompetenz("AT.LP23.PRIM.D.LESEN.SCH1.01", stufe="SCH1")],
+        {"SCH1": block},
+        band="PRIM", fach_code="D", fach_name="Deutsch",
+    )
+    root = write_shard(tmp_path, {"lesen.json": doc}, band="prim", fach="d")
+    report = _run(tmp_path, root)
+
+    assert report.exit_code(strict=False) == 1
+    hits = [f for f in report.hard if f.rule == V.RULE_MISSING_REQUIRED_FIELD]
+    assert len(hits) == 1
+    assert "anwendungsbereiche_bloecke" in hits[0].path
+    assert hits[0].record_id == item["id"]
+
+
+def test_well_formed_anwendungsbereiche_bloecke_item_has_no_hard_findings(tmp_path: Path) -> None:
+    item = _block_item("AT.LP23.PRIM.D.AB.SCH1.01")
+    block = {"bindung": "stufe", "items": [item]}
+    doc = _doc_with_bloecke(
+        None, "LESEN", "Lesen",
+        [_kompetenz("AT.LP23.PRIM.D.LESEN.SCH1.01", stufe="SCH1")],
+        {"SCH1": block},
+        band="PRIM", fach_code="D", fach_name="Deutsch",
+    )
+    root = write_shard(tmp_path, {"lesen.json": doc}, band="prim", fach="d")
+    report = _run(tmp_path, root)
+
+    assert report.hard == []
+
+
+# --------------------------------------------------------------------------
+# E12-14 rule 2 -- separate ID pool where by-design repetition is expected.
+# bindung: stufe (PRIM.D, PRIM.SU) deliberately repeats the complete block
+# verbatim in every area part file, so the same id legitimately recurs
+# across parts: identical content passes, differing content is hard.
+# bindung: bereich (SEK1.D) does NOT get this tolerance -- each area part
+# file carries only its own blocks, so a repeated id there stays a plain
+# hard collision, proving the general rule was not weakened.
+# --------------------------------------------------------------------------
+
+
+def test_stufe_block_item_repeated_identically_across_parts_passes(tmp_path: Path) -> None:
+    block = {"bindung": "stufe", "items": [_block_item("AT.LP23.PRIM.SU.AB.SCH1.01")]}
+    doc_a = _doc_with_bloecke(
+        None, "SOZIALWISS", "Sozialwissenschaftlicher Kompetenzbereich",
+        [_kompetenz("AT.LP23.PRIM.SU.SOZIALWISS.SCH1.01", stufe="SCH1")],
+        {"SCH1": block},
+        band="PRIM", fach_code="SU", fach_name="Sachunterricht",
+    )
+    doc_b = _doc_with_bloecke(
+        None, "NATURWISS", "Naturwissenschaftlicher Kompetenzbereich",
+        [_kompetenz("AT.LP23.PRIM.SU.NATURWISS.SCH1.01", stufe="SCH1")],
+        {"SCH1": block},  # the SAME block, repeated verbatim -- by design
+        band="PRIM", fach_code="SU", fach_name="Sachunterricht",
+    )
+    root = write_shard(
+        tmp_path, {"sozialwiss.json": doc_a, "naturwiss.json": doc_b}, band="prim", fach="su",
+    )
+    report = _run(tmp_path, root)
+
+    assert report.hard == []
+    assert not any(f.rule == V.RULE_ID_COLLISION for f in report.findings)
+
+
+def test_stufe_block_item_repeated_with_differing_content_is_hard(tmp_path: Path) -> None:
+    item_a = _block_item("AT.LP23.PRIM.SU.AB.SCH1.01", text="Version A.")
+    item_b = _block_item("AT.LP23.PRIM.SU.AB.SCH1.01", text="Version B -- differs!")
+    doc_a = _doc_with_bloecke(
+        None, "SOZIALWISS", "Sozialwissenschaftlicher Kompetenzbereich",
+        [_kompetenz("AT.LP23.PRIM.SU.SOZIALWISS.SCH1.01", stufe="SCH1")],
+        {"SCH1": {"bindung": "stufe", "items": [item_a]}},
+        band="PRIM", fach_code="SU", fach_name="Sachunterricht",
+    )
+    doc_b = _doc_with_bloecke(
+        None, "NATURWISS", "Naturwissenschaftlicher Kompetenzbereich",
+        [_kompetenz("AT.LP23.PRIM.SU.NATURWISS.SCH1.01", stufe="SCH1")],
+        {"SCH1": {"bindung": "stufe", "items": [item_b]}},
+        band="PRIM", fach_code="SU", fach_name="Sachunterricht",
+    )
+    root = write_shard(
+        tmp_path, {"sozialwiss.json": doc_a, "naturwiss.json": doc_b}, band="prim", fach="su",
+    )
+    report = _run(tmp_path, root)
+
+    assert report.exit_code(strict=False) == 1
+    hits = [f for f in report.hard if f.rule == V.RULE_ID_COLLISION]
+    assert len(hits) == 1
+    assert "differing content" in hits[0].message
+    assert hits[0].record_id == item_a["id"]
+
+
+def test_bereich_block_item_repeated_identically_across_parts_is_still_hard(tmp_path: Path) -> None:
+    """bindung: bereich (SEK1.D) blocks are NOT by-design repeated -- each
+    area part file carries only its own blocks (build_dataset.py's
+    build_anwendungsbereiche_bloecke, nur_bereich_slug). The same id
+    occurring in two parts, even with identical content, must stay a plain
+    hard collision -- the E12-14 rule-2 tolerance is scoped to bindung:
+    stufe only and must not leak into bindung: bereich."""
+    block = {
+        "bindung": "bereich", "bereich_name": "Lesen", "bereich_slug": "LESEN",
+        "items": [_block_item("AT.LP23.SEK1.D.AB.LESEN.K1.01", stufe="K1")],
+    }
+    doc_a = _doc_with_bloecke(
+        None, "LESEN", "Lesen", [_kompetenz("AT.LP23.SEK1.D.LESEN.K1.01")],
+        {"LESEN.K1": block}, fach_code="D", fach_name="Deutsch",
+    )
+    doc_b = _doc_with_bloecke(
+        None, "SCHREIBEN", "Schreiben", [_kompetenz("AT.LP23.SEK1.D.SCHREIBEN.K1.01")],
+        {"LESEN.K1": block},  # identical content -- still not tolerated here
+        fach_code="D", fach_name="Deutsch",
+    )
+    root = write_shard(tmp_path, {"lesen.json": doc_a, "schreiben.json": doc_b}, band="sek1", fach="d")
+    report = _run(tmp_path, root)
+
+    assert report.exit_code(strict=False) == 1
+    hits = [f for f in report.hard if f.rule == V.RULE_ID_COLLISION]
+    assert len(hits) == 1
+    assert "differing content" not in hits[0].message  # the plain collision message
+
+
+# --------------------------------------------------------------------------
+# E12-14 rule 3 -- soft rules: unknown area code, kompetenz_id forbidden
+# outside bindung: kompetenz, area-free id outside bindung: stufe,
+# verbindlich anomalies, counts vs the frozen expected counts.
+# --------------------------------------------------------------------------
+
+
+def test_unknown_area_code_in_id_is_soft(tmp_path: Path) -> None:
+    komp = _kompetenz("AT.LP23.SEK1.M.UNBEKANNT.K1.01")
+    parts = {"unbekannt.json": _bereich_doc(1, "UNBEKANNT", "Unbekannter Bereich", [komp])}
+    root = write_shard(tmp_path, parts)  # default band=sek1 fach=m -- a known shard
+    report = _run(tmp_path, root)
+
+    assert report.hard == []
+    hits = [f for f in report.soft if f.rule == V.RULE_UNKNOWN_AREA_CODE]
+    assert len(hits) == 1
+    assert "UNBEKANNT" in hits[0].message
+
+
+def test_known_area_code_produces_no_unknown_area_finding(tmp_path: Path) -> None:
+    komp = _kompetenz("AT.LP23.SEK1.M.ZAHLEN.K1.01")
+    parts = {"zahlen.json": _bereich_doc(1, "ZAHLEN", "Zahlen und Maße", [komp])}
+    root = write_shard(tmp_path, parts)
+    report = _run(tmp_path, root)
+
+    assert not any(f.rule == V.RULE_UNKNOWN_AREA_CODE for f in report.findings)
+
+
+def test_kompetenz_id_set_under_bereich_binding_is_soft(tmp_path: Path) -> None:
+    item = _block_item(
+        "AT.LP23.SEK1.D.AB.LESEN.K1.01", stufe="K1", kompetenz_id="AT.LP23.SEK1.D.LESEN.K1.01",
+    )
+    block = {"bindung": "bereich", "bereich_name": "Lesen", "bereich_slug": "LESEN", "items": [item]}
+    doc = _doc_with_bloecke(
+        None, "LESEN", "Lesen", [_kompetenz("AT.LP23.SEK1.D.LESEN.K1.01")],
+        {"LESEN.K1": block}, fach_code="D", fach_name="Deutsch",
+    )
+    doc["meta"]["anwendungsbereiche_bindung"] = "bereich"
+    root = write_shard(tmp_path, {"lesen.json": doc}, band="sek1", fach="d")
+    report = _run(tmp_path, root)
+
+    assert report.hard == []
+    hits = [f for f in report.soft if f.rule == V.RULE_KOMPETENZ_ID_NOT_ALLOWED]
+    assert len(hits) == 1
+    assert hits[0].record_id == item["id"]
+
+
+def test_kompetenz_id_null_under_bereich_binding_has_no_finding(tmp_path: Path) -> None:
+    item = _block_item("AT.LP23.SEK1.D.AB.LESEN.K1.01", stufe="K1", kompetenz_id=None)
+    block = {"bindung": "bereich", "bereich_name": "Lesen", "bereich_slug": "LESEN", "items": [item]}
+    doc = _doc_with_bloecke(
+        None, "LESEN", "Lesen", [_kompetenz("AT.LP23.SEK1.D.LESEN.K1.01")],
+        {"LESEN.K1": block}, fach_code="D", fach_name="Deutsch",
+    )
+    doc["meta"]["anwendungsbereiche_bindung"] = "bereich"
+    root = write_shard(tmp_path, {"lesen.json": doc}, band="sek1", fach="d")
+    report = _run(tmp_path, root)
+
+    assert not any(f.rule == V.RULE_KOMPETENZ_ID_NOT_ALLOWED for f in report.findings)
+
+
+def test_area_free_id_outside_stufe_binding_is_soft(tmp_path: Path) -> None:
+    item = _block_item("AT.LP23.SEK1.D.AB.K1.01", stufe="K1")  # area-free 7-segment form
+    block = {"bindung": "bereich", "bereich_name": "Lesen", "bereich_slug": "LESEN", "items": [item]}
+    doc = _doc_with_bloecke(
+        None, "LESEN", "Lesen", [_kompetenz("AT.LP23.SEK1.D.LESEN.K1.01")],
+        {"LESEN.K1": block}, fach_code="D", fach_name="Deutsch",
+    )
+    doc["meta"]["anwendungsbereiche_bindung"] = "bereich"
+    root = write_shard(tmp_path, {"lesen.json": doc}, band="sek1", fach="d")
+    report = _run(tmp_path, root)
+
+    assert report.hard == []
+    hits = [f for f in report.soft if f.rule == V.RULE_AREA_FREE_ID_OUTSIDE_STUFE]
+    assert len(hits) == 1
+    assert hits[0].record_id == item["id"]
+
+
+def test_area_free_id_under_stufe_binding_has_no_finding(tmp_path: Path) -> None:
+    item = _block_item("AT.LP23.PRIM.D.AB.SCH1.01")
+    block = {"bindung": "stufe", "items": [item]}
+    doc = _doc_with_bloecke(
+        None, "LESEN", "Lesen",
+        [_kompetenz("AT.LP23.PRIM.D.LESEN.SCH1.01", stufe="SCH1")],
+        {"SCH1": block},
+        band="PRIM", fach_code="D", fach_name="Deutsch",
+    )
+    doc["meta"]["anwendungsbereiche_bindung"] = "stufe"
+    root = write_shard(tmp_path, {"lesen.json": doc}, band="prim", fach="d")
+    report = _run(tmp_path, root)
+
+    assert not any(f.rule == V.RULE_AREA_FREE_ID_OUTSIDE_STUFE for f in report.findings)
+
+
+def test_verbindlich_false_outside_sek1_m_is_soft(tmp_path: Path) -> None:
+    item = _anwendungsitem("AT.LP23.SEK1.D.AB.LESEN.K1.01", stufe="K1", kompetenz_id=None, verbindlich=False)
+    komp = _kompetenz("AT.LP23.SEK1.D.LESEN.K1.01", anwendungsbereiche=[item])
+    parts = {"lesen.json": _bereich_doc(None, "LESEN", "Lesen", [komp], fach_code="D", fach_name="Deutsch")}
+    root = write_shard(tmp_path, parts, band="sek1", fach="d")
+    report = _run(tmp_path, root)
+
+    assert report.hard == []
+    hits = [f for f in report.soft if f.rule == V.RULE_VERBINDLICH_ANOMALY]
+    assert len(hits) == 1
+    assert hits[0].record_id == item["id"]
+
+
+def test_verbindlich_false_in_sek1_m_has_no_anomaly_finding(tmp_path: Path) -> None:
+    item = _anwendungsitem(
+        "AT.LP23.SEK1.M.AB.ZAHLEN.K1.01", kompetenz_id="AT.LP23.SEK1.M.ZAHLEN.K1.01", verbindlich=False,
+    )
+    komp = _kompetenz("AT.LP23.SEK1.M.ZAHLEN.K1.01", anwendungsbereiche=[item])
+    parts = {"zahlen.json": _bereich_doc(1, "ZAHLEN", "Zahlen und Maße", [komp])}
+    root = write_shard(tmp_path, parts)
+    report = _run(tmp_path, root)
+
+    assert not any(f.rule == V.RULE_VERBINDLICH_ANOMALY for f in report.findings)
+
+
+def test_counts_match_frozen_expected_has_no_mismatch_finding(tmp_path: Path) -> None:
+    """PRIM.M's frozen expected counts (parse_lehrplan.ERWARTET_PRIM_M) are
+    40 kompetenzen / 0 anwendungsitems / 4 kompetenzbereiche -- built here
+    exactly (4 areas x 10 competences, no application items at all, since
+    PRIM.M's anwendungsbereiche_bindung is 'keine') so the rule must not
+    fire on a shard that genuinely matches."""
+    areas = [
+        ("ZAHLENDATEN", "Zahlen und Daten"),
+        ("OPERATIONEN", "Operationen"),
+        ("GROESSEN", "Größen"),
+        ("EBENERAUM", "Ebene und Raum"),
+    ]
+    parts: dict[str, dict] = {}
+    for slug, name in areas:
+        kompetenzen = [
+            _kompetenz(f"AT.LP23.PRIM.M.{slug}.SCH1.{i:02d}", stufe="SCH1") for i in range(1, 11)
+        ]
+        parts[f"{slug.lower()}.json"] = _bereich_doc(
+            None, slug, name, kompetenzen, band="PRIM", fach_code="M", fach_name="Mathematik",
+        )
+    root = write_shard(tmp_path, parts, band="prim", fach="m")
+    report = _run(tmp_path, root)
+
+    assert not any(f.rule == V.RULE_COUNT_MISMATCH for f in report.findings)
+
+
+def test_counts_mismatch_vs_frozen_expected_is_soft(tmp_path: Path) -> None:
+    komp = _kompetenz("AT.LP23.PRIM.M.ZAHLENDATEN.SCH1.01", stufe="SCH1")
+    parts = {
+        "zahlendaten.json": _bereich_doc(
+            None, "ZAHLENDATEN", "Zahlen und Daten", [komp], band="PRIM", fach_code="M", fach_name="Mathematik",
+        )
+    }
+    root = write_shard(tmp_path, parts, band="prim", fach="m")
+    report = _run(tmp_path, root)
+
+    assert report.hard == []
+    hits = [f for f in report.soft if f.rule == V.RULE_COUNT_MISMATCH]
+    assert len(hits) >= 1
+    assert any(f.message.startswith("kompetenzen:") for f in hits)
 
 
 # --------------------------------------------------------------------------

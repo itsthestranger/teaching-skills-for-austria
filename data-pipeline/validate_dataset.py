@@ -83,6 +83,7 @@ sys.path.insert(0, str(HERE / "schema"))
 
 import build_dataset as BD  # noqa: E402 -- reused: approx_tokens(), the §6.7 size targets
 import id_schema as ID  # noqa: E402 -- reused: validate_ids(), FAECHER
+import parse_lehrplan as PL  # noqa: E402 -- reused: ERWARTET_BY_SPEC, the frozen expected counts
 
 PLUGIN_ROOT = HERE.parent / "plugin"
 DEFAULT_KOMPETENZEN_ROOT = PLUGIN_ROOT / "data" / "kompetenzen"
@@ -134,6 +135,11 @@ RULE_INDEX_MISMATCH = "index-mismatch"
 RULE_SIZE_TARGET_EXCEEDED = "size-target-exceeded"
 RULE_REGISTRY_MISSING = "registry-missing"
 RULE_NO_SHARDS_FOUND = "no-shards-found"
+RULE_UNKNOWN_AREA_CODE = "unknown-area-code"
+RULE_KOMPETENZ_ID_NOT_ALLOWED = "kompetenz-id-not-allowed-for-binding"
+RULE_AREA_FREE_ID_OUTSIDE_STUFE = "area-free-id-outside-stufe-binding"
+RULE_VERBINDLICH_ANOMALY = "verbindlich-false-outside-sek1-m"
+RULE_COUNT_MISMATCH = "count-mismatch-vs-frozen-expected"
 
 # Informational (never a failure, even under --strict)
 RULE_UNKNOWN_ENUM_VALUE = "unknown-enum-value"
@@ -228,12 +234,25 @@ def discover_shards(kompetenzen_root: Path) -> list[tuple[str, str, Path]]:
 # --------------------------------------------------------------------------
 
 
-def iter_records(doc: dict) -> Iterator[tuple[str, str, dict]]:
-    """Yield ``(kind, path, record)`` for every Kompetenz / Anwendungsitem in
-    one part document, ``kind`` in ``{"kompetenz", "anwendungsitem"}``.
-    ``path`` is an in-document locator string, e.g.
-    ``kompetenzbereiche[0].kompetenzen[3].anwendungsbereiche[1]``, used to
-    identify a record that may not (yet) have a usable ``id``."""
+def iter_records(doc: dict) -> Iterator[tuple[str, str, dict, bool]]:
+    """Yield ``(kind, path, record, is_stufe_block)`` for every Kompetenz /
+    Anwendungsitem in one part document, ``kind`` in
+    ``{"kompetenz", "anwendungsitem"}``. ``path`` is an in-document locator
+    string, e.g. ``kompetenzbereiche[0].kompetenzen[3].anwendungsbereiche[1]``,
+    used to identify a record that may not (yet) have a usable ``id``.
+
+    ``is_stufe_block`` is True only for an ``anwendungsitem`` sourced from a
+    ``meta.anwendungsbereiche_bloecke`` entry whose ``bindung`` is
+    ``"stufe"`` (PRIM.D, PRIM.SU, E12-14 / plan section 5 B1) -- the one
+    case where the *complete* block is deliberately repeated verbatim in
+    every area part file of the shard, so the same item id legitimately
+    recurs across parts (see ``validate_shard``'s ID-collision handling).
+    It is False for every other record, including ``bindung: "bereich"``
+    block items (SEK1.D): those are NOT repeated across parts (each area
+    part file carries only its own blocks -- see
+    ``build_dataset.py::build_anwendungsbereiche_bloecke``), so a repeated
+    id there is a genuine collision, not by-design.
+    """
     for bi, bereich in enumerate(doc.get("kompetenzbereiche") or []):
         if not isinstance(bereich, dict):
             continue
@@ -241,16 +260,41 @@ def iter_records(doc: dict) -> Iterator[tuple[str, str, dict]]:
             if not isinstance(k, dict):
                 continue
             base = f"kompetenzbereiche[{bi}].kompetenzen[{ki}]"
-            yield "kompetenz", base, k
+            yield "kompetenz", base, k, False
             for ai, a in enumerate(k.get("anwendungsbereiche") or []):
                 if isinstance(a, dict):
-                    yield "anwendungsitem", f"{base}.anwendungsbereiche[{ai}]", a
+                    yield "anwendungsitem", f"{base}.anwendungsbereiche[{ai}]", a, False
     for zi, k in enumerate(doc.get("zusatzkompetenzen") or []):
         if isinstance(k, dict):
-            yield "kompetenz", f"zusatzkompetenzen[{zi}]", k
+            yield "kompetenz", f"zusatzkompetenzen[{zi}]", k, False
     for di, a in enumerate(doc.get("digitale_technologien_vorschlaege") or []):
         if isinstance(a, dict):
-            yield "anwendungsitem", f"digitale_technologien_vorschlaege[{di}]", a
+            yield "anwendungsitem", f"digitale_technologien_vorschlaege[{di}]", a, False
+
+    # --- meta.anwendungsbereiche_bloecke (E12-14): the coarse-attachment
+    # container for bindung: bereich (SEK1.D) and bindung: stufe (PRIM.D,
+    # PRIM.SU) items. Previously not walked at all here, so a missing
+    # id/stufe/text inside a block went undetected -- see the module
+    # docstring's rule list.
+    meta = doc.get("meta")
+    bloecke = meta.get("anwendungsbereiche_bloecke") if isinstance(meta, dict) else None
+    if isinstance(bloecke, dict):
+        for key in sorted(bloecke, key=str):
+            block = bloecke[key]
+            if not isinstance(block, dict):
+                continue
+            is_stufe_block = block.get("bindung") == "stufe"
+            items = block.get("items")
+            if not isinstance(items, list):
+                continue
+            for ii, a in enumerate(items):
+                if isinstance(a, dict):
+                    yield (
+                        "anwendungsitem",
+                        f"meta.anwendungsbereiche_bloecke[{key}].items[{ii}]",
+                        a,
+                        is_stufe_block,
+                    )
 
 
 # --------------------------------------------------------------------------
@@ -316,13 +360,28 @@ def validate_shard(
         findings.append(_finding("soft", RULE_INDEX_MISSING, "index.json not found", shard=shard_label))
 
     # --- Collect every record with its origin, for every check below.
-    all_records: list[tuple[str, str, str, dict]] = []  # (part, kind, path, record)
+    # (part, kind, path, record, is_stufe_block) -- see iter_records for what
+    # is_stufe_block means (E12-14).
+    all_records: list[tuple[str, str, str, dict, bool]] = []
     for part_name, doc in parts.items():
-        for kind, path, rec in iter_records(doc):
-            all_records.append((part_name, kind, path, rec))
+        for kind, path, rec, is_stufe_block in iter_records(doc):
+            all_records.append((part_name, kind, path, rec, is_stufe_block))
 
-    # --- HARD: missing id / stufe / text.
-    for part_name, kind, path, rec in all_records:
+    # --- Per-part anwendungsbereiche_bindung (E12-14): several soft rules
+    # below need to know what a shard's application items are scoped to
+    # (kompetenz / bereich / stufe / prosa / keine). The field is per-part
+    # meta, not (yet) guaranteed identical across every part of a shard --
+    # read it per part rather than assuming.
+    bindung_je_part: dict[str, str | None] = {
+        part_name: (doc.get("meta") or {}).get("anwendungsbereiche_bindung")
+        for part_name, doc in parts.items()
+    }
+
+    # --- HARD: missing id / stufe / text. Walks meta.anwendungsbereiche_bloecke
+    # too (via iter_records, E12-14) -- previously those items were not
+    # walked at all, so a missing id/stufe/text inside a block went
+    # undetected.
+    for part_name, kind, path, rec, _ in all_records:
         missing = [field_name for field_name in ("id", "stufe", "text") if not rec.get(field_name)]
         if missing:
             findings.append(
@@ -333,17 +392,33 @@ def validate_shard(
                 )
             )
 
-    # --- ID collisions (hard) and malformed IDs (soft) -- id_schema.validate_ids()
-    # reused per the E3-06 brief rather than reimplemented. Its ValidationResult
-    # already separates "malformed" from "duplicates"; this module decides
-    # collisions are hard and malformed-parse is soft, per the plan's boundary.
+    # --- ID collisions (hard) and malformed IDs (soft).
+    #
+    # Malformed-ID detection still delegates to id_schema.validate_ids() (the
+    # E3-06 brief). Collision detection is now repetition-aware (E12-14,
+    # backlog rule 2): under anwendungsbereiche_bindung: "stufe" (PRIM.D,
+    # PRIM.SU) the *complete* meta.anwendungsbereiche_bloecke block is
+    # deliberately repeated verbatim in every area part file, so the same
+    # item id legitimately occurs several times -- that is not a collision
+    # as long as every occurrence's content is identical. Any occurrence
+    # that is NOT from that by-design pool, or that differs in content from
+    # its sibling occurrences, is still a hard collision -- the global
+    # uniqueness rule is not weakened for anything else.
     ids_for_validation: list[str] = []
     id_locations: dict[str, list[str]] = {}
-    for part_name, kind, path, rec in all_records:
+    occurrences: dict[str, list[tuple[str, str, dict, bool]]] = {}
+    kompetenz_ids: set[str] = set()
+    anwendungsitem_ids: set[str] = set()
+    for part_name, kind, path, rec, is_stufe_block in all_records:
         ident = rec.get("id")
         if isinstance(ident, str) and ident:
             ids_for_validation.append(ident)
             id_locations.setdefault(ident, []).append(f"{part_name}:{path}")
+            occurrences.setdefault(ident, []).append((part_name, path, rec, is_stufe_block))
+            if kind == "kompetenz":
+                kompetenz_ids.add(ident)
+            else:
+                anwendungsitem_ids.add(ident)
         elif ident:
             # Present, truthy, but not a string -- can't be scheme-validated;
             # flagged as malformed rather than silently skipped.
@@ -355,14 +430,7 @@ def validate_shard(
             )
 
     id_result = ID.validate_ids(ids_for_validation)
-    for dup in id_result.duplicates:
-        findings.append(
-            _finding(
-                "hard", RULE_ID_COLLISION,
-                f"ID {dup!r} occurs more than once in this shard: {id_locations.get(dup, [])}",
-                shard=shard_label, record_id=dup,
-            )
-        )
+    malformed_ids = set(id_result.malformed)
     for malformed in id_result.malformed:
         findings.append(
             _finding(
@@ -370,6 +438,37 @@ def validate_shard(
                 f"ID {malformed!r} does not parse under the frozen AT.LP23 scheme",
                 shard=shard_label, record_id=malformed,
                 part=(id_locations.get(malformed, [None])[0] or "").split(":", 1)[0] or None,
+            )
+        )
+
+    for ident, occs in occurrences.items():
+        if ident in malformed_ids or len(occs) <= 1:
+            # A malformed id is reported via RULE_MALFORMED_ID above only --
+            # it cannot also be scored for collision, mirroring the original
+            # id_schema.validate_ids() boundary.
+            continue
+        if all(is_stufe_block for _part, _path, _rec, is_stufe_block in occs):
+            first_rec = occs[0][2]
+            mismatched = [o for o in occs[1:] if o[2] != first_rec]
+            if mismatched:
+                findings.append(
+                    _finding(
+                        "hard", RULE_ID_COLLISION,
+                        f"ID {ident!r} occurs in meta.anwendungsbereiche_bloecke "
+                        f"(bindung: stufe) in more than one location with differing "
+                        f"content -- by-design repetition across parts requires "
+                        f"identical content: {id_locations.get(ident, [])}",
+                        shard=shard_label, record_id=ident,
+                    )
+                )
+            # else: identical content across every occurrence -- by design
+            # (E12-14 rule 2), not a collision.
+            continue
+        findings.append(
+            _finding(
+                "hard", RULE_ID_COLLISION,
+                f"ID {ident!r} occurs more than once in this shard: {id_locations.get(ident, [])}",
+                shard=shard_label, record_id=ident,
             )
         )
 
@@ -389,7 +488,7 @@ def validate_shard(
     # --- Referential integrity (SOFT): vorlaeufer / folge / wiederholung_von
     # / kompetenz_id must resolve to an id that exists somewhere in this shard.
     valid_ids = set(id_locations)
-    for part_name, kind, path, rec in all_records:
+    for part_name, kind, path, rec, _ in all_records:
         record_id = rec.get("id")
         for ref_field in ("vorlaeufer", "folge", "wiederholung_von"):
             for ref in rec.get(ref_field) or []:
@@ -414,7 +513,7 @@ def validate_shard(
 
     # --- Image-token integrity (SOFT, but the one that protects the
     # verbatim-quotation guarantee -- see module docstring).
-    for part_name, kind, path, rec in all_records:
+    for part_name, kind, path, rec, _ in all_records:
         record_id = rec.get("id")
         text = rec.get("text") or ""
         tokens_in_text = set(ABB_TOKEN_RE.findall(text))
@@ -594,7 +693,7 @@ def validate_shard(
                     shard=shard_label, part=part_name,
                 )
             )
-    for part_name, kind, path, rec in all_records:
+    for part_name, kind, path, rec, _ in all_records:
         if kind != "anwendungsitem":
             continue
         art = rec.get("art")
@@ -607,6 +706,129 @@ def validate_shard(
                     shard=shard_label, part=part_name, path=path, record_id=rec.get("id"),
                 )
             )
+
+    # --- Unknown area code (SOFT, E12-14 rule 3): an id's Bereich segment
+    # that is not in id_schema.AREA_CODES for this shard. Only meaningful
+    # for one of the six frozen shards -- a future band/fach combination has
+    # no area-code table to compare against yet, so this check is skipped
+    # entirely rather than flagging every area as unknown.
+    if ID.ist_gueltige_kombination(band, fach):
+        known_areas = ID.alle_bereich_codes(band, fach)
+        for part_name, kind, path, rec, _ in all_records:
+            ident = rec.get("id")
+            if not (isinstance(ident, str) and ident):
+                continue
+            try:
+                parsed = ID.parse_id(ident)
+            except ID.IdSchemaError:
+                continue  # already reported via RULE_MALFORMED_ID
+            bereich = getattr(parsed, "bereich", None)
+            if bereich and bereich not in known_areas:
+                findings.append(
+                    _finding(
+                        "soft", RULE_UNKNOWN_AREA_CODE,
+                        f"id {ident!r} uses area code {bereich!r}, which is not in "
+                        f"id_schema.AREA_CODES[{shard_label!r}] ({sorted(known_areas)})",
+                        shard=shard_label, part=part_name, path=path, record_id=ident,
+                    )
+                )
+
+    # --- kompetenz_id set where the binding axis forbids it (SOFT, rule 3):
+    # only anwendungsbereiche_bindung: "kompetenz" (SEK1.M) may join an item
+    # to a competence via kompetenz_id -- every other axis attaches items to
+    # a bereich, a stufe, or nothing. Skipped when a part's bindung is not
+    # (yet) recorded at all (meta.anwendungsbereiche_bindung is still
+    # optional, E12-11) -- absence means "unknown", not "forbidden", and the
+    # shipped SEK1.M shard does not carry it yet (see module docstring).
+    for part_name, kind, path, rec, _ in all_records:
+        if kind != "anwendungsitem":
+            continue
+        bindung = bindung_je_part.get(part_name)
+        if bindung is None or bindung == "kompetenz":
+            continue
+        kompetenz_id = rec.get("kompetenz_id")
+        if kompetenz_id:
+            findings.append(
+                _finding(
+                    "soft", RULE_KOMPETENZ_ID_NOT_ALLOWED,
+                    f"anwendungsitem carries kompetenz_id {kompetenz_id!r}, but this part's "
+                    f"anwendungsbereiche_bindung is {bindung!r}, not 'kompetenz'",
+                    shard=shard_label, part=part_name, path=path, record_id=rec.get("id"),
+                )
+            )
+
+    # --- Area-free 7-segment item ID used outside bindung: stufe (SOFT,
+    # rule 3): the area-free application-item grammar
+    # (id_schema.ANWENDUNGSITEM_AREA_FREI_ID_RE) exists only for the
+    # PRIM.D/PRIM.SU-style bindung: "stufe" items. Skipped, as above, when
+    # the part's bindung is not (yet) recorded.
+    for part_name, kind, path, rec, _ in all_records:
+        if kind != "anwendungsitem":
+            continue
+        ident = rec.get("id")
+        if not (isinstance(ident, str) and ident):
+            continue
+        try:
+            parsed = ID.parse_id(ident)
+        except ID.IdSchemaError:
+            continue  # already reported via RULE_MALFORMED_ID
+        if not (isinstance(parsed, ID.AnwendungsitemId) and parsed.bereich is None):
+            continue
+        bindung = bindung_je_part.get(part_name)
+        if bindung is not None and bindung != "stufe":
+            findings.append(
+                _finding(
+                    "soft", RULE_AREA_FREE_ID_OUTSIDE_STUFE,
+                    f"id {ident!r} uses the area-free 7-segment application-item form, "
+                    f"but this part's anwendungsbereiche_bindung is {bindung!r}, not 'stufe'",
+                    shard=shard_label, part=part_name, path=path, record_id=ident,
+                )
+            )
+
+    # --- verbindlich anomalies (SOFT, rule 3): the 'allenfalls' marker that
+    # produces verbindlich: false is measured SEK1.M-only (FINDINGS.md /
+    # notes/deviations.md, 2026-07-29) -- a non-binding item in any other
+    # shard is a structural surprise worth surfacing, not a failure.
+    if shard_label != "SEK1.M":
+        for part_name, kind, path, rec, _ in all_records:
+            if kind == "anwendungsitem" and rec.get("verbindlich") is False:
+                findings.append(
+                    _finding(
+                        "soft", RULE_VERBINDLICH_ANOMALY,
+                        "anwendungsitem carries verbindlich: false outside SEK1.M -- the "
+                        "'allenfalls' marker that produces this flag is measured SEK1.M-only",
+                        shard=shard_label, part=part_name, path=path, record_id=rec.get("id"),
+                    )
+                )
+
+    # --- Counts vs the frozen expected counts (SOFT, rule 3):
+    # parse_lehrplan.ERWARTET_BY_SPEC, measured against the live RIS source
+    # (notes/ris-xml-structure.md) and reproduced against committed
+    # fixtures (tests/test_parse_lehrplan.py). Distinct-id counts, not raw
+    # record counts, so a bindung: stufe shard's by-design cross-part
+    # repetition (see the ID-collision handling above) is not
+    # double-counted. Skipped for a shard this table does not (yet) cover.
+    erwartet = PL.ERWARTET_BY_SPEC.get(shard_label)
+    if erwartet is not None:
+        area_slugs: set[str] = set()
+        for doc in parts.values():
+            for bereich in doc.get("kompetenzbereiche") or []:
+                if isinstance(bereich, dict) and bereich.get("slug"):
+                    area_slugs.add(bereich["slug"])
+        for feld, erwartet_wert, gemessen_wert in (
+            ("kompetenzen", erwartet["kompetenzen"], len(kompetenz_ids)),
+            ("anwendungsitems", erwartet["anwendungsitems"], len(anwendungsitem_ids)),
+            ("kompetenzbereiche", erwartet["kompetenzbereiche"], len(area_slugs)),
+        ):
+            if erwartet_wert != gemessen_wert:
+                findings.append(
+                    _finding(
+                        "soft", RULE_COUNT_MISMATCH,
+                        f"{feld}: frozen expected count is {erwartet_wert}, measured {gemessen_wert} "
+                        f"(parse_lehrplan.ERWARTET_BY_SPEC[{shard_label!r}])",
+                        shard=shard_label,
+                    )
+                )
 
     return findings
 
