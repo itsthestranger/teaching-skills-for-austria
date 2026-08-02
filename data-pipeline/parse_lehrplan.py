@@ -299,6 +299,40 @@ def normalise_for_match(s: str) -> str:
 #: ``Kompetenzbereich 1: Zahlen und Maße`` -- the numbered Sek I form.
 AREA_NUMMERIERT_RE = re.compile(r"^Kompetenzbereich\s+(\d+)\s*:\s*(?P<name>.+?)\s*$")
 
+#: ``Kompetenzbereich Lesen`` / ``Integrativer Kompetenzbereich Sprachbewusstsein
+#: und Sprachreflexion`` -- the unnumbered, prefix-scaffolded form used by SEK1.D,
+#: SEK1.E and PRIM.D. The optional ``Integrativer`` covers the SEK1.D area that
+#: carries an Anwendungsbereiche block but no competence list of its own
+#: (notes/deviations.md, 2026-07-28). ``name`` deliberately excludes the generic
+#: scaffolding, matching decision D2 (2026-07-30): the extracted short name is
+#: both the ``AREA_CODES`` key and the teacher-visible ``bereich_name``.
+AREA_UNNUMMERIERT_RE = re.compile(r"^(?:Integrativer\s+)?Kompetenzbereich\s+(?P<name>.+)$")
+
+#: PRIM.M's form -- as :data:`AREA_UNNUMMERIERT_RE` but without the integrative
+#: variant, which does not occur in primary mathematics. Kept narrow rather than
+#: reusing the tolerant pattern so a future ``Integrativer`` heading there would
+#: surface as an unhandled token instead of being silently absorbed.
+AREA_SCHLICHT_RE = re.compile(r"^Kompetenzbereich\s+(?P<name>.+)$")
+
+#: PRIM.SU is adjective-first, with the scaffolding as a *suffix*:
+#: ``Sozialwissenschaftlicher Kompetenzbereich``. The whole heading is the area
+#: name here (that is how ``AREA_CODES["PRIM.SU"]`` is keyed) -- stripping the
+#: suffix would leave a bare adjective as a display name.
+AREA_ADJEKTIV_RE = re.compile(r"^(?P<name>.+\bKompetenzbereich)$")
+
+#: Tolerant pattern for the combined single-heading form used by SEK1.D/E and all
+#: three primary subjects (V-24): ``Kompetenzbeschreibungen [und
+#: Anwendungsbereiche], Lehrstoff (…):``. SEK1.M is the exception, with two
+#: separate top-level sections -- see ``SEK1_MATHEMATIK.kompetenz_sektion_re``.
+#:
+#: Whether ``und Anwendungsbereiche`` is present is the measured discriminator for
+#: ``lehrstoff_quelle`` (fixtures, 2026-08-02): PRIM.M's heading is
+#: ``Kompetenzbeschreibungen, Lehrstoff`` alone, so its Lehrstoff cannot be
+#: sourced from Anwendungsbereiche it does not have.
+KOMBINIERTE_SEKTION_RE = re.compile(
+    r"^Kompetenzbeschreibungen(?:\s+und\s+Anwendungsbereiche)?,\s*Lehrstoff\s*\("
+)
+
 #: Class year / school year marker, e.g. ``1. Klasse:`` or ``2. Schulstufe:``.
 STUFE_RE = re.compile(r"^(?P<nr>\d+)\.\s*(?P<einheit>Klasse|Schulstufe)\s*:?\s*$")
 
@@ -458,12 +492,7 @@ SEK1_MATHEMATIK = SubjectSpec(
     kompetenz_sektion_re=re.compile(r"^Kompetenzbereiche\s*\("),
     anwendung_sektion_re=re.compile(r"^Anwendungsbereiche\s*\("),
     bereich_re=AREA_NUMMERIERT_RE,
-    bereich_slugs={
-        "Zahlen und Maße": "ZAHLEN",
-        "Variablen und Funktionen": "VARIABLEN",
-        "Figuren und Körper": "FIGUREN",
-        "Daten und Zufall": "DATEN",
-    },
+    bereich_slugs=id_schema.bereich_codes("SEK1", "M"),
     anwendungsbereiche_status="item_flags",
     lehrstoff_quelle="aus_anwendungsbereichen",
     anwendungsbereiche_bindung="kompetenz",
@@ -471,9 +500,116 @@ SEK1_MATHEMATIK = SubjectSpec(
     allenfalls_pruefen=True,
 )
 
-#: Registry keyed ``<BAND>.<FACH>``.  Five more entries belong here later.
+# ---------------------------------------------------------------------------
+# The five subjects beyond SEK1.M (E12-08).
+#
+# Every ``bereich_slugs`` below is ``id_schema.bereich_codes(...)`` by import,
+# never a hand-copied dict -- decision D2's follow-on guard
+# (notes/deviations.md, 2026-07-30), enforced by
+# test_id_schema.py::test_shipped_specs_match_area_codes.
+#
+# The two plan-section-4.4/4.5 axes are set from measurement, not from the plan:
+#
+# * ``anwendungsbereiche_status`` -- ``item_flags`` means "every item carries a
+#   real ``verbindlich`` flag" (schema/kompetenzen.schema.json). The
+#   ``allenfalls`` marker that produces that flag is SEK1.M-only (measured, see
+#   ``allenfalls_pruefen``), so the four subjects that *do* have an
+#   Anwendungsbereiche section are ``optional_sektion``, not ``item_flags`` --
+#   claiming the latter would advertise a binding split that is always 0/N.
+#   PRIM.M gets ``keine`` per FINDINGS V-24: it has no such section at all.
+# * ``lehrstoff_quelle`` -- discriminated by the section heading itself
+#   (fixtures, measured 2026-08-02): the four subjects whose heading reads
+#   ``Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff`` carry their
+#   Lehrstoff in the Anwendungsbereiche items (``aus_anwendungsbereichen``, as
+#   SEK1.M). PRIM.M's heading is ``Kompetenzbeschreibungen, Lehrstoff`` with no
+#   Anwendungsbereiche, so its Lehrstoff is separately stated
+#   (``eigen_ausgewiesen``). Extracting that Lehrstoff text is not implemented
+#   here -- the axis records where it lives, which is what E4 dispatches on.
+# ---------------------------------------------------------------------------
+
+SEK1_DEUTSCH = SubjectSpec(
+    band="SEK1",
+    fach_code="D",
+    fach_ueberschrift="DEUTSCH",
+    teil_ueberschrift="ACHTER TEIL",
+    stufen_praefix="K",
+    kompetenz_sektion_re=KOMBINIERTE_SEKTION_RE,
+    anwendung_sektion_re=None,
+    bereich_re=AREA_UNNUMMERIERT_RE,
+    bereich_slugs=id_schema.bereich_codes("SEK1", "D"),
+    anwendungsbereiche_status="optional_sektion",
+    lehrstoff_quelle="aus_anwendungsbereichen",
+    anwendungsbereiche_bindung="bereich",
+)
+
+SEK1_FREMDSPRACHE = SubjectSpec(
+    band="SEK1",
+    fach_code="E",
+    fach_ueberschrift="(ERSTE) LEBENDE FREMDSPRACHE",
+    teil_ueberschrift="ACHTER TEIL",
+    stufen_praefix="K",
+    kompetenz_sektion_re=KOMBINIERTE_SEKTION_RE,
+    anwendung_sektion_re=None,
+    bereich_re=AREA_UNNUMMERIERT_RE,
+    bereich_slugs=id_schema.bereich_codes("SEK1", "E"),
+    anwendungsbereiche_status="optional_sektion",
+    lehrstoff_quelle="aus_anwendungsbereichen",
+    anwendungsbereiche_bindung="prosa",
+)
+
+PRIM_DEUTSCH = SubjectSpec(
+    band="PRIM",
+    fach_code="D",
+    fach_ueberschrift="DEUTSCH",
+    teil_ueberschrift="NEUNTER TEIL",
+    stufen_praefix="SCH",
+    kompetenz_sektion_re=KOMBINIERTE_SEKTION_RE,
+    anwendung_sektion_re=None,
+    bereich_re=AREA_UNNUMMERIERT_RE,
+    bereich_slugs=id_schema.bereich_codes("PRIM", "D"),
+    anwendungsbereiche_status="optional_sektion",
+    lehrstoff_quelle="aus_anwendungsbereichen",
+    anwendungsbereiche_bindung="stufe",
+)
+
+PRIM_MATHEMATIK = SubjectSpec(
+    band="PRIM",
+    fach_code="M",
+    fach_ueberschrift="MATHEMATIK",
+    teil_ueberschrift="NEUNTER TEIL",
+    stufen_praefix="SCH",
+    kompetenz_sektion_re=KOMBINIERTE_SEKTION_RE,
+    anwendung_sektion_re=None,
+    bereich_re=AREA_SCHLICHT_RE,
+    bereich_slugs=id_schema.bereich_codes("PRIM", "M"),
+    anwendungsbereiche_status="keine",
+    lehrstoff_quelle="eigen_ausgewiesen",
+    anwendungsbereiche_bindung="keine",
+)
+
+PRIM_SACHUNTERRICHT = SubjectSpec(
+    band="PRIM",
+    fach_code="SU",
+    fach_ueberschrift="SACHUNTERRICHT",
+    teil_ueberschrift="NEUNTER TEIL",
+    stufen_praefix="SCH",
+    kompetenz_sektion_re=KOMBINIERTE_SEKTION_RE,
+    anwendung_sektion_re=None,
+    bereich_re=AREA_ADJEKTIV_RE,
+    bereich_slugs=id_schema.bereich_codes("PRIM", "SU"),
+    anwendungsbereiche_status="optional_sektion",
+    lehrstoff_quelle="aus_anwendungsbereichen",
+    anwendungsbereiche_bindung="stufe",
+)
+
+#: Registry keyed ``<BAND>.<FACH>`` -- all six shards (E12-08).
 SUBJECT_SPECS: dict[str, SubjectSpec] = {
     "SEK1.M": SEK1_MATHEMATIK,
+    "SEK1.D": SEK1_DEUTSCH,
+    "SEK1.E": SEK1_FREMDSPRACHE,
+    "PRIM.D": PRIM_DEUTSCH,
+    "PRIM.M": PRIM_MATHEMATIK,
+    "PRIM.SU": PRIM_SACHUNTERRICHT,
 }
 
 
@@ -2045,6 +2181,7 @@ def result_to_dict(result: ParseResult) -> dict:
             "band": result.spec.band,
             "fach": {"code": result.spec.fach_code, "name": result.fach_name},
             "anwendungsbereiche_status": result.spec.anwendungsbereiche_status,
+            "anwendungsbereiche_bindung": result.spec.anwendungsbereiche_bindung,
             "lehrstoff_quelle": result.spec.lehrstoff_quelle,
             "uebergreifende_themen_fach": result.uebergreifende_themen_fach,
             "uebergreifende_themen_legende": result.themen_map,
@@ -2053,9 +2190,26 @@ def result_to_dict(result: ParseResult) -> dict:
         "kompetenzbereiche": [dataclasses.asdict(b) for b in result.bereiche],
         "kompetenzen": [dataclasses.asdict(k) for k in result.kompetenzen],
         "anwendungsitems": [dataclasses.asdict(a) for a in result.anwendungsitems],
+        "anwendungsbereiche_bloecke": [_block_to_dict(b) for b in result.bloecke],
         "zusatzbloecke": result.zusatzbloecke,
         "issues": result.issues.as_dicts(),
     }
+
+
+def _block_to_dict(block: Anwendungsblock) -> dict:
+    """One :class:`Anwendungsblock` as flat data.
+
+    ``items`` is emitted as a list of item **ids**, not as nested item objects:
+    every item already appears in full under the sibling ``anwendungsitems``
+    key, and nesting the bodies here would duplicate the entire application
+    payload in the parser's serialisation. The ids preserve block membership
+    and ordering, which is the whole point of exposing blocks for the
+    ``bindung: bereich``/``stufe`` shards -- there the block, not the
+    competence, is what items attach to (E-P3; deviations.md, 2026-07-30).
+    """
+    d = dataclasses.asdict(block)
+    d["items"] = [item.id for item in block.items]
+    return d
 
 
 #: Measured on NOR40271471 (Mittelschule, in force 2025-09-01), Sek I Mathematik.
@@ -2139,6 +2293,32 @@ ERWARTET_PRIM_SU = {
 }
 
 
+#: Expected counts per registered spec, so ``--verify`` covers all six shards
+#: rather than only SEK1.M (E12-08). Keys match :data:`SUBJECT_SPECS`.
+ERWARTET_BY_SPEC: dict[str, dict[str, int]] = {
+    "SEK1.M": ERWARTET_SEK1_M,
+    "SEK1.D": ERWARTET_SEK1_D,
+    "SEK1.E": ERWARTET_SEK1_E,
+    "PRIM.D": ERWARTET_PRIM_D,
+    "PRIM.M": ERWARTET_PRIM_M,
+    "PRIM.SU": ERWARTET_PRIM_SU,
+}
+
+#: Which live RIS document each band's subjects are parsed from, so the CLI's
+#: ``--source`` default follows ``--spec`` instead of always pointing at the
+#: Mittelschule file. Volksschule is NOR40271469, Mittelschule NOR40271471.
+BAND_QUELLEN: dict[str, str] = {
+    "SEK1": "resources/mittelschule/NOR40271471.xml",
+    "PRIM": "resources/volksschule/NOR40271469.xml",
+}
+
+
+def default_source(spec_key: str) -> Path:
+    """Live document for *spec_key*, relative to this file."""
+    spec = SUBJECT_SPECS[spec_key]
+    return Path(__file__).resolve().parent / BAND_QUELLEN[spec.band]
+
+
 def actual_counts(result: ParseResult) -> dict[str, int]:
     return {
         "kompetenzen": len(result.kompetenzen),
@@ -2152,8 +2332,8 @@ def actual_counts(result: ParseResult) -> dict[str, int]:
 
 def _cli(argv: Sequence[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    here = Path(__file__).resolve().parent
-    ap.add_argument("--source", default=str(here / "resources/mittelschule/NOR40271471.xml"))
+    ap.add_argument("--source", default=None,
+                    help="XML to parse; defaults to the live document for --spec's band")
     ap.add_argument("--spec", default="SEK1.M", choices=sorted(SUBJECT_SPECS))
     ap.add_argument("--out", help="write JSON here instead of stdout")
     ap.add_argument("--summary", action="store_true", help="print counts instead of JSON")
@@ -2164,12 +2344,13 @@ def _cli(argv: Sequence[str] | None = None) -> int:
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.ERROR,
                         format="%(levelname)s %(message)s")
 
-    result = parse_lehrplan(args.source, SUBJECT_SPECS[args.spec])
+    quelle = Path(args.source) if args.source else default_source(args.spec)
+    result = parse_lehrplan(quelle, SUBJECT_SPECS[args.spec])
     ist = actual_counts(result)
 
     if args.summary or args.verify:
-        soll = ERWARTET_SEK1_M if args.spec == "SEK1.M" else {}
-        print(f"{args.spec}  {Path(args.source).name}")
+        soll = ERWARTET_BY_SPEC.get(args.spec, {})
+        print(f"{args.spec}  {quelle.name}")
         for key, wert in ist.items():
             erw = soll.get(key)
             mark = "" if erw is None else ("  OK" if erw == wert else f"  MISMATCH (erwartet {erw})")
@@ -2183,7 +2364,9 @@ def _cli(argv: Sequence[str] | None = None) -> int:
         for issue in result.issues:
             print(f"    {issue}")
         if args.verify:
-            soll = ERWARTET_SEK1_M
+            if not soll:
+                print(f"VERIFY FAILED: no expected counts for {args.spec}", file=sys.stderr)
+                return 1
             bad = {k: (v, ist[k]) for k, v in soll.items() if ist.get(k) != v}
             if bad or result.join_stats["unmatched"]:
                 print("VERIFY FAILED", bad, file=sys.stderr)

@@ -73,11 +73,35 @@ def test_sek1_mathematik_codes_reused_verbatim_from_the_parser():
     assert S.AREA_CODES["SEK1.M"]["Variablen und Funktionen"] == "VARIABLEN"
     assert S.AREA_CODES["SEK1.M"]["Figuren und Körper"] == "FIGUREN"
     assert S.AREA_CODES["SEK1.M"]["Daten und Zufall"] == "DATEN"
-    # And match parse_lehrplan.py's own table exactly (not just by value).
-    assert S.AREA_CODES["SEK1.M"]["Zahlen und Maße"] == P.SEK1_MATHEMATIK.bereich_slugs["Zahlen und Maße"]
-    assert S.AREA_CODES["SEK1.M"]["Variablen und Funktionen"] == P.SEK1_MATHEMATIK.bereich_slugs["Variablen und Funktionen"]
-    assert S.AREA_CODES["SEK1.M"]["Figuren und Körper"] == P.SEK1_MATHEMATIK.bereich_slugs["Figuren und Körper"]
-    assert S.AREA_CODES["SEK1.M"]["Daten und Zufall"] == P.SEK1_MATHEMATIK.bereich_slugs["Daten und Zufall"]
+    # Whole-table agreement with the parser is asserted for all six shards in
+    # test_shipped_specs_match_area_codes below.
+
+
+def test_shipped_specs_match_area_codes():
+    """Decision D2's follow-on guard (notes/deviations.md, 2026-07-30).
+
+    Every shipped ``SubjectSpec`` must take ``bereich_slugs`` from
+    ``id_schema.bereich_codes()`` by import, so the frozen area-code table and
+    the parser's lookup table cannot drift. Whole-dict equality, not key-by-key:
+    a hand-copied dict that merely happens to agree today would still pass a
+    per-key check while being free to diverge tomorrow.
+
+    Note this is equality with the *complete* table, including SEK1.M's
+    synthetic ``GZINTEGRATIV`` entry. That is correct and inert: ``bereich_slugs``
+    is a name->code lookup consulted only for headings matched by ``bereich_re``,
+    and the GZ heading is recognised by ``GZ_INTEGRATIV_RE`` into a dedicated
+    state with a fixed area (FINDINGS V-57). ``ParseResult.bereiche`` is what
+    stays at four, faithful to the regulation.
+    """
+    assert set(P.SUBJECT_SPECS) == set(S.AREA_CODES) == {
+        "SEK1.M", "SEK1.D", "SEK1.E", "PRIM.D", "PRIM.M", "PRIM.SU",
+    }
+    for schluessel, spec in P.SUBJECT_SPECS.items():
+        assert spec.bereich_slugs == S.AREA_CODES[schluessel], schluessel
+        # ... and is the very object bereich_codes() hands out, not a copy that
+        # happens to compare equal.
+        assert spec.bereich_slugs == S.bereich_codes(spec.band, spec.fach_code)
+        assert f"{spec.band}.{spec.fach_code}" == schluessel
 
 
 def test_gzintegrativ_code_reused_verbatim_from_the_parser():

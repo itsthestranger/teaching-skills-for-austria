@@ -880,8 +880,11 @@ class TestAbbildungen(unittest.TestCase):
 # Measured 2026-07-29 (notes/deviations.md): outside SEK1.M there is no
 # text-repetition join -- application items attach to their container
 # instead. containment_bindung_mini.xml carries one small synthetic subject
-# per bindung value, each parsed here with its own throwaway SubjectSpec
-# (never added to SUBJECT_SPECS -- that is task P5).
+# per bindung value, each parsed here with its own throwaway SubjectSpec.
+# These stay throwaway on purpose: they exercise the bindung axes against
+# synthetic headings (BEREICHFACH, STUFEFACH, ...) that no real document
+# contains. The five *real* subjects are registered in SUBJECT_SPECS as of
+# E12-08, and TestNewSubjectFixtures below uses those shipped specs directly.
 
 
 def _bindung_spec(fach_ueberschrift: str, bindung: str, **overrides) -> P.SubjectSpec:
@@ -1545,11 +1548,9 @@ class TestNewSubjectFixtures(unittest.TestCase):
         self.assertTrue(all(i.themen_marker_roh for i in markiert))
 
     def test_sek1_deutsch(self):
-        spec = _bindung_spec(
-            "DEUTSCH", "bereich",
-            band="SEK1", fach_code="D", teil_ueberschrift="ACHTER TEIL", stufen_praefix="K",
-        )
+        spec = P.SUBJECT_SPECS["SEK1.D"]
         r = P.parse_lehrplan(SEK1_DEUTSCH, spec)
+        self.assertEqual(spec.anwendungsbereiche_bindung, "bereich")
         self.assertEqual(len(r.bereiche), 4)
         self.assertEqual(len(r.kompetenzen), 40)
         self.assertEqual(len(r.bloecke), 16)
@@ -1596,11 +1597,9 @@ class TestNewSubjectFixtures(unittest.TestCase):
         self.assertIn("Sprachbewusstsein und Sprachreflexion", block_namen)
 
     def test_sek1_fremdsprache(self):
-        spec = _bindung_spec(
-            "(ERSTE) LEBENDE FREMDSPRACHE", "prosa",
-            band="SEK1", fach_code="E", teil_ueberschrift="ACHTER TEIL", stufen_praefix="K",
-        )
+        spec = P.SUBJECT_SPECS["SEK1.E"]
         r = P.parse_lehrplan(SEK1_FREMDSPRACHE, spec)
+        self.assertEqual(spec.anwendungsbereiche_bindung, "prosa")
         self.assertEqual(len(r.bereiche), 4)
         self.assertEqual(len(r.kompetenzen), 37)
         self.assertEqual(len(r.bloecke), 0)
@@ -1612,11 +1611,9 @@ class TestNewSubjectFixtures(unittest.TestCase):
         self.assertEqual(len(r.issues.by_art("anwendungsbereiche_prosa")), 4)
 
     def test_prim_deutsch(self):
-        spec = _bindung_spec(
-            "DEUTSCH", "stufe",
-            band="PRIM", fach_code="D", teil_ueberschrift="NEUNTER TEIL", stufen_praefix="SCH",
-        )
+        spec = P.SUBJECT_SPECS["PRIM.D"]
         r = P.parse_lehrplan(PRIM_DEUTSCH, spec)
+        self.assertEqual(spec.anwendungsbereiche_bindung, "stufe")
         self.assertEqual(len(r.bereiche), 4)
         self.assertEqual(len(r.kompetenzen), 40)
         self.assertEqual(len(r.bloecke), 4)
@@ -1635,12 +1632,9 @@ class TestNewSubjectFixtures(unittest.TestCase):
         self.assertEqual(r.issues.by_art("ab_block_anzahl_unerwartet"), [])
 
     def test_prim_mathematik(self):
-        spec = _bindung_spec(
-            "MATHEMATIK", "keine",
-            band="PRIM", fach_code="M", teil_ueberschrift="NEUNTER TEIL", stufen_praefix="SCH",
-            bereich_re=re.compile(r"^Kompetenzbereich\s+(?P<name>.+)$"),
-        )
+        spec = P.SUBJECT_SPECS["PRIM.M"]
         r = P.parse_lehrplan(PRIM_MATHEMATIK, spec)
+        self.assertEqual(spec.anwendungsbereiche_bindung, "keine")
         self.assertEqual(len(r.bereiche), 4)
         self.assertEqual(len(r.kompetenzen), 40)
         self.assertEqual(len(r.bloecke), 0)
@@ -1649,12 +1643,9 @@ class TestNewSubjectFixtures(unittest.TestCase):
         self._assert_no_kompetenz_id_and_no_collisions(r)
 
     def test_prim_sachunterricht(self):
-        spec = _bindung_spec(
-            "SACHUNTERRICHT", "stufe",
-            band="PRIM", fach_code="SU", teil_ueberschrift="NEUNTER TEIL", stufen_praefix="SCH",
-            bereich_re=re.compile(r"^(?P<name>.+\bKompetenzbereich)$"),
-        )
+        spec = P.SUBJECT_SPECS["PRIM.SU"]
         r = P.parse_lehrplan(PRIM_SACHUNTERRICHT, spec)
+        self.assertEqual(spec.anwendungsbereiche_bindung, "stufe")
         self.assertEqual(len(r.bereiche), 6)
         self.assertEqual(len(r.kompetenzen), 48)
         self.assertEqual(len(r.bloecke), 4)
@@ -1680,6 +1671,77 @@ class TestNewSubjectFixtures(unittest.TestCase):
 # ---------------------------------------------------------------------------
 # End-to-end counts
 # ---------------------------------------------------------------------------
+
+
+class TestShippedSpecRegistry(unittest.TestCase):
+    """E12-08: all six specs registered, --verify wired, source band-aware."""
+
+    def test_all_six_registered(self):
+        self.assertEqual(
+            sorted(P.SUBJECT_SPECS),
+            ["PRIM.D", "PRIM.M", "PRIM.SU", "SEK1.D", "SEK1.E", "SEK1.M"],
+        )
+
+    def test_every_spec_has_expected_counts(self):
+        # --verify must fail loudly rather than silently pass on an empty
+        # table, so every registered spec needs an ERWARTET_BY_SPEC entry.
+        self.assertEqual(set(P.ERWARTET_BY_SPEC), set(P.SUBJECT_SPECS))
+        for schluessel, soll in P.ERWARTET_BY_SPEC.items():
+            with self.subTest(spec=schluessel):
+                self.assertTrue(soll, "empty expected-count table")
+
+    def test_default_source_follows_the_band(self):
+        # The CLI default must not stay pinned to the Mittelschule document:
+        # three of the six subjects live in the Volksschule one.
+        for schluessel, spec in P.SUBJECT_SPECS.items():
+            with self.subTest(spec=schluessel):
+                quelle = P.default_source(schluessel)
+                erwartet = "mittelschule" if spec.band == "SEK1" else "volksschule"
+                self.assertIn(erwartet, quelle.parts)
+
+    def test_primary_and_lower_secondary_use_different_documents(self):
+        self.assertNotEqual(P.default_source("SEK1.M"), P.default_source("PRIM.M"))
+
+
+class TestResultToDictBreadth(unittest.TestCase):
+    """E12-08: the serialisation carries blocks and the binding axis."""
+
+    def test_binding_axis_in_meta(self):
+        spec = P.SUBJECT_SPECS["PRIM.D"]
+        d = P.result_to_dict(P.parse_lehrplan(PRIM_DEUTSCH, spec))
+        self.assertEqual(d["meta"]["anwendungsbereiche_bindung"], "stufe")
+        self.assertEqual(d["meta"]["anwendungsbereiche_status"], "optional_sektion")
+
+    def test_blocks_are_emitted_with_item_ids_not_nested_bodies(self):
+        spec = P.SUBJECT_SPECS["PRIM.D"]
+        r = P.parse_lehrplan(PRIM_DEUTSCH, spec)
+        d = P.result_to_dict(r)
+        bloecke = d["anwendungsbereiche_bloecke"]
+        self.assertEqual(len(bloecke), len(r.bloecke))
+        self.assertEqual(len(bloecke), 4)
+        # Membership is preserved as ids; the bodies live once, under
+        # 'anwendungsitems'. Nesting them here would duplicate the whole
+        # application payload in the parser's serialisation.
+        flach = [i for b in bloecke for i in b["items"]]
+        self.assertTrue(all(isinstance(i, str) for i in flach))
+        self.assertEqual(sorted(flach), sorted(i["id"] for i in d["anwendungsitems"]))
+
+    def test_serialisation_is_json_round_trippable_for_all_six(self):
+        for schluessel, pfad in (
+            ("SEK1.D", SEK1_DEUTSCH),
+            ("SEK1.E", SEK1_FREMDSPRACHE),
+            ("PRIM.D", PRIM_DEUTSCH),
+            ("PRIM.M", PRIM_MATHEMATIK),
+            ("PRIM.SU", PRIM_SACHUNTERRICHT),
+        ):
+            with self.subTest(spec=schluessel):
+                spec = P.SUBJECT_SPECS[schluessel]
+                d = P.result_to_dict(P.parse_lehrplan(pfad, spec))
+                wieder = json.loads(json.dumps(d, ensure_ascii=False))
+                self.assertEqual(
+                    wieder["meta"]["anwendungsbereiche_bindung"],
+                    spec.anwendungsbereiche_bindung,
+                )
 
 
 class TestMeasuredCounts(unittest.TestCase):
