@@ -16,7 +16,7 @@ Visual design principles:
 Block types (canonical names; legacy aliases accepted, see ALIASES in lesson_common):
   paragraph, labeled, list, h2, h3, callout, table, cards, columns, group, page_break,
   phase_header, fill_in, instructions, workspace, checklist, kompetenzbezug,
-  uebergreifende_themen_tag, niveau_spalte
+  uebergreifende_themen_tag, niveau_spalte, herkunftsblock
 
 Usage:
     python render_lesson_html.py lesson.json -o lesson_preview.html
@@ -37,7 +37,7 @@ from lesson_common import (  # noqa: E402
     btype as _btype, resolve_callout_kind as _resolve_callout_kind,
     answer_profile, expand_document, build_header, preamble_blocks, coerce_marks,
     workspace_height, normalize_text, label_text, label_sep, table_row_height,
-    coerce_headers, coerce_rows, kompetenz_citation, resolve_niveau_kind,
+    coerce_headers, coerce_rows, kompetenz_citation, resolve_niveau_kind, resolve_herkunft,
     split_abbildungen, resolve_abbildung_path, abbildung_missing_marker, abbildung_alt,
 )
 
@@ -322,6 +322,26 @@ def render_block(blk: dict, theme: Theme) -> str:
                          f"<div class=\"niveau-head\"><span class=\"niveau-label\">{md(disp)}"
                          f"</span>{titel}</div>{body}</div>")
         return f"<div class=\"niveau-row\">{''.join(tiers)}</div>"
+    if t == "herkunftsblock":
+        # Origin marking: distinguishes verbatim official-RIS content from teacher-supplied
+        # docs/ material (plan §6.6). Reuses the callout box/icon machinery; the official
+        # branch's citation reuses kompetenz_citation() (the one legal citation format the
+        # project ships), the docs branch gets a plain free-text origin note instead.
+        amtlich, label, icon, slug, _accent = resolve_herkunft(blk)
+        head = (f"<div class=\"co-label\"><span class=\"co-icon\">{icon}</span>"
+                f"<b>{label}</b></div>")
+        body = "".join(render_block(b, theme) for b in blk.get("blocks", []))
+        foot_text = ""
+        if amtlich:
+            cite = kompetenz_citation(blk.get("quelle"))
+            if cite:
+                foot_text = f"Quelle: {cite}"
+        else:
+            hinweis = blk.get("quelle_hinweis")
+            if hinweis:
+                foot_text = f"Herkunft: {hinweis}"
+        foot = f"<p class=\"kb-cite\">{md(foot_text)}</p>" if foot_text else ""
+        return f"<div class=\"co herkunft-{slug}\">{head}{body}{foot}</div>"
     # NEVER dump raw JSON into the page — a printed worksheet with {"type": ...} on it is a
     # blocking print-safety failure (seen in real model output: "list" and "labeled_box").
     if blk.get("text"):

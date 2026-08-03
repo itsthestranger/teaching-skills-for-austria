@@ -78,6 +78,9 @@ def _repair_enum_breaks(blk: dict) -> list[dict]:
         return [dict(blk, niveaus=[
             dict(n, blocks=[rb for b in n.get("blocks", []) for rb in _repair_enum_breaks(b)])
             for n in blk.get("niveaus", [])])]
+    if blk.get("type") == "herkunftsblock":
+        return [dict(blk, blocks=[rb for b in blk.get("blocks", [])
+                                  for rb in _repair_enum_breaks(b)])]
     if blk.get("type") in ("paragraph", "labeled", "callout") and isinstance(blk.get("text"), str):
         fixed = _repair_cap_subparts(_ENUM_MIDPROSE.sub("\n", blk["text"]))
         if fixed != blk["text"]:
@@ -100,6 +103,9 @@ def _repair_inline_bullets(blk: dict) -> list[dict]:
         return [dict(blk, niveaus=[
             dict(n, blocks=[rb for b in n.get("blocks", []) for rb in _repair_inline_bullets(b)])
             for n in blk.get("niveaus", [])])]
+    if blk.get("type") == "herkunftsblock":
+        return [dict(blk, blocks=[rb for b in blk.get("blocks", [])
+                                  for rb in _repair_inline_bullets(b)])]
     if blk.get("type") not in ("paragraph", "labeled") or not isinstance(blk.get("text"), str) \
             or "\n" not in blk["text"]:
         return [blk]
@@ -157,6 +163,9 @@ def _repair_pipe_tables(blk: dict) -> list[dict]:
         return [dict(blk, niveaus=[
             dict(n, blocks=[rb for b in n.get("blocks", []) for rb in _repair_pipe_tables(b)])
             for n in blk.get("niveaus", [])])]
+    if blk.get("type") == "herkunftsblock":
+        return [dict(blk, blocks=[rb for b in blk.get("blocks", [])
+                                  for rb in _repair_pipe_tables(b)])]
     if btype(blk) in ("list", "checklist"):
         # A pipe table inside a bullet item: split the list around it and lift the table out.
         out: list[dict] = []
@@ -394,6 +403,8 @@ def expand_blocks(blocks: list, shared: dict, audience: str = "teacher") -> list
             out.append({**blk, "niveaus": [
                 {**n, "blocks": expand_blocks(n.get("blocks", []), shared, audience)}
                 for n in blk.get("niveaus", [])]})
+        elif btype == "herkunftsblock":
+            out.append({**blk, "blocks": expand_blocks(blk.get("blocks", []), shared, audience)})
         elif btype == "group":
             out.append({**blk, "blocks": expand_blocks(blk.get("blocks", []), shared, audience)})
         else:
@@ -821,6 +832,36 @@ def kompetenz_citation(quelle) -> str:
     if head and tail:
         return f"{head} ({tail})"
     return head or tail
+
+
+# ============================================================================
+# Origin marking (herkunftsblock) — distinguishes verbatim official-RIS content
+# from teacher-supplied `docs/` material, per plan §6.6: "everything from docs/
+# is presented as teacher-supplied and never as official/RIS". The amtlich
+# branch reuses the kompetenz icon/accent (both mean "this is the official
+# regulation text, cite your source" — see kompetenz_citation() above, the one
+# legal citation format the project ships); the docs branch gets its own icon
+# and accent so the two stay distinguishable by icon + label text alone in
+# grayscale print, color being a bonus (same B+W-safe principle as every other
+# callout kind in CALLOUT_KINDS).
+# ============================================================================
+
+HERKUNFT_ICON = {True: CALLOUT_KINDS["kompetenz"][0], False: "\U0001F4C1"}  # "\U0001F4C1" = folder
+HERKUNFT_LABEL = {True: "Amtliche Quelle (RIS)", False: "Lehrkraft-Material (nicht amtlich)"}
+HERKUNFT_SLUG = {True: "amtlich", False: "docs"}
+HERKUNFT_ACCENT = {True: "#7A8CC4", False: "#B2652E"}
+
+
+def resolve_herkunft(blk: dict) -> tuple[bool, str, str, str, str]:
+    """Resolve a `herkunftsblock`'s `amtlich` field to (amtlich, label, icon, css
+    slug, accent color). Only `amtlich is True` renders as official RIS content;
+    any other value — False, missing, None, or a stray non-bool the model wrote —
+    renders as teacher-supplied. Origin marking must never default to claiming
+    official status when the flag is absent or ambiguous: a reader who cannot
+    tell must be shown "not official", never the reverse."""
+    amtlich = blk.get("amtlich") is True
+    return (amtlich, HERKUNFT_LABEL[amtlich], HERKUNFT_ICON[amtlich],
+            HERKUNFT_SLUG[amtlich], HERKUNFT_ACCENT[amtlich])
 
 
 # ============================================================================

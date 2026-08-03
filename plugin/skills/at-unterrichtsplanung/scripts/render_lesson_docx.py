@@ -25,7 +25,7 @@ from lesson_common import (  # noqa: E402
     Theme, CALLOUT_KINDS, FILL_IN_CHARS, btype as _btype,
     resolve_callout_kind, answer_profile, build_header, expand_document, coerce_marks,
     md_tokens, workspace_height, label_text, label_sep, table_row_height, preamble_blocks,
-    coerce_headers, coerce_rows, kompetenz_citation, resolve_niveau_kind,
+    coerce_headers, coerce_rows, kompetenz_citation, resolve_niveau_kind, resolve_herkunft,
     split_abbildungen, resolve_abbildung_path, abbildung_missing_marker, ABB_HEIGHT_RATIO,
 )
 
@@ -526,6 +526,39 @@ def _emit_niveau_spalte(doc, blk, theme):
     doc.add_paragraph(style="LC Spacer")
 
 
+def _emit_herkunftsblock(doc, blk, theme):
+    """Origin-marking wrapper: visually distinguishes verbatim official-RIS content
+    from teacher-supplied `docs/` material (plan §6.6). Reuses the callout box; a
+    colored left border (same mechanism as niveau_spalte's tier accents) is a second,
+    color-based signal on top of the icon + label text that already carries the
+    distinction in B+W print. The official branch's citation reuses kompetenz_citation()
+    — the one legal citation format the project ships, never a second invented one."""
+    amtlich, label, icon, _slug, accent = resolve_herkunft(blk)
+    cell = _box(doc, theme)
+    _cell_borders(cell, ["left"], color=accent.lstrip("#"), sz="24")
+    lp = cell.paragraphs[0]
+    lp.add_run(icon + "  ")
+    lp.add_run(label).bold = True
+    for b in blk.get("blocks", []):
+        emit_block(cell, b, theme)
+    foot = ""
+    if amtlich:
+        cite = kompetenz_citation(blk.get("quelle"))
+        if cite:
+            foot = f"Quelle: {cite}"
+    else:
+        hinweis = blk.get("quelle_hinweis")
+        if hinweis:
+            foot = f"Herkunft: {hinweis}"
+    if foot:
+        cp = cell.add_paragraph()
+        r = cp.add_run(foot)
+        r.italic = True
+        r.font.size = Pt(8.5)
+        r.font.color.rgb = _hex_rgb(theme.safe("muted"))
+    doc.add_paragraph(style="LC Spacer")
+
+
 def _emit_source_card(doc, blk, theme):
     head = " · ".join(str(blk.get(k))
                       for k in ("title", "author", "date", "origin") if blk.get(k))
@@ -692,6 +725,7 @@ _EMITTERS = {
     "kompetenzbezug": _emit_kompetenzbezug,
     "uebergreifende_themen_tag": _emit_themen_tags,
     "niveau_spalte": _emit_niveau_spalte,
+    "herkunftsblock": _emit_herkunftsblock,
 }
 
 

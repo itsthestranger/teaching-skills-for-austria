@@ -44,6 +44,15 @@ ul.check{list-style:none;padding-left:4pt}ul.check li:before{content:"\2610  "}
 .kb-quote{font-style:italic;margin:2pt 0 6pt}
 .kb-cite{color:var(--muted);font-size:8pt;margin:0}
 
+/* --- origin marking (herkunftsblock: official RIS vs teacher-supplied docs/) --
+   Left-border accent (like .niveau's tier borders) is a second, color-based signal
+   on top of the icon + label text that already carries the distinction in B+W
+   print. .herkunft-amtlich shares the kompetenz accent (both mean "official,
+   verbatim, cited"); .herkunft-docs gets its own hue so the two are never
+   visually confusable. */
+.co.herkunft-amtlich{border-color:#7A8CC4;border-left:3pt solid #7A8CC4;background:#F5F6FB}
+.co.herkunft-docs{border-color:#B2652E;border-left:3pt solid #B2652E;background:#FBF1E8}
+
 /* --- inline formula images (⟦ABB:...⟧ glyphs embedded in a kompetenzbezug quote) ---
    Source images are 17px @ 96dpi = 12.75pt at the 10.5pt reference body size, ≈1.214x
    the type size (matches lesson_common.ABB_HEIGHT_RATIO) — sized off the current

@@ -142,6 +142,10 @@
         "text": "Gruppe Grün teilt 5 Muffins auf 6 Kinder auf. Gruppe Gelb teilt 4 Muffins auf 5 Kinder auf. Mia sagt, Gruppe Grün bekommt mehr, weil 5 mehr ist als 4. Vergleiche die Anteile pro Kind. Wer hat recht, und warum? Verwende in deiner Antwort das Wort **Anteil**."
       }
     },
+    "lehrkraft_merkblatt": {
+      "type": "paragraph",
+      "text": "Bruchstreifen falten: Papierstreifen so oft falten, wie der Nenner sagt, und so viele Teile einfärben, wie der Zähler sagt."
+    },
     "exit_sort": {
       "type": "cards",
       "items": [
@@ -192,6 +196,34 @@
               "themen": [
                 "Informatische Bildung",
                 "Medienbildung"
+              ]
+            },
+            {
+              "type": "herkunftsblock",
+              "amtlich": true,
+              "quelle": {
+                "kurztitel": "Lehrpläne der Mittelschulen",
+                "nor": "NOR40271471",
+                "kundmachung": "BGBl. II Nr. 185/2012 idF BGBl. II Nr. 178/2025",
+                "teil": "ACHTER TEIL",
+                "stand": "2026-07-27"
+              },
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "Der Lehrplan ordnet die Bruchrechnung dem Kompetenzbereich 'Zahlen und Maße' zu und verlangt den sicheren Vergleich von Brüchen bis zum Ende der 2. Klasse."
+                }
+              ]
+            },
+            {
+              "type": "herkunftsblock",
+              "amtlich": false,
+              "quelle_hinweis": "docs/mathematik/K2/bruch_merkblatt.md",
+              "blocks": [
+                {
+                  "type": "from_shared",
+                  "key": "lehrkraft_merkblatt"
+                }
               ]
             },
             {

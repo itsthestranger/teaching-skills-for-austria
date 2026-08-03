@@ -1,0 +1,178 @@
+{
+  "shared": {
+    "grade": "2. Klasse",
+    "subject": "Mathematik",
+    "duration": 50,
+    "standard_code": "Lehrplan Mathematik, 2. Klasse - Bruchrechnung",
+    "standard_text": "Schüler:innen verstehen Brüche als Anteile eines Ganzen, bilden gleichwertige Brüche durch Erweitern und Kürzen und vergleichen Brüche miteinander.",
+    "basisaufgabe": {
+      "type": "paragraph",
+      "text": "Vergleiche 3/4 und 2/3. Welcher Bruch ist größer? Begründe mit einem Bruchstreifen oder einem gemeinsamen Nenner."
+    },
+    "lehrkraft_zusatzkarte": {
+      "type": "paragraph",
+      "text": "Zusatzkarte 'Bruchstreifen falten': Papierstreifen so oft falten, wie der Nenner sagt, und so viele Teile einfärben, wie der Zähler sagt."
+    },
+    "wiederholung_vorjahr": {
+      "type": "list",
+      "items": [
+        "Einen Bruch als Anteil eines Ganzen lesen und benennen",
+        "Einfache Brüche mit gleichem Nenner vergleichen"
+      ]
+    }
+  },
+  "documents": [
+    {
+      "id": "differenzierungsplan",
+      "audience": "teacher",
+      "eyebrow": "2. Klasse · Mathematik · Differenzierung",
+      "title": "Bruchvergleich: Differenzierungsplan",
+      "meta": "2. Klasse · 50 Minuten · Bruchrechnung",
+      "sections": [
+        {
+          "heading": "Auf einen Blick",
+          "blocks": [
+            {
+              "type": "from_shared",
+              "key": "standard"
+            },
+            {
+              "type": "kompetenzbezug",
+              "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.01",
+              "text": "Die Schülerinnen und Schüler können Brüche als Anteile eines Ganzen deuten, gleichwertige Brüche durch Erweitern und Kürzen bilden und Brüche der Größe nach vergleichen und ordnen.",
+              "quelle": {
+                "kurztitel": "Lehrpläne der Mittelschulen",
+                "nor": "NOR40271471",
+                "kundmachung": "BGBl. II Nr. 185/2012 idF BGBl. II Nr. 178/2025",
+                "teil": "ACHTER TEIL",
+                "stand": "2026-07-27"
+              }
+            },
+            {
+              "type": "uebergreifende_themen_tag",
+              "themen": [
+                "Informatische Bildung"
+              ]
+            },
+            {
+              "type": "herkunftsblock",
+              "amtlich": true,
+              "quelle": {
+                "kurztitel": "Lehrpläne der Mittelschulen",
+                "nor": "NOR40271471",
+                "kundmachung": "BGBl. II Nr. 185/2012 idF BGBl. II Nr. 178/2025",
+                "teil": "ACHTER TEIL",
+                "stand": "2026-07-27"
+              },
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "Die Differenzierungsachse folgt Standard/Standard AHS gemäß Lehrplan; die vertiefende Stufe verwendet 'allenfalls'-Inhalte, keine eigenständige Standard-AHS-Kennzeichnung je Aufgabe."
+                }
+              ]
+            },
+            {
+              "type": "herkunftsblock",
+              "amtlich": false,
+              "quelle_hinweis": "docs/mathematik/K2/bruch_zusatzkarte.md",
+              "blocks": [
+                {
+                  "type": "group",
+                  "blocks": [
+                    {
+                      "type": "from_shared",
+                      "key": "lehrkraft_zusatzkarte"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "labeled",
+              "label": "Differenzierungsachse",
+              "text": "Standard/Standard AHS (Mathematik Sek I ab 2. Klasse)"
+            }
+          ]
+        },
+        {
+          "heading": "Aufgaben nach Niveau",
+          "blocks": [
+            {
+              "type": "niveau_spalte",
+              "niveaus": [
+                {
+                  "label": "unter",
+                  "titel": "Grundlagen festigen",
+                  "blocks": [
+                    {
+                      "type": "group",
+                      "blocks": [
+                        {
+                          "type": "from_shared",
+                          "key": "wiederholung_vorjahr"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "herkunftsblock",
+                      "amtlich": false,
+                      "quelle_hinweis": "docs/mathematik/K2/foerderkarte_bruchvergleich.md",
+                      "blocks": [
+                        {
+                          "type": "paragraph",
+                          "text": "Förderkarte: gleichnamige Brüche zuerst vergleichen, danach Bruchstreifen für ungleichnamige Brüche einsetzen."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "label": "auf",
+                  "titel": "Standard",
+                  "blocks": [
+                    {
+                      "type": "from_shared",
+                      "key": "basisaufgabe"
+                    },
+                    {
+                      "type": "herkunftsblock",
+                      "amtlich": true,
+                      "quelle": {
+                        "kurztitel": "Lehrpläne der Mittelschulen",
+                        "nor": "NOR40271471",
+                        "kundmachung": "BGBl. II Nr. 185/2012 idF BGBl. II Nr. 178/2025",
+                        "teil": "ACHTER TEIL",
+                        "stand": "2026-07-27"
+                      },
+                      "blocks": [
+                        {
+                          "type": "paragraph",
+                          "text": "Erwartete Kompetenz: Brüche vergleichen und ordnen, wie im Lehrplan für die 2. Klasse gefordert."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "label": "über",
+                  "titel": "Vertiefung",
+                  "blocks": [
+                    {
+                      "type": "paragraph",
+                      "text": "Vergleiche drei Brüche mit unterschiedlichen Nennern gleichzeitig und ordne sie der Größe nach."
+                    },
+                    {
+                      "type": "labeled",
+                      "label": "Allenfalls",
+                      "text": "Bruch mit zweistelligem Nenner: Ordne 5/12, 7/18 und 2/9 der Größe nach."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

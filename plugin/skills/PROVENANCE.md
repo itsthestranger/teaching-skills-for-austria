@@ -72,6 +72,22 @@ The files above were originally verified byte-identical to the pinned upstream c
   `expand_blocks`) so nested `from_shared` references inside a tier expand correctly. Tier
   labels resolve via `resolve_niveau_kind()`, which reuses existing callout accent colors
   (tnote amber / special green / kompetenz indigo) rather than a new palette.
+- A fourth Austrian block type, `herkunftsblock`, was added to both renderers so a reader
+  can never mistake teacher-supplied material for official regulation text:
+  `{"type": "herkunftsblock", "amtlich": true|false, "quelle": {...}|"quelle_hinweis": ...,
+  "blocks": [...]}` wraps an arbitrary block list and labels its origin. Like
+  `niveau_spalte` it nests, so it is threaded through the same four recursive passes in
+  `lesson_common.py` and expands nested `from_shared` references correctly. The official
+  branch reuses `kompetenz_citation()` verbatim rather than inventing a second citation
+  format, and the two origins are distinguished on three independent channels — icon
+  (`§` vs `📁`), German label, and accent colour (indigo `#7A8CC4` vs ochre `#B2652E`,
+  the latter carried in docx as a coloured cell border via the same `_cell_borders`
+  mechanism `niveau_spalte` uses) — so the distinction survives black-and-white print
+  and a docx round-trip.
+  **Fail-safe by design:** `resolve_herkunft()` treats **only** `amtlich is True` as
+  official; `False`, missing, `None`, `1`, `"true"` and any other stray value render as
+  teacher-supplied. Origin marking must never default to claiming official status — a
+  reader who cannot tell is shown "not official", never the reverse.
 - Document type ids: `lesson_plan` → `unterrichtsplanung`, `student_materials` →
   `schueler_material`, `observation_template` → `beobachtungsbogen` are now the agreed
   Austrian names and are used as-is in `references/example_lesson.json`.
