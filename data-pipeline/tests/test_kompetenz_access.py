@@ -786,31 +786,139 @@ def test_finde_differenzierung_callable_gegen_alle_sechs_shards(fach, _bindung):
             "vorklasse_stuetzen",
             "docs_material",
         }
-        assert isinstance(ergebnis["niveaus"], list) and ergebnis["niveaus"]
+        assert isinstance(ergebnis["niveaus"], list)
+        # Before the Sek I axis's K2 metadata boundary, the effective labels
+        # are defined-empty while the verbatim axis still names both labels.
+        if fach.startswith("SEK1.") and k["stufe"] == "K1":
+            assert ergebnis["niveaus"] == []
+            assert ergebnis["achse"]["niveaus"] == ["Standard", "Standard AHS"]
+        else:
+            assert ergebnis["niveaus"] == ergebnis["achse"]["niveaus"]
+            assert ergebnis["niveaus"]
 
 
-def test_finde_differenzierung_achse_ist_subject_correct_ohne_hardcoded_liste():
-    erwartet = {
-        "SEK1.M": "standard_standardplus",
-        "SEK1.D": "standard_standardplus",
-        "SEK1.E": "standard_standardplus",
-        "PRIM.D": "lehrplan_generisch",
-        "PRIM.M": "lehrplan_generisch",
-        "PRIM.SU": "lehrplan_generisch",
+ERWARTETE_VORKLASSE_STUETZEN = {
+    # V-76's public, directed graph count split by direction.  These are the
+    # backward half; every result below must also equal finde_progression,
+    # rather than merely happen to have the same aggregate count.
+    "PRIM.M": 77,
+    "PRIM.D": 84,
+    "PRIM.SU": 72,
+    "SEK1.M": 81,
+    "SEK1.D": 100,
+    "SEK1.E": 70,
+}
+
+
+def test_finde_differenzierung_liest_achse_und_enrichment_aus_dem_meta(monkeypatch):
+    """Changing only metadata changes the public axis and enrichment.
+
+    The second index load inside finde_differenzierung supplies the axis;
+    its subsequent progression lookup may load the index again.
+    """
+    kompetenz_id = "AT.LP23.SEK1.M.FIGUREN.K1.01"
+    assert K.finde_anwendungsbereiche(kompetenz_id, nur_verbindlich=False)
+    original = K._index_laden
+    aufrufe = 0
+    ersatzachse = {
+        "typ": "metadatagesteuert",
+        "niveaus": ["aus-dem-index"],
     }
-    for fach, typ in erwartet.items():
-        k = K.finde_kompetenz(fach)[0]
-        ergebnis = K.finde_differenzierung(k["id"])
-        assert ergebnis["achse"]["typ"] == typ, fach
+
+    def index_mit_ersatzachse(shard_dir):
+        nonlocal aufrufe
+        aufrufe += 1
+        index = original(shard_dir)
+        if aufrufe == 2:
+            return {
+                **index,
+                "meta": {
+                    **index["meta"],
+                    "differenzierungs_achse": ersatzachse,
+                },
+            }
+        return index
+
+    monkeypatch.setattr(K, "_index_laden", index_mit_ersatzachse)
+    ergebnis = K.finde_differenzierung(kompetenz_id)
+    assert aufrufe >= 2
+    assert ergebnis["achse"] == ersatzachse
+    assert ergebnis["niveaus"] == ["aus-dem-index"]
+    # This record has a real allenfalls item, so [] proves the function
+    # branches on enrichment_quelle from metadata rather than SEK1.M.
+    assert ergebnis["enrichment_items"] == []
+
+
+def test_finde_differenzierung_achse_und_label_sind_ueber_alle_sechs_shards_exakt_meta():
+    erwartet = {
+        "SEK1.M": ("standard_standardplus", "K2", ["Standard", "Standard AHS"]),
+        "SEK1.D": ("standard_standardplus", "K2", ["Standard", "Standard AHS"]),
+        "SEK1.E": ("standard_standardplus", "K2", ["Standard", "Standard AHS"]),
+        "PRIM.D": ("lehrplan_generisch", None, ["grundlegend", "erweitert", "vertiefend"]),
+        "PRIM.M": ("lehrplan_generisch", None, ["grundlegend", "erweitert", "vertiefend"]),
+        "PRIM.SU": ("lehrplan_generisch", None, ["grundlegend", "erweitert", "vertiefend"]),
+    }
+    for fach, (typ, gilt_ab_stufe, niveaus) in erwartet.items():
+        index = K._index_laden(K._shard_verzeichnis(fach))
+        achse = index["meta"]["differenzierungs_achse"]
+        erste_kompetenz = K.finde_kompetenz(fach)[0]
+        ergebnis = K.finde_differenzierung(erste_kompetenz["id"])
+        assert achse["typ"] == typ
+        assert achse.get("gilt_ab_stufe") == gilt_ab_stufe
+        assert achse["niveaus"] == niveaus
+        assert ergebnis["achse"] == achse
+        # V-60: these are labels copied from metadata, not Standard-AHS
+        # annotations filtered from individual application items.
+        assert ergebnis["niveaus"] == (
+            [] if gilt_ab_stufe and erste_kompetenz["stufe"] == "K1" else niveaus
+        )
+
+
+def test_finde_differenzierung_gers_ist_sek1_e_only_und_nicht_je_stufe_erfunden():
+    for fach, _bindung in SHARDS:
+        achse = K.finde_differenzierung(K.finde_kompetenz(fach)[0]["id"])["achse"]
+        if fach == "SEK1.E":
+            assert achse["gers"] == {
+                "typ": "gers",
+                "referenzrahmen": "Gemeinsamer Europäischer Referenzrahmen (GeR)",
+                "niveaus": ["A1", "A2", "B1"],
+                "je_stufe_ausgewiesen": False,
+            }
+        else:
+            assert "gers" not in achse
+
+
+def test_finde_differenzierung_niveaus_gelten_in_sek1_erst_ab_k2_und_in_prim_durchgehend():
+    """V-61 boundary: labels are effective only from the axis's K2 start."""
+    k1_ohne_niveaus = 0
+    ab_k2_mit_niveaus = 0
+    for fach, _bindung in SHARDS:
+        for kompetenz in K.finde_kompetenz(fach):
+            ergebnis = K.finde_differenzierung(kompetenz["id"])
+            if fach.startswith("SEK1.") and kompetenz["stufe"] == "K1":
+                assert ergebnis["niveaus"] == []
+                assert ergebnis["achse"]["niveaus"] == ["Standard", "Standard AHS"]
+                k1_ohne_niveaus += 1
+            else:
+                assert ergebnis["niveaus"] == ergebnis["achse"]["niveaus"]
+                if fach.startswith("SEK1."):
+                    ab_k2_mit_niveaus += 1
+    assert k1_ohne_niveaus == 28
+    assert ab_k2_mit_niveaus == 91
 
 
 def test_finde_differenzierung_enrichment_nur_sek1_m():
-    """V-60: allenfalls-derived enrichment is SEK1.M-only, dispatched on the
-    axis's own enrichment_quelle field."""
-    hat_enrichment = any(
-        K.finde_differenzierung(k["id"])["enrichment_items"] for k in K.finde_kompetenz("SEK1.M")
-    )
-    assert hat_enrichment
+    """V-60: exactly the real allenfalls items, no fabricated enrichment."""
+    anzahl = 0
+    for k in K.finde_kompetenz("SEK1.M"):
+        enrichment = K.finde_differenzierung(k["id"])["enrichment_items"]
+        assert enrichment == K.finde_anwendungsbereiche(k["id"], nur_verbindlich=False)
+        assert all(item["verbindlich"] is False for item in enrichment)
+        # The shipped items expose no invented Standard-AHS/niveau marker.
+        assert all("niveau" not in item and "standard_ahs" not in item for item in enrichment)
+        anzahl += len(enrichment)
+    assert anzahl == 32
+
     for fach, _b in SHARDS:
         if fach == "SEK1.M":
             continue
@@ -818,11 +926,26 @@ def test_finde_differenzierung_enrichment_nur_sek1_m():
             assert K.finde_differenzierung(k["id"])["enrichment_items"] == []
 
 
-def test_finde_differenzierung_gers_axis_present_only_for_sek1_e_and_not_per_stufe():
-    k = K.finde_kompetenz("SEK1.E")[0]
-    achse = K.finde_differenzierung(k["id"])["achse"]
-    assert "gers" in achse
-    assert achse["gers"]["je_stufe_ausgewiesen"] is False
+@pytest.mark.parametrize("fach,_bindung", SHARDS)
+def test_finde_differenzierung_vorklasse_stuetzen_sind_exakt_die_reichen_e4_03_vorgaenger(fach, _bindung):
+    """No raw Wiederholen item may replace a predecessor competence.
+
+    This is exhaustive over every shipped competence.  It catches the old
+    SEK1.M-only mixed result type where 16 text-triggered application items
+    displaced their positionally resolved predecessor competences.
+    """
+    anzahl = 0
+    for kompetenz in K.finde_kompetenz(fach):
+        stuetzen = K.finde_differenzierung(kompetenz["id"])["vorklasse_stuetzen"]
+        assert [k["id"] for k in stuetzen] == [
+            k["id"] for k in K.finde_progression(kompetenz["id"], "zurueck")
+        ]
+        for stuetze in stuetzen:
+            assert stuetze["volltext"] == f"{stuetze['stammsatz']} {stuetze['text']}"
+            assert stuetze["provenienz"]["quelle"] == "RIS Bundesrecht konsolidiert"
+            assert stuetze["provenienz"]["nor"]
+        anzahl += len(stuetzen)
+    assert anzahl == ERWARTETE_VORKLASSE_STUETZEN[fach]
 
 
 # ---------------------------------------------------------------------------

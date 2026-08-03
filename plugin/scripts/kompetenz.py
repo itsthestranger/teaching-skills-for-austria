@@ -63,6 +63,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from pathlib import Path
 from typing import Any
 
@@ -1154,6 +1155,27 @@ def finde_uebergreifende_themen(
 # ---------------------------------------------------------------------------
 
 
+def _stufe_liegt_ab(stufe: str, grenze: str) -> bool:
+    """Whether a stage is on/after a metadata-declared stage boundary.
+
+    Shipped stages use a textual family plus an ordinal (``K1``..``K4`` or
+    ``SCH1``..``SCH4``).  A boundary is meaningful only within its own
+    family; unknown or incompatible forms are conservatively inactive
+    rather than silently exposing labels too early.
+    """
+    muster = re.compile(r"^([A-Z]+)([1-9][0-9]*)$")
+    aktuell = muster.fullmatch(stufe.upper())
+    ab = muster.fullmatch(grenze.upper())
+    if aktuell is None or ab is None or aktuell.group(1) != ab.group(1):
+        LOGGER.warning(
+            "Ungültige oder inkompatible Differenzierungsstufen: %r ab %r",
+            stufe,
+            grenze,
+        )
+        return False
+    return int(aktuell.group(2)) >= int(ab.group(2))
+
+
 def finde_differenzierung(kompetenz_id: str) -> dict[str, Any]:
     """``{achse, niveaus[], enrichment_items[], vorklasse_stuetzen[],
     docs_material[]}``, read from ``meta.differenzierungs_achse`` -- never
@@ -1165,7 +1187,10 @@ def finde_differenzierung(kompetenz_id: str) -> dict[str, Any]:
     ``je_stufe_ausgewiesen`` is ``False`` -- its A1/A2/B1 list is a
     subject-level statement, not a per-class-year mapping, and this
     function does not pretend otherwise). ``niveaus`` are labels (V-60),
-    never a per-item filter.
+    never a per-item filter.  They are the labels effective at the queried
+    competence's stage: if the verbatim metadata has ``gilt_ab_stufe`` they
+    are ``[]`` before that boundary (K1 for the Sek I axis) and the axis's
+    labels at/after it; ``achse`` itself always remains verbatim metadata.
 
     ``enrichment_items`` is the ``allenfalls`` content -- **only present at
     all when the axis itself carries ``enrichment_quelle: "allenfalls"``**,
@@ -1174,12 +1199,13 @@ def finde_differenzierung(kompetenz_id: str) -> dict[str, Any]:
     tier elsewhere is skill-authored elaboration on binding text, not a
     dataset query (V-60).
 
-    ``vorklasse_stuetzen`` favours the explicit "Wiederholen und Festigen"
-    backlinks (``Anwendungsitem.wiederholung_von``, SEK1.M-only, V-10/V-30)
-    when any exist for this competence; otherwise it falls back to the
-    positional predecessor competence(s) (:func:`finde_progression`,
-    ``richtung="zurueck"``), which is available for every shard because
-    progression is a clean area x year grid everywhere (V-30).
+    ``vorklasse_stuetzen`` is always the positional predecessor
+    competence(s) (:func:`finde_progression`, ``richtung="zurueck"``),
+    which is available for every shard because progression is a clean area
+    x year grid everywhere (V-30).  SEK1.M's official "Wiederholen und
+    Festigen" application-item backlinks are evidence for that graph, not
+    a second, mixed-type support result; callers can obtain those items via
+    :func:`finde_anwendungsbereiche`.
 
     ``docs_material`` is whatever :func:`finde_lernaufgaben` finds for this
     competence's fach/stufe in ``docs/`` -- ``[]`` when ``docs/`` is
@@ -1189,21 +1215,26 @@ def finde_differenzierung(kompetenz_id: str) -> dict[str, Any]:
     shard_dir = _shard_verzeichnis(k["fach"])
     index = _index_laden(shard_dir)
     achse = index["meta"]["differenzierungs_achse"]
+    gilt_ab_stufe = achse.get("gilt_ab_stufe")
+    niveaus = list(achse.get("niveaus", []))
+    if gilt_ab_stufe and not _stufe_liegt_ab(k["stufe"], gilt_ab_stufe):
+        niveaus = []
 
     enrichment_items: list[dict[str, Any]] = []
     if achse.get("enrichment_quelle") == "allenfalls":
         enrichment_items = finde_anwendungsbereiche(kompetenz_id, nur_verbindlich=False)
 
-    wiederholungen = [i for i in finde_anwendungsbereiche(kompetenz_id) if i.get("wiederholung_von")]
-    vorklasse_stuetzen: list[dict[str, Any]] = (
-        wiederholungen if wiederholungen else finde_progression(kompetenz_id, "zurueck")
-    )
+    # E4-03 establishes one public, positional competence graph for all
+    # six shards.  Do not replace its rich Kompetenz results with raw
+    # SEK1.M application items merely because an official Wiederholen item
+    # carries a matching backlink.
+    vorklasse_stuetzen = finde_progression(kompetenz_id, "zurueck")
 
     docs_material = finde_lernaufgaben(fach=k["fach"], stufe=k["stufe"], kompetenz_id=kompetenz_id)
 
     return {
         "achse": achse,
-        "niveaus": list(achse.get("niveaus", [])),
+        "niveaus": niveaus,
         "enrichment_items": enrichment_items,
         "vorklasse_stuetzen": vorklasse_stuetzen,
         "docs_material": docs_material,
