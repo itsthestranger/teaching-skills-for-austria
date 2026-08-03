@@ -1,0 +1,600 @@
+{
+  "meta": {
+    "lehrplan_fassung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+    "dataset_version": "2026-07-27",
+    "band": "SEK1",
+    "fach": {
+      "code": "D",
+      "name": "Deutsch"
+    },
+    "uebergreifende_themen_fach": [
+      "Bildungs-, Berufs- und Lebensorientierung",
+      "Entrepreneurship Education",
+      "Gesundheitsförderung",
+      "Informatische Bildung",
+      "Interkulturelle Bildung",
+      "Medienbildung",
+      "Politische Bildung",
+      "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "Sexualpädagogik",
+      "Umweltbildung für nachhaltige Entwicklung",
+      "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    ],
+    "uebergreifende_themen_legende": {
+      "1": "Bildungs-, Berufs- und Lebensorientierung",
+      "2": "Entrepreneurship Education",
+      "3": "Gesundheitsförderung",
+      "4": "Informatische Bildung",
+      "5": "Interkulturelle Bildung",
+      "6": "Medienbildung",
+      "7": "Politische Bildung",
+      "8": "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "9": "Sexualpädagogik",
+      "10": "Sprachliche Bildung und Lesen",
+      "11": "Umweltbildung für nachhaltige Entwicklung",
+      "12": "Verkehrs- und Mobilitätsbildung",
+      "13": "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    },
+    "differenzierungs_achse": {
+      "typ": "standard_standardplus",
+      "niveaus": [
+        "Standard",
+        "Standard AHS"
+      ],
+      "gilt_ab_stufe": "K2"
+    },
+    "anwendungsbereiche_status": "optional_sektion",
+    "anwendungsbereiche_bindung": "bereich",
+    "bildungsstandard_bezug": "verordnet",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Lehrpläne der Mittelschulen",
+      "nor": "NOR40271471",
+      "kundmachung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+      "anlage": "Anl. 1",
+      "teil": "ACHTER TEIL",
+      "stand": "2026-07-27"
+    },
+    "anwendungsbereiche_bloecke": {
+      "LESEN.K1": {
+        "bindung": "bereich",
+        "bereich_name": "Lesen",
+        "bereich_slug": "LESEN",
+        "items": [
+          {
+            "id": "AT.LP23.SEK1.D.AB.LESEN.K1.01",
+            "stufe": "K1",
+            "ordinal": 0,
+            "text": "Übungen zur Förderung von Lesefertigkeiten, Vorlesen vorbereiteter Texte",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.LESEN.K1.02",
+            "stufe": "K1",
+            "ordinal": 1,
+            "text": "Lektüre von literarischen und pragmatischen Texten unterschiedlicher Gattungen und Darstellungsformen (auch zu übergreifenden Themen)",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.LESEN.K1.03",
+            "stufe": "K1",
+            "ordinal": 2,
+            "text": "Einsatz von Lesestrategien und Auseinandersetzung mit persönlichen Leseerfahrungen.",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      },
+      "LESEN.K2": {
+        "bindung": "bereich",
+        "bereich_name": "Lesen",
+        "bereich_slug": "LESEN",
+        "items": [
+          {
+            "id": "AT.LP23.SEK1.D.AB.LESEN.K2.01",
+            "stufe": "K2",
+            "ordinal": 0,
+            "text": "Übungen zur Förderung von Lesefertigkeiten, auch unter Einsatz digitaler Lernhilfen;",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.LESEN.K2.02",
+            "stufe": "K2",
+            "ordinal": 1,
+            "text": "Auseinandersetzung mit literarischen und pragmatischen Texten unterschiedlicher Gattungen und Darstellungsformen (auch zu übergreifenden Themen);",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.LESEN.K2.03",
+            "stufe": "K2",
+            "ordinal": 2,
+            "text": "Beschäftigung mit multimedialen und multimodalen Texten (ua. Comics, Graphic Novels, Film) sowie deren Gemachtheit und Wirkung;",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.LESEN.K2.04",
+            "stufe": "K2",
+            "ordinal": 3,
+            "text": "Auseinandersetzung mit der eigenen Lesemotivation und Lesebiografie.",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      },
+      "LESEN.K3": {
+        "bindung": "bereich",
+        "bereich_name": "Lesen",
+        "bereich_slug": "LESEN",
+        "items": [
+          {
+            "id": "AT.LP23.SEK1.D.AB.LESEN.K3.01",
+            "stufe": "K3",
+            "ordinal": 0,
+            "text": "Übungen zum vortragenden und szenischen Lesen;",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.LESEN.K3.02",
+            "stufe": "K3",
+            "ordinal": 1,
+            "text": "Reflexion literarischer und pragmatischer, linearer und nichtlinearer Texte (auch zu übergreifenden Themen);",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.LESEN.K3.03",
+            "stufe": "K3",
+            "ordinal": 2,
+            "text": "Analyse der Kennzeichen, Gemachtheit und Wirkung multimedialer und multimodaler Texte;",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.LESEN.K3.04",
+            "stufe": "K3",
+            "ordinal": 3,
+            "text": "Auseinandersetzung mit der eigenen Lesemotivation und der Lese- und Medienbiografie;",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.LESEN.K3.05",
+            "stufe": "K3",
+            "ordinal": 4,
+            "text": "Vergleich von Informations- und Kommunikationssystemen (Quellenkritik).",
+            "text_roh": "Vergleich von Informations- und Kommunikationssystemen (Quellenkritik).7",
+            "uebergreifende_themen": [
+              "Politische Bildung"
+            ],
+            "themen_marker_roh": [
+              "7"
+            ],
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      },
+      "LESEN.K4": {
+        "bindung": "bereich",
+        "bereich_name": "Lesen",
+        "bereich_slug": "LESEN",
+        "items": [
+          {
+            "id": "AT.LP23.SEK1.D.AB.LESEN.K4.01",
+            "stufe": "K4",
+            "ordinal": 0,
+            "text": "Vergleich, Analyse und Interpretation der ästhetischen Gestaltung und stilistischen Ausdrucksformen literarischer Texte;",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.LESEN.K4.02",
+            "stufe": "K4",
+            "ordinal": 1,
+            "text": "Vergleich, Analyse und Reflexion komplexerer analoger und digitaler pragmatischer Texte (auch zu übergreifenden Themen);",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.LESEN.K4.03",
+            "stufe": "K4",
+            "ordinal": 2,
+            "text": "Kritische Auseinandersetzung mit den persönlichen Lese- und Mediengewohnheiten;",
+            "text_roh": "Kritische Auseinandersetzung mit den persönlichen Lese- und Mediengewohnheiten7;",
+            "uebergreifende_themen": [
+              "Politische Bildung"
+            ],
+            "themen_marker_roh": [
+              "7"
+            ],
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.LESEN.K4.04",
+            "stufe": "K4",
+            "ordinal": 3,
+            "text": "Selbstständige Recherche und Aufbereitung eines komplexen Themas unter Zuhilfenahme vielfältiger Quellen (ua. Bücher, Zeitungen, Zeitschriften, Filme, Videos. digitale Texte).",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      }
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "nummer": null,
+      "slug": "LESEN",
+      "name": "Lesen",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.SEK1.D.LESEN.K1.01",
+          "stufe": "K1",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "sinnerfassend, mit zunehmender Leseflüssigkeit und unter Anwendung geeigneter Lesestrategien lesen und vorlesen, Inhalte entnehmen und darüber kommunizieren;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.D.LESEN.K2.01",
+            "AT.LP23.SEK1.D.LESEN.K2.02",
+            "AT.LP23.SEK1.D.LESEN.K2.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.LESEN.K1.02",
+          "stufe": "K1",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "subjektive und kreative Zugänge zu literarischen Werken in unterschiedlichen künstlerischen Erscheinungsformen (ua. Buch, Film, Theater) finden und zur Anschlusskommunikation nutzen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.D.LESEN.K2.01",
+            "AT.LP23.SEK1.D.LESEN.K2.02",
+            "AT.LP23.SEK1.D.LESEN.K2.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.LESEN.K1.03",
+          "stufe": "K1",
+          "ordinal": 2,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "die Art der Aufbereitung von Beiträgen in unterschiedlichen Mediensystemen erkennen und darüber sprechen.",
+          "text_roh": "die Art der Aufbereitung von Beiträgen in unterschiedlichen Mediensystemen erkennen6 und darüber sprechen.",
+          "uebergreifende_themen": [
+            "Medienbildung"
+          ],
+          "themen_marker_roh": [
+            "6"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.D.LESEN.K2.01",
+            "AT.LP23.SEK1.D.LESEN.K2.02",
+            "AT.LP23.SEK1.D.LESEN.K2.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.LESEN.K2.01",
+          "stufe": "K2",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "sinnerfassend und mit gesteigerter Leseflüssigkeit unterschiedliche Texte und Textformate lesen und vorlesen, dabei mittels Lesestrategien Informationen erschließen und aufbereiten;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.LESEN.K1.01",
+            "AT.LP23.SEK1.D.LESEN.K1.02",
+            "AT.LP23.SEK1.D.LESEN.K1.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.D.LESEN.K3.01",
+            "AT.LP23.SEK1.D.LESEN.K3.02",
+            "AT.LP23.SEK1.D.LESEN.K3.03",
+            "AT.LP23.SEK1.D.LESEN.K3.04"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.LESEN.K2.02",
+          "stufe": "K2",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "die gestalterischen und inhaltlichen Besonderheiten literarischer Texte und Medienformate (ua. Buch, Film, Theater) erkennen, erschließen und über ihre subjektiven Lesarten mit anderen sprechen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.LESEN.K1.01",
+            "AT.LP23.SEK1.D.LESEN.K1.02",
+            "AT.LP23.SEK1.D.LESEN.K1.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.D.LESEN.K3.01",
+            "AT.LP23.SEK1.D.LESEN.K3.02",
+            "AT.LP23.SEK1.D.LESEN.K3.03",
+            "AT.LP23.SEK1.D.LESEN.K3.04"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.LESEN.K2.03",
+          "stufe": "K2",
+          "ordinal": 2,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Beiträge aus unterschiedlichen medialen Quellen recherchieren, ihre Wirkung erkennen und differenzieren, mit Internetquellen sorgsam und dem Datenschutz gemäß umgehen.",
+          "text_roh": "Beiträge aus unterschiedlichen medialen Quellen recherchieren, ihre Wirkung erkennen und differenzieren5, mit Internetquellen sorgsam und dem Datenschutz gemäß umgehen.4, 6",
+          "uebergreifende_themen": [
+            "Interkulturelle Bildung",
+            "Informatische Bildung",
+            "Medienbildung"
+          ],
+          "themen_marker_roh": [
+            "5",
+            "4, 6"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.LESEN.K1.01",
+            "AT.LP23.SEK1.D.LESEN.K1.02",
+            "AT.LP23.SEK1.D.LESEN.K1.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.D.LESEN.K3.01",
+            "AT.LP23.SEK1.D.LESEN.K3.02",
+            "AT.LP23.SEK1.D.LESEN.K3.03",
+            "AT.LP23.SEK1.D.LESEN.K3.04"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.LESEN.K3.01",
+          "stufe": "K3",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "wesentliche Informationen durch bewussten Einsatz geeigneter Strategien aus unterschiedlichen Texten und Textformaten entnehmen, strukturieren und mit eigenem Wissen verknüpfen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.LESEN.K2.01",
+            "AT.LP23.SEK1.D.LESEN.K2.02",
+            "AT.LP23.SEK1.D.LESEN.K2.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.D.LESEN.K4.01",
+            "AT.LP23.SEK1.D.LESEN.K4.02",
+            "AT.LP23.SEK1.D.LESEN.K4.03",
+            "AT.LP23.SEK1.D.LESEN.K4.04"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.LESEN.K3.02",
+          "stufe": "K3",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "eigene Leseinteressen vertiefen, literarische Gattungen unterscheiden, literarästhetische Produkte verstehen und im Hinblick auf die eigene Lebens- und Erfahrungswelt reflektieren;",
+          "text_roh": "eigene Leseinteressen vertiefen, literarische Gattungen unterscheiden, literarästhetische Produkte verstehen und im Hinblick auf die eigene Lebens- und Erfahrungswelt3, 7, 9 reflektieren;",
+          "uebergreifende_themen": [
+            "Gesundheitsförderung",
+            "Politische Bildung",
+            "Sexualpädagogik"
+          ],
+          "themen_marker_roh": [
+            "3, 7, 9"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.LESEN.K2.01",
+            "AT.LP23.SEK1.D.LESEN.K2.02",
+            "AT.LP23.SEK1.D.LESEN.K2.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.D.LESEN.K4.01",
+            "AT.LP23.SEK1.D.LESEN.K4.02",
+            "AT.LP23.SEK1.D.LESEN.K4.03",
+            "AT.LP23.SEK1.D.LESEN.K4.04"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.LESEN.K3.03",
+          "stufe": "K3",
+          "ordinal": 2,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Texte mit Hilfe szenischer Mittel vortragen und darstellen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.LESEN.K2.01",
+            "AT.LP23.SEK1.D.LESEN.K2.02",
+            "AT.LP23.SEK1.D.LESEN.K2.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.D.LESEN.K4.01",
+            "AT.LP23.SEK1.D.LESEN.K4.02",
+            "AT.LP23.SEK1.D.LESEN.K4.03",
+            "AT.LP23.SEK1.D.LESEN.K4.04"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.LESEN.K3.04",
+          "stufe": "K3",
+          "ordinal": 3,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Absichten und Ziele in der Gestaltung von medialen Beiträgen erkennen und einschätzen, Informationssysteme gezielt nutzen und mit digitalen Kommunikationsmedien und Gemeinschaftsforen kritisch umgehen.",
+          "text_roh": "Absichten und Ziele in der Gestaltung von medialen Beiträgen6 erkennen und einschätzen, Informationssysteme gezielt nutzen und mit digitalen Kommunikationsmedien und Gemeinschaftsforen kritisch umgehen.4, 6",
+          "uebergreifende_themen": [
+            "Medienbildung",
+            "Informatische Bildung"
+          ],
+          "themen_marker_roh": [
+            "6",
+            "4, 6"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.LESEN.K2.01",
+            "AT.LP23.SEK1.D.LESEN.K2.02",
+            "AT.LP23.SEK1.D.LESEN.K2.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.D.LESEN.K4.01",
+            "AT.LP23.SEK1.D.LESEN.K4.02",
+            "AT.LP23.SEK1.D.LESEN.K4.03",
+            "AT.LP23.SEK1.D.LESEN.K4.04"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.LESEN.K4.01",
+          "stufe": "K4",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "pragmatische und literarische Texte und Medien in unterschiedlichen Darbietungsformen rezipieren, deren Inhalt, Form und Sprache erschließen und ihre Entstehungszusammenhänge erfassen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.LESEN.K3.01",
+            "AT.LP23.SEK1.D.LESEN.K3.02",
+            "AT.LP23.SEK1.D.LESEN.K3.03",
+            "AT.LP23.SEK1.D.LESEN.K3.04"
+          ],
+          "folge": [],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.LESEN.K4.02",
+          "stufe": "K4",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "eigene Leseinteressen vertiefen, eine dynamische und vielfältige Lesebiografie entwickeln und sich differenziert mit anderen darüber austauschen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.LESEN.K3.01",
+            "AT.LP23.SEK1.D.LESEN.K3.02",
+            "AT.LP23.SEK1.D.LESEN.K3.03",
+            "AT.LP23.SEK1.D.LESEN.K3.04"
+          ],
+          "folge": [],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.LESEN.K4.03",
+          "stufe": "K4",
+          "ordinal": 2,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Texte mit Hilfe szenischer Mittel vortragen, darstellen und mit anderen künstlerischen Ausdrucksformen vergleichen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.LESEN.K3.01",
+            "AT.LP23.SEK1.D.LESEN.K3.02",
+            "AT.LP23.SEK1.D.LESEN.K3.03",
+            "AT.LP23.SEK1.D.LESEN.K3.04"
+          ],
+          "folge": [],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.LESEN.K4.04",
+          "stufe": "K4",
+          "ordinal": 3,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "die Aufbereitung und Gestaltung von Themen und Inhalten medialer Beiträge erkennen und vergleichen und dabei Informationssystemedifferenziert und kritisch nutzen.",
+          "text_roh": "die Aufbereitung und Gestaltung von Themen und Inhalten medialer Beiträge erkennen und vergleichen und dabei Informationssysteme4, 6, 7 differenziert und kritisch nutzen.",
+          "uebergreifende_themen": [
+            "Informatische Bildung",
+            "Medienbildung",
+            "Politische Bildung"
+          ],
+          "themen_marker_roh": [
+            "4, 6, 7 "
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.LESEN.K3.01",
+            "AT.LP23.SEK1.D.LESEN.K3.02",
+            "AT.LP23.SEK1.D.LESEN.K3.03",
+            "AT.LP23.SEK1.D.LESEN.K3.04"
+          ],
+          "folge": [],
+          "abbildungen": []
+        }
+      ]
+    }
+  ]
+}

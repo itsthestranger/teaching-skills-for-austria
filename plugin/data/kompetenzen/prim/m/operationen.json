@@ -1,0 +1,276 @@
+{
+  "meta": {
+    "lehrplan_fassung": "BGBl. Nr. 134/1963 zuletzt geändert durch BGBl. II Nr. 178/2025",
+    "dataset_version": "2026-07-27",
+    "band": "PRIM",
+    "fach": {
+      "code": "M",
+      "name": "Mathematik"
+    },
+    "uebergreifende_themen_fach": [
+      "Bildungs-, Berufs- und Lebensorientierung",
+      "Entrepreneurship Education",
+      "Informatische Bildung",
+      "Interkulturelle Bildung",
+      "Medienbildung",
+      "Politische Bildung",
+      "Sprachliche Bildung und Lesen",
+      "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    ],
+    "uebergreifende_themen_legende": {
+      "1": "Bildungs-, Berufs- und Lebensorientierung",
+      "2": "Entrepreneurship Education",
+      "3": "Gesundheitsförderung",
+      "4": "Informatische Bildung",
+      "5": "Interkulturelle Bildung",
+      "6": "Medienbildung",
+      "7": "Politische Bildung",
+      "8": "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "9": "Sexualpädagogik",
+      "10": "Sprachliche Bildung und Lesen",
+      "11": "Umweltbildung für nachhaltige Entwicklung",
+      "12": "Verkehrs- und Mobilitätsbildung",
+      "13": "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    },
+    "differenzierungs_achse": {
+      "typ": "lehrplan_generisch",
+      "niveaus": [
+        "grundlegend",
+        "erweitert",
+        "vertiefend"
+      ],
+      "quelle": "Kompetenzbeschreibungen + Anwendungsbereiche je Schulstufe",
+      "optional_material": "docs/"
+    },
+    "anwendungsbereiche_status": "keine",
+    "anwendungsbereiche_bindung": "keine",
+    "bildungsstandard_bezug": "verordnet",
+    "lehrstoff_quelle": "eigen_ausgewiesen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Lehrplan der Volksschule",
+      "nor": "NOR40271469",
+      "kundmachung": "BGBl. Nr. 134/1963 zuletzt geändert durch BGBl. II Nr. 178/2025",
+      "anlage": "Anl. 1",
+      "teil": "NEUNTER TEIL",
+      "stand": "2026-07-27"
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "nummer": null,
+      "slug": "OPERATIONEN",
+      "name": "Operationen",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.PRIM.M.OPERATIONEN.SCH1.01",
+          "stufe": "SCH1",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Rechenoperationen im additiven Bereich im Zahlenraum bis mindestens 20 flexibel durchführen.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH2.01",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH2.02",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH2.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.M.OPERATIONEN.SCH1.02",
+          "stufe": "SCH1",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "arithmetische Muster erkennen, beschreiben, fortsetzen und ergänzen.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH2.01",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH2.02",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH2.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.M.OPERATIONEN.SCH1.03",
+          "stufe": "SCH1",
+          "ordinal": 2,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Sachsituationen aus ihrer Lebenswelt modellieren.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH2.01",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH2.02",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH2.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.M.OPERATIONEN.SCH2.01",
+          "stufe": "SCH2",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Rechenoperationen im additiven und multiplikativen Bereich im Zahlenraum 100 flexibel mündlich und halbschriftlich durchführen,",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH1.01",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH1.02",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH1.03"
+          ],
+          "folge": [
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH3.01",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH3.02",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH3.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.M.OPERATIONEN.SCH2.02",
+          "stufe": "SCH2",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "arithmetische Muster erkennen, beschreiben, fortsetzen und ergänzen,",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH1.01",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH1.02",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH1.03"
+          ],
+          "folge": [
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH3.01",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH3.02",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH3.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.M.OPERATIONEN.SCH2.03",
+          "stufe": "SCH2",
+          "ordinal": 2,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "reale bzw. verbal oder bildlich dargestellte Sachsituationen modellieren.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH1.01",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH1.02",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH1.03"
+          ],
+          "folge": [
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH3.01",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH3.02",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH3.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.M.OPERATIONEN.SCH3.01",
+          "stufe": "SCH3",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Rechenoperationen im additiven und multiplikativen Bereich im Zahlenraum 1000 halbschriftlich flexibel durchführen; Ergebnisse durch Runden und durch Überschlagsrechnungen abschätzen.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH2.01",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH2.02",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH2.03"
+          ],
+          "folge": [
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH4.01",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH4.02"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.M.OPERATIONEN.SCH3.02",
+          "stufe": "SCH3",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Additionen, Subtraktionen, Multiplikationen mit einstelligem Multiplikator sowie Divisionen mit einstelligem Divisor im Zahlenraum 1000 schriftlich durchführen.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH2.01",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH2.02",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH2.03"
+          ],
+          "folge": [
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH4.01",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH4.02"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.M.OPERATIONEN.SCH3.03",
+          "stufe": "SCH3",
+          "ordinal": 2,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "vielfältige Sachsituationen modellieren.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH2.01",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH2.02",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH2.03"
+          ],
+          "folge": [
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH4.01",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH4.02"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.M.OPERATIONEN.SCH4.01",
+          "stufe": "SCH4",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Additionen, Subtraktionen, Multiplikationen mit ein- und zweistelligem Multiplikator sowie Divisionen mit ein- und zweistelligem Divisor im Zahlenraum 1 000 000 schriftlich durchführen; Ergebnisse durch Runden und durch Überschlagsrechnungen abschätzen,",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH3.01",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH3.02",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH3.03"
+          ],
+          "folge": [],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.M.OPERATIONEN.SCH4.02",
+          "stufe": "SCH4",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "vielfältige Sachsituationen modellieren; direkt proportionale Zusammenhänge erkennen, tabellarisch darstellen und für Berechnungen nutzen.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH3.01",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH3.02",
+            "AT.LP23.PRIM.M.OPERATIONEN.SCH3.03"
+          ],
+          "folge": [],
+          "abbildungen": []
+        }
+      ]
+    }
+  ]
+}

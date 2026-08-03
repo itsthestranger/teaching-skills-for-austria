@@ -1,0 +1,320 @@
+{
+  "meta": {
+    "lehrplan_fassung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+    "dataset_version": "2026-07-27",
+    "band": "SEK1",
+    "fach": {
+      "code": "E",
+      "name": "(Erste) Lebende Fremdsprache"
+    },
+    "uebergreifende_themen_fach": [
+      "Bildungs-, Berufs- und Lebensorientierung",
+      "Entrepreneurship Education",
+      "Medienbildung",
+      "Politische Bildung",
+      "Sprachliche Bildung und Lesen",
+      "Verkehrs- und Mobilitätsbildung",
+      "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    ],
+    "uebergreifende_themen_legende": {
+      "1": "Bildungs-, Berufs- und Lebensorientierung",
+      "2": "Entrepreneurship Education",
+      "3": "Gesundheitsförderung",
+      "4": "Informatische Bildung",
+      "5": "Interkulturelle Bildung",
+      "6": "Medienbildung",
+      "7": "Politische Bildung",
+      "8": "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "9": "Sexualpädagogik",
+      "10": "Sprachliche Bildung und Lesen",
+      "11": "Umweltbildung für nachhaltige Entwicklung",
+      "12": "Verkehrs- und Mobilitätsbildung",
+      "13": "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    },
+    "differenzierungs_achse": {
+      "typ": "standard_standardplus",
+      "niveaus": [
+        "Standard",
+        "Standard AHS"
+      ],
+      "gilt_ab_stufe": "K2",
+      "gers": {
+        "typ": "gers",
+        "referenzrahmen": "Gemeinsamer Europäischer Referenzrahmen (GeR)",
+        "niveaus": [
+          "A1",
+          "A2",
+          "B1"
+        ],
+        "je_stufe_ausgewiesen": false
+      }
+    },
+    "anwendungsbereiche_status": "optional_sektion",
+    "anwendungsbereiche_bindung": "prosa",
+    "bildungsstandard_bezug": "verordnet",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Lehrpläne der Mittelschulen",
+      "nor": "NOR40271471",
+      "kundmachung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+      "anlage": "Anl. 1",
+      "teil": "ACHTER TEIL",
+      "stand": "2026-07-27"
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "nummer": null,
+      "slug": "SPRECHEN",
+      "name": "Sprechen (an Gesprächen teilnehmen und zusammenhängend sprechen)",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.SEK1.E.SPRECHEN.K1.01",
+          "stufe": "K1",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können zu alltäglichen und persönlichen Themen",
+          "text": "an Gesprächen teilnehmen und sich mit Hilfe des Gesprächspartners auf einfache Art verständigen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.E.SPRECHEN.K2.01",
+            "AT.LP23.SEK1.E.SPRECHEN.K2.02",
+            "AT.LP23.SEK1.E.SPRECHEN.K2.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.E.SPRECHEN.K1.02",
+          "stufe": "K1",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können zu alltäglichen und persönlichen Themen",
+          "text": "einfache Fragen stellen und beantworten;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.E.SPRECHEN.K2.01",
+            "AT.LP23.SEK1.E.SPRECHEN.K2.02",
+            "AT.LP23.SEK1.E.SPRECHEN.K2.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.E.SPRECHEN.K1.03",
+          "stufe": "K1",
+          "ordinal": 2,
+          "stammsatz": "Die Schülerinnen und Schüler können zu alltäglichen und persönlichen Themen",
+          "text": "beim zusammenhängenden Sprechen in einfachen Sätzen über vertraute Themen (ua. Familie, Freunde, Tagesablauf, Hobbys, Schule) sprechen.",
+          "text_roh": "beim zusammenhängenden Sprechen in einfachen Sätzen über vertraute Themen (ua. Familie, Freunde, Tagesablauf, Hobbys, Schule)2, 13 sprechen.",
+          "uebergreifende_themen": [
+            "Entrepreneurship Education",
+            "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+          ],
+          "themen_marker_roh": [
+            "2, 13"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.E.SPRECHEN.K2.01",
+            "AT.LP23.SEK1.E.SPRECHEN.K2.02",
+            "AT.LP23.SEK1.E.SPRECHEN.K2.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.E.SPRECHEN.K2.01",
+          "stufe": "K2",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können in einfachen zusammenhängenden Sätzen",
+          "text": "kurze Gespräche über vertraute Themen führen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.E.SPRECHEN.K1.01",
+            "AT.LP23.SEK1.E.SPRECHEN.K1.02",
+            "AT.LP23.SEK1.E.SPRECHEN.K1.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.E.SPRECHEN.K3.01",
+            "AT.LP23.SEK1.E.SPRECHEN.K3.02",
+            "AT.LP23.SEK1.E.SPRECHEN.K3.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.E.SPRECHEN.K2.02",
+          "stufe": "K2",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können in einfachen zusammenhängenden Sätzen",
+          "text": "in Alltagssituationen einfache Informationen geben, Fragen stellen und Vereinbarungen treffen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.E.SPRECHEN.K1.01",
+            "AT.LP23.SEK1.E.SPRECHEN.K1.02",
+            "AT.LP23.SEK1.E.SPRECHEN.K1.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.E.SPRECHEN.K3.01",
+            "AT.LP23.SEK1.E.SPRECHEN.K3.02",
+            "AT.LP23.SEK1.E.SPRECHEN.K3.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.E.SPRECHEN.K2.03",
+          "stufe": "K2",
+          "ordinal": 2,
+          "stammsatz": "Die Schülerinnen und Schüler können in einfachen zusammenhängenden Sätzen",
+          "text": "über vertraute Themen (ua. Dinge, Orte, Personen) sprechen und dabei auch Gefühle, Vorlieben, Stärken und Meinungen auf einfache Weise ausdrücken.",
+          "text_roh": "über vertraute Themen (ua. Dinge, Orte, Personen) sprechen und dabei auch Gefühle, Vorlieben, Stärken und Meinungen auf einfache Weise ausdrücken.2, 13",
+          "uebergreifende_themen": [
+            "Entrepreneurship Education",
+            "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+          ],
+          "themen_marker_roh": [
+            "2, 13"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.E.SPRECHEN.K1.01",
+            "AT.LP23.SEK1.E.SPRECHEN.K1.02",
+            "AT.LP23.SEK1.E.SPRECHEN.K1.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.E.SPRECHEN.K3.01",
+            "AT.LP23.SEK1.E.SPRECHEN.K3.02",
+            "AT.LP23.SEK1.E.SPRECHEN.K3.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.E.SPRECHEN.K3.01",
+          "stufe": "K3",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können in einfacher Sprache",
+          "text": "ein Gespräch beginnen, weiterführen und beenden sowie einfache Sprecherwechsel durchführen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.E.SPRECHEN.K2.01",
+            "AT.LP23.SEK1.E.SPRECHEN.K2.02",
+            "AT.LP23.SEK1.E.SPRECHEN.K2.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.E.SPRECHEN.K4.01",
+            "AT.LP23.SEK1.E.SPRECHEN.K4.02",
+            "AT.LP23.SEK1.E.SPRECHEN.K4.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.E.SPRECHEN.K3.02",
+          "stufe": "K3",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können in einfacher Sprache",
+          "text": "Vereinbarungen treffen, Ratschläge erbitten und geben, einfache Begründungen, Meinungen und Gefühle ausdrücken und darauf reagieren;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.E.SPRECHEN.K2.01",
+            "AT.LP23.SEK1.E.SPRECHEN.K2.02",
+            "AT.LP23.SEK1.E.SPRECHEN.K2.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.E.SPRECHEN.K4.01",
+            "AT.LP23.SEK1.E.SPRECHEN.K4.02",
+            "AT.LP23.SEK1.E.SPRECHEN.K4.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.E.SPRECHEN.K3.03",
+          "stufe": "K3",
+          "ordinal": 2,
+          "stammsatz": "Die Schülerinnen und Schüler können in einfacher Sprache",
+          "text": "über vertraute Themenbereiche erzählen und einfache (Buch-)Präsentationen halten.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.E.SPRECHEN.K2.01",
+            "AT.LP23.SEK1.E.SPRECHEN.K2.02",
+            "AT.LP23.SEK1.E.SPRECHEN.K2.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.E.SPRECHEN.K4.01",
+            "AT.LP23.SEK1.E.SPRECHEN.K4.02",
+            "AT.LP23.SEK1.E.SPRECHEN.K4.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.E.SPRECHEN.K4.01",
+          "stufe": "K4",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "sich in routinemäßigen Situationen über vertraute Themen ohne große Mühe verständigen (ua. Zustimmung oder Ablehnung ausdrücken, Vorschläge machen, über Pläne reden, Rat erbitten und geben, einfache Begründungen vorbringen, die eigene Meinung und Vermutungen formulieren);",
+          "text_roh": "sich in routinemäßigen Situationen über vertraute Themen ohne große Mühe verständigen (ua. Zustimmung oder Ablehnung ausdrücken, Vorschläge machen, über Pläne reden, Rat erbitten und geben, einfache Begründungen vorbringen, die eigene Meinung und Vermutungen formulieren);2",
+          "uebergreifende_themen": [
+            "Entrepreneurship Education"
+          ],
+          "themen_marker_roh": [
+            "2"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.E.SPRECHEN.K3.01",
+            "AT.LP23.SEK1.E.SPRECHEN.K3.02",
+            "AT.LP23.SEK1.E.SPRECHEN.K3.03"
+          ],
+          "folge": [],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.E.SPRECHEN.K4.02",
+          "stufe": "K4",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "über (Alltags-)Ereignisse und vergangene sowie zukünftige Aktivitäten berichten und dabei auch Meinungen und Gefühle ausdrücken;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.E.SPRECHEN.K3.01",
+            "AT.LP23.SEK1.E.SPRECHEN.K3.02",
+            "AT.LP23.SEK1.E.SPRECHEN.K3.03"
+          ],
+          "folge": [],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.E.SPRECHEN.K4.03",
+          "stufe": "K4",
+          "ordinal": 2,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "einfache Präsentationen zu vertrauten Themen, Büchern, Filmen oder zu Themen und Ideen von persönlichem Interesse halten.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.E.SPRECHEN.K3.01",
+            "AT.LP23.SEK1.E.SPRECHEN.K3.02",
+            "AT.LP23.SEK1.E.SPRECHEN.K3.03"
+          ],
+          "folge": [],
+          "abbildungen": []
+        }
+      ]
+    }
+  ]
+}

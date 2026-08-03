@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "lehrplan_fassung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+    "dataset_version": "2026-07-27",
+    "band": "SEK1",
+    "fach": {
+      "code": "D",
+      "name": "Deutsch"
+    },
+    "uebergreifende_themen_fach": [
+      "Bildungs-, Berufs- und Lebensorientierung",
+      "Entrepreneurship Education",
+      "Gesundheitsförderung",
+      "Informatische Bildung",
+      "Interkulturelle Bildung",
+      "Medienbildung",
+      "Politische Bildung",
+      "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "Sexualpädagogik",
+      "Umweltbildung für nachhaltige Entwicklung",
+      "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    ],
+    "uebergreifende_themen_legende": {
+      "1": "Bildungs-, Berufs- und Lebensorientierung",
+      "2": "Entrepreneurship Education",
+      "3": "Gesundheitsförderung",
+      "4": "Informatische Bildung",
+      "5": "Interkulturelle Bildung",
+      "6": "Medienbildung",
+      "7": "Politische Bildung",
+      "8": "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "9": "Sexualpädagogik",
+      "10": "Sprachliche Bildung und Lesen",
+      "11": "Umweltbildung für nachhaltige Entwicklung",
+      "12": "Verkehrs- und Mobilitätsbildung",
+      "13": "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    },
+    "differenzierungs_achse": {
+      "typ": "standard_standardplus",
+      "niveaus": [
+        "Standard",
+        "Standard AHS"
+      ],
+      "gilt_ab_stufe": "K2"
+    },
+    "anwendungsbereiche_status": "optional_sektion",
+    "anwendungsbereiche_bindung": "bereich",
+    "bildungsstandard_bezug": "verordnet",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Lehrpläne der Mittelschulen",
+      "nor": "NOR40271471",
+      "kundmachung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+      "anlage": "Anl. 1",
+      "teil": "ACHTER TEIL",
+      "stand": "2026-07-27"
+    }
+  },
+  "kompetenzbereiche": [],
+  "zusatzkompetenzen": [],
+  "digitale_technologien_vorschlaege": []
+}

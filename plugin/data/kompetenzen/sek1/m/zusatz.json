@@ -40,10 +40,13 @@
         "Standard",
         "Standard AHS"
       ],
+      "gilt_ab_stufe": "K2",
       "enrichment_quelle": "allenfalls",
       "spiralprinzip_backlinks": true
     },
     "anwendungsbereiche_status": "item_flags",
+    "anwendungsbereiche_bindung": "kompetenz",
+    "bildungsstandard_bezug": "verordnet",
     "lehrstoff_quelle": "aus_anwendungsbereichen",
     "provenienz": {
       "quelle": "RIS Bundesrecht konsolidiert",
@@ -63,6 +66,7 @@
       "bereich_name": "Integrative Führung von Geometrisches Zeichnen",
       "stufe": "K3",
       "ordinal": 0,
+      "stammsatz": "Die Schülerinnen und Schüler können",
       "text": "Grund-, Auf- und Kreuzriss, Schrägrisse und Zentralrisse von geometrischen Objekten lesen, mit unterschiedlichen Methoden herstellen sowie die Raumvorstellung mittels Raumtransformation von geometrischen Objekten weiterentwickeln.",
       "uebergreifende_themen": [],
       "themen_marker_roh": [],
@@ -79,6 +83,7 @@
       "bereich_name": "Integrative Führung von Geometrisches Zeichnen",
       "stufe": "K4",
       "ordinal": 0,
+      "stammsatz": "Die Schülerinnen und Schüler können",
       "text": "Geometrische Objekte in unterschiedlichen Rissen mithilfe von Raumtransformationen und Booleschen Operationen unter Verwendung von Konstruktionszeichnungen und 3D-Software erzeugen und bearbeiten sowie die Raumvorstellung stärken.",
       "uebergreifende_themen": [],
       "themen_marker_roh": [],

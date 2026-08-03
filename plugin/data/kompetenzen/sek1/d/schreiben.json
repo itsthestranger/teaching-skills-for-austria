@@ -1,0 +1,582 @@
+{
+  "meta": {
+    "lehrplan_fassung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+    "dataset_version": "2026-07-27",
+    "band": "SEK1",
+    "fach": {
+      "code": "D",
+      "name": "Deutsch"
+    },
+    "uebergreifende_themen_fach": [
+      "Bildungs-, Berufs- und Lebensorientierung",
+      "Entrepreneurship Education",
+      "Gesundheitsförderung",
+      "Informatische Bildung",
+      "Interkulturelle Bildung",
+      "Medienbildung",
+      "Politische Bildung",
+      "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "Sexualpädagogik",
+      "Umweltbildung für nachhaltige Entwicklung",
+      "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    ],
+    "uebergreifende_themen_legende": {
+      "1": "Bildungs-, Berufs- und Lebensorientierung",
+      "2": "Entrepreneurship Education",
+      "3": "Gesundheitsförderung",
+      "4": "Informatische Bildung",
+      "5": "Interkulturelle Bildung",
+      "6": "Medienbildung",
+      "7": "Politische Bildung",
+      "8": "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "9": "Sexualpädagogik",
+      "10": "Sprachliche Bildung und Lesen",
+      "11": "Umweltbildung für nachhaltige Entwicklung",
+      "12": "Verkehrs- und Mobilitätsbildung",
+      "13": "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    },
+    "differenzierungs_achse": {
+      "typ": "standard_standardplus",
+      "niveaus": [
+        "Standard",
+        "Standard AHS"
+      ],
+      "gilt_ab_stufe": "K2"
+    },
+    "anwendungsbereiche_status": "optional_sektion",
+    "anwendungsbereiche_bindung": "bereich",
+    "bildungsstandard_bezug": "verordnet",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Lehrpläne der Mittelschulen",
+      "nor": "NOR40271471",
+      "kundmachung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+      "anlage": "Anl. 1",
+      "teil": "ACHTER TEIL",
+      "stand": "2026-07-27"
+    },
+    "anwendungsbereiche_bloecke": {
+      "SCHREIBEN.K1": {
+        "bindung": "bereich",
+        "bereich_name": "Schreiben",
+        "bereich_slug": "SCHREIBEN",
+        "items": [
+          {
+            "id": "AT.LP23.SEK1.D.AB.SCHREIBEN.K1.01",
+            "stufe": "K1",
+            "ordinal": 0,
+            "text": "Übungen zur Verbesserung der Schreibfertigkeit;",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.SCHREIBEN.K1.02",
+            "stufe": "K1",
+            "ordinal": 1,
+            "text": "Einsatz unterschiedlicher Textmuster (ua. Erzählen, Beschreiben) zur Produktion analoger und einfacher digitaler Texte;",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.SCHREIBEN.K1.03",
+            "stufe": "K1",
+            "ordinal": 2,
+            "text": "Kreativer Umgang mit Sprache und Schrift.",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      },
+      "SCHREIBEN.K2": {
+        "bindung": "bereich",
+        "bereich_name": "Schreiben",
+        "bereich_slug": "SCHREIBEN",
+        "items": [
+          {
+            "id": "AT.LP23.SEK1.D.AB.SCHREIBEN.K2.01",
+            "stufe": "K2",
+            "ordinal": 0,
+            "text": "freies (auch kreatives) und materialgestütztes Schreiben unter Verwendung von Textbausteinen;",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.SCHREIBEN.K2.02",
+            "stufe": "K2",
+            "ordinal": 1,
+            "text": "Einsatz unterschiedlicher Textmuster (ua. Erzählen, Berichten, Darstellen);",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.SCHREIBEN.K2.03",
+            "stufe": "K2",
+            "ordinal": 2,
+            "text": "Berücksichtigung der Phasen eines Schreibprozesses (Planen, Verfassen, Überarbeiten).",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      },
+      "SCHREIBEN.K3": {
+        "bindung": "bereich",
+        "bereich_name": "Schreiben",
+        "bereich_slug": "SCHREIBEN",
+        "items": [
+          {
+            "id": "AT.LP23.SEK1.D.AB.SCHREIBEN.K3.01",
+            "stufe": "K3",
+            "ordinal": 0,
+            "text": "Kreatives Schreiben auf der Basis literarischer und pragmatischer Texte;",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.SCHREIBEN.K3.02",
+            "stufe": "K3",
+            "ordinal": 1,
+            "text": "Argumentierendes Schreiben als Ausdruck persönlicher Meinungen und Haltungen;",
+            "text_roh": "Argumentierendes Schreiben als Ausdruck persönlicher Meinungen und Haltungen;5, 7",
+            "uebergreifende_themen": [
+              "Interkulturelle Bildung",
+              "Politische Bildung"
+            ],
+            "themen_marker_roh": [
+              "5, 7"
+            ],
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.SCHREIBEN.K3.03",
+            "stufe": "K3",
+            "ordinal": 2,
+            "text": "Einsatz unterschiedlicher Methoden zur Überarbeitung eigener und fremder Texte (Feedbackkultur).",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      },
+      "SCHREIBEN.K4": {
+        "bindung": "bereich",
+        "bereich_name": "Schreiben",
+        "bereich_slug": "SCHREIBEN",
+        "items": [
+          {
+            "id": "AT.LP23.SEK1.D.AB.SCHREIBEN.K4.01",
+            "stufe": "K4",
+            "ordinal": 0,
+            "text": "Textproduktion unter gezieltem Einsatz von Vorgaben und Vorlagen;",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.SCHREIBEN.K4.02",
+            "stufe": "K4",
+            "ordinal": 1,
+            "text": "Argumentatives und analytisches Schreiben, auch auf materialgestützter Basis;",
+            "text_roh": "Argumentatives und analytisches Schreiben, auch auf materialgestützter Basis;7",
+            "uebergreifende_themen": [
+              "Politische Bildung"
+            ],
+            "themen_marker_roh": [
+              "7"
+            ],
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.SCHREIBEN.K4.03",
+            "stufe": "K4",
+            "ordinal": 2,
+            "text": "Einschätzung von Textqualität, Einsatz von wertschätzendem Feedback;",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.SEK1.D.AB.SCHREIBEN.K4.04",
+            "stufe": "K4",
+            "ordinal": 3,
+            "text": "Auseinandersetzung mit Funktion, Vielfalt und Gebrauch von Sprache und Schrift.",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      }
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "nummer": null,
+      "slug": "SCHREIBEN",
+      "name": "Schreiben",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.SEK1.D.SCHREIBEN.K1.01",
+          "stufe": "K1",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Erlebnisse, Erfahrungen und Gedanken verschriftlichen sowie persönliche Beziehungen und Absichten ausdrücken, auch in kreativer Form;",
+          "text_roh": "Erlebnisse, Erfahrungen und Gedanken verschriftlichen sowie persönliche Beziehungen und Absichten ausdrücken2, auch in kreativer Form;",
+          "uebergreifende_themen": [
+            "Entrepreneurship Education"
+          ],
+          "themen_marker_roh": [
+            "2"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.03",
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.04"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.SCHREIBEN.K1.02",
+          "stufe": "K1",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "schriftlich informieren und darstellen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.03",
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.04"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.SCHREIBEN.K1.03",
+          "stufe": "K1",
+          "ordinal": 2,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Textverarbeitungsprogramme zur digitalen Textproduktion einsetzen.",
+          "text_roh": "Textverarbeitungsprogramme zur digitalen Textproduktion einsetzen.4, 6",
+          "uebergreifende_themen": [
+            "Informatische Bildung",
+            "Medienbildung"
+          ],
+          "themen_marker_roh": [
+            "4, 6"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.03",
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.04"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.SCHREIBEN.K2.01",
+          "stufe": "K2",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Schreiben zur Gestaltung von persönlichen Beziehungen, als Mittel der Strukturierung von Gedanken und Inhalten sowie als kreative Ausdrucksform nutzen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K1.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K1.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K1.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.SCHREIBEN.K2.02",
+          "stufe": "K2",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "schriftlich informieren und darstellen, auch auf materialgestützter Basis;",
+          "text_roh": "schriftlich informieren und darstellen, auch auf materialgestützter Basis;7",
+          "uebergreifende_themen": [
+            "Politische Bildung"
+          ],
+          "themen_marker_roh": [
+            "7"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K1.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K1.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K1.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.SCHREIBEN.K2.03",
+          "stufe": "K2",
+          "ordinal": 2,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "einfache Argumente schriftlich formulieren und auf Aussagen anderer sprachlich und inhaltlich angemessen reagieren;",
+          "text_roh": "einfache Argumente schriftlich formulieren und auf Aussagen anderer sprachlich und inhaltlich angemessen reagieren;2",
+          "uebergreifende_themen": [
+            "Entrepreneurship Education"
+          ],
+          "themen_marker_roh": [
+            "2"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K1.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K1.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K1.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.SCHREIBEN.K2.04",
+          "stufe": "K2",
+          "ordinal": 3,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "mit Hilfe von Textverarbeitungsprogrammen Texte gestalten und optimieren, zwischen Möglichkeiten und Anforderungen manuellen und computergestützten Schreibens unterscheiden.",
+          "text_roh": "mit Hilfe von Textverarbeitungsprogrammen Texte gestalten und optimieren4, 6, zwischen Möglichkeiten und Anforderungen manuellen und computergestützten Schreibens unterscheiden.",
+          "uebergreifende_themen": [
+            "Informatische Bildung",
+            "Medienbildung"
+          ],
+          "themen_marker_roh": [
+            "4, 6"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K1.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K1.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K1.03"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.03"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.SCHREIBEN.K3.01",
+          "stufe": "K3",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "aus unterschiedlichen Perspektiven anhand konkreter Vorgaben erzählen und Sprache bewusst als gestaltend-kreatives Element einsetzen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.03",
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.04"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K4.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K4.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K4.03",
+            "AT.LP23.SEK1.D.SCHREIBEN.K4.04"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.SCHREIBEN.K3.02",
+          "stufe": "K3",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "schriftlich informieren und argumentieren, auch auf materialgestützter Basis;",
+          "text_roh": "schriftlich informieren und argumentieren, auch auf materialgestützter Basis;2",
+          "uebergreifende_themen": [
+            "Entrepreneurship Education"
+          ],
+          "themen_marker_roh": [
+            "2"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.03",
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.04"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K4.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K4.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K4.03",
+            "AT.LP23.SEK1.D.SCHREIBEN.K4.04"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.SCHREIBEN.K3.03",
+          "stufe": "K3",
+          "ordinal": 2,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "mit Hilfe von Textverarbeitungsprogrammen und Formatvorgaben multimediale Texte gestalten und optimieren.",
+          "text_roh": "mit Hilfe von Textverarbeitungsprogrammen und Formatvorgaben multimediale Texte gestalten und optimieren.4, 6",
+          "uebergreifende_themen": [
+            "Informatische Bildung",
+            "Medienbildung"
+          ],
+          "themen_marker_roh": [
+            "4, 6"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.03",
+            "AT.LP23.SEK1.D.SCHREIBEN.K2.04"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K4.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K4.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K4.03",
+            "AT.LP23.SEK1.D.SCHREIBEN.K4.04"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.SCHREIBEN.K4.01",
+          "stufe": "K4",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "unterschiedliche Impulse und Vorlagen für eigene pragmatische und kreative Schreibprozesse nutzen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.03"
+          ],
+          "folge": [],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.SCHREIBEN.K4.02",
+          "stufe": "K4",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "zu strittigen Sachverhalten, unter Einbeziehung differenzierter Quellen, argumentierend schreiben und auf Gegenargumente eingehen;",
+          "text_roh": "zu strittigen Sachverhalten, unter Einbeziehung differenzierter Quellen, argumentierend schreiben und auf Gegenargumente eingehen;2, 7",
+          "uebergreifende_themen": [
+            "Entrepreneurship Education",
+            "Politische Bildung"
+          ],
+          "themen_marker_roh": [
+            "2, 7"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.03"
+          ],
+          "folge": [],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.SCHREIBEN.K4.03",
+          "stufe": "K4",
+          "ordinal": 2,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Textverarbeitungsprogramme zur Gestaltung umfangreicherer multimedialer Texte, auch im Team, nutzen;",
+          "text_roh": "Textverarbeitungsprogramme zur Gestaltung umfangreicherer multimedialer Texte, auch im Team, nutzen;4, 6",
+          "uebergreifende_themen": [
+            "Informatische Bildung",
+            "Medienbildung"
+          ],
+          "themen_marker_roh": [
+            "4, 6"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.03"
+          ],
+          "folge": [],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.D.SCHREIBEN.K4.04",
+          "stufe": "K4",
+          "ordinal": 3,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Bedeutungswandel der Schrift und des Schreibens in analogen, digitalen und multimodalen Settings reflektieren.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.01",
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.02",
+            "AT.LP23.SEK1.D.SCHREIBEN.K3.03"
+          ],
+          "folge": [],
+          "abbildungen": []
+        }
+      ]
+    }
+  ]
+}

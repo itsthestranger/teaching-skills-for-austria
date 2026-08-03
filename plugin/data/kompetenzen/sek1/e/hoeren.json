@@ -1,0 +1,186 @@
+{
+  "meta": {
+    "lehrplan_fassung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+    "dataset_version": "2026-07-27",
+    "band": "SEK1",
+    "fach": {
+      "code": "E",
+      "name": "(Erste) Lebende Fremdsprache"
+    },
+    "uebergreifende_themen_fach": [
+      "Bildungs-, Berufs- und Lebensorientierung",
+      "Entrepreneurship Education",
+      "Medienbildung",
+      "Politische Bildung",
+      "Sprachliche Bildung und Lesen",
+      "Verkehrs- und Mobilitätsbildung",
+      "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    ],
+    "uebergreifende_themen_legende": {
+      "1": "Bildungs-, Berufs- und Lebensorientierung",
+      "2": "Entrepreneurship Education",
+      "3": "Gesundheitsförderung",
+      "4": "Informatische Bildung",
+      "5": "Interkulturelle Bildung",
+      "6": "Medienbildung",
+      "7": "Politische Bildung",
+      "8": "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "9": "Sexualpädagogik",
+      "10": "Sprachliche Bildung und Lesen",
+      "11": "Umweltbildung für nachhaltige Entwicklung",
+      "12": "Verkehrs- und Mobilitätsbildung",
+      "13": "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    },
+    "differenzierungs_achse": {
+      "typ": "standard_standardplus",
+      "niveaus": [
+        "Standard",
+        "Standard AHS"
+      ],
+      "gilt_ab_stufe": "K2",
+      "gers": {
+        "typ": "gers",
+        "referenzrahmen": "Gemeinsamer Europäischer Referenzrahmen (GeR)",
+        "niveaus": [
+          "A1",
+          "A2",
+          "B1"
+        ],
+        "je_stufe_ausgewiesen": false
+      }
+    },
+    "anwendungsbereiche_status": "optional_sektion",
+    "anwendungsbereiche_bindung": "prosa",
+    "bildungsstandard_bezug": "verordnet",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Lehrpläne der Mittelschulen",
+      "nor": "NOR40271471",
+      "kundmachung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+      "anlage": "Anl. 1",
+      "teil": "ACHTER TEIL",
+      "stand": "2026-07-27"
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "nummer": null,
+      "slug": "HOEREN",
+      "name": "Hören",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.SEK1.E.HOEREN.K1.01",
+          "stufe": "K1",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können, wenn sehr langsam, klar und deutlich in Standardsprache gesprochen wird,",
+          "text": "in kurzen Dialogen oder Monologen einfache Fragen und Sätze, die sich auf sie selbst und ihr persönliches Umfeld beziehen, verstehen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.E.HOEREN.K2.01",
+            "AT.LP23.SEK1.E.HOEREN.K2.02"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.E.HOEREN.K1.02",
+          "stufe": "K1",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können, wenn sehr langsam, klar und deutlich in Standardsprache gesprochen wird,",
+          "text": "einfache alltägliche Kommunikation im Unterricht verstehen.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.E.HOEREN.K2.01",
+            "AT.LP23.SEK1.E.HOEREN.K2.02"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.E.HOEREN.K2.01",
+          "stufe": "K2",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können, wenn langsam, klar und deutlich in Standardsprache gesprochen wird,",
+          "text": "Anweisungen, Fragen und Auskünfte verstehen;",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.E.HOEREN.K1.01",
+            "AT.LP23.SEK1.E.HOEREN.K1.02"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.E.HOEREN.K3.01"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.E.HOEREN.K2.02",
+          "stufe": "K2",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können, wenn langsam, klar und deutlich in Standardsprache gesprochen wird,",
+          "text": "kurze einfache Gespräche und Texte über vertraute Themen verstehen.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.E.HOEREN.K1.01",
+            "AT.LP23.SEK1.E.HOEREN.K1.02"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.E.HOEREN.K3.01"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.E.HOEREN.K3.01",
+          "stufe": "K3",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können, wenn klar und deutlich und nicht zu schnell in Standardsprache gesprochen wird,",
+          "text": "einfache Gespräche, Erzählungen und kurze Medienbeiträge verstehen.",
+          "text_roh": "einfache Gespräche, Erzählungen und kurze Medienbeiträge verstehen.6",
+          "uebergreifende_themen": [
+            "Medienbildung"
+          ],
+          "themen_marker_roh": [
+            "6"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.E.HOEREN.K2.01",
+            "AT.LP23.SEK1.E.HOEREN.K2.02"
+          ],
+          "folge": [
+            "AT.LP23.SEK1.E.HOEREN.K4.01"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.SEK1.E.HOEREN.K4.01",
+          "stufe": "K4",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können, wenn in klarer und deutlicher Standardsprache gesprochen wird,",
+          "text": "Gespräche, kurze Erzählungen, Präsentationen, Filme und kurze Medienbeiträge über vertraute Themen verstehen.",
+          "text_roh": "Gespräche, kurze Erzählungen, Präsentationen, Filme und kurze Medienbeiträge über vertraute Themen verstehen.6",
+          "uebergreifende_themen": [
+            "Medienbildung"
+          ],
+          "themen_marker_roh": [
+            "6"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.SEK1.E.HOEREN.K3.01"
+          ],
+          "folge": [],
+          "abbildungen": []
+        }
+      ]
+    }
+  ]
+}

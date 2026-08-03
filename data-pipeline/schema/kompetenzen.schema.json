@@ -14,6 +14,8 @@
         "fach",
         "differenzierungs_achse",
         "anwendungsbereiche_status",
+        "anwendungsbereiche_bindung",
+        "bildungsstandard_bezug",
         "provenienz"
       ],
       "properties": {
@@ -74,12 +76,12 @@
         "anwendungsbereiche_bindung": {
           "type": "string",
           "enum": ["kompetenz", "bereich", "stufe", "prosa", "keine"],
-          "description": "E12-02/V-58 audit: mirrors parse_lehrplan.py's SubjectSpec.anwendungsbereiche_bindung verbatim, so a consumer loading one part file can tell 'the regulation offers only prose / nothing here' (prosa/keine) from 'the build dropped the items', without guessing from which fields happen to be present. kompetenz = SEK1.M (per-competence join); bereich = SEK1.D (per-(bereich,stufe) block); stufe = PRIM.D, PRIM.SU (per-school-year block); prosa = SEK1.E (a heading followed by prose, zero items); keine = PRIM.M (no Anwendungsbereiche section at all). NOT YET REQUIRED: build_dataset.py does not emit this field yet (E12-11); it becomes required once it does, so the already-shipped SEK1.M shard does not go schema-invalid in the meantime. Valid but optional for now."
+          "description": "E12-02/V-58 audit: mirrors parse_lehrplan.py's SubjectSpec.anwendungsbereiche_bindung verbatim, so a consumer loading one part file can tell 'the regulation offers only prose / nothing here' (prosa/keine) from 'the build dropped the items', without guessing from which fields happen to be present. kompetenz = SEK1.M (per-competence join); bereich = SEK1.D (per-(bereich,stufe) block); stufe = PRIM.D, PRIM.SU (per-school-year block); prosa = SEK1.E (a heading followed by prose, zero items); keine = PRIM.M (no Anwendungsbereiche section at all). REQUIRED since E12-16: build_dataset.py emits it (E12-11) and all six shipped shards carry it."
         },
         "bildungsstandard_bezug": {
           "type": "string",
           "enum": ["verordnet", "keine_verordnung"],
-          "description": "E12-02 audit: lets finde_bildungsstandard_bezug read a data fact instead of hardcoding the Sachunterricht exception -- Sachunterricht has no Bildungsstandard verordnet at all, every other of the six shards does. NOT YET REQUIRED: build_dataset.py does not emit this field yet (E12-11); it becomes required once it does. Valid but optional for now."
+          "description": "E12-02 audit: lets finde_bildungsstandard_bezug read a data fact instead of hardcoding the Sachunterricht exception -- Sachunterricht has no Bildungsstandard verordnet at all, every other of the six shards does. REQUIRED since E12-16: build_dataset.py emits it (E12-11) and all six shipped shards carry it."
         },
         "provenienz": { "$ref": "#/$defs/provenienz" }
       }
@@ -139,7 +141,7 @@
     "kompetenz": {
       "type": "object",
       "description": "A single competence description. Used both nested under kompetenzbereiche[].kompetenzen[] and in the top-level zusatzkompetenzen[] array.",
-      "required": ["id", "stufe", "text"],
+      "required": ["id", "stufe", "stammsatz", "text"],
       "properties": {
         "id": {
           "type": "string",
@@ -309,7 +311,7 @@
     },
     "kompetenz.stammsatz": {
       "type": "string",
-      "description": "The competence stem paragraph verbatim as published (FINDINGS.md V-58, data-pipeline/notes/deviations.md 2026-07-30 row). Normally the bare 'Die Schuelerinnen und Schueler koennen', but in Sek I (Erste) Lebende Fremdsprache it carries a load-bearing CEFR performance condition -- verbatim from the source: 'Die Schuelerinnen und Schueler koennen, wenn sehr langsam, klar und deutlich in Standardsprache gesprochen wird,' -- which qualifies every competence in the block that follows. A faithful quotation of the competence is 'stammsatz' + the item 'text'; neither field alone is the published sentence, and any consumer (renderer, skill, crosswalk) that quotes 'text' without 'stammsatz' produces an incomplete and potentially misleading quotation. This is a consumer obligation, not decoration. NOT YET REQUIRED on kompetenz: build_dataset.py does not emit this field yet (E12-11/E12-06); it becomes required once it does, so the already-shipped SEK1.M shard does not go schema-invalid in the meantime. Valid but optional for now."
+      "description": "The competence stem paragraph verbatim as published (FINDINGS.md V-58, data-pipeline/notes/deviations.md 2026-07-30 row). Normally the bare 'Die Schuelerinnen und Schueler koennen', but in Sek I (Erste) Lebende Fremdsprache it carries a load-bearing CEFR performance condition -- verbatim from the source: 'Die Schuelerinnen und Schueler koennen, wenn sehr langsam, klar und deutlich in Standardsprache gesprochen wird,' -- which qualifies every competence in the block that follows. A faithful quotation of the competence is 'stammsatz' + the item 'text'; neither field alone is the published sentence, and any consumer (renderer, skill, crosswalk) that quotes 'text' without 'stammsatz' produces an incomplete and potentially misleading quotation. This is a consumer obligation, not decoration. REQUIRED on kompetenz since E12-16: the parser captures it (E12-06) and build_dataset.py emits it (E12-11), so all 247 competence records across the six shipped shards carry it."
     },
     "anwendungsbereiche_block_eintrag": {
       "type": "object",

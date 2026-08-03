@@ -1,0 +1,707 @@
+{
+  "meta": {
+    "lehrplan_fassung": "BGBl. Nr. 134/1963 zuletzt geändert durch BGBl. II Nr. 178/2025",
+    "dataset_version": "2026-07-27",
+    "band": "PRIM",
+    "fach": {
+      "code": "SU",
+      "name": "Sachunterricht"
+    },
+    "uebergreifende_themen_fach": [
+      "Bildungs-, Berufs- und Lebensorientierung",
+      "Entrepreneurship Education",
+      "Gesundheitsförderung",
+      "Informatische Bildung",
+      "Interkulturelle Bildung",
+      "Medienbildung",
+      "Politische Bildung",
+      "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "Sexualpädagogik",
+      "Sprachliche Bildung und Lesen",
+      "Umweltbildung für nachhaltige Entwicklung",
+      "Verkehrs- und Mobilitätsbildung",
+      "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    ],
+    "uebergreifende_themen_legende": {
+      "1": "Bildungs-, Berufs- und Lebensorientierung",
+      "2": "Entrepreneurship Education",
+      "3": "Gesundheitsförderung",
+      "4": "Informatische Bildung",
+      "5": "Interkulturelle Bildung",
+      "6": "Medienbildung",
+      "7": "Politische Bildung",
+      "8": "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "9": "Sexualpädagogik",
+      "10": "Sprachliche Bildung und Lesen",
+      "11": "Umweltbildung für nachhaltige Entwicklung",
+      "12": "Verkehrs- und Mobilitätsbildung",
+      "13": "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    },
+    "differenzierungs_achse": {
+      "typ": "lehrplan_generisch",
+      "niveaus": [
+        "grundlegend",
+        "erweitert",
+        "vertiefend"
+      ],
+      "quelle": "Kompetenzbeschreibungen + Anwendungsbereiche je Schulstufe",
+      "optional_material": "docs/"
+    },
+    "anwendungsbereiche_status": "optional_sektion",
+    "anwendungsbereiche_bindung": "stufe",
+    "bildungsstandard_bezug": "keine_verordnung",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Lehrplan der Volksschule",
+      "nor": "NOR40271469",
+      "kundmachung": "BGBl. Nr. 134/1963 zuletzt geändert durch BGBl. II Nr. 178/2025",
+      "anlage": "Anl. 1",
+      "teil": "NEUNTER TEIL",
+      "stand": "2026-07-27"
+    },
+    "anwendungsbereiche_bloecke": {
+      "SCH1": {
+        "bindung": "stufe",
+        "items": [
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH1.01",
+            "stufe": "SCH1",
+            "ordinal": 0,
+            "text": "Ich und Du und Wir",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH1.02",
+            "stufe": "SCH1",
+            "ordinal": 1,
+            "text": "Jahr und Zeit",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH1.03",
+            "stufe": "SCH1",
+            "ordinal": 2,
+            "text": "Mensch und Gesundheit",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH1.04",
+            "stufe": "SCH1",
+            "ordinal": 3,
+            "text": "Wünsche und Bedürfnisse",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH1.05",
+            "stufe": "SCH1",
+            "ordinal": 4,
+            "text": "Drinnen und draußen",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH1.06",
+            "stufe": "SCH1",
+            "ordinal": 5,
+            "text": "Familie und Lebensformen",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH1.07",
+            "stufe": "SCH1",
+            "ordinal": 6,
+            "text": "Tiere und Pflanzen",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH1.08",
+            "stufe": "SCH1",
+            "ordinal": 7,
+            "text": "Arbeit und Berufe",
+            "text_roh": "Arbeit und Berufe1",
+            "uebergreifende_themen": [
+              "Bildungs-, Berufs- und Lebensorientierung"
+            ],
+            "themen_marker_roh": [
+              "1"
+            ],
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH1.09",
+            "stufe": "SCH1",
+            "ordinal": 8,
+            "text": "Phänomene und Kräfte",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH1.10",
+            "stufe": "SCH1",
+            "ordinal": 9,
+            "text": "Medien und Kommunikation",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      },
+      "SCH2": {
+        "bindung": "stufe",
+        "items": [
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH2.01",
+            "stufe": "SCH2",
+            "ordinal": 0,
+            "text": "Lebensweise und Kulturen",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH2.02",
+            "stufe": "SCH2",
+            "ordinal": 1,
+            "text": "Gefühle und Konflikte",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH2.03",
+            "stufe": "SCH2",
+            "ordinal": 2,
+            "text": "Stadt und Land",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH2.04",
+            "stufe": "SCH2",
+            "ordinal": 3,
+            "text": "Notfallorganisationen und Erste Hilfe",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH2.05",
+            "stufe": "SCH2",
+            "ordinal": 4,
+            "text": "Körper und Sinne",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH2.06",
+            "stufe": "SCH2",
+            "ordinal": 5,
+            "text": "Kalender und Uhr",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH2.07",
+            "stufe": "SCH2",
+            "ordinal": 6,
+            "text": "Lebensräume und Artenvielfalt",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH2.08",
+            "stufe": "SCH2",
+            "ordinal": 7,
+            "text": "Mobilität und Sicherheit",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH2.09",
+            "stufe": "SCH2",
+            "ordinal": 8,
+            "text": "Technik und Arbeit",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH2.10",
+            "stufe": "SCH2",
+            "ordinal": 9,
+            "text": "Phänomene und Kräfte",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      },
+      "SCH3": {
+        "bindung": "stufe",
+        "items": [
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH3.01",
+            "stufe": "SCH3",
+            "ordinal": 0,
+            "text": "Entwicklungsstadien und Lebenszyklen",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH3.02",
+            "stufe": "SCH3",
+            "ordinal": 1,
+            "text": "Kinderrechte und Diversität",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH3.03",
+            "stufe": "SCH3",
+            "ordinal": 2,
+            "text": "Geografische Gegebenheiten und Orientierung",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH3.04",
+            "stufe": "SCH3",
+            "ordinal": 3,
+            "text": "Geschichte und Ereignisse",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH3.05",
+            "stufe": "SCH3",
+            "ordinal": 4,
+            "text": "Öffentliche Einrichtungen und Institutionen",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH3.06",
+            "stufe": "SCH3",
+            "ordinal": 5,
+            "text": "Erfindungen und Entdeckungen",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH3.07",
+            "stufe": "SCH3",
+            "ordinal": 6,
+            "text": "Produktion und Handel",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH3.08",
+            "stufe": "SCH3",
+            "ordinal": 7,
+            "text": "Klima und Wetter",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH3.09",
+            "stufe": "SCH3",
+            "ordinal": 8,
+            "text": "Stoffe und Veränderungen",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH3.10",
+            "stufe": "SCH3",
+            "ordinal": 9,
+            "text": "Kräfte und Wirkungen",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      },
+      "SCH4": {
+        "bindung": "stufe",
+        "items": [
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH4.01",
+            "stufe": "SCH4",
+            "ordinal": 0,
+            "text": "Fortpflanzung und Körperwahrnehmung",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH4.02",
+            "stufe": "SCH4",
+            "ordinal": 1,
+            "text": "Politik und Global Citizenship",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH4.03",
+            "stufe": "SCH4",
+            "ordinal": 2,
+            "text": "Vergangenheit – Gegenwart – Zukunft",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH4.04",
+            "stufe": "SCH4",
+            "ordinal": 3,
+            "text": "Nachhaltigkeit und Verantwortung",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH4.05",
+            "stufe": "SCH4",
+            "ordinal": 4,
+            "text": "Nah und fern",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH4.06",
+            "stufe": "SCH4",
+            "ordinal": 5,
+            "text": "Energie und Materie",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH4.07",
+            "stufe": "SCH4",
+            "ordinal": 6,
+            "text": "Bionik und Robotik",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH4.08",
+            "stufe": "SCH4",
+            "ordinal": 7,
+            "text": "Information und Social Media",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH4.09",
+            "stufe": "SCH4",
+            "ordinal": 8,
+            "text": "Versorgung und Entsorgung",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.SU.AB.SCH4.10",
+            "stufe": "SCH4",
+            "ordinal": 9,
+            "text": "Entwicklung und Veränderung",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      }
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "nummer": null,
+      "slug": "GEOGRAFIE",
+      "name": "Geografischer Kompetenzbereich",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.PRIM.SU.GEOGRAFIE.SCH1.01",
+          "stufe": "SCH1",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "sich in ihrer näheren und weiteren Umgebung orientieren und sicher bewegen, Orientierungsmittel kennen lernen und anwenden.",
+          "text_roh": "sich in ihrer näheren und weiteren Umgebung orientieren und sicher bewegen, Orientierungsmittel kennen lernen und anwenden.12",
+          "uebergreifende_themen": [
+            "Verkehrs- und Mobilitätsbildung"
+          ],
+          "themen_marker_roh": [
+            "12"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH2.01",
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH2.02"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.SU.GEOGRAFIE.SCH1.02",
+          "stufe": "SCH1",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "verschiedene räumliche Situationen (zB nah oder fern, ländlich oder städtisch) vergleichen und Besonderheiten beschreiben.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH2.01",
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH2.02"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.SU.GEOGRAFIE.SCH2.01",
+          "stufe": "SCH2",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "räumliche Merkmale, Strukturen, Mobilität und Situationen der natürlichen und gebauten Umwelt wahrnehmen, beschreiben und einordnen.",
+          "text_roh": "räumliche Merkmale, Strukturen, Mobilität und Situationen der natürlichen und gebauten Umwelt wahrnehmen, beschreiben und einordnen.12",
+          "uebergreifende_themen": [
+            "Verkehrs- und Mobilitätsbildung"
+          ],
+          "themen_marker_roh": [
+            "12"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH1.01",
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH1.02"
+          ],
+          "folge": [
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH3.01",
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH3.02"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.SU.GEOGRAFIE.SCH2.02",
+          "stufe": "SCH2",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "kulturelle Vielfalt beschreiben und Vorstellungen zu Lebensweisen von Menschen in nahen und fernen Gebieten der Erde beschreiben, vergleichen und entwickeln.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH1.01",
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH1.02"
+          ],
+          "folge": [
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH3.01",
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH3.02"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.SU.GEOGRAFIE.SCH3.01",
+          "stufe": "SCH3",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Elemente und Merkmale von Räumen in Darstellungsmitteln auffinden, raumbezogene Orientierungsraster aufbauen und interpretieren sowie analoge und digitale Orientierungsmittel anwenden.",
+          "text_roh": "Elemente und Merkmale von Räumen in Darstellungsmitteln auffinden, raumbezogene Orientierungsraster aufbauen und interpretieren sowie analoge und digitale Orientierungsmittel anwenden.12",
+          "uebergreifende_themen": [
+            "Verkehrs- und Mobilitätsbildung"
+          ],
+          "themen_marker_roh": [
+            "12"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH2.01",
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH2.02"
+          ],
+          "folge": [
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH4.01",
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH4.02"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.SU.GEOGRAFIE.SCH3.02",
+          "stufe": "SCH3",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Formen der Mobilität von Menschen, Gütern und Nachrichten erkunden sowie Nutzen und globale Folgen für die Menschen und die Umwelt abschätzen.",
+          "text_roh": "Formen der Mobilität von Menschen, Gütern und Nachrichten erkunden sowie Nutzen und globale Folgen für die Menschen und die Umwelt abschätzen.12",
+          "uebergreifende_themen": [
+            "Verkehrs- und Mobilitätsbildung"
+          ],
+          "themen_marker_roh": [
+            "12"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH2.01",
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH2.02"
+          ],
+          "folge": [
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH4.01",
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH4.02"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.SU.GEOGRAFIE.SCH4.01",
+          "stufe": "SCH4",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "die unterschiedliche Nutzung von Räumen durch Menschen erschließen, vergleichen und einschätzen; Veränderungen in Räumen erkennen, über deren Folgen diskutieren und Ideen für die künftige Entwicklung und Gestaltung präsentieren.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH3.01",
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH3.02"
+          ],
+          "folge": [],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.SU.GEOGRAFIE.SCH4.02",
+          "stufe": "SCH4",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Zusammenhänge und Abhängigkeiten zwischen Lebensweisen und Lebensräumen von Menschen wahrnehmen, einschätzen und persönliche Schlussfolgerungen ableiten.",
+          "text_roh": "Zusammenhänge und Abhängigkeiten zwischen Lebensweisen und Lebensräumen von Menschen wahrnehmen, einschätzen und persönliche Schlussfolgerungen ableiten.12",
+          "uebergreifende_themen": [
+            "Verkehrs- und Mobilitätsbildung"
+          ],
+          "themen_marker_roh": [
+            "12"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH3.01",
+            "AT.LP23.PRIM.SU.GEOGRAFIE.SCH3.02"
+          ],
+          "folge": [],
+          "abbildungen": []
+        }
+      ]
+    }
+  ]
+}

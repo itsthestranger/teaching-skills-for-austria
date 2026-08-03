@@ -1,0 +1,764 @@
+{
+  "meta": {
+    "lehrplan_fassung": "BGBl. Nr. 134/1963 zuletzt geändert durch BGBl. II Nr. 178/2025",
+    "dataset_version": "2026-07-27",
+    "band": "PRIM",
+    "fach": {
+      "code": "D",
+      "name": "Deutsch"
+    },
+    "uebergreifende_themen_fach": [
+      "Entrepreneurship Education",
+      "Gesundheitsförderung",
+      "Informatische Bildung",
+      "Interkulturelle Bildung",
+      "Medienbildung",
+      "Politische Bildung",
+      "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "Sexualpädagogik",
+      "Umweltbildung für nachhaltige Entwicklung",
+      "Verkehrs- und Mobilitätsbildung",
+      "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    ],
+    "uebergreifende_themen_legende": {
+      "1": "Bildungs-, Berufs- und Lebensorientierung",
+      "2": "Entrepreneurship Education",
+      "3": "Gesundheitsförderung",
+      "4": "Informatische Bildung",
+      "5": "Interkulturelle Bildung",
+      "6": "Medienbildung",
+      "7": "Politische Bildung",
+      "8": "Reflexive Geschlechterpädagogik und Gleichstellung",
+      "9": "Sexualpädagogik",
+      "10": "Sprachliche Bildung und Lesen",
+      "11": "Umweltbildung für nachhaltige Entwicklung",
+      "12": "Verkehrs- und Mobilitätsbildung",
+      "13": "Wirtschafts-, Finanz- und Verbraucher/innenbildung"
+    },
+    "differenzierungs_achse": {
+      "typ": "lehrplan_generisch",
+      "niveaus": [
+        "grundlegend",
+        "erweitert",
+        "vertiefend"
+      ],
+      "quelle": "Kompetenzbeschreibungen + Anwendungsbereiche je Schulstufe",
+      "optional_material": "docs/"
+    },
+    "anwendungsbereiche_status": "optional_sektion",
+    "anwendungsbereiche_bindung": "stufe",
+    "bildungsstandard_bezug": "verordnet",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Lehrplan der Volksschule",
+      "nor": "NOR40271469",
+      "kundmachung": "BGBl. Nr. 134/1963 zuletzt geändert durch BGBl. II Nr. 178/2025",
+      "anlage": "Anl. 1",
+      "teil": "NEUNTER TEIL",
+      "stand": "2026-07-27"
+    },
+    "anwendungsbereiche_bloecke": {
+      "SCH1": {
+        "bindung": "stufe",
+        "items": [
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH1.01",
+            "stufe": "SCH1",
+            "ordinal": 0,
+            "text": "spielerisches Erproben von Sprechsituationen in Sprech-, Sprach- und Rollenspielen unter Berücksichtigung von Mimik und Gestik",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH1.02",
+            "stufe": "SCH1",
+            "ordinal": 1,
+            "text": "handlungs- und produktionsorientierter Umgang in unterschiedlichen Sprachwahrnehmungsbereichen",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH1.03",
+            "stufe": "SCH1",
+            "ordinal": 2,
+            "text": "Diskutieren, Finden und Reflektieren von Gruppenregelnund gewaltfreies Gestalten von kommunikativem Handeln",
+            "text_roh": "Diskutieren, Finden und Reflektieren von Gruppenregeln3, 7 und gewaltfreies Gestalten von kommunikativem Handeln5, 8",
+            "uebergreifende_themen": [
+              "Gesundheitsförderung",
+              "Politische Bildung",
+              "Interkulturelle Bildung",
+              "Reflexive Geschlechterpädagogik und Gleichstellung"
+            ],
+            "themen_marker_roh": [
+              "3, 7 ",
+              "5, 8"
+            ],
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH1.04",
+            "stufe": "SCH1",
+            "ordinal": 3,
+            "text": "Nutzen von schulstufenentsprechenden Sach- und Gebrauchstexten",
+            "text_roh": "Nutzen von schulstufenentsprechenden Sach- und Gebrauchstexten6, 12",
+            "uebergreifende_themen": [
+              "Medienbildung",
+              "Verkehrs- und Mobilitätsbildung"
+            ],
+            "themen_marker_roh": [
+              "6, 12"
+            ],
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH1.05",
+            "stufe": "SCH1",
+            "ordinal": 4,
+            "text": "kreatives, handlungs- und produktionsorientiertes Bearbeiten von ausgewählten Texten der Kinderliteratur aus Büchern und digitalen Medien durch praktisches, selbsttätiges Handeln und aktiven Gebrauch der Sinne",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH1.06",
+            "stufe": "SCH1",
+            "ordinal": 5,
+            "text": "gemeinsames Reflektieren von konkreten Sprech-, Lese- und Schreibsituationen über sprachliche Phänomene",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH1.07",
+            "stufe": "SCH1",
+            "ordinal": 6,
+            "text": "Nutzen von Schreibanlässen ausgehend von mündlichem Erzählen, bildlichem Darstellen und ersten Wörtern unter Berücksichtigung der individuellen Schreibmotivation und Voraussetzung",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH1.08",
+            "stufe": "SCH1",
+            "ordinal": 7,
+            "text": "mündliches und schriftliches Experimentieren im Bereich der phonologischen Bewusstheit",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      },
+      "SCH2": {
+        "bindung": "stufe",
+        "items": [
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH2.01",
+            "stufe": "SCH2",
+            "ordinal": 0,
+            "text": "spielerisches Erproben von Sprechsituationen in Sprech-, Sprach- und Rollenspielen unter Berücksichtigung von Mimik und Gestik",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH2.02",
+            "stufe": "SCH2",
+            "ordinal": 1,
+            "text": "handlungs- und produktionsorientierter Umgang in den unterschiedlichen Sprachwahrnehmungsbereichen",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH2.03",
+            "stufe": "SCH2",
+            "ordinal": 2,
+            "text": "Diskutieren, Finden und Reflektieren von Gruppenregeln und gewaltfreies Gestalten von kommunikativem Handeln",
+            "text_roh": "Diskutieren, Finden und Reflektieren von Gruppenregeln3, 7 und gewaltfreies Gestalten von kommunikativem Handeln6",
+            "uebergreifende_themen": [
+              "Gesundheitsförderung",
+              "Politische Bildung",
+              "Medienbildung"
+            ],
+            "themen_marker_roh": [
+              "3, 7",
+              "6"
+            ],
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH2.04",
+            "stufe": "SCH2",
+            "ordinal": 3,
+            "text": "Nutzen von schulstufenentsprechenden Sach- und Gebrauchstexten",
+            "text_roh": "Nutzen von schulstufenentsprechenden Sach- und Gebrauchstexten6, 12",
+            "uebergreifende_themen": [
+              "Medienbildung",
+              "Verkehrs- und Mobilitätsbildung"
+            ],
+            "themen_marker_roh": [
+              "6, 12"
+            ],
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH2.05",
+            "stufe": "SCH2",
+            "ordinal": 4,
+            "text": "kreatives, handlungs- und produktionsorientiertes Bearbeiten von ausgewählten Texten der Kinderliteratur aus Büchern und digitalen Medien durch praktisches, selbsttätiges Handeln und aktiven Gebrauch der Sinne",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH2.06",
+            "stufe": "SCH2",
+            "ordinal": 5,
+            "text": "Nutzen von Schreibanlässen unter Berücksichtigung der individuellen Schreibmotivation und Voraussetzung",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH2.07",
+            "stufe": "SCH2",
+            "ordinal": 6,
+            "text": "kreatives Schreiben unter Berücksichtigung der Lebenswelt der Schülerinnen und Schüler und der individuellen Schreibinteressen",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH2.08",
+            "stufe": "SCH2",
+            "ordinal": 7,
+            "text": "Durchgliedern/Segmentieren, Finden von Analogien, Zusammenbauen, Zerlegen, häufiges Schreiben von Wörtern",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH2.09",
+            "stufe": "SCH2",
+            "ordinal": 8,
+            "text": "mündliches und schriftliches Experimentieren im Bereich der phonologischen Bewusstheit",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH2.10",
+            "stufe": "SCH2",
+            "ordinal": 9,
+            "text": "gemeinsames Reflektieren von konkreten Sprech-, Lese- und Schreibsituationen über sprachliche Phänomene",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      },
+      "SCH3": {
+        "bindung": "stufe",
+        "items": [
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH3.01",
+            "stufe": "SCH3",
+            "ordinal": 0,
+            "text": "Besprechen, Bearbeiten und Klären von Themen aus dem Alltag der Schülerinnen und Schüler im Klassenrat bzw. Klassenparlament oder im szenischen Spiel, Finden von Lösungen, Einnehmen eines Perspektivenwechsels und sprachlich angemessenes Verbalisieren und schriftliches Festhalten des Ergebnisses",
+            "text_roh": "Besprechen, Bearbeiten und Klären von Themen aus dem Alltag der Schülerinnen und Schüler im Klassenrat bzw. Klassenparlament oder im szenischen Spiel, Finden von Lösungen, Einnehmen eines Perspektivenwechsels und sprachlich angemessenes Verbalisieren und schriftliches Festhalten des Ergebnisses3, 5, 6, 7, 9, 12",
+            "uebergreifende_themen": [
+              "Gesundheitsförderung",
+              "Interkulturelle Bildung",
+              "Medienbildung",
+              "Politische Bildung",
+              "Sexualpädagogik",
+              "Verkehrs- und Mobilitätsbildung"
+            ],
+            "themen_marker_roh": [
+              "3, 5, 6, 7, 9, 12"
+            ],
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH3.02",
+            "stufe": "SCH3",
+            "ordinal": 1,
+            "text": "Führen von Gesprächen aus der Lebenswelt der Schülerinnen und Schüler in Bezug auf Umweltschutz, natur- und umweltbewusste Werthaltung sowie Förderung einer empathischen Haltung für alle Lebewesen",
+            "text_roh": "Führen von Gesprächen aus der Lebenswelt der Schülerinnen und Schüler in Bezug auf Umweltschutz, natur- und umweltbewusste Werthaltung sowie Förderung einer empathischen Haltung für alle Lebewesen11",
+            "uebergreifende_themen": [
+              "Umweltbildung für nachhaltige Entwicklung"
+            ],
+            "themen_marker_roh": [
+              "11"
+            ],
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH3.03",
+            "stufe": "SCH3",
+            "ordinal": 2,
+            "text": "spielerisches Erproben von Sprechsituationen in Sprech-, Sprach- und Rollenspielen und Präsentieren von Inhalten unter Berücksichtigung der Standardsprache sowie Mimik und Gestik",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH3.04",
+            "stufe": "SCH3",
+            "ordinal": 3,
+            "text": "Nutzen von schulstufenentsprechenden Sach- und Gebrauchstexten",
+            "text_roh": "Nutzen von schulstufenentsprechenden Sach- und Gebrauchstexten6, 12",
+            "uebergreifende_themen": [
+              "Medienbildung",
+              "Verkehrs- und Mobilitätsbildung"
+            ],
+            "themen_marker_roh": [
+              "6, 12"
+            ],
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH3.05",
+            "stufe": "SCH3",
+            "ordinal": 4,
+            "text": "handlungs- und produktionsorientiertes Aufarbeiten von ausgewählten Texten aus Büchern und digitalen Medien durch Literaturgespräche (Textverstehen, persönliches Textverständnis, Identifikation mit Figuren, Fremdverstehen, Empathie, …), sowie durch praktisches, selbsttätiges Handeln und aktiven Gebrauch der Sinne",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH3.06",
+            "stufe": "SCH3",
+            "ordinal": 5,
+            "text": "Nutzen von Schreibanlässen und kreatives Schreiben unter Berücksichtigung der Lebenswelt der Schülerinnen und Schüler und der individuellen Schreibinteressen",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH3.07",
+            "stufe": "SCH3",
+            "ordinal": 6,
+            "text": "im Verlauf der Grundschule aufbauend: Erkennen und Benennen von Kriterien besonders gelungener Textstellen bzw. Texte, planvolles Untersuchen und Überarbeiten von Textstellen bzw. Texten nach bestimmten Kriterien",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH3.08",
+            "stufe": "SCH3",
+            "ordinal": 7,
+            "text": "Durchgliedern/Segmentieren, Ableiten, Finden von Analogien, Zusammenbauen, Zerlegen, häufiges Schreiben von Wörtern",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH3.09",
+            "stufe": "SCH3",
+            "ordinal": 8,
+            "text": "gemeinsames Reflektieren von konkreten Sprech-, Lese- und Schreibsituationen über sprachliche Phänomene unter Verwendung geeigneter Fachbegriffe",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      },
+      "SCH4": {
+        "bindung": "stufe",
+        "items": [
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH4.01",
+            "stufe": "SCH4",
+            "ordinal": 0,
+            "text": "Besprechen, Bearbeiten und Klären von Themen aus dem Alltag der Schülerinnen und Schüler im Klassenrat bzw. Klassenparlament oder im szenischen Spiel, Finden von Lösungen, Einnehmen eines Perspektivenwechsels und sprachlich angemessenes Verbalisieren und schriftliches Festhalten des Ergebnisses",
+            "text_roh": "Besprechen, Bearbeiten und Klären von Themen aus dem Alltag der Schülerinnen und Schüler im Klassenrat bzw. Klassenparlament oder im szenischen Spiel, Finden von Lösungen, Einnehmen eines Perspektivenwechsels und sprachlich angemessenes Verbalisieren und schriftliches Festhalten des Ergebnisses6, 7, 9, 12",
+            "uebergreifende_themen": [
+              "Medienbildung",
+              "Politische Bildung",
+              "Sexualpädagogik",
+              "Verkehrs- und Mobilitätsbildung"
+            ],
+            "themen_marker_roh": [
+              "6, 7, 9, 12"
+            ],
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH4.02",
+            "stufe": "SCH4",
+            "ordinal": 1,
+            "text": "spielerisches Erproben von Sprechsituationen in Sprech-, Sprach- und Rollenspielen und Präsentieren von Inhalten unter Berücksichtigung der Standardsprache sowie Mimik und Gestik",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH4.03",
+            "stufe": "SCH4",
+            "ordinal": 2,
+            "text": "Führen von Gesprächen aus der Lebenswelt der Schülerinnen und Schüler in Bezug auf Umweltschutz, natur- und umweltbewusste Werthaltung sowie Förderung einer empathischen Haltung für alle Lebewesen",
+            "text_roh": "Führen von Gesprächen aus der Lebenswelt der Schülerinnen und Schüler in Bezug auf Umweltschutz, natur- und umweltbewusste Werthaltung sowie Förderung einer empathischen Haltung für alle Lebewesen3, 5, 11",
+            "uebergreifende_themen": [
+              "Gesundheitsförderung",
+              "Interkulturelle Bildung",
+              "Umweltbildung für nachhaltige Entwicklung"
+            ],
+            "themen_marker_roh": [
+              "3, 5, 11"
+            ],
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH4.04",
+            "stufe": "SCH4",
+            "ordinal": 3,
+            "text": "Nutzen von schulstufenentsprechenden Sach- und Gebrauchstexten",
+            "text_roh": "Nutzen von schulstufenentsprechenden Sach- und Gebrauchstexten6, 12",
+            "uebergreifende_themen": [
+              "Medienbildung",
+              "Verkehrs- und Mobilitätsbildung"
+            ],
+            "themen_marker_roh": [
+              "6, 12"
+            ],
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH4.05",
+            "stufe": "SCH4",
+            "ordinal": 4,
+            "text": "handlungs- und produktionsorientiertes Aufarbeiten von ausgewählten Texten aus Büchern und digitalen Medien durch Literaturgespräche sowie durch praktisches, selbsttätiges Handeln und aktiven Gebrauch der Sinne",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH4.06",
+            "stufe": "SCH4",
+            "ordinal": 5,
+            "text": "Nutzen von Schreibanlässen und kreatives Schreiben unter Berücksichtigung der Lebenswelt der Schülerinnen und Schüler und der individuellen Schreibinteressen",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH4.07",
+            "stufe": "SCH4",
+            "ordinal": 6,
+            "text": "Erkennen und Benennen von Kriterien besonders gelungener Textstellen bzw. Texte, planvolles Untersuchen und Überarbeiten von Textstellen bzw. Texten nach bestimmten Kriterien",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH4.08",
+            "stufe": "SCH4",
+            "ordinal": 7,
+            "text": "Durchgliedern/Segmentieren, Ableiten, Finden von Analogien, Zusammenbauen, Zerlegen, häufiges Schreiben von Wörtern",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH4.09",
+            "stufe": "SCH4",
+            "ordinal": 8,
+            "text": "Reflektieren von konkreten Sprech-, Lese- und Schreibsituationen über sprachliche Phänomene unter Verwendung geeigneter Fachbegriffe",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          },
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH4.10",
+            "stufe": "SCH4",
+            "ordinal": 9,
+            "text": "Reflektieren von Medienerfahrungen in konkreten Sprech-, Schreib- bzw. Gesprächssituationen, Vergleichen von Merkmalen und Wirkungen von Medien und Erkennen von Potenzial, Risiken und Gefahren im Umgang mit digitalen Medien",
+            "text_roh": "Reflektieren von Medienerfahrungen4, 8 in konkreten Sprech-, Schreib- bzw. Gesprächssituationen, Vergleichen von Merkmalen und Wirkungen von Medien und Erkennen von Potenzial, Risiken und Gefahren im Umgang mit digitalen Medien",
+            "uebergreifende_themen": [
+              "Informatische Bildung",
+              "Reflexive Geschlechterpädagogik und Gleichstellung"
+            ],
+            "themen_marker_roh": [
+              "4, 8"
+            ],
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": [],
+            "abbildungen": []
+          }
+        ]
+      }
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "nummer": null,
+      "slug": "HOERENSPRECHEN",
+      "name": "(Zu-)Hören und Sprechen",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH1.01",
+          "stufe": "SCH1",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "in verschiedenen Gesprächssituationen an unterschiedlichen Themen ihre Sprachhandlungsfähigkeit aufzeigen.",
+          "text_roh": "in verschiedenen Gesprächssituationen an unterschiedlichen Themen ihre Sprachhandlungsfähigkeit aufzeigen.2, 12",
+          "uebergreifende_themen": [
+            "Entrepreneurship Education",
+            "Verkehrs- und Mobilitätsbildung"
+          ],
+          "themen_marker_roh": [
+            "2, 12"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH2.01",
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH2.02"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH1.02",
+          "stufe": "SCH1",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "neue Kommunikationssituationen erkennen, unterscheiden und angemessen verbal und nonverbal, auch kreativ, handeln.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH2.01",
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH2.02"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH2.01",
+          "stufe": "SCH2",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "in verschiedenen Gesprächssituationen an unterschiedlichen Themen ihre Sprachhandlungsfähigkeit, unter Einhaltung einer Kommunikationskultur, aufzeigen.",
+          "text_roh": "in verschiedenen Gesprächssituationen an unterschiedlichen Themen ihre Sprachhandlungsfähigkeit2, unter Einhaltung einer Kommunikationskultur7, 8, 9, aufzeigen.",
+          "uebergreifende_themen": [
+            "Entrepreneurship Education",
+            "Politische Bildung",
+            "Reflexive Geschlechterpädagogik und Gleichstellung",
+            "Sexualpädagogik"
+          ],
+          "themen_marker_roh": [
+            "2",
+            "7, 8, 9"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH1.01",
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH1.02"
+          ],
+          "folge": [
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH3.01",
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH3.02"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH2.02",
+          "stufe": "SCH2",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "mit zunehmender Sicherheit deutliches, ausdrucksvolles und an der Standardsprache orientiertes Sprechen entwickeln.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH1.01",
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH1.02"
+          ],
+          "folge": [
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH3.01",
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH3.02"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH3.01",
+          "stufe": "SCH3",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "Strategien für das Hörverstehen entwickeln als auch zuhörerbezogen Sprech- und Sprachformen unter Berücksichtigung von nonverbaler Kommunikation im Gespräch anwenden.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH2.01",
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH2.02"
+          ],
+          "folge": [
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH4.01",
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH4.02"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH3.02",
+          "stufe": "SCH3",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "bewusst sprachliche Ausdrucksformen und einfache normierte Sprachmuster in konkreten monologischen wie dialogischen Sprechbeiträge richtig einsetzen und sich verschiedener Sprachregister der Situation angemessen bedienen.",
+          "text_roh": "bewusst sprachliche Ausdrucksformen und einfache normierte Sprachmuster in konkreten monologischen wie dialogischen Sprechbeiträge richtig einsetzen2 und sich verschiedener Sprachregister der Situation angemessen bedienen.",
+          "uebergreifende_themen": [
+            "Entrepreneurship Education"
+          ],
+          "themen_marker_roh": [
+            "2"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH2.01",
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH2.02"
+          ],
+          "folge": [
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH4.01",
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH4.02"
+          ],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH4.01",
+          "stufe": "SCH4",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "unter Berücksichtigung von Hörverstehen, Sprechhandlungen und sprachlichen Gestaltungsmitteln eine Kommunikationskultur anwenden und einfordern.",
+          "uebergreifende_themen": [],
+          "themen_marker_roh": [],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH3.01",
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH3.02"
+          ],
+          "folge": [],
+          "abbildungen": []
+        },
+        {
+          "id": "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH4.02",
+          "stufe": "SCH4",
+          "ordinal": 1,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "ausdrucksvoll und an der Standardsprache ausgerichtet über Beobachtungen und Sachverhalte in monologischen wie dialogischen Sprechbeiträgen adressatengerecht und situationsgerecht sprechen.",
+          "text_roh": "ausdrucksvoll und an der Standardsprache ausgerichtet über Beobachtungen und Sachverhalte in monologischen wie dialogischen Sprechbeiträgen adressatengerecht und situationsgerecht sprechen.7",
+          "uebergreifende_themen": [
+            "Politische Bildung"
+          ],
+          "themen_marker_roh": [
+            "7"
+          ],
+          "fussnoten_unaufgeloest": [],
+          "vorlaeufer": [
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH3.01",
+            "AT.LP23.PRIM.D.HOERENSPRECHEN.SCH3.02"
+          ],
+          "folge": [],
+          "abbildungen": []
+        }
+      ]
+    }
+  ]
+}

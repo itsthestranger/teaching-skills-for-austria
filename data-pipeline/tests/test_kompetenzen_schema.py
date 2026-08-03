@@ -107,6 +107,7 @@ def _minimal_dokument(*, band: str, fach_code: str, fach_name: str, bindung: str
                         "bereich_name": "Beispielbereich",
                         "stufe": stufe,
                         "ordinal": 0,
+                        "stammsatz": "Die Schülerinnen und Schüler können",
                         "text": "ein Beispielsatz für diese Kompetenz formulieren;",
                     }
                 ],
@@ -483,8 +484,8 @@ def test_bereich_block_validates_with_its_area_fields(
 
 
 # --------------------------------------------------------------------------
-# 7. E12-02: meta.anwendungsbereiche_bindung -- five-value enum, optional
-#    for now (build_dataset.py does not emit it yet, see E12-11)
+# 7. E12-02/E12-16: meta.anwendungsbereiche_bindung -- five-value enum,
+#    required since E12-16 (build_dataset.py has emitted it since E12-11)
 # --------------------------------------------------------------------------
 
 
@@ -504,14 +505,14 @@ def test_meta_anwendungsbereiche_bindung_rejects_an_unknown_value(
         validator.validate(beispiel)
 
 
-def test_meta_anwendungsbereiche_bindung_is_not_yet_required(
+def test_meta_anwendungsbereiche_bindung_is_required(
     validator: jsonschema.Draft202012Validator, beispiel: dict
 ) -> None:
-    """Sequencing constraint (E12-02 brief): build_dataset.py does not emit
-    this field yet, so the already-shipped SEK1.M shard -- which lacks it --
-    must stay schema-valid until E12-11 promotes it to required."""
-    assert "anwendungsbereiche_bindung" not in beispiel["meta"]
-    validator.validate(beispiel)
+    """E12-16: promoted to required now that build_dataset.py emits it
+    (E12-11) and all six shipped shards carry it -- omitting it must fail."""
+    del beispiel["meta"]["anwendungsbereiche_bindung"]
+    with pytest.raises(jsonschema.ValidationError):
+        validator.validate(beispiel)
 
 
 def test_meta_bildungsstandard_bezug_accepts_both_values(
@@ -530,15 +531,19 @@ def test_meta_bildungsstandard_bezug_rejects_an_unknown_value(
         validator.validate(beispiel)
 
 
-def test_meta_bildungsstandard_bezug_is_not_yet_required(
+def test_meta_bildungsstandard_bezug_is_required(
     validator: jsonschema.Draft202012Validator, beispiel: dict
 ) -> None:
-    assert "bildungsstandard_bezug" not in beispiel["meta"]
-    validator.validate(beispiel)
+    """E12-16: promoted to required now that build_dataset.py emits it
+    (E12-11) and all six shipped shards carry it -- omitting it must fail."""
+    del beispiel["meta"]["bildungsstandard_bezug"]
+    with pytest.raises(jsonschema.ValidationError):
+        validator.validate(beispiel)
 
 
 # --------------------------------------------------------------------------
-# 8. E12-02: kompetenz.stammsatz -- optional for now, holds the verbatim stem
+# 8. E12-02/E12-16: kompetenz.stammsatz -- required since E12-16, holds the
+#    verbatim competence stem
 # --------------------------------------------------------------------------
 
 
@@ -552,11 +557,16 @@ def test_kompetenz_stammsatz_validates_when_present(
     validator.validate(beispiel)
 
 
-def test_kompetenz_stammsatz_is_not_yet_required(
+def test_kompetenz_stammsatz_is_required(
     validator: jsonschema.Draft202012Validator, beispiel: dict
 ) -> None:
-    assert "stammsatz" not in _first_kompetenz(beispiel)
-    validator.validate(beispiel)
+    """E12-16: promoted to required now that the parser captures it
+    (E12-06) and build_dataset.py emits it (E12-11), so all 247 competence
+    records across the six shipped shards carry it -- omitting it must
+    fail."""
+    del _first_kompetenz(beispiel)["stammsatz"]
+    with pytest.raises(jsonschema.ValidationError):
+        validator.validate(beispiel)
 
 
 def test_kompetenz_stammsatz_must_be_a_string(

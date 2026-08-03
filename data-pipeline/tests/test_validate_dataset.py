@@ -44,6 +44,11 @@ def _meta(*, band: str = "SEK1", fach_code: str = "M", fach_name: str = "Mathema
         "fach": {"code": fach_code, "name": fach_name},
         "differenzierungs_achse": {"typ": "standard_standardplus"},
         "anwendungsbereiche_status": "item_flags",
+        # Required on meta since E12-16. Without them every fixture below would
+        # trip a schema soft finding, drowning the specific rule each test is
+        # actually about.
+        "anwendungsbereiche_bindung": "kompetenz",
+        "bildungsstandard_bezug": "verordnet",
         "provenienz": {
             "quelle": "RIS Bundesrecht konsolidiert",
             "kurztitel": "Testlehrplan",
@@ -57,7 +62,9 @@ def _meta(*, band: str = "SEK1", fach_code: str = "M", fach_name: str = "Mathema
 
 
 def _kompetenz(ident: str, *, stufe: str = "K1", text: str = "Ein Beispieltext.", **extra) -> dict:
-    d = {"id": ident, "stufe": stufe, "text": text}
+    # stammsatz is required on kompetenz since E12-16; a caller that is
+    # specifically testing its absence passes stammsatz=None via **extra.
+    d = {"id": ident, "stufe": stufe, "stammsatz": "Die Schülerinnen und Schüler können", "text": text}
     d.update(extra)
     return d
 
@@ -839,16 +846,21 @@ def test_real_shipped_dataset_has_no_hard_findings() -> None:
     assert report.hard == [], f"unexpected hard findings in the shipped dataset: {report.hard!r}"
     assert "SEK1.M" in report.shards_checked
 
-    # As of this build the shipped SEK1.M shard is also free of soft/info
-    # findings (schema-clean, no dangling references, no orphaned image
-    # tokens, every part within the §6.7 size target, no unrecognised enum
-    # values). That is a real, verified fact about the current dataset, not
-    # an assumption -- document it explicitly rather than silently
-    # asserting an empty list. If a future shard genuinely introduces a
-    # soft finding, replace this with an assertion on that specific finding
-    # (per the E3-06 brief) instead of reverting to a blanket "must be
-    # empty" check.
-    assert report.soft == [], f"new soft finding(s) in the shipped dataset -- document them: {report.soft!r}"
+    # E12-16 shipped all six shards and introduced exactly one soft finding,
+    # so this is now the specific-finding assertion the previous blanket
+    # "must be empty" check told its successor to write.
+    #
+    # SEK1.M's zahlen.json is 50,608 bytes against the §6.7 soft target of
+    # 50,000 -- 1.2% over. §6.7 defines exceeding the target as a sharding
+    # *review* trigger, never a build failure, and the review was held and
+    # closed with "accept": splitting an area part finer would break the
+    # one-part-per-Kompetenzbereich invariant that index.json, the validator
+    # and the B1 access contract all rest on, which is not worth 608 bytes.
+    # See notes/deviations.md, 2026-08-03. Anything BEYOND this one finding
+    # is a real regression and must fail here.
+    erlaubt = {("SEK1.M", "zahlen.json", "size-target-exceeded")}
+    unerwartet = [f for f in report.soft if (f.shard, f.part, f.rule) not in erlaubt]
+    assert unerwartet == [], f"new soft finding(s) in the shipped dataset -- document them: {unerwartet!r}"
     assert report.info == [], f"new info finding(s) in the shipped dataset -- document them: {report.info!r}"
 
 
