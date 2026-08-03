@@ -73,6 +73,8 @@ def test_finde_kompetenz_gegen_alle_sechs_shards(fach, _bindung):
         assert k["stammsatz"]
         assert k["volltext"].startswith(k["stammsatz"])
         assert k["text"] in k["volltext"]
+        assert k["provenienz"]["quelle"] == "RIS Bundesrecht konsolidiert"
+        assert k["provenienz"]["nor"]
 
 
 @pytest.mark.parametrize("fach,_bindung", SHARDS)
@@ -152,6 +154,36 @@ def test_finde_kompetenz_stichworte_bruch_routes_through_compound_fallback():
     assert "daten.json" in abdeckung["dateien"]
 
 
+def test_finde_kompetenz_phase_1_bruch_routes_nur_index_und_kandidaten_parts(monkeypatch):
+    """Phase-1's K2 Bruch lookup returns the official descriptions and
+    source without a full-shard load.
+
+    V-71 deliberately supersedes the old one-part expectation: the exact
+    hit plus compound keys require three candidate parts (daten, variablen,
+    zahlen). The post-filter leaves the two actual K2 descriptions from
+    zahlen.json. Pin both the complete candidate set and the absence of a
+    whole-fach / zusatz load.
+    """
+    original = K._datei_laden
+    geladen: list[str] = []
+
+    def verfolgen(pfad):
+        geladen.append(pfad.name)
+        return original(pfad)
+
+    monkeypatch.setattr(K, "_datei_laden", verfolgen)
+    treffer = K.finde_kompetenz("SEK1.M", stufe="K2", stichworte=["Bruch"])
+
+    assert [k["id"] for k in treffer] == [
+        "AT.LP23.SEK1.M.ZAHLEN.K2.02",
+        "AT.LP23.SEK1.M.ZAHLEN.K2.03",
+    ]
+    assert {k["datei"] for k in treffer} == {"zahlen.json"}
+    assert {k["provenienz"]["nor"] for k in treffer} == {"NOR40271471"}
+    assert geladen.count("index.json") == 1
+    assert set(geladen) == {"index.json", "daten.json", "variablen.json", "zahlen.json"}
+
+
 def test_finde_kompetenz_stichworte_returns_only_records_that_genuinely_mention_it():
     treffer = K.finde_kompetenz("SEK1.M", stichworte=["Bruch"])
     assert treffer
@@ -162,6 +194,71 @@ def test_finde_kompetenz_stichworte_returns_only_records_that_genuinely_mention_
 
 def test_finde_kompetenz_stichworte_true_miss_is_defined_empty():
     assert K.finde_kompetenz("SEK1.M", stichworte=["dieserbegriffexistiertganzsichernicht"]) == []
+
+
+def test_stichwort_abdeckung_ohne_indexkandidat_behauptet_keine_lehrplan_abwesenheit(monkeypatch):
+    original = K._datei_laden
+    geladen: list[str] = []
+
+    def verfolgen(pfad):
+        geladen.append(pfad.name)
+        return original(pfad)
+
+    monkeypatch.setattr(K, "_datei_laden", verfolgen)
+    abdeckung = K.stichwort_abdeckung("SEK1.M", "dieserbegriffexistiertganzsichernicht")
+
+    assert abdeckung["suchstatus"] == "keine_indexkandidaten"
+    assert abdeckung["kompetenz_ids"] == []
+    assert abdeckung["lehrstoff_items"] == []
+    assert "keine Aussage" in abdeckung["hinweis"]
+    assert geladen == ["index.json"]
+
+
+@pytest.mark.parametrize(
+    ("begriff", "erwartetes_item"),
+    [
+        (
+            "Bruchtermen",
+            {
+                "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K4.03",
+                "text": "allenfalls Umformen von Bruchtermen und Angeben von Bedingungen, die Variablen dabei erfüllen müssen.",
+                "stufe": "K4",
+                "verbindlich": False,
+                "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K4.01",
+            },
+        ),
+        (
+            "Zinseszinsen",
+            {
+                "id": "AT.LP23.SEK1.M.AB.VARIABLEN.K3.21",
+                "text": "Aufstellen von Formeln im Zusammenhang mit Zinsen bzw. Zinseszinsen;",
+                "stufe": "K3",
+                "verbindlich": True,
+                "kompetenz_id": "AT.LP23.SEK1.M.VARIABLEN.K3.04",
+            },
+        ),
+    ],
+)
+def test_stichwort_abdeckung_macht_lehrstoff_only_treffer_sichtbar(begriff, erwartetes_item, monkeypatch):
+    """V-73: an empty Kompetenz[] is never evidence that a term is absent
+    from the Lehrplan. Both measured terms occur only in official items."""
+    original = K._datei_laden
+    geladen: list[str] = []
+
+    def verfolgen(pfad):
+        geladen.append(pfad.name)
+        return original(pfad)
+
+    monkeypatch.setattr(K, "_datei_laden", verfolgen)
+    abdeckung = K.stichwort_abdeckung("SEK1.M", begriff)
+    assert abdeckung["dateien"] == ["variablen.json"]
+    assert abdeckung["exakt"] is True
+    assert abdeckung["kompetenz_ids"] == []
+    assert abdeckung["anwendungsbereich_ids"] == [erwartetes_item["id"]]
+    assert abdeckung["suchstatus"] == "nur_lehrstofftreffer"
+    assert abdeckung["lehrstoff_items"] == [erwartetes_item]
+    assert geladen == ["index.json", "variablen.json"]
+    assert K.finde_kompetenz("SEK1.M", stichworte=[begriff]) == []
 
 
 # ---------------------------------------------------------------------------

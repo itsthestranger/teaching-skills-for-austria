@@ -252,6 +252,7 @@ def _anreichern(
     bereich_nummer: int | None,
     bereich_slug: str | None,
     bereich_name: str | None,
+    provenienz: dict[str, Any],
 ) -> dict[str, Any]:
     angereichert = dict(k)
     angereichert["fach"] = fach_schluessel
@@ -259,6 +260,11 @@ def _anreichern(
     angereichert["bereich_nummer"] = bereich_nummer
     angereichert["bereich_slug"] = bereich_slug
     angereichert["bereich_name"] = bereich_name
+    # Provenance belongs to the part document rather than every individual
+    # Kompetenz in the frozen JSON. Expose a copy on every public result so
+    # callers can cite the official source without loading or knowing the
+    # part-document shape themselves (Phase-1 / plan §5).
+    angereichert["provenienz"] = dict(provenienz)
     angereichert["volltext"] = voller_wortlaut(k)
     return angereichert
 
@@ -267,6 +273,7 @@ def _kompetenzen_aus_teil(fach_schluessel: str, datei: str, doc: dict[str, Any])
     """Every Kompetenz record in one loaded part document (regular area
     competences plus, if present, ``zusatzkompetenzen``), enriched."""
     ergebnis: list[dict[str, Any]] = []
+    provenienz = doc.get("meta", {}).get("provenienz", {})
     for bereich in doc.get("kompetenzbereiche", []):
         for k in bereich.get("kompetenzen", []):
             ergebnis.append(
@@ -277,6 +284,7 @@ def _kompetenzen_aus_teil(fach_schluessel: str, datei: str, doc: dict[str, Any])
                     bereich_nummer=bereich.get("nummer"),
                     bereich_slug=bereich.get("slug"),
                     bereich_name=bereich.get("name"),
+                    provenienz=provenienz,
                 )
             )
     for zk in doc.get("zusatzkompetenzen", []):
@@ -296,6 +304,7 @@ def _kompetenzen_aus_teil(fach_schluessel: str, datei: str, doc: dict[str, Any])
                 bereich_nummer=zk.get("bereich_nummer"),
                 bereich_slug=bereich_slug,
                 bereich_name=zk.get("bereich_name"),
+                provenienz=provenienz,
             )
         )
     return ergebnis
@@ -388,14 +397,131 @@ def _stichwort_dateien(index: dict[str, Any], begriff: str) -> tuple[list[str], 
 
 
 def stichwort_abdeckung(fach: str, begriff: str) -> dict[str, Any]:
-    """Introspection helper (not one of the nine contract functions): what
-    would ``finde_kompetenz(..., stichworte=[begriff])`` route to, and was
-    the match exact or compound-derived (V-71)? Lets a skill warn a teacher
-    when a search term only matched via the compound fallback."""
+    """Describe keyword coverage without changing ``finde_kompetenz``.
+
+    This introspection helper is not one of the nine contract functions. It
+    reports the existing index routing information plus the matching
+    Kompetenz and Lehrstoff items in those candidate parts. Its
+    ``suchstatus`` is one of:
+
+    - ``"keine_indexkandidaten"``: the keyword index selected no parts;
+      this is never evidence that the term is absent from the curriculum.
+    - ``"kandidaten_ohne_texttreffer"``: candidate parts were searched but
+      neither a competence description nor a Lehrstoff-Praezisierung
+      matched; again, this is not a curriculum-wide absence claim.
+    - ``"kompetenztreffer"``: at least one competence description matched.
+    - ``"nur_lehrstofftreffer"``: no competence description matched, but
+      one or more official Lehrstoff-Praezisierungen did (V-73).
+
+    ``lehrstoff_items`` contains the latter summaries; it intentionally
+    excludes ``art == "digitale_technologien"`` suggestions, which are not
+    Lehrstoff-Praezisierungen. ``finde_kompetenz`` itself continues to
+    return ``Kompetenz[]`` and consequently returns ``[]`` for the
+    item-only case.
+
+    Only files selected by ``stichwort_index`` are read; this never falls
+    back to a whole-shard scan.
+    """
     shard_dir = _shard_verzeichnis(fach)
     index = _index_laden(shard_dir)
     dateien, exakt, schluessel = _stichwort_dateien(index, begriff)
-    return {"dateien": dateien, "exakt": exakt, "index_schluessel": schluessel}
+    kompetenz_ids: list[str] = []
+    lehrstoff_items: list[dict[str, Any]] = []
+
+    for datei in dateien:
+        doc = _teil_laden(shard_dir, datei)
+        kompetenz_ids.extend(
+            k["id"]
+            for k in _kompetenzen_aus_teil(fach.strip().upper(), datei, doc)
+            if _enthaelt_stichwort(k, [begriff])
+        )
+        lehrstoff_items.extend(
+            {
+                "id": item["id"],
+                "text": item["text"],
+                "stufe": item["stufe"],
+                "verbindlich": item["verbindlich"],
+                "kompetenz_id": item["kompetenz_id"],
+            }
+            for item in _anwendungsbereiche_aus_teil(doc)
+            if item.get("art") == "praezisierung" and _enthaelt_stichwort(item, [begriff])
+        )
+
+    kompetenz_ids = sorted(set(kompetenz_ids))
+    lehrstoff_items.sort(key=lambda item: item["id"])
+    if not dateien:
+        suchstatus = "keine_indexkandidaten"
+        hinweis = (
+            "Der Stichwortindex hat keine Kandidatendatei geliefert; weder "
+            "Kompetenzbeschreibungen noch Lehrstoff-Präzisierungen wurden durchsucht. "
+            "Das ist keine Aussage darüber, ob der Begriff im Lehrplan vorkommt."
+        )
+    elif kompetenz_ids:
+        suchstatus = "kompetenztreffer"
+        hinweis = (
+            "Durchsucht wurden die vom Stichwortindex gewählten Teile in "
+            "Kompetenzbeschreibungen und Lehrstoff-Präzisierungen. "
+            "Mindestens eine Kompetenzbeschreibung enthält den Begriff."
+        )
+    elif lehrstoff_items:
+        suchstatus = "nur_lehrstofftreffer"
+        hinweis = (
+            "Durchsucht wurden die vom Stichwortindex gewählten Teile in "
+            "Kompetenzbeschreibungen und Lehrstoff-Präzisierungen. Keine "
+            "Kompetenzbeschreibung enthält den Begriff; er kommt jedoch in den "
+            "ausgewiesenen Lehrstoff-Präzisierungen vor."
+        )
+    else:
+        suchstatus = "kandidaten_ohne_texttreffer"
+        hinweis = (
+            "Die vom Stichwortindex gewählten Teile wurden in "
+            "Kompetenzbeschreibungen und Lehrstoff-Präzisierungen durchsucht, "
+            "ohne Texttreffer. Das ist keine Aussage darüber, ob der Begriff "
+            "im Lehrplan vorkommt."
+        )
+
+    return {
+        "dateien": dateien,
+        "exakt": exakt,
+        "index_schluessel": schluessel,
+        "kompetenz_ids": kompetenz_ids,
+        # Kept as an additive compatibility alias for callers added in
+        # E4-02 before ``lehrstoff_items`` exposed the useful item detail.
+        "anwendungsbereich_ids": [item["id"] for item in lehrstoff_items],
+        "lehrstoff_items": lehrstoff_items,
+        "suchstatus": suchstatus,
+        "hinweis": hinweis,
+    }
+
+
+def _anwendungsbereiche_aus_teil(doc: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return each application item stored in one part document once.
+
+    The five binding models place items either below the competence record
+    itself or in ``meta.anwendungsbereiche_bloecke``. The helper deliberately
+    reads both shapes, then de-duplicates on the frozen item ID, so keyword
+    coverage remains data-driven rather than branching on a subject name.
+    """
+    items: list[dict[str, Any]] = []
+    for bereich in doc.get("kompetenzbereiche", []):
+        for kompetenz in bereich.get("kompetenzen", []):
+            items.extend(kompetenz.get("anwendungsbereiche", []))
+    for kompetenz in doc.get("zusatzkompetenzen", []):
+        items.extend(kompetenz.get("anwendungsbereiche", []))
+    for block in (doc.get("meta", {}).get("anwendungsbereiche_bloecke") or {}).values():
+        items.extend(block.get("items", []))
+    # SEK1.M keeps its non-Lehrstoff digital-technology suggestions in this
+    # separate top-level collection. Include the shape here so the caller's
+    # explicit ``art == 'praezisierung'`` filter, rather than an accidental
+    # omission, is what keeps those suggestions out of Lehrstoff coverage.
+    items.extend(doc.get("digitale_technologien_vorschlaege", []))
+
+    eindeutig: dict[str, dict[str, Any]] = {}
+    for item in items:
+        ident = item.get("id")
+        if ident:
+            eindeutig[ident] = item
+    return [eindeutig[ident] for ident in sorted(eindeutig)]
 
 
 def _kompetenzbereich_dateien_fuer(index: dict[str, Any], kompetenzbereich: str) -> list[str]:
@@ -474,8 +600,11 @@ def finde_kompetenz(
     the final list only contains competences that genuinely mention the
     term, even though the routing step above is deliberately generous.
 
-    Returns ``[]`` if nothing matches -- never raises for "no results",
-    only for a malformed ``fach``.
+    Returns ``[]`` if no *competence description* matches -- never raises
+    for "no results", only for a malformed ``fach``. This does not mean a
+    term is absent from the curriculum: it can occur solely in a Lehrstoff
+    / Anwendungsbereiche item (V-73). Use :func:`stichwort_abdeckung` before
+    presenting an empty result as a curriculum-wide miss.
     """
     fach_schluessel = fach.strip().upper()
     shard_dir = _shard_verzeichnis(fach_schluessel)
