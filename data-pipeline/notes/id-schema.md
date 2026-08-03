@@ -69,15 +69,19 @@ compatible.
 | `Stufe` | `K1..K4` (SEK1) \| `SCH1..SCH4` (PRIM) | **`GS1`/`GS2` and `VOR` are removed.** FINDINGS V-22 closed this empirically: both bands are per school year / class year, not per Grundstufe. The plan's §4.8 line listing `VOR \| GS1 \| GS2 [\| SCH1..SCH4]` is superseded by the source. |
 | `lfd` | two digits, zero-padded | Scoped per `(stufe, art, bereich)` -- see `LehrplanParser._emit_kompetenzen` / `_emit_anwendungsitems`. Not globally sequential. |
 
-Examples (first two are real, shipped IDs; the rest are scheme-legal
-examples for shards not yet built):
+Examples. **All six shards are built and shipped since 2026-08-03 (E12-16), so
+every ID below is a real, shipped ID** — verified present among the 615 IDs in
+`plugin/data/kompetenzen/`. Two earlier entries in this list
+(`…SEK1.M.DT.ZAHLEN.K1.01`, `…PRIM.SU.NATURWISS.SCH2.03`) were scheme-legal
+inventions from when those shards did not exist; they are **not** in the
+shipped data and have been replaced with real ones:
 
 ```
 AT.LP23.SEK1.M.ZAHLEN.K1.01              competence, Sek I Mathematik
 AT.LP23.SEK1.M.AB.ZAHLEN.K2.05           application item, precisification
-AT.LP23.SEK1.M.DT.ZAHLEN.K1.01           application item, digital technology
+AT.LP23.SEK1.M.DT.DATEN.K1.01            application item, digital technology
 AT.LP23.SEK1.M.GZINTEGRATIV.K3.01        synthetic area (V-57)
-AT.LP23.PRIM.SU.NATURWISS.SCH2.03
+AT.LP23.PRIM.SU.NATURWISS.SCH2.01        competence, primary Sachunterricht
 AT.LP23.SEK1.D.AB.SPRACHREFLEXION.K1.01
 AT.LP23.PRIM.SU.AB.SCH1.01               application item, area-free (bindung: stufe)
 AT.LP23.PRIM.D.AB.SCH3.07                application item, area-free (bindung: stufe)

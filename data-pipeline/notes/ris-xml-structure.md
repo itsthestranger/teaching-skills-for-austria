@@ -309,6 +309,30 @@ the main dataset rather than left in `zusatzbloecke` — see §10.
 The source gives no identifier. It is Sek-I-only — **zero** occurrences in the
 primary document, so primary progression must be derived positionally.
 
+### 7.1 All six shards — frozen counts
+
+The table above is SEK1.M only, which is what this document was written
+against. Since **E12-16 (2026-08-03) all six shards are built and shipped**;
+these are their frozen counts, measured against the full live documents and
+reproduced exactly from the committed fixtures. The authoritative copies live
+in `parse_lehrplan.ERWARTET_BY_SPEC` and `build_dataset.ERWARTET_BUILD`, which
+`--verify` compares against — do not re-type them from here.
+
+| Shard | `bindung` | Areas | Competences | Application items |
+|---|---|---|---|---|
+| SEK1.M | `kompetenz` | 4 | 42 (40 + 2 GZ) | 237 (198 precisification + 39 DT) |
+| SEK1.D | `bereich` | 4 | 40 | 54 |
+| SEK1.E | `prosa` | 4 | 37 | 0 (heading, then prose) |
+| PRIM.D | `stufe` | 4 | 40 | 37 |
+| PRIM.M | `keine` | 4 | 40 | 0 (no Anwendungsbereiche section) |
+| PRIM.SU | `stufe` | 6 | 48 | 40 |
+
+`zusatzkompetenzen` is 2 for SEK1.M (the GZ-integrative pair) and **0** for the
+other five: it means "belongs to no official Kompetenzbereich", not "has no
+area number" (V-59). `allenfalls` (32), `Wiederholen und Festigen` (16) and
+`digitale_technologien` (39) are **SEK1.M-only**, which is why the other five
+rows show `praezisierung` equal to their item total.
+
 ---
 
 ## 8. State machine, tolerance, and hard failures
@@ -634,8 +658,31 @@ python3 data-pipeline/abbildungen.py --check             # inspect installed ima
 python3 data-pipeline/parse_lehrplan.py --summary       # counts + issue log
 python3 data-pipeline/parse_lehrplan.py --verify        # non-zero exit on drift
 python3 data-pipeline/parse_lehrplan.py --out out.json
-python3 -m unittest discover -s data-pipeline/tests -t data-pipeline/tests
+.venv/bin/python -m pytest data-pipeline/tests -q       # 694 passed, 3 skipped
 ```
+
+**All six shards are registered since E12-08**, so both CLIs take `--spec`
+(`SEK1.M` | `SEK1.D` | `SEK1.E` | `PRIM.D` | `PRIM.M` | `PRIM.SU`) and default
+to `SEK1.M`. `--source` defaults per band via `default_source()`; there is no
+second source table. A bare `--verify` therefore checks **one** shard:
+
+```bash
+# parse + build + verify every shard (each exits non-zero on a count regression)
+for s in SEK1.M SEK1.D SEK1.E PRIM.D PRIM.M PRIM.SU; do
+  .venv/bin/python data-pipeline/parse_lehrplan.py --spec $s --verify
+  .venv/bin/python data-pipeline/build_dataset.py  --spec $s --verify
+done
+
+.venv/bin/python data-pipeline/build_dataset.py --spec PRIM.SU        # write the shard
+.venv/bin/python data-pipeline/build_dataset.py --spec PRIM.SU --summary  # size report, writes nothing
+.venv/bin/python data-pipeline/validate_dataset.py                    # all six on disk: 0 hard, 1 soft, 0 info
+```
+
+`validate_dataset.py` reads only what is on disk, independent of how it got
+there. Its single expected soft finding is the accepted §6.7 size overage on
+SEK1.M `zahlen.json` (`notes/deviations.md`, 2026-08-03). Rebuilding shipped
+data changes bytes, so `tests/shipped_shards.sha256` must be regenerated in
+the same commit — the command is in `test_shipped_bytes.py`'s docstring.
 
 Fixtures in `tests/fixtures/`:
 
@@ -732,12 +779,19 @@ PRIM.D, PRIM.M, PRIM.SU — every other subject's stem is the bare form. The
 state machine already emits a distinct `KOMPETENZSATZ` token for the
 qualified shape; before the fix, no handler consumed it (see §13.3).
 
-→ **Decided, not yet implemented (backlog E12-06).** The stem sentence is to
-be captured per block as `Kompetenz.stammsatz` for **every** subject, bare or
-qualified, so that a faithful quotation is `stammsatz` + the item `text` —
-neither alone is the published sentence. Until E12-06 lands, SEK1.E's
-qualifiers are absent from the parser's output entirely. Recorded as a
-decision in `notes/deviations.md`, 2026-07-30.
+→ **Decided and shipped.** The stem sentence is captured per block as
+`Kompetenz.stammsatz` for **every** subject, bare or qualified, so that a
+faithful quotation is `stammsatz` + the item `text` — neither alone is the
+published sentence. Recorded as a decision in `notes/deviations.md`,
+2026-07-30, and delivered in three steps: the parser captures it
+(**E12-06**, 2026-07-31), the build emits it (**E12-11**, 2026-08-02), and it
+ships on all **247** competence records across the six shards and becomes
+schema-`required` (**E12-16**, 2026-08-03). All 10 SEK1.E qualifiers are
+present verbatim.
+
+⚠️ **Consumer obligation, not decoration.** Any renderer, skill or crosswalk
+that quotes `text` without `stammsatz` produces an incomplete and potentially
+misleading quotation. This binds E4, E6 and E7.
 
 ### 13.2 Only SEK1.M numbers its Kompetenzbereiche
 
