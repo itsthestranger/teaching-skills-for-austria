@@ -704,12 +704,108 @@ def finde_progression(kompetenz_id: str, richtung: str) -> list[dict[str, Any]]:
 # ---------------------------------------------------------------------------
 
 
+def _koordinaten_modus_pruefen(
+    kompetenz_id: str | None,
+    fach: str | None,
+    stufe: str | None,
+    bereich: str | None,
+) -> None:
+    """Require exactly one public lookup mode.
+
+    A competence ID is the usual, most precise route.  Coordinates are the
+    complementary route for source blocks that genuinely have no competence
+    owner (notably SEK1.D's structural Sprachreflexion area).  Mixing them
+    would make it unclear which selector is authoritative.
+    """
+    if kompetenz_id is not None:
+        if any(value is not None for value in (fach, stufe, bereich)):
+            raise ValueError("kompetenz_id und Koordinaten duerfen nicht kombiniert werden")
+        return
+    if fach is None:
+        raise ValueError("erwartet kompetenz_id oder mindestens fach fuer eine Koordinatenabfrage")
+
+
+def _bereich_teil(index: dict[str, Any], bereich: str) -> dict[str, Any] | None:
+    """Find one regular area part by its frozen slug or official name."""
+    ziel = bereich.strip().casefold()
+    for teil in _kompetenzbereich_dateien(index):
+        if teil.get("slug", "").casefold() == ziel or teil.get("name", "").casefold() == ziel:
+            return teil
+    return None
+
+
+def _anwendungsbereiche_aus_koordinaten(
+    fach: str,
+    stufe: str | None,
+    bereich: str | None,
+) -> list[dict[str, Any]]:
+    """Resolve source-contained application items without inventing an owner.
+
+    The dispatch is entirely data-driven.  In particular, ``bereich`` reads
+    the addressed ``<SLUG>.<STUFE>`` source block directly, so it also covers
+    areas that deliberately contain no Kompetenz records of their own.
+    """
+    shard_dir = _shard_verzeichnis(fach)
+    index = _index_laden(shard_dir)
+    bindung = index["meta"]["anwendungsbereiche_bindung"]
+
+    if bindung == "kompetenz":
+        raise ValueError("bindung 'kompetenz' erfordert eine kompetenz_id")
+
+    if bindung == "bereich":
+        if stufe is None or bereich is None:
+            raise ValueError("bindung 'bereich' erfordert fach, stufe und bereich")
+        teil = _bereich_teil(index, bereich)
+        if teil is None:
+            raise ValueError(f"unbekannter bereich {bereich!r} fuer {fach!r}")
+        doc = _teil_laden(shard_dir, teil["datei"])
+        slug = teil["slug"]
+        block = (doc.get("meta", {}).get("anwendungsbereiche_bloecke") or {}).get(
+            f"{slug}.{stufe.strip().upper()}"
+        )
+        if block is None:
+            raise ValueError(f"kein Anwendungsbereiche-Block fuer {slug}.{stufe.strip().upper()}")
+        return list(block["items"])
+
+    if bindung == "stufe":
+        if stufe is None:
+            raise ValueError("bindung 'stufe' erfordert fach und stufe")
+        if bereich is not None:
+            raise ValueError(
+                "bindung 'stufe' ist bereichsfrei; bereich wuerde eine nicht vorhandene Filterung behaupten"
+            )
+        teile = _kompetenzbereich_dateien(index)
+        if not teile:
+            return []
+        doc = _teil_laden(shard_dir, teile[0]["datei"])
+        block = (doc.get("meta", {}).get("anwendungsbereiche_bloecke") or {}).get(
+            stufe.strip().upper()
+        )
+        if block is None:
+            raise ValueError(f"kein Anwendungsbereiche-Block fuer {fach!r}/{stufe.strip().upper()}")
+        return list(block["items"])
+
+    if bindung in ("prosa", "keine"):
+        return []
+
+    raise KompetenzFehler(f"unbekannte anwendungsbereiche_bindung {bindung!r}")
+
+
 def finde_anwendungsbereiche(
-    kompetenz_id: str, nur_verbindlich: bool | None = None
+    kompetenz_id: str | None = None,
+    nur_verbindlich: bool | None = None,
+    *,
+    fach: str | None = None,
+    stufe: str | None = None,
+    bereich: str | None = None,
 ) -> list[dict[str, Any]]:
     """Application-area items ("Anwendungsbereiche") precisifying one
     competence, resolved per ``meta.anwendungsbereiche_bindung`` (never a
-    hardcoded subject list):
+    hardcoded subject list).  Existing callers pass ``kompetenz_id`` as the
+    first positional argument exactly as before.  Coordinate mode is an
+    additive, keyword-only alternative (``fach=…``, plus the selectors the
+    source binding actually needs) for a source block with no competence
+    owner:
 
     - ``kompetenz`` (SEK1.M): the items already nested on the competence
       record itself (the V-27 verbatim text-repetition join).
@@ -724,6 +820,13 @@ def finde_anwendungsbereiche(
     - ``prosa`` (SEK1.E), ``keine`` (PRIM.M): always ``[]`` -- the source
       makes no such link (V-27/V-54), not a lookup failure.
 
+    Coordinate requirements reflect that structure: ``bereich`` needs
+    ``fach``, ``stufe`` and ``bereich``; ``stufe`` needs ``fach`` and
+    ``stufe`` and rejects ``bereich`` because the source does not attach its
+    year-wide block to an area; ``kompetenz`` requires a competence ID;
+    ``prosa``/``keine`` are defined-empty.  ``kompetenz_id`` and coordinates
+    are mutually exclusive.
+
     ``nur_verbindlich=True``/``False`` filters on the item's own
     ``verbindlich`` flag. **This split is only meaningful for SEK1.M**: its
     ``allenfalls`` marker is the only source of non-binding items (32 of
@@ -733,24 +836,33 @@ def finde_anwendungsbereiche(
     read it as "the flag doesn't work here". ``nur_verbindlich=None``
     (default) returns every item regardless of the flag.
     """
-    k = kompetenz_nach_id(kompetenz_id)
-    fach_schluessel = k["fach"]
-    shard_dir = _shard_verzeichnis(fach_schluessel)
-    index = _index_laden(shard_dir)
-    bindung = index["meta"]["anwendungsbereiche_bindung"]
+    _koordinaten_modus_pruefen(kompetenz_id, fach, stufe, bereich)
+    if kompetenz_id is not None:
+        k = kompetenz_nach_id(kompetenz_id)
+        fach_schluessel = k["fach"]
+        shard_dir = _shard_verzeichnis(fach_schluessel)
+        index = _index_laden(shard_dir)
+        bindung = index["meta"]["anwendungsbereiche_bindung"]
 
-    if bindung == "kompetenz":
-        items = list(k.get("anwendungsbereiche", []))
-    elif bindung in ("prosa", "keine"):
-        items = []
-    elif bindung in ("bereich", "stufe"):
-        doc = _teil_laden(shard_dir, k["datei"])
-        bloecke = doc.get("meta", {}).get("anwendungsbereiche_bloecke") or {}
-        schluessel = f"{k.get('bereich_slug')}.{k['stufe']}" if bindung == "bereich" else k["stufe"]
-        block = bloecke.get(schluessel)
-        items = list(block["items"]) if block else []
+        if bindung == "kompetenz":
+            items = list(k.get("anwendungsbereiche", []))
+        elif bindung in ("prosa", "keine"):
+            items = []
+        elif bindung in ("bereich", "stufe"):
+            doc = _teil_laden(shard_dir, k["datei"])
+            bloecke = doc.get("meta", {}).get("anwendungsbereiche_bloecke") or {}
+            schluessel = (
+                f"{k.get('bereich_slug')}.{k['stufe']}"
+                if bindung == "bereich"
+                else k["stufe"]
+            )
+            block = bloecke.get(schluessel)
+            items = list(block["items"]) if block else []
+        else:
+            raise KompetenzFehler(f"unbekannte anwendungsbereiche_bindung {bindung!r}")
     else:
-        raise KompetenzFehler(f"unbekannte anwendungsbereiche_bindung {bindung!r}")
+        # _koordinaten_modus_pruefen guarantees fach here.
+        items = _anwendungsbereiche_aus_koordinaten(fach, stufe, bereich)  # type: ignore[arg-type]
 
     # V-54: an Anwendungsbereiche block can in principle carry
     # digitale_technologien-tagged entries alongside praezisierung ones
@@ -771,7 +883,13 @@ def finde_anwendungsbereiche(
 # ---------------------------------------------------------------------------
 
 
-def finde_lehrstoff(kompetenz_id: str) -> dict[str, Any]:
+def finde_lehrstoff(
+    kompetenz_id: str | None = None,
+    *,
+    fach: str | None = None,
+    stufe: str | None = None,
+    bereich: str | None = None,
+) -> dict[str, Any]:
     """``{quelle, items}`` -- ``quelle`` from ``meta.lehrstoff_quelle``.
 
     ``aus_anwendungsbereichen`` (five of six shards): items are the
@@ -783,16 +901,32 @@ def finde_lehrstoff(kompetenz_id: str) -> dict[str, Any]:
     is missing (V-45, closed 2026-08-03). ``items`` is the single verbatim
     quotation of this competence itself (``stammsatz`` + ``text``, never
     ``text`` alone), not a placeholder and not an error.
+
+    The same additive keyword-only coordinate mode as
+    :func:`finde_anwendungsbereiche` is available only for
+    ``aus_anwendungsbereichen`` source blocks.  ``eigen_ausgewiesen`` and
+    ``kompetenz`` binding remain competence-specific and therefore require a
+    competence ID rather than aggregating or inventing a quotation.
     """
-    k = kompetenz_nach_id(kompetenz_id)
-    shard_dir = _shard_verzeichnis(k["fach"])
+    _koordinaten_modus_pruefen(kompetenz_id, fach, stufe, bereich)
+    k = kompetenz_nach_id(kompetenz_id) if kompetenz_id is not None else None
+    fach_schluessel = k["fach"] if k is not None else fach
+    shard_dir = _shard_verzeichnis(fach_schluessel)  # type: ignore[arg-type]
     index = _index_laden(shard_dir)
     quelle = index["meta"]["lehrstoff_quelle"]
 
     if quelle == "eigen_ausgewiesen":
+        if k is None:
+            raise ValueError("lehrstoff_quelle 'eigen_ausgewiesen' erfordert eine kompetenz_id")
         items = [k["volltext"]]
     elif quelle == "aus_anwendungsbereichen":
-        items = [i["text"] for i in finde_anwendungsbereiche(kompetenz_id)]
+        if k is not None:
+            anwendungsbereiche = finde_anwendungsbereiche(kompetenz_id)
+        else:
+            anwendungsbereiche = finde_anwendungsbereiche(
+                fach=fach_schluessel, stufe=stufe, bereich=bereich
+            )
+        items = [i["text"] for i in anwendungsbereiche]
     else:
         raise KompetenzFehler(f"unbekannte lehrstoff_quelle {quelle!r}")
 

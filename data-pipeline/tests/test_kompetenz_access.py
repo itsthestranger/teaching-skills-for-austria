@@ -445,14 +445,104 @@ def test_finde_anwendungsbereiche_nur_verbindlich_split_ist_sek1_m_only():
             assert mit_flag_false == [], fach
 
 
+def test_finde_anwendungsbereiche_sek1_m_retains_real_attachment_art_and_flags():
+    """The public total is the 198 competence-attached precisifications,
+    never the 237-section total that also contains 39 DT suggestions (V-54)."""
+    paare = [
+        (kompetenz, item)
+        for kompetenz in K.finde_kompetenz("SEK1.M")
+        for item in K.finde_anwendungsbereiche(kompetenz["id"])
+    ]
+    assert len(paare) == 198
+    assert len({item["id"] for _kompetenz, item in paare}) == 198
+    assert all(item["art"] == "praezisierung" for _kompetenz, item in paare)
+    assert all(item["kompetenz_id"] == kompetenz["id"] for kompetenz, item in paare)
+    assert sum(item["verbindlich"] is True for _kompetenz, item in paare) == 166
+    assert sum(item["verbindlich"] is False for _kompetenz, item in paare) == 32
+
+
 def test_finde_anwendungsbereiche_bereich_bindung_shares_block_across_area_and_stufe():
     """SEK1.D (bereich): every competence of the same (area, class year)
     must resolve to the identical block -- items attach to the pair, not to
     one competence exclusively (constraint 6)."""
     kompetenzen = [k for k in K.finde_kompetenz("SEK1.D") if k["bereich_slug"] == "LESEN" and k["stufe"] == "K1"]
-    assert len(kompetenzen) >= 1
+    assert len(kompetenzen) == 3
     ergebnisse = [tuple(i["id"] for i in K.finde_anwendungsbereiche(k["id"])) for k in kompetenzen]
     assert len(set(ergebnisse)) == 1, "all LESEN/K1 competences must see the same block"
+    assert all(
+        item["kompetenz_id"] is None
+        for kompetenz in kompetenzen
+        for item in K.finde_anwendungsbereiche(kompetenz["id"])
+    )
+
+
+def test_finde_anwendungsbereiche_bereich_koordinaten_erreichen_strukturelle_sprachreflexion():
+    """SEK1.D has 12 official items with no competence record at all.
+
+    Direct block lookup is deliberately the only way to surface them: they
+    are not attached to an arbitrary neighbouring competence just to make a
+    competence-ID lookup succeed.
+    """
+    shard_dir = K._shard_verzeichnis("SEK1.D")
+    doc = K._teil_laden(shard_dir, "sprachreflexion.json")
+    bloecke = doc["meta"]["anwendungsbereiche_bloecke"]
+    assert K.finde_kompetenz("SEK1.D", kompetenzbereich="SPRACHREFLEXION") == []
+    alle_ids = []
+    for stufe in ("K1", "K2", "K3", "K4"):
+        block = bloecke[f"SPRACHREFLEXION.{stufe}"]
+        assert block["bindung"] == "bereich"
+        assert block["bereich_slug"] == "SPRACHREFLEXION"
+        ergebnis = K.finde_anwendungsbereiche(
+            fach="SEK1.D",
+            stufe=stufe,
+            bereich="Sprachbewusstsein und Sprachreflexion",
+        )
+        assert ergebnis == block["items"]
+        assert len(ergebnis) == 3
+        assert all(item["kompetenz_id"] is None for item in ergebnis)
+        assert all(item["verbindlich"] is True for item in ergebnis)
+        assert K.finde_anwendungsbereiche(
+            fach="SEK1.D",
+            stufe=stufe,
+            bereich="Sprachbewusstsein und Sprachreflexion",
+            nur_verbindlich=True,
+        ) == block["items"]
+        assert K.finde_anwendungsbereiche(
+            fach="SEK1.D",
+            stufe=stufe,
+            bereich="Sprachbewusstsein und Sprachreflexion",
+            nur_verbindlich=False,
+        ) == []
+        alle_ids.extend(item["id"] for item in ergebnis)
+
+    # The frozen slug is an equally valid coordinate, and all 12 official
+    # structural items are now reachable without an invented competence ID.
+    assert K.finde_anwendungsbereiche(
+        fach="SEK1.D", stufe="K1", bereich="SPRACHREFLEXION"
+    ) == bloecke["SPRACHREFLEXION.K1"]["items"]
+    assert len(alle_ids) == len(set(alle_ids)) == 12
+
+
+def test_finde_anwendungsbereiche_bereich_koordinaten_erreichen_alle_54_quellitems():
+    """All SEK1.D blocks are public through coordinates, including the 12
+    structural items that no competence-ID lookup can honestly own."""
+    shard_dir = K._shard_verzeichnis("SEK1.D")
+    index = K._index_laden(shard_dir)
+    alle_ids = set()
+    block_anzahl = 0
+    for teil in K._kompetenzbereich_dateien(index):
+        doc = K._teil_laden(shard_dir, teil["datei"])
+        for schluessel, block in doc["meta"]["anwendungsbereiche_bloecke"].items():
+            slug, stufe = schluessel.rsplit(".", 1)
+            ergebnis = K.finde_anwendungsbereiche(
+                fach="SEK1.D", stufe=stufe, bereich=slug
+            )
+            assert ergebnis == block["items"]
+            assert all(item["kompetenz_id"] is None for item in ergebnis)
+            alle_ids.update(item["id"] for item in ergebnis)
+            block_anzahl += 1
+    assert block_anzahl == 16
+    assert len(alle_ids) == 54
 
 
 def test_finde_anwendungsbereiche_stufe_bindung_shares_block_across_whole_year():
@@ -465,9 +555,89 @@ def test_finde_anwendungsbereiche_stufe_bindung_shares_block_across_whole_year()
     assert len(ergebnisse) == 1
 
 
+@pytest.mark.parametrize(
+    ("fach", "stufe", "erwartete_anzahl"),
+    [("PRIM.D", "SCH1", 8), ("PRIM.SU", "SCH1", 10)],
+)
+def test_finde_anwendungsbereiche_stufe_koordinaten_gibt_den_ganzen_jahresblock(
+    fach, stufe, erwartete_anzahl
+):
+    """A stufe-bound block is shared, not filtered to a supplied area."""
+    shard_dir = K._shard_verzeichnis(fach)
+    index = K._index_laden(shard_dir)
+    datei = K._kompetenzbereich_dateien(index)[0]["datei"]
+    block = K._teil_laden(shard_dir, datei)["meta"]["anwendungsbereiche_bloecke"][
+        stufe
+    ]
+    ergebnis = K.finde_anwendungsbereiche(fach=fach, stufe=stufe)
+    assert ergebnis == block["items"]
+    assert len(ergebnis) == erwartete_anzahl
+    assert block["bindung"] == "stufe"
+    assert all(item["kompetenz_id"] is None and item["verbindlich"] is True for item in ergebnis)
+
+
+@pytest.mark.parametrize("fach", ["SEK1.E", "PRIM.M"])
+def test_finde_anwendungsbereiche_prosa_und_keine_sind_auch_per_koordinate_defined_empty(
+    fach,
+):
+    """The two empty axes are distinguishable in meta, never errors."""
+    index = K._index_laden(K._shard_verzeichnis(fach))
+    assert index["meta"]["anwendungsbereiche_bindung"] in ("prosa", "keine")
+    assert K.finde_anwendungsbereiche(fach=fach) == []
+
+
+def test_finde_anwendungsbereiche_koordinaten_validieren_ihre_quelleigene_form():
+    ziel = K.finde_kompetenz("SEK1.M")[0]
+    with pytest.raises(ValueError, match="kompetenz_id und Koordinaten"):
+        K.finde_anwendungsbereiche(ziel["id"], fach="SEK1.M")
+    with pytest.raises(ValueError, match="kompetenz_id oder mindestens fach"):
+        K.finde_anwendungsbereiche()
+    with pytest.raises(ValueError, match="bindung 'kompetenz'"):
+        K.finde_anwendungsbereiche(fach="SEK1.M")
+    with pytest.raises(ValueError, match="erfordert fach, stufe und bereich"):
+        K.finde_anwendungsbereiche(fach="SEK1.D", stufe="K1")
+    with pytest.raises(ValueError, match="bereichsfrei"):
+        K.finde_anwendungsbereiche(fach="PRIM.D", stufe="SCH1", bereich="LESEN")
+    with pytest.raises(ValueError, match="unbekannter bereich"):
+        K.finde_anwendungsbereiche(fach="SEK1.D", stufe="K1", bereich="NICHT")
+    with pytest.raises(ValueError, match="kein Anwendungsbereiche-Block"):
+        K.finde_anwendungsbereiche(fach="SEK1.D", stufe="K9", bereich="LESEN")
+
+
 def test_finde_anwendungsbereiche_unknown_id_raises():
     with pytest.raises(K.KompetenzNichtGefunden):
         K.finde_anwendungsbereiche("AT.LP23.SEK1.M.NICHT.K1.99")
+
+
+@pytest.mark.parametrize(
+    ("kompetenz_id", "datei", "block_schluessel"),
+    [
+        ("AT.LP23.SEK1.D.LESEN.K1.01", "lesen.json", "LESEN.K1"),
+        ("AT.LP23.PRIM.D.LESEN.SCH1.01", "lesen.json", "SCH1"),
+        ("AT.LP23.PRIM.SU.GEOGRAFIE.SCH1.01", "geografie.json", "SCH1"),
+    ],
+)
+def test_finde_anwendungsbereiche_legacy_kompetenz_id_ist_exakt_der_rohblock(
+    kompetenz_id, datei, block_schluessel
+):
+    """The additive selector does not change any legacy competence-ID result."""
+    parsed = K._parse_id(kompetenz_id)
+    fach = parsed["fach_schluessel"]
+    doc = K._teil_laden(K._shard_verzeichnis(fach), datei)
+    erwartet = doc["meta"]["anwendungsbereiche_bloecke"][block_schluessel]["items"]
+    assert K.finde_anwendungsbereiche(kompetenz_id) == erwartet
+
+
+def test_finde_anwendungsbereiche_legacy_sek1_m_ist_exakt_das_verschachtelte_rohfeld():
+    kompetenz_id = "AT.LP23.SEK1.M.DATEN.K1.01"
+    doc = K._teil_laden(K._shard_verzeichnis("SEK1.M"), "daten.json")
+    kompetenz = next(
+        k
+        for bereich in doc["kompetenzbereiche"]
+        for k in bereich["kompetenzen"]
+        if k["id"] == kompetenz_id
+    )
+    assert K.finde_anwendungsbereiche(kompetenz_id) == kompetenz["anwendungsbereiche"]
 
 
 # ---------------------------------------------------------------------------
@@ -501,6 +671,46 @@ def test_finde_lehrstoff_aus_anwendungsbereichen_matches_finde_anwendungsbereich
     assert ergebnis["quelle"] == "aus_anwendungsbereichen"
     erwartete_texte = [i["text"] for i in K.finde_anwendungsbereiche(k["id"])]
     assert ergebnis["items"] == erwartete_texte
+
+
+@pytest.mark.parametrize(
+    "fach", ["SEK1.M", "SEK1.D", "SEK1.E", "PRIM.D", "PRIM.SU"]
+)
+def test_finde_lehrstoff_aus_anwendungsbereichen_traegt_exakt_die_offiziellen_itemtexte(
+    fach,
+):
+    """No source or binding state is rewritten into a false error label."""
+    for kompetenz in K.finde_kompetenz(fach):
+        ergebnis = K.finde_lehrstoff(kompetenz["id"])
+        assert ergebnis["quelle"] == "aus_anwendungsbereichen"
+        assert ergebnis["items"] == [
+            item["text"] for item in K.finde_anwendungsbereiche(kompetenz["id"])
+        ]
+
+
+def test_finde_lehrstoff_koordinaten_verwendet_denselben_strukturellen_block():
+    items = K.finde_anwendungsbereiche(
+        fach="SEK1.D", stufe="K3", bereich="SPRACHREFLEXION"
+    )
+    assert K.finde_lehrstoff(
+        fach="SEK1.D", stufe="K3", bereich="SPRACHREFLEXION"
+    ) == {
+        "quelle": "aus_anwendungsbereichen",
+        "items": [item["text"] for item in items],
+    }
+
+
+def test_finde_lehrstoff_leere_und_kompetenzspezifische_koordinatenfaelle_sind_ehrlich():
+    # SEK1.E's section is prose, so its real Lehrstoff provenance is retained
+    # with an empty item list rather than reported as a lookup error.
+    assert K.finde_lehrstoff(fach="SEK1.E") == {
+        "quelle": "aus_anwendungsbereichen",
+        "items": [],
+    }
+    with pytest.raises(ValueError, match="bindung 'kompetenz'"):
+        K.finde_lehrstoff(fach="SEK1.M")
+    with pytest.raises(ValueError, match="eigen_ausgewiesen"):
+        K.finde_lehrstoff(fach="PRIM.M")
 
 
 # ---------------------------------------------------------------------------

@@ -218,7 +218,11 @@ logged as new rows in `data-pipeline/notes/deviations.md`:
    competences of its own** (`SPRACHREFLEXION`, see the table above) --
    the structural mirror of the already-known `GZINTEGRATIV` case
    (competences with no application items). Confirmed by reading the
-   Anwendungsbereiche-only area's precise entries.
+   Anwendungsbereiche-only area's precise entries. Consequently, a
+   competence-ID-only access API cannot address these four blocks / 12
+   items without inventing an owner; E4-04 added a direct keyword-only
+   `(fach, stufe, bereich)` block selector while retaining
+   `kompetenz_id: null` on every item (V-77).
 
 3. **The `DEUTSCH` g1 span contains two curricula, and the second one can
    collide.** After the main Deutsch curriculum ends (child 511), a complete
