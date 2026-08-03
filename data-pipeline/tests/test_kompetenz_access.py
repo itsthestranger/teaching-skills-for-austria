@@ -289,6 +289,93 @@ def test_finde_progression_never_crosses_kompetenzbereich(fach, _bindung):
     assert verstoesse == [], f"{fach}: cross-area progression: {verstoesse[:5]}"
 
 
+def _assert_progression_antworten(
+    ergebnisse, *, bereich_slug: str, stufe: str, nor: str
+):
+    """Common contract checks for concrete, non-vacuous progression cases."""
+    assert ergebnisse
+    for kompetenz in ergebnisse:
+        assert kompetenz["bereich_slug"] == bereich_slug
+        assert kompetenz["stufe"] == stufe
+        assert kompetenz["volltext"] == f"{kompetenz['stammsatz']} {kompetenz['text']}"
+        assert kompetenz["provenienz"]["nor"] == nor
+        assert kompetenz["provenienz"]["quelle"] == "RIS Bundesrecht konsolidiert"
+
+
+def test_finde_progression_sek1_m_wiederholen_backlink_both_directions():
+    """SEK1.M's K2 Zahlen backlink is source-text-triggered.
+
+    The regulation names no competence ID.  The parser resolves the textual
+    ``Wiederholen und Festigen`` item positionally, then mirrors that result
+    into the competence's progression fields.  Assert the two shipped fields
+    agree before exercising the public lookup in both directions.
+    """
+    k2_id = "AT.LP23.SEK1.M.ZAHLEN.K2.02"
+    k2 = K.kompetenz_nach_id(k2_id)
+    backlink = next(
+        item
+        for item in K.finde_anwendungsbereiche(k2_id)
+        if item["id"] == "AT.LP23.SEK1.M.AB.ZAHLEN.K2.05"
+    )
+
+    # These are source fields, rather than an inference from the IDs used in
+    # this test: the item's official text triggers the resolved backlinks.
+    assert backlink["kompetenz_id"] == k2_id
+    assert backlink["text"].startswith("Wiederholen und Festigen:")
+    assert backlink["wiederholung_von"] == k2["vorlaeufer"]
+
+    vorgaenger = K.finde_progression(k2_id, "zurueck")
+    assert [k["id"] for k in vorgaenger] == backlink["wiederholung_von"]
+    _assert_progression_antworten(
+        vorgaenger, bereich_slug=k2["bereich_slug"], stufe="K1", nor="NOR40271471"
+    )
+
+    # The reciprocal K1 -> K2 lookup need only contain this K2 competence:
+    # one K1 competence can correctly feed multiple K2 competences in an area.
+    for vorgaenger_kompetenz in vorgaenger:
+        nachfolger = K.finde_progression(vorgaenger_kompetenz["id"], "vor")
+        assert k2_id in {k["id"] for k in nachfolger}
+        _assert_progression_antworten(
+            nachfolger, bereich_slug=k2["bereich_slug"], stufe="K2", nor="NOR40271471"
+        )
+
+
+def test_finde_progression_sek1_d_positional_k1_k2_pair_both_directions():
+    """SEK1.D progression is positional, not a guessed ID adjacency.
+
+    Its area-bound official application items contain neither a textual
+    Wiederholen marker nor resolved ``wiederholung_von`` links, while the
+    shipped competence fields explicitly carry the K1/K2 progression.
+    """
+    k1_id = "AT.LP23.SEK1.D.LESEN.K1.01"
+    k2_id = "AT.LP23.SEK1.D.LESEN.K2.01"
+    k1 = K.kompetenz_nach_id(k1_id)
+    k2 = K.kompetenz_nach_id(k2_id)
+
+    # Prove the mechanism from shipped fields before testing public results.
+    index = K._index_laden(K._shard_verzeichnis("SEK1.D"))
+    assert index["meta"]["anwendungsbereiche_bindung"] == "bereich"
+    assert k1_id in k2["vorlaeufer"]
+    assert k2_id in k1["folge"]
+    assert all(
+        not item["wiederholung_von"]
+        and not item["text"].startswith("Wiederholen und Festigen:")
+        for item in K.finde_anwendungsbereiche(k2_id)
+    )
+
+    vorgaenger = K.finde_progression(k2_id, "zurueck")
+    assert k1_id in {k["id"] for k in vorgaenger}
+    _assert_progression_antworten(
+        vorgaenger, bereich_slug=k2["bereich_slug"], stufe="K1", nor="NOR40271471"
+    )
+
+    nachfolger = K.finde_progression(k1_id, "vor")
+    assert k2_id in {k["id"] for k in nachfolger}
+    _assert_progression_antworten(
+        nachfolger, bereich_slug=k1["bereich_slug"], stufe="K2", nor="NOR40271471"
+    )
+
+
 def test_finde_progression_invalid_richtung_raises():
     ziel = K.finde_kompetenz("SEK1.M")[0]
     with pytest.raises(ValueError):
