@@ -72,11 +72,107 @@ Lehrkraft-Material aus `docs/` (nie als amtlich ausgewiesen, siehe `references/k
 
 ---
 
-## Stand dieser Datei
+## Schritt 1 — Klären und sofort einen brauchbaren Entwurf anbieten
 
-Dieses Dokument deckt **Routing und Gerüst** ab (Schritt 0 oben plus die fünf Referenzdateien).
-Die volle Ablauflogik — Klären (0–2 Fragen) + Entwurfsangebot, Verankerung in Kompetenzen,
-Aufbau nach dem Spiralprinzip, Ausgabe von `lesson.json` in einem Turn, sowie die
-`docs/`-Ingestion und das docx-Rendering — ist Gegenstand eigener, nachgelagerter Aufgaben und
-noch nicht in dieser Datei spezifiziert. Bis dahin: diese Skill routet korrekt zur Fachreferenz
-und zum Datenzugriff; sie schreibt noch keinen vollständigen Planungs-Turn vor.
+Nach Schritt 0 prüfen, ob Fach, Stufe, Thema bzw. Kompetenz und ein für die Stunde brauchbarer
+Rahmen schon klar sind. Eine Dauer darf, wenn sie fehlt, mit **50 Minuten** vorgeschlagen werden;
+sie ist keine Pflicht-Rückfrage.
+
+- Sind diese Angaben ausreichend klar, **keine Rückfrage** stellen: direkt mit Schritt 2
+  fortfahren und noch in derselben Antwort die Dokumente erzeugen.
+- Fehlt etwas Entscheidendes, höchstens **zwei** gezielte Fragen stellen. Fach und Stufe dürfen
+  in einer Frage zusammengefasst werden. Nie erst allgemein nach "mehr Details" fragen.
+- Jede Rückfrage enthält bereits einen konkreten, sofort nutzbaren Entwurf: Fach, Stufe,
+  Thema, vorgeschlagene Dauer, einen aus der Abfrage stammenden Kompetenzvorschlag und eine
+  grobe Phasenfolge. Beispiel: „Für Mathematik, 2. Klasse Sek I, schlage ich 50 Minuten zum
+  Vergleichen von Bruchzahlen vor. Passt das — und arbeiten die Schüler:innen mit
+  Bruchstreifen oder am Zahlenstrahl?“
+- Ist ein Stichwort mehrdeutig oder liefert `finde_kompetenz` nichts, vor einer Absage
+  `stichwort_abdeckung(fach, begriff)` verwenden. Die Antwort darf nicht behaupten, ein Thema
+  komme im Lehrplan nicht vor, nur weil keine Kompetenzbeschreibung gefunden wurde.
+
+Nach der Antwort auf höchstens diese zwei Fragen wird nicht erneut geklärt: den vorgeschlagenen
+Rahmen mit den bestätigten Änderungen übernehmen und den vollständigen Planungs-Turn ausführen.
+
+## Schritt 2 — Amtlich verankern (vor dem Schreiben des Plans)
+
+Die Planung wird ausschließlich mit den Funktionen aus `plugin/scripts/kompetenz.py` aufgebaut.
+Für eine reguläre, kompetenztragende Stunde ist diese Abfragefolge Pflicht:
+
+1. `finde_kompetenz(fach, stufe=…, kompetenzbereich=… oder stichworte=[…])` aufrufen und eine
+   passende Kompetenz auswählen. Bei mehreren gleich passenden Treffern den Entwurf aus Schritt
+   1 als Auswahl anbieten; keine Kompetenz-ID erraten.
+2. Für die gewählte ID `finde_progression(id, "zurueck")` aufrufen. Diese echten
+   Vorläuferkompetenzen sind die Grundlage für die Aktivierung im Einstieg.
+3. `finde_anwendungsbereiche(id, nur_verbindlich=True)` und
+   `finde_anwendungsbereiche(id, nur_verbindlich=False)` **getrennt** aufrufen. Die erste Liste
+   ist Kernstoff. Die zweite enthält nur `allenfalls`-Inhalte und darf ausschließlich als klar
+   beschriftete, nicht verpflichtende Erweiterung erscheinen. Eine leere zweite Liste ist kein
+   Anlass, optionale Inhalte zu erfinden.
+4. `finde_lehrstoff(id)` aufrufen und den Rückgabewert mit seiner `quelle` dokumentieren. Bei
+   `eigen_ausgewiesen` ist die vollständige Kompetenz selbst der Lehrstoff; bei
+   `aus_anwendungsbereichen` nur die zurückgegebenen Präzisierungen verwenden.
+5. `finde_bildungsstandard_bezug(id)` und `finde_uebergreifende_themen(kompetenz_id=id)`
+   aufrufen. Hat die Kompetenz keine eigenen Themenmarkierungen, darf ergänzend nur aus
+   `finde_uebergreifende_themen(fach=fach)` ein tatsächlich in die Stunde eingebundenes Thema
+   gewählt werden. Leere Deskriptoren oder ein `hinweis` bedeuten: den ausstehenden Crosswalk
+   transparent nennen, keinen Bildungsstandard-Deskriptor erfinden.
+
+Für die wörtliche Verankerung stets `volltext` oder `voller_wortlaut(kompetenz)` verwenden,
+nie `text` allein. Die `provenienz` des zurückgegebenen Objekts wird unverändert in den
+`kompetenzbezug.quelle`-Block übernommen. Das gilt auch für NOR, Kundmachung und Stand.
+
+## Schritt 3 — Stundenstruktur als Spirale
+
+Der Stundenverlauf macht den Zusammenhang mit dem Vorläufer sichtbar, statt die neue Kompetenz
+als isoliertes Thema zu behandeln:
+
+1. **Aktivieren (ca. 10 %):** eine kurze Diagnose- oder Wiederholungsaufgabe aus einer
+   zurückgegebenen Vorläuferkompetenz. Wenn keine Vorläufer existieren, vorhandenes Alltags- und
+   Begriffsverständnis diagnostizieren und dies ausdrücklich als Einstieg ohne Datenvorläufer
+   kennzeichnen.
+2. **Anknüpfen und problematisieren (ca. 15 %):** die bekannte Vorstellung in einer neuen,
+   anspruchsvolleren Situation einsetzen lassen. Die Lernfrage muss auf die gewählte Kompetenz
+   hinführen.
+3. **Erarbeiten (ca. 40 %):** Lernhandlungen aus den verbindlichen Anwendungsbereichen bzw. dem
+   Lehrstoff ableiten. Amtliche Zitate nicht umformulieren, wenn sie als Lehrstoffnachweis
+   erscheinen.
+4. **Sichern und vernetzen (ca. 25 %):** Ergebnis, Darstellung oder Verfahren mit dem Einstieg
+   vergleichen lassen: „Was aus der Vorstufe hilft hier, und was ist neu?“
+5. **Transfer/Exit (ca. 10 %):** eine beobachtbare Aufgabe, die genau die Zielkompetenz prüft;
+   sie wird im Plan als Grundlage für spätere Beobachtung festgehalten.
+
+Die vorgeschlagenen Methoden, Aufgaben und Sprachhilfen sind pädagogische Ausgestaltung. Sie
+werden klar von den amtlichen RIS-Zitaten getrennt und nie als Lehrplantext ausgegeben.
+
+## Schritt 4 — In einem Turn `lesson.json` und DOCX ausgeben
+
+Sobald die Angaben ausreichend sind, den gesamten folgenden Ablauf in **einer** Antwort und ohne
+Bestätigungsrunde ausführen:
+
+1. Eine vollständige `lesson.json` mit mindestens einem Dokument
+   `{"id": "unterrichtsplanung", "audience": "teacher", …}` schreiben. Die Datei enthält
+   `shared` und `documents`; jeder Abschnitt enthält `heading` und `blocks`.
+2. Die Verankerung als `kompetenzbezug` schreiben: `kompetenz_id`, vollständiger wörtlicher Text
+   und die unveränderte `provenienz` als `quelle`. Übergreifende Themen als
+   `uebergreifende_themen_tag` ausgeben, sobald mindestens eines vorliegt.
+3. Verbindliche Präzisierungen und die optionale `allenfalls`-Erweiterung in getrennten,
+   eindeutig beschrifteten Blöcken ausgeben. Ohne optionale Treffer steht dort ausdrücklich,
+   dass für diese Kompetenz keine verknüpfte optionale Präzisierung vorliegt.
+4. Den Spiralverlauf einschließlich Vorläufer, Aktivierung, Erarbeitung, Sicherung und Exit in
+   den Blöcken konkret abbilden. Die aus der Abfrage ermittelte Bildungsstandard-Antwort als
+   Hinweis darstellen, nie durch eine freie Zuordnung ersetzen.
+5. Unmittelbar danach den vorhandenen Renderer ausführen — keine Rendererlogik kopieren:
+
+   ```bash
+   python3 plugin/skills/at-unterrichtsplanung/scripts/render_documents.py \
+     <pfad>/lesson.json --format docx --outdir <ausgabeordner>
+   ```
+
+   Der Befehl erzeugt die editierbare `.docx` und ihre HTML-Vorschau. In der Antwort die
+   tatsächlich geschriebenen Pfade nennen und nur dann Erfolg melden, wenn der Renderer mit
+   Status 0 beendet wurde.
+
+Diese Aufgabe erzeugt zunächst mindestens die `unterrichtsplanung`. Das optionale
+`schueler_material`, der `beobachtungsbogen` und die vollständige `docs/`-Ingestion gehören zu
+den nachgelagerten Erweiterungen und werden nicht als bereits geliefert behauptet.

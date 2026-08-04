@@ -1,0 +1,126 @@
+{
+  "shared": {
+    "kompetenz": {
+      "type": "kompetenzbezug",
+      "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.02",
+      "text": "Die Schülerinnen und Schüler können nichtnegative Dezimal- und Bruchzahlen sowie ganze Zahlen interpretieren, darstellen und vergleichen;",
+      "quelle": {
+        "quelle": "RIS Bundesrecht konsolidiert",
+        "kurztitel": "Lehrpläne der Mittelschulen",
+        "nor": "NOR40271471",
+        "kundmachung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+        "anlage": "Anl. 1",
+        "teil": "ACHTER TEIL",
+        "stand": "2026-07-27"
+      }
+    }
+  },
+  "documents": [
+    {
+      "id": "unterrichtsplanung",
+      "audience": "teacher",
+      "eyebrow": "Sekundarstufe I · Mathematik · 2. Klasse",
+      "title": "Bruchzahlen darstellen und vergleichen",
+      "meta": "50 Minuten · Kompetenzbereich Zahlen und Maße",
+      "sections": [
+        {
+          "heading": "Amtliche Verankerung",
+          "blocks": [
+            {
+              "type": "from_shared",
+              "key": "kompetenz"
+            },
+            {
+              "type": "uebergreifende_themen_tag",
+              "themen": [
+                "Informatische Bildung"
+              ]
+            },
+            {
+              "type": "labeled",
+              "label": "Lehrstoffquelle",
+              "text": "aus_anwendungsbereichen: Die folgenden Präzisierungen sind der verbindliche Kern der Stunde."
+            },
+            {
+              "type": "list",
+              "label": "Verbindliche Anwendungsbereiche",
+              "items": [
+                "Wiederholen und Festigen: Deuten, Erweitern und Kürzen von Brüchen; Darstellen am Zahlenstrahl, Vergleichen und Ordnen nichtnegativer Dezimal- und Bruchzahlen;",
+                "Deuten von Brüchen als relative Anteile und relative Häufigkeiten;",
+                "Vergleichen und Ordnen ganzer Zahlen;"
+              ]
+            },
+            {
+              "type": "labeled",
+              "label": "Optionale Erweiterung (allenfalls, nicht verpflichtend)",
+              "text": "Für diese Kompetenz liegt keine verknüpfte optionale Präzisierung vor."
+            },
+            {
+              "type": "labeled",
+              "label": "Bildungsstandards-Bezug",
+              "text": "Der projektseitige Bereichs-Crosswalk verbindet Zahlen und Maße mit vier M8-Bereichen (Darstellen/Modellbilden, Rechnen/Operieren, Interpretieren sowie Argumentieren/Begründen) und macht 12 amtliche Deskriptoren auffindbar. Dies ist ausdrücklich ein Bereichsbezug und keine 1:1-Zuordnung dieser Kompetenz zu einzelnen Deskriptoren."
+            }
+          ]
+        },
+        {
+          "heading": "Spiralischer Stundenverlauf",
+          "blocks": [
+            {
+              "type": "phase_header",
+              "phase": "Aktivieren · 5 Minuten",
+              "objective": "Vorwissen aus K1 sichtbar machen"
+            },
+            {
+              "type": "paragraph",
+              "text": "Die Schüler:innen markieren 1/2, 3/4 und 0,5 auf einem Zahlenstrahl und begründen, welche Darstellungen denselben Wert haben. Das aktiviert die Vorläuferkompetenz AT.LP23.SEK1.M.ZAHLEN.K1.01: natürliche Zahlen sowie nichtnegative Dezimal- und Bruchzahlen interpretieren, darstellen und vergleichen."
+            },
+            {
+              "type": "phase_header",
+              "phase": "Anknüpfen und problematisieren · 8 Minuten",
+              "objective": "Den Vergleich von Darstellungsformen als Lernfrage öffnen"
+            },
+            {
+              "type": "callout",
+              "kind": "student-task",
+              "label": "Lernfrage",
+              "text": "Auf dem Zahlenstrahl liegen 0,6, 3/5 und 2/3. Welche Zahlen sind gleich, welche ist am größten, und wie könnt ihr das zeigen?"
+            },
+            {
+              "type": "phase_header",
+              "phase": "Erarbeiten · 20 Minuten",
+              "objective": "Bruch- und Dezimalzahlen darstellen und vergleichen"
+            },
+            {
+              "type": "list",
+              "items": [
+                "Zweiergruppen ordnen Bruchkarten und Dezimalkarten auf einem Zahlenstrahl.",
+                "Sie erklären mindestens einen Vergleich als Anteil und einen als Position auf dem Zahlenstrahl.",
+                "Die Lehrkraft nutzt die verbindlichen Präzisierungen als Beobachtungsgrundlage."
+              ]
+            },
+            {
+              "type": "phase_header",
+              "phase": "Sichern und vernetzen · 12 Minuten",
+              "objective": "Bekanntes Vorwissen und neue Darstellungswechsel verbinden"
+            },
+            {
+              "type": "paragraph",
+              "text": "Gemeinsam wird festgehalten: Aus K1 hilft das Deuten und Darstellen von Brüchen; neu ist der sichere Vergleich von Bruch-, Dezimal- und ganzen Zahlen in mehreren Darstellungen."
+            },
+            {
+              "type": "phase_header",
+              "phase": "Transfer/Exit · 5 Minuten",
+              "objective": "Die Zielkompetenz beobachtbar prüfen"
+            },
+            {
+              "type": "callout",
+              "kind": "student-task",
+              "label": "Exit-Ticket",
+              "text": "Ordne 0,75, 2/3 und 3/4 der Größe nach. Zeichne eine Zahl auf dem Zahlenstrahl ein und begründe deinen Vergleich in einem Satz."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
