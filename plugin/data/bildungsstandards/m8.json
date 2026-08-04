@@ -1,0 +1,578 @@
+{
+  "meta": {
+    "dataset_version": "2026-07-27",
+    "shard": "M8",
+    "fach": {
+      "code": "M",
+      "name": "Mathematik"
+    },
+    "programmstufe": "SCH8",
+    "programmstufe_name": "8. Schulstufe der Volksschuloberstufe, der Mittelschule und der allgemeinbildenden höheren Schule",
+    "teil": "2. Teil",
+    "abschnitt": "3. Abschnitt",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Bildungsstandardsverordnung",
+      "nor": "NOR40255561",
+      "gesetzesnummer": "20006166",
+      "kundmachungsorgan": "BGBl. II Nr. 1/2009 zuletzt geändert durch BGBl. II Nr. 262/2023",
+      "anlage": "Anl. 1",
+      "typ": "V",
+      "abkuerzung": "BiStV",
+      "inkrafttretensdatum": "09.09.2023",
+      "zuletzt_aktualisiert": "11.09.2023",
+      "dokument_url": "https://www.ris.bka.gv.at/eli/bgbl/ii/2009/1/ANL1/NOR40255561",
+      "eli": "https://ris.bka.gv.at/eli/bgbl/ii/2009/1/ANL1/NOR40255561",
+      "retrieval_date": "2026-07-27"
+    },
+    "kompetenzmodell_hinweis": "Das Kompetenzmodell für Mathematik auf der 8. Schulstufe legt „Inhaltsbereiche“ fest, wobei die jeweiligen Anforderungen durch bestimmte, in „Handlungsbereichen“ dargelegte Tätigkeiten konkretisiert werden. Der „Komplexitätsbereich“ beschreibt Art und Grad der erforderlichen Vernetzung."
+  },
+  "kompetenzbereiche": [
+    {
+      "code": "DARSTELLENZAHLEN",
+      "name": "Darstellen, Modellbilden – Zahlen und Maße",
+      "ueberschrift_roh": "Handlungsbereich: „Darstellen, Modellbilden“ – Inhaltsbereich „Zahlen und Maße“",
+      "handlungsbereich": "Darstellen, Modellbilden",
+      "inhaltsbereich": "Zahlen und Maße"
+    },
+    {
+      "code": "DARSTELLENVARIABLE",
+      "name": "Darstellen, Modellbilden – Variable, funktionale Abhängigkeiten",
+      "ueberschrift_roh": "Handlungsbereich „Darstellen, Modellbilden – Inhaltsbereich „Variable, funktionale Abhängigkeiten“",
+      "handlungsbereich": "Darstellen, Modellbilden",
+      "inhaltsbereich": "Variable, funktionale Abhängigkeiten"
+    },
+    {
+      "code": "DARSTELLENFIGUREN",
+      "name": "Darstellen, Modellbilden – Geometrische Figuren und Körper",
+      "ueberschrift_roh": "Handlungsbereich „Darstellen, Modellbilden“ – Inhaltsbereich „Geometrische Figuren und Körper“",
+      "handlungsbereich": "Darstellen, Modellbilden",
+      "inhaltsbereich": "Geometrische Figuren und Körper"
+    },
+    {
+      "code": "DARSTELLENSTATISTIK",
+      "name": "Darstellen, Modellbilden – Statistische Darstellungen und Kenngrößen",
+      "ueberschrift_roh": "Handlungsbereich „Darstellen, Modellbilden“ – Inhaltsbereich „Statistische Darstellungen und Kenngrößen“",
+      "handlungsbereich": "Darstellen, Modellbilden",
+      "inhaltsbereich": "Statistische Darstellungen und Kenngrößen"
+    },
+    {
+      "code": "RECHNENZAHLEN",
+      "name": "Rechnen, Operieren – Zahlen und Maße",
+      "ueberschrift_roh": "Handlungsbereich „Rechnen, Operieren“ – Inhaltsbereich „Zahlen und Maße“",
+      "handlungsbereich": "Rechnen, Operieren",
+      "inhaltsbereich": "Zahlen und Maße"
+    },
+    {
+      "code": "RECHNENVARIABLE",
+      "name": "Rechnen, Operieren – Variable, funktionale Abhängigkeiten",
+      "ueberschrift_roh": "Handlungsbereich „Rechnen, Operieren“ – Inhaltsbereich „Variable, funktionale Abhängigkeiten“",
+      "handlungsbereich": "Rechnen, Operieren",
+      "inhaltsbereich": "Variable, funktionale Abhängigkeiten"
+    },
+    {
+      "code": "RECHNENFIGUREN",
+      "name": "Rechnen, Operieren – Geometrische Figuren und Körper",
+      "ueberschrift_roh": "Handlungsbereich „Rechnen, Operieren“ – Inhaltsbereich „Geometrische Figuren und Körper“",
+      "handlungsbereich": "Rechnen, Operieren",
+      "inhaltsbereich": "Geometrische Figuren und Körper"
+    },
+    {
+      "code": "RECHNENSTATISTIK",
+      "name": "Rechnen, Operieren – Statistische Darstellungen und Kenngrößen",
+      "ueberschrift_roh": "Handlungsbereich „Rechnen, Operieren“ – Inhaltsbereich „Statistische Darstellungen und Kenngrößen“",
+      "handlungsbereich": "Rechnen, Operieren",
+      "inhaltsbereich": "Statistische Darstellungen und Kenngrößen"
+    },
+    {
+      "code": "INTERPRETIERENZAHLEN",
+      "name": "Interpretieren – Zahlen und Maße",
+      "ueberschrift_roh": "Handlungsbereich „Interpretieren“ – Inhaltsbereich „Zahlen und Maße“",
+      "handlungsbereich": "Interpretieren",
+      "inhaltsbereich": "Zahlen und Maße"
+    },
+    {
+      "code": "INTERPRETIERENVARIABLE",
+      "name": "Interpretieren – Variable, funktionale Abhängigkeiten",
+      "ueberschrift_roh": "Handlungsbereich „Interpretieren“ – Inhaltsbereich „Variable, funktionale Abhängigkeiten“",
+      "handlungsbereich": "Interpretieren",
+      "inhaltsbereich": "Variable, funktionale Abhängigkeiten"
+    },
+    {
+      "code": "INTERPRETIERENFIGUREN",
+      "name": "Interpretieren – Geometrische Figuren und Körper",
+      "ueberschrift_roh": "Handlungsbereich „Interpretieren“ – Inhaltsbereich „Geometrische Figuren und Körper“",
+      "handlungsbereich": "Interpretieren",
+      "inhaltsbereich": "Geometrische Figuren und Körper"
+    },
+    {
+      "code": "INTERPRETIERENSTATISTIK",
+      "name": "Interpretieren – Statistische Darstellungen und Kenngrößen",
+      "ueberschrift_roh": "Handlungsbereich „Interpretieren“ – Inhaltsbereich „Statistische Darstellungen und Kenngrößen“",
+      "handlungsbereich": "Interpretieren",
+      "inhaltsbereich": "Statistische Darstellungen und Kenngrößen"
+    },
+    {
+      "code": "ARGUMENTIERENZAHLEN",
+      "name": "Argumentieren, Begründen – Zahlen und Maße",
+      "ueberschrift_roh": "Handlungsbereich „Argumentieren, Begründen“ – Inhaltsbereich „Zahlen und Maße“",
+      "handlungsbereich": "Argumentieren, Begründen",
+      "inhaltsbereich": "Zahlen und Maße"
+    },
+    {
+      "code": "ARGUMENTIERENVARIABLE",
+      "name": "Argumentieren, Begründen – Variable, funktionale Abhängigkeiten",
+      "ueberschrift_roh": "Handlungsbereich „Argumentieren, Begründen“ – Inhaltsbereich „Variable, funktionale Abhängigkeiten“",
+      "handlungsbereich": "Argumentieren, Begründen",
+      "inhaltsbereich": "Variable, funktionale Abhängigkeiten"
+    },
+    {
+      "code": "ARGUMENTIERENFIGUREN",
+      "name": "Argumentieren, Begründen – Geometrische Figuren und Körper",
+      "ueberschrift_roh": "Handlungsbereich „Argumentieren, Begründen“ – Inhaltsbereich „Geometrische Figuren und Körper“",
+      "handlungsbereich": "Argumentieren, Begründen",
+      "inhaltsbereich": "Geometrische Figuren und Körper"
+    },
+    {
+      "code": "ARGUMENTIERENSTATISTIK",
+      "name": "Argumentieren, Begründen – Statistische Darstellungen und Kenngrößen",
+      "ueberschrift_roh": "Handlungsbereich „Argumentieren, Begründen“ – Inhaltsbereich „Statistische Darstellungen und Kenngrößen“",
+      "handlungsbereich": "Argumentieren, Begründen",
+      "inhaltsbereich": "Statistische Darstellungen und Kenngrößen"
+    }
+  ],
+  "deskriptoren": [
+    {
+      "id": "AT.BIST.M.SCH8.DARSTELLENZAHLEN.01",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "DARSTELLENZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "gegebene arithmetische Sachverhalte in eine (andere) mathematische Darstellung übertragen, wobei dafür das unmittelbare Einsetzen von Grundkenntnissen erforderlich ist,",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.M.SCH8.DARSTELLENZAHLEN.02",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "DARSTELLENZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "gegebene arithmetische Sachverhalte in eine (andere) mathematische Darstellung übertragen, wobei dafür auch Verbindungen zu anderen mathematischen Inhalten (Begriffen, Sätzen, Darstellungen) oder Tätigkeiten hergestellt werden müssen,",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.M.SCH8.DARSTELLENZAHLEN.03",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "DARSTELLENZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Aussagen über die Angemessenheit sowie über Stärken und Schwächen verschiedener mathematischer Darstellungen (Modelle) arithmetischer Sachverhalte machen und bewerten.",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.M.SCH8.DARSTELLENVARIABLE.01",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "DARSTELLENVARIABLE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "gegebene algebraische Sachverhalte und funktionale Abhängigkeiten in eine (andere) mathematische Darstellung übertragen, wobei dafür das unmittelbare Einsetzen von Grundkenntnissen erforderlich ist,",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.M.SCH8.DARSTELLENVARIABLE.02",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "DARSTELLENVARIABLE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "gegebene algebraische Sachverhalte und funktionale Abhängigkeiten in eine (andere) mathematische Darstellung übertragen, wobei dafür auch Verbindungen zu anderen mathematischen Inhalten (Begriffen, Sätzen, Darstellungen) oder Tätigkeiten hergestellt werden müssen,",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.M.SCH8.DARSTELLENVARIABLE.03",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "DARSTELLENVARIABLE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Aussagen über die Angemessenheit sowie über Stärken und Schwächen verschiedener mathematischer Darstellungen (Modelle) algebraischer Sachverhalte und funktionaler Abhängigkeiten angeben und bewerten.",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.M.SCH8.DARSTELLENFIGUREN.01",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "DARSTELLENFIGUREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "gegebene geometrische Sachverhalte in eine (andere) mathematische Darstellung übertragen, wobei dafür das unmittelbare Einsetzen von Grundkenntnissen erforderlich ist,",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.M.SCH8.DARSTELLENFIGUREN.02",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "DARSTELLENFIGUREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "gegebene geometrische Sachverhalte in eine (andere) mathematische Darstellung übertragen, wobei dafür auch Verbindungen zu anderen mathematischen Inhalten (Begriffen, Sätzen, Darstellungen) oder Tätigkeiten hergestellt werden müssen,",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.M.SCH8.DARSTELLENFIGUREN.03",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "DARSTELLENFIGUREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Aussagen über die Angemessenheit sowie über Stärken und Schwächen verschiedener Darstellungen (Modelle) geometrischer Sachverhalte machen und bewerten.",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.M.SCH8.DARSTELLENSTATISTIK.01",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "DARSTELLENSTATISTIK",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "gegebene statistische Sachverhalte (Daten) in eine (andere) mathematische Darstellung übertragen, wobei dafür das unmittelbare Einsetzen von Grundkenntnissen erforderlich ist,",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.M.SCH8.DARSTELLENSTATISTIK.02",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "DARSTELLENSTATISTIK",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "gegebene statistische Sachverhalte (Daten) in eine (andere) mathematische Darstellung übertragen, wobei dafür auch Verbindungen zu anderen mathematischen Inhalten (Begriffen, Sätzen, Darstellungen) oder Tätigkeiten hergestellt werden müssen,",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.M.SCH8.DARSTELLENSTATISTIK.03",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "DARSTELLENSTATISTIK",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Aussagen über die Angemessenheit sowie über Stärken und Schwächen verschiedener Darstellungen (Modelle) statistischer Sachverhalte machen und bewerten.",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.M.SCH8.RECHNENZAHLEN.01",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "RECHNENZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "elementare Rechenoperationen (+, –, •, /, ↑, √) mit konkreten Zahlen und Größen durchführen sowie Maßeinheiten umrechnen,",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.M.SCH8.RECHNENZAHLEN.02",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "RECHNENZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "elementare Rechenoperationen (+, –, •, /, ↑, √) mit konkreten Zahlen und Größen durchführen sowie Maßeinheiten umrechnen, wobei diese Operationen miteinander, mit anderen mathematischen Inhalten (Begriffen, Sätzen, Darstellungen) oder Tätigkeiten verbunden werden müssen,",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.M.SCH8.RECHNENZAHLEN.03",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "RECHNENZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Aussagen zur Abfolge, Wirkung, Zulässigkeit, Genauigkeit und Korrektheit arithmetischer Operationen und Lösungswege machen und bewerten sowie Rechenabläufe dokumentieren.",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.M.SCH8.RECHNENVARIABLE.01",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "RECHNENVARIABLE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "elementare Rechenoperationen (+, –, •, /, ↑, √) mit Variablen und Termen durchführen, einfache Terme und (Un-)Gleichungen umformen sowie einfache (Un-)Gleichungen und lineare Gleichungssysteme mit zwei Variablen lösen,",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.M.SCH8.RECHNENVARIABLE.02",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "RECHNENVARIABLE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "elementare Rechenoperationen (+, –, •, /, ↑, √) mit Variablen und Termen durchführen, einfache Terme und (Un-)Gleichungen umformen sowie einfache (Un-)Gleichungen und lineare Gleichungssysteme mit zwei Variablen lösen, wobei diese (Rechen-)Operationen miteinander, mit anderen mathematischen Inhalten (Begriffen, Sätzen, Darstellungen) oder Tätigkeiten verbunden werden müssen,",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.M.SCH8.RECHNENVARIABLE.03",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "RECHNENVARIABLE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Aussagen zur Abfolge, Wirkung, Zulässigkeit und Korrektheit algebraischer Operationen und Lösungswege machen und bewerten sowie Rechenabläufe dokumentieren.",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.M.SCH8.RECHNENFIGUREN.01",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "RECHNENFIGUREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "elementare geometrische Konstruktionen durchführen,",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.M.SCH8.RECHNENFIGUREN.02",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "RECHNENFIGUREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "elementare geometrische Konstruktionen durchführen, wobei dafür auch Verbindungen zwischen Konstruktionsschritten, mit anderen mathematischen Inhalten (Begriffen, Sätzen, Darstellungen) oder Tätigkeiten hergestellt werden müssen,",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.M.SCH8.RECHNENFIGUREN.03",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "RECHNENFIGUREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Aussagen zur Abfolge, Zulässigkeit und Korrektheit elementarer geometrischer Konstruktionen machen und bewerten sowie Konstruktionsabläufe dokumentieren.",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.M.SCH8.RECHNENSTATISTIK.01",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "RECHNENSTATISTIK",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "einfache Operationen und Manipulationen in und mit statistischen Daten durchführen,",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.M.SCH8.RECHNENSTATISTIK.02",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "RECHNENSTATISTIK",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "einfache Operationen und Manipulationen in und mit statistischen Daten durchführen, wobei dafür auch Verbindungen mit anderen mathematischen Inhalten (Begriffen, Sätzen, Darstellungen) oder Tätigkeiten hergestellt werden müssen,",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.M.SCH8.RECHNENSTATISTIK.03",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "RECHNENSTATISTIK",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Aussagen zur Abfolge, Wirkung, Zulässigkeit und Korrektheit einfacher Operationen bzw. Manipulationen mit statistischen Daten machen und bewerten sowie derartige Operationen dokumentieren.",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.M.SCH8.INTERPRETIERENZAHLEN.01",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "INTERPRETIERENZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Zahlenwerte aus Tabellen, grafischen oder symbolischen Darstellungen ablesen und sie sowie Rechenoperationen und Rechenergebnisse im jeweiligen Kontext deuten,",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.M.SCH8.INTERPRETIERENZAHLEN.02",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "INTERPRETIERENZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Zahlenwerte aus Tabellen, grafischen oder symbolischen Darstellungen ablesen, sie miteinander, mit anderen mathematischen Inhalten (Begriffen, Sätzen, Darstellungen) oder Tätigkeiten verbinden und sie sowie Rechenoperationen und Rechenergebnisse im jeweiligen Kontext deuten,",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.M.SCH8.INTERPRETIERENZAHLEN.03",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "INTERPRETIERENZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Aussagen zur Angemessenheit und Aussagekraft kontextbezogener Interpretationen von Zahlenwerten, Rechenoperationen und Rechenergebnisse machen und bewerten.",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.M.SCH8.INTERPRETIERENVARIABLE.01",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "INTERPRETIERENVARIABLE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "algebraisch, tabellarisch oder grafisch dargestellte Strukturen und (funktionale) Zusammenhänge beschreiben und im jeweiligen Kontext deuten,",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.M.SCH8.INTERPRETIERENVARIABLE.02",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "INTERPRETIERENVARIABLE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "algebraisch, tabellarisch oder grafisch dargestellte Strukturen und (funktionale) Zusammenhänge beschreiben und im jeweiligen Kontext deuten, wobei dafür auch Verbindungen mit anderen mathematischen Inhalten (Begriffen, Sätzen, Darstellungen) oder Tätigkeiten hergestellt werden müssen,",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.M.SCH8.INTERPRETIERENVARIABLE.03",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "INTERPRETIERENVARIABLE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Aussagen zur Angemessenheit und Aussagekraft kontextbezogener Interpretationen von algebraisch, tabellarisch oder grafisch dargestellten (funktionalen) Zusammenhängen machen und bewerten.",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.M.SCH8.INTERPRETIERENFIGUREN.01",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "INTERPRETIERENFIGUREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "geometrische Figuren, Körper und Eigenschaften/Beziehungen beschreiben und im jeweiligen Kontext deuten,",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.M.SCH8.INTERPRETIERENFIGUREN.02",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "INTERPRETIERENFIGUREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "geometrische Figuren, Körper und Eigenschaften/Beziehungen beschreiben und im jeweiligen Kontext deuten, wobei dafür auch Verbindungen zu anderen mathematischen Inhalten (Begriffen, Sätzen, Darstellungen) oder Tätigkeiten hergestellt werden müssen,",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.M.SCH8.INTERPRETIERENFIGUREN.03",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "INTERPRETIERENFIGUREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Aussagen zur Angemessenheit und Aussagekraft kontextbezogener Interpretationen von geometrischen Figuren, Körpern und Eigenschaften/Beziehungen machen und bewerten.",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.M.SCH8.INTERPRETIERENSTATISTIK.01",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "INTERPRETIERENSTATISTIK",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Werte aus statistischen Tabellen und Grafiken ablesen, Strukturen, Muster und Zusammenhänge erkennen und diese sowie statistische Kennzahlen im jeweiligen Kontext deuten,",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.M.SCH8.INTERPRETIERENSTATISTIK.02",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "INTERPRETIERENSTATISTIK",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Werte aus statistischen Tabellen und Grafiken ablesen, Strukturen, Muster und Zusammenhänge erkennen, und diese sowie statistische Kennzahlen im jeweiligen Kontext deuten, wobei die Daten miteinander, mit anderen mathematischen Inhalten (Begriffen, Sätzen, Darstellungen) oder Tätigkeiten in Verbindung gesetzt werden müssen,",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.M.SCH8.INTERPRETIERENSTATISTIK.03",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "INTERPRETIERENSTATISTIK",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Aussagen zur Angemessenheit und Aussagekraft kontextbezogener Interpretationen von statistischen Tabellen, Grafiken und Kennzahlen machen und bewerten.",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.M.SCH8.ARGUMENTIERENZAHLEN.01",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "ARGUMENTIERENZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "mathematische Argumente nennen bzw. Begründungen angeben, die für oder gegen ein bestimmtes arithmetisches (Rechen-)Modell, eine arithmetische Operation, eine arithmetische Eigenschaft/Beziehung, einen arithmetischen Lösungsweg oder eine bestimmte Lösung sprechen,",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.M.SCH8.ARGUMENTIERENZAHLEN.02",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "ARGUMENTIERENZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "mathematische Argumente nennen bzw. Begründungen angeben, die für oder gegen ein bestimmtes arithmetisches (Rechen-)Modell, eine arithmetische Operation, eine arithmetische Eigenschaft/Beziehung, einen arithmetischen Lösungsweg oder eine bestimmte Lösung sprechen, wobei dafür auch Verbindungen zu anderen mathematischen Inhalten (Begriffen, Sätzen, Darstellungen) oder Tätigkeiten hergestellt werden müssen,",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.M.SCH8.ARGUMENTIERENZAHLEN.03",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "ARGUMENTIERENZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "zutreffende und unzutreffende mathematische Argumente bzw. Begründungen bezüglich arithmetischer (Rechen-)Modelle, arithmetischer Operationen, arithmetischer Eigenschaften/Beziehungen, arithmetischer Lösungswege oder Lösungen erkennen sowie begründen, warum eine arithmetische Argumentation oder Begründung (un-)zutreffend ist.",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.M.SCH8.ARGUMENTIERENVARIABLE.01",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "ARGUMENTIERENVARIABLE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "mathematische Argumente nennen bzw. Begründungen angeben, die für oder gegen ein bestimmtes algebraisches oder funktionales Modell, eine algebraische oder funktionale Darstellung, eine algebraische Operation oder einen bestimmten algebraischen Lösungsweg sprechen,",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.M.SCH8.ARGUMENTIERENVARIABLE.02",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "ARGUMENTIERENVARIABLE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "mathematische Argumente nennen bzw. Begründungen angeben, die für oder gegen ein bestimmtes algebraisches oder funktionales Modell, eine algebraische oder funktionale Darstellung, eine algebraische Operation oder einen bestimmten algebraischen Lösungsweg sprechen, wobei dafür auch Verbindungen zu anderen mathematischen Inhalten (Begriffen, Sätzen, Darstellungen) oder Tätigkeiten hergestellt werden müssen,",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.M.SCH8.ARGUMENTIERENVARIABLE.03",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "ARGUMENTIERENVARIABLE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "zutreffende und unzutreffende mathematische Argumente bzw. Begründungen bezüglich algebraischer oder funktionaler Darstellungen und Modelle, bezüglich algebraischer Operationen oder algebraischer Lösungswege erkennen sowie begründen, warum eine algebraische oder funktionale Argumentation bzw. Begründung (un-)zutreffend ist.",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.M.SCH8.ARGUMENTIERENFIGUREN.01",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "ARGUMENTIERENFIGUREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "mathematische Argumente nennen bzw. Begründungen angeben, die für oder gegen ein bestimmtes geometrisches Modell, eine geometrische Darstellung, eine geometrische Konstruktion, eine geometrische Eigenschaft/Beziehung oder einen bestimmten geometrischen Lösungsweg sprechen,",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.M.SCH8.ARGUMENTIERENFIGUREN.02",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "ARGUMENTIERENFIGUREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "mathematische Argumente nennen bzw. Begründungen angeben, die für oder gegen ein bestimmtes geometrisches Modell, eine geometrische Darstellung, eine geometrische Konstruktion, eine geometrische Eigenschaft/Beziehung oder einen bestimmten geometrischen Lösungsweg sprechen, wobei dafür auch Verbindungen zu anderen mathematischen Inhalten (Begriffen, Sätzen, Darstellungen) oder Tätigkeiten hergestellt werden müssen,",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.M.SCH8.ARGUMENTIERENFIGUREN.03",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "ARGUMENTIERENFIGUREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "zutreffende und unzutreffende mathematische Argumente bzw. Begründungen bezüglich geometrischer Darstellungen und Modelle, bezüglich geometrischer Konstruktionen, geometrischer Eigenschaften/Beziehungen oder geometrischer Lösungswege erkennen sowie begründen, warum eine geometrische Argumentation bzw. Begründung (un-)zutreffend ist.",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.M.SCH8.ARGUMENTIERENSTATISTIK.01",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "ARGUMENTIERENSTATISTIK",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "mathematische Argumente nennen bzw. Begründungen angeben, die für oder gegen die Verwendung einer bestimmten statistischen Kennzahl, einer statistischen Darstellung, eines statistischen Satzes, einer statistischen Vorgehensweise oder einer bestimmten Interpretation statistischer Daten sprechen,",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.M.SCH8.ARGUMENTIERENSTATISTIK.02",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "ARGUMENTIERENSTATISTIK",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "mathematische Argumente nennen bzw. Begründungen angeben, die für oder gegen die Verwendung einer bestimmten statistischen Kennzahl, einer statistischen Darstellung, eines statistischen Satzes, einer statistischen Vorgehensweise oder einer bestimmten Interpretation statistischer Daten sprechen, wobei dafür auch Verbindungen zu anderen mathematischen Inhalten (Begriffen, Sätzen, Darstellungen) oder Tätigkeiten hergestellt werden müssen,",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.M.SCH8.ARGUMENTIERENSTATISTIK.03",
+      "fach": "M",
+      "programmstufe": "SCH8",
+      "bereich_code": "ARGUMENTIERENSTATISTIK",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "zutreffende und unzutreffende mathematische Argumente bzw. Begründungen bezüglich statistischer Darstellungen und Kennzahlen, bezüglich statistischer Sätze, bezüglich bestimmter statistischer Vorgehensweisen oder bestimmter Interpretationen statistischer Daten erkennen sowie begründen, warum eine solche Argumentation bzw. Begründung (un-)zutreffend ist.",
+      "ordinal": 3
+    }
+  ]
+}

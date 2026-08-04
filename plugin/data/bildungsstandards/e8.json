@@ -1,0 +1,373 @@
+{
+  "meta": {
+    "dataset_version": "2026-07-27",
+    "shard": "E8",
+    "fach": {
+      "code": "E",
+      "name": "(Erste) Lebende Fremdsprache (Englisch)"
+    },
+    "programmstufe": "SCH8",
+    "programmstufe_name": "8. Schulstufe der Volksschuloberstufe, der Mittelschule und der allgemeinbildenden höheren Schule",
+    "teil": "2. Teil",
+    "abschnitt": "2. Abschnitt",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Bildungsstandardsverordnung",
+      "nor": "NOR40255561",
+      "gesetzesnummer": "20006166",
+      "kundmachungsorgan": "BGBl. II Nr. 1/2009 zuletzt geändert durch BGBl. II Nr. 262/2023",
+      "anlage": "Anl. 1",
+      "typ": "V",
+      "abkuerzung": "BiStV",
+      "inkrafttretensdatum": "09.09.2023",
+      "zuletzt_aktualisiert": "11.09.2023",
+      "dokument_url": "https://www.ris.bka.gv.at/eli/bgbl/ii/2009/1/ANL1/NOR40255561",
+      "eli": "https://ris.bka.gv.at/eli/bgbl/ii/2009/1/ANL1/NOR40255561",
+      "retrieval_date": "2026-07-27"
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "code": "HOEREN",
+      "name": "Hören",
+      "ueberschrift_roh": "Kompetenzbereich: Hören"
+    },
+    {
+      "code": "LESEN",
+      "name": "Lesen",
+      "ueberschrift_roh": "Kompetenzbereich: Lesen"
+    },
+    {
+      "code": "GESPRAECHE",
+      "name": "An Gesprächen Teilnehmen",
+      "ueberschrift_roh": "Kompetenzbereich: An Gesprächen Teilnehmen"
+    },
+    {
+      "code": "SPRECHEN",
+      "name": "Zusammenhängend Sprechen",
+      "ueberschrift_roh": "Kompetenzbereich: Zusammenhängend Sprechen"
+    },
+    {
+      "code": "SCHREIBEN",
+      "name": "Schreiben",
+      "ueberschrift_roh": "Kompetenzbereich: Schreiben"
+    }
+  ],
+  "deskriptoren": [
+    {
+      "id": "AT.BIST.E.SCH8.HOEREN.01",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "HOEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Gesprächen über vertraute Themen die Hauptpunkte entnehmen, wenn Standardsprache verwendet und auch deutlich gesprochen wird (B1),",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.E.SCH8.HOEREN.02",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "HOEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Erzählungen aus dem Alltag und Geschichten verstehen, wenn es sich um vertraute Themenbereiche handelt und deutlich gesprochen wird (B1),",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.E.SCH8.HOEREN.03",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "HOEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Anweisungen, Fragen, Auskünfte und Mitteilungen in einem sprachlich vertrauten Kontext (zB Wegerklärungen) meistens verstehen (A2),",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.E.SCH8.HOEREN.04",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "HOEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "in Texten (Audio- und Videoaufnahmen) über vertraute Themen die Hauptpunkte verstehen, wenn deutlich gesprochen wird (B1),",
+      "ordinal": 4
+    },
+    {
+      "id": "AT.BIST.E.SCH8.HOEREN.05",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "HOEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "einfachen Interviews, Berichten, Hörspielen und Sketches zu vertrauten Themen folgen (B1),",
+      "ordinal": 5
+    },
+    {
+      "id": "AT.BIST.E.SCH8.HOEREN.06",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "HOEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Wörter, die buchstabiert werden, sowie Zahlen und Mengenangaben, die diktiert werden, notieren, wenn langsam und deutlich gesprochen wird (A1).",
+      "ordinal": 6
+    },
+    {
+      "id": "AT.BIST.E.SCH8.LESEN.01",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "kurze, einfache persönliche Briefe, Karten oder E-Mails verstehen (A2),",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.E.SCH8.LESEN.02",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "vertrauten Alltagstexten die wichtigsten Informationen entnehmen (zB Prospekten, Speisekarten, Fahrplänen, Schildern, Formularen, kurzen sachlichen Mitteilungen – auch im Internet) (A2),",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.E.SCH8.LESEN.03",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "einfachen, klar gegliederten Texten zu vertrauten Themen in Zeitungen und Zeitschriften die wesentlichen Informationen entnehmen, wenn sie gegebenenfalls mit visueller Unterstützung ausgestattet sind (B1),",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.E.SCH8.LESEN.04",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "unkomplizierte Sachtexte über Themen, die mit den eigenen Interessen und Fachgebieten aus den Themenbereichen des Lehrplans in Zusammenhang stehen, mit befriedigendem Verständnis lesen (B1),",
+      "ordinal": 4
+    },
+    {
+      "id": "AT.BIST.E.SCH8.LESEN.05",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "einfache alltägliche Anleitungen und Vorschriften verstehen (A2),",
+      "ordinal": 5
+    },
+    {
+      "id": "AT.BIST.E.SCH8.LESEN.06",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "einfache literarische Texte (zB fiktionale Texte, Lieder und Gedichte) verstehen (B1),",
+      "ordinal": 6
+    },
+    {
+      "id": "AT.BIST.E.SCH8.GESPRAECHE.01",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "GESPRAECHE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "ein einfaches Gespräch über vertraute Themen (zB über Familie, Freundinnen und Freunde, Schule, Freizeit) beginnen, in Gang halten und beenden (B1),",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.E.SCH8.GESPRAECHE.02",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "GESPRAECHE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Gefühle wie Überraschung, Freude, Bedauern und Gleichgültigkeit ausdrücken und auf solche Gefühlsäußerungen reagieren (B1),",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.E.SCH8.GESPRAECHE.03",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "GESPRAECHE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "in einem Gespräch (zB Gruppengespräch in der Klasse) Zustimmung äußern bzw. widersprechen und andere Vorschläge machen (A2+),",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.E.SCH8.GESPRAECHE.04",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "GESPRAECHE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "einfache Vereinbarungen treffen (A2),",
+      "ordinal": 4
+    },
+    {
+      "id": "AT.BIST.E.SCH8.GESPRAECHE.05",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "GESPRAECHE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "in einfachen Worten die eigenen Ansichten, Pläne und Absichten äußern und begründen (B1)",
+      "ordinal": 5
+    },
+    {
+      "id": "AT.BIST.E.SCH8.GESPRAECHE.06",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "GESPRAECHE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "vertraute Alltagssituationen bewältigen, zB Gespräche in Geschäften, Restaurants und an Schaltern führen (A2),",
+      "ordinal": 6
+    },
+    {
+      "id": "AT.BIST.E.SCH8.GESPRAECHE.07",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "GESPRAECHE",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "einfache Erklärungen und Anweisungen geben, zB nach dem Weg fragen bzw. den Weg erklären (A2+).",
+      "ordinal": 7
+    },
+    {
+      "id": "AT.BIST.E.SCH8.SPRECHEN.01",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "über eigene Erfahrungen detailliert berichten und dabei ihre eigenen Gefühle und Reaktionen beschreiben (B1),",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.E.SCH8.SPRECHEN.02",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Pläne, Ziele, Träume und Hoffnungen beschreiben (B1),",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.E.SCH8.SPRECHEN.03",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "etwas Reales oder Erfundenes erzählen oder in Form einer einfachen Aufzählung berichten (A2+),",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.E.SCH8.SPRECHEN.04",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "über Sachverhalte und Abläufe aus dem eigenen alltäglichen Lebensbereich berichten, zB über Leute, Orte, Tätigkeiten (A2+),",
+      "ordinal": 4
+    },
+    {
+      "id": "AT.BIST.E.SCH8.SPRECHEN.05",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "über persönliche Erlebnisse und Beobachtungen in einfachen, zusammenhängenden Sätzen berichten (A2),",
+      "ordinal": 5
+    },
+    {
+      "id": "AT.BIST.E.SCH8.SPRECHEN.06",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "mit einfachen Mitteln vertraute Gegenstände kurz beschreiben und vergleichen (A2+),",
+      "ordinal": 6
+    },
+    {
+      "id": "AT.BIST.E.SCH8.SPRECHEN.07",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "sich, die Familie, Freundinnen und Freunde sowie vertraute Orte, persönliche Gegenstände und Tätigkeiten in mehreren einfachen Sätzen beschreiben (A2),",
+      "ordinal": 7
+    },
+    {
+      "id": "AT.BIST.E.SCH8.SPRECHEN.08",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "für Ansichten, Pläne oder Handlungen kurze Begründungen oder Erklärungen geben (B1).",
+      "ordinal": 8
+    },
+    {
+      "id": "AT.BIST.E.SCH8.SCHREIBEN.01",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Erfahrungsberichte schreiben, in denen Gefühle und Reaktionen in einem einfachen, zusammenhängenden Text wiedergegeben werden (B1),",
+      "ordinal": 1
+    },
+    {
+      "id": "AT.BIST.E.SCH8.SCHREIBEN.02",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "eine Beschreibung eines realen oder fiktiven Ereignisses, zB einer Reise, verfassen (B1)",
+      "ordinal": 2
+    },
+    {
+      "id": "AT.BIST.E.SCH8.SCHREIBEN.03",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "eine Geschichte erzählen (B1),",
+      "ordinal": 3
+    },
+    {
+      "id": "AT.BIST.E.SCH8.SCHREIBEN.04",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "in Form verbundener Sätze etwas über das alltägliche Umfeld schreiben, wie zB über Familie, andere Menschen, Orte, Schule (A2+),",
+      "ordinal": 4
+    },
+    {
+      "id": "AT.BIST.E.SCH8.SCHREIBEN.05",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "kurze, einfache Biografien und andere einfache fiktionale Texte schreiben (A2),",
+      "ordinal": 5
+    },
+    {
+      "id": "AT.BIST.E.SCH8.SCHREIBEN.06",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "ausführlichere Karten, persönliche Briefe und E-Mails schreiben und darin auch über Ereignisse, Erfahrungen und Gefühle berichten (B1),",
+      "ordinal": 6
+    },
+    {
+      "id": "AT.BIST.E.SCH8.SCHREIBEN.07",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "kurze, einfache Notizen und Mitteilungen schreiben, die sich auf unmittelbare Bedürfnisse beziehen (A2),",
+      "ordinal": 7
+    },
+    {
+      "id": "AT.BIST.E.SCH8.SCHREIBEN.08",
+      "fach": "E",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "einfache Texte zB zu Bildimpulsen oder Schlüsselwörtern (key words) schreiben (A2).",
+      "ordinal": 8
+    }
+  ]
+}

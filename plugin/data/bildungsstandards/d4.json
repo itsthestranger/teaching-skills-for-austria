@@ -1,0 +1,808 @@
+{
+  "meta": {
+    "dataset_version": "2026-07-27",
+    "shard": "D4",
+    "fach": {
+      "code": "D",
+      "name": "Deutsch"
+    },
+    "programmstufe": "SCH4",
+    "programmstufe_name": "4. Schulstufe der Volksschule",
+    "teil": "1. Teil",
+    "abschnitt": "1. Abschnitt",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Bildungsstandardsverordnung",
+      "nor": "NOR40255561",
+      "gesetzesnummer": "20006166",
+      "kundmachungsorgan": "BGBl. II Nr. 1/2009 zuletzt geändert durch BGBl. II Nr. 262/2023",
+      "anlage": "Anl. 1",
+      "typ": "V",
+      "abkuerzung": "BiStV",
+      "inkrafttretensdatum": "09.09.2023",
+      "zuletzt_aktualisiert": "11.09.2023",
+      "dokument_url": "https://www.ris.bka.gv.at/eli/bgbl/ii/2009/1/ANL1/NOR40255561",
+      "eli": "https://ris.bka.gv.at/eli/bgbl/ii/2009/1/ANL1/NOR40255561",
+      "retrieval_date": "2026-07-27"
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "code": "HOERENSPRECHEN",
+      "name": "Hören, Sprechen und miteinander Reden",
+      "ueberschrift_roh": "Kompetenzbereich: Hören, Sprechen und miteinander Reden"
+    },
+    {
+      "code": "LESEN",
+      "name": "Lesen – Umgang mit Texten und Medien",
+      "ueberschrift_roh": "Kompetenzbereich: Lesen – Umgang mit Texten und Medien"
+    },
+    {
+      "code": "VERFASSEN",
+      "name": "Verfassen von Texten",
+      "ueberschrift_roh": "Kompetenzbereich: Verfassen von Texten"
+    },
+    {
+      "code": "RECHTSCHREIBEN",
+      "name": "Rechtschreiben",
+      "ueberschrift_roh": "Kompetenzbereich: Rechtschreiben"
+    },
+    {
+      "code": "SPRACHBETRACHTUNG",
+      "name": "Einsicht in Sprache durch Sprachbetrachtung",
+      "ueberschrift_roh": "Kompetenzbereich: Einsicht in Sprache durch Sprachbetrachtung"
+    }
+  ],
+  "deskriptoren": [
+    {
+      "id": "AT.BIST.D.SCH4.HOERENSPRECHEN.01",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "HOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Erlebnisse zuhörerbezogen erzählen,",
+      "ordinal": 1,
+      "titel": "Verständlich erzählen und anderen verstehend zuhören"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.HOERENSPRECHEN.02",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "HOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "über Begebenheiten und Erfahrungen verständlich sowie thematisch zusammenhängend sprechen,",
+      "ordinal": 2,
+      "titel": "Verständlich erzählen und anderen verstehend zuhören"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.HOERENSPRECHEN.03",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "HOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "anderen aufmerksam zuhören.",
+      "ordinal": 3,
+      "titel": "Verständlich erzählen und anderen verstehend zuhören"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.HOERENSPRECHEN.04",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "HOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Informationen über Lebewesen, Gegenstände sowie Sachzusammenhänge einholen,",
+      "ordinal": 4,
+      "titel": "Informationen einholen und sie an andere weitergeben"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.HOERENSPRECHEN.05",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "HOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Sachinformationen an andere weitergeben und dabei gelernte Fachbegriffe verwenden,",
+      "ordinal": 5,
+      "titel": "Informationen einholen und sie an andere weitergeben"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.HOERENSPRECHEN.06",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "HOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Beobachtungen und Sachverhalte so darstellen, dass sie für Zuhörerinnen und Zuhörer verständlich werden.",
+      "ordinal": 6,
+      "titel": "Informationen einholen und sie an andere weitergeben"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.HOERENSPRECHEN.07",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "HOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können Situationen richtig einschätzen und sprachlich angemessen reagieren,",
+      "ordinal": 7,
+      "titel": "In verschiedenen Situationen sprachlich angemessen handeln"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.HOERENSPRECHEN.08",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "HOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "verfügen über Sprachkonventionen für unterschiedliche Sprechakte.",
+      "ordinal": 8,
+      "titel": "In verschiedenen Situationen sprachlich angemessen handeln"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.HOERENSPRECHEN.09",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "HOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "mit anderen zu einem Thema sprechen, es weiter denken und eigene Meinungen dazu äußern,",
+      "ordinal": 9,
+      "titel": "In Gesprächen Techniken und Regeln anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.HOERENSPRECHEN.10",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "HOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Gesprächsbeiträge aufnehmen und sie weiterführen,",
+      "ordinal": 10,
+      "titel": "In Gesprächen Techniken und Regeln anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.HOERENSPRECHEN.11",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "HOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "die eigene Meinung angemessen äußern und vertreten bzw. einsehen, wenn sie sich geirrt haben,",
+      "ordinal": 11,
+      "titel": "In Gesprächen Techniken und Regeln anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.HOERENSPRECHEN.12",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "HOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "sich an Gesprächsregeln halten, anderen respektvoll zuhören und sich fair mit deren Meinungen auseinandersetzen,",
+      "ordinal": 12,
+      "titel": "In Gesprächen Techniken und Regeln anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.HOERENSPRECHEN.13",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "HOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "in Konflikten gemeinsam nach Lösungen suchen.",
+      "ordinal": 13,
+      "titel": "In Gesprächen Techniken und Regeln anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.HOERENSPRECHEN.14",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "HOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "verfügen in aktiver Sprachverwendung über einen altersadäquaten Wortschatz,",
+      "ordinal": 14,
+      "titel": "Sprachfähigkeiten erweitern und an der Standardsprache orientiert sprechen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.HOERENSPRECHEN.15",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "HOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können Formen von Wörtern und Sätzen standardsprachlich korrekt verwenden.",
+      "ordinal": 15,
+      "titel": "Sprachfähigkeiten erweitern und an der Standardsprache orientiert sprechen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.HOERENSPRECHEN.16",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "HOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "verständlich, ausdrucksvoll und an der Standardsprache ausgerichtet sprechen,",
+      "ordinal": 16,
+      "titel": "Deutlich und ausdrucksvoll sprechen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.HOERENSPRECHEN.17",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "HOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Gestik, Mimik und Stimmführung zur Unterstützung sprachlicher Aussagen einsetzen.",
+      "ordinal": 17,
+      "titel": "Deutlich und ausdrucksvoll sprechen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.01",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "beim Vorlesen interessiert und bewusst zuhören,",
+      "ordinal": 1,
+      "titel": "Die Lesemotivation bzw. das Leseinteresse festigen und vertiefen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.02",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Bücher und Texte nach eigenem Interesse in verschiedenen Medien selbst auswählen.",
+      "ordinal": 2,
+      "titel": "Die Lesemotivation bzw. das Leseinteresse festigen und vertiefen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.03",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können ihre Lesefertigkeit an einfachen Texten zeigen,",
+      "ordinal": 3,
+      "titel": "Über eine altersadäquate Lesefertigkeit und ein entsprechendes Leseverständnis verfügen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.04",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "verfügen über sicheres Leseverständnis auf der Wort- und Satzebene,",
+      "ordinal": 4,
+      "titel": "Über eine altersadäquate Lesefertigkeit und ein entsprechendes Leseverständnis verfügen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.05",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können ihre Verlesungen korrigieren.",
+      "ordinal": 5,
+      "titel": "Über eine altersadäquate Lesefertigkeit und ein entsprechendes Leseverständnis verfügen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.06",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Arbeitstechniken und Lesestrategien zur Texterschließung anwenden,",
+      "ordinal": 6,
+      "titel": "Den Inhalt von Texten mit Hilfe von Arbeitstechniken und Lesestrategien erschließen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.07",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Informationen aus literarischen Texten sowie aus Sach- und Gebrauchstexten entnehmen,",
+      "ordinal": 7,
+      "titel": "Den Inhalt von Texten mit Hilfe von Arbeitstechniken und Lesestrategien erschließen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.08",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "zur Klärung fehlender bzw. unzureichender Informationen zusätzliche Quellen einschließlich elektronischer Medien nutzen,",
+      "ordinal": 8,
+      "titel": "Den Inhalt von Texten mit Hilfe von Arbeitstechniken und Lesestrategien erschließen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.09",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Informationen aus Texten miteinander vergleichen,",
+      "ordinal": 9,
+      "titel": "Den Inhalt von Texten mit Hilfe von Arbeitstechniken und Lesestrategien erschließen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.10",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Inhalte/Informationen aus Texten ordnen,",
+      "ordinal": 10,
+      "titel": "Den Inhalt von Texten mit Hilfe von Arbeitstechniken und Lesestrategien erschließen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.11",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "den Verlauf einer Handlung erschließen,",
+      "ordinal": 11,
+      "titel": "Den Inhalt von Texten mit Hilfe von Arbeitstechniken und Lesestrategien erschließen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.12",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "das Wesentliche eines Textes erfassen.",
+      "ordinal": 12,
+      "titel": "Den Inhalt von Texten mit Hilfe von Arbeitstechniken und Lesestrategien erschließen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.13",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "ihr Textverständnis artikulieren und kommunizieren,",
+      "ordinal": 13,
+      "titel": "Das Textverständnis klären und über den Sinn von Texten sprechen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.14",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "den Sinn von Texten klären und auch nicht ausdrücklich genannte Sachverhalte verstehen,",
+      "ordinal": 14,
+      "titel": "Das Textverständnis klären und über den Sinn von Texten sprechen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.15",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "zu einem Text Stellung nehmen und ihre Meinung begründen.",
+      "ordinal": 15,
+      "titel": "Das Textverständnis klären und über den Sinn von Texten sprechen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.16",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "einen Text sinngestaltend vortragen bzw. ihn umgestalten,",
+      "ordinal": 16,
+      "titel": "Verschiedene Texte gestaltend oder handelnd umsetzen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.17",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Sach- und Gebrauchstexte für die Ausführung bestimmter Tätigkeiten verstehen und nutzen.",
+      "ordinal": 17,
+      "titel": "Verschiedene Texte gestaltend oder handelnd umsetzen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.18",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "einfache sprachliche und formale Gestaltung sowie den Aufbau von Texten erkennen,",
+      "ordinal": 18,
+      "titel": "Formale und sprachliche Gegebenheiten in Texten erkennen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.19",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Textsorten nach wesentlichen Merkmalen unterscheiden.",
+      "ordinal": 19,
+      "titel": "Formale und sprachliche Gegebenheiten in Texten erkennen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.20",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Bücher und Medien zur Gewinnung von Information und zur Erweiterung ihres Wissens nutzen,",
+      "ordinal": 20,
+      "titel": "Literarische Angebote und Medien aktiv nutzen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.LESEN.21",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "literarische Angebote zur Erweiterung ihres Selbst- und Weltverständnisses sowie zur Unterhaltung nutzen.",
+      "ordinal": 21,
+      "titel": "Literarische Angebote und Medien aktiv nutzen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.VERFASSEN.01",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "VERFASSEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Schreibsituationen und Ideen für das Schreiben aufgreifen,",
+      "ordinal": 1,
+      "titel": "Für das Verfassen von Texten entsprechende Schreibanlässe nutzen; Texte planen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.VERFASSEN.02",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "VERFASSEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "mitteilenswerte Inhalte erkennen,",
+      "ordinal": 2,
+      "titel": "Für das Verfassen von Texten entsprechende Schreibanlässe nutzen; Texte planen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.VERFASSEN.03",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "VERFASSEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "einen Text in Hinsicht auf Schreibabsicht bzw. Leserinnen und Leser bzw. Verwendungszusammenhänge planen,",
+      "ordinal": 3,
+      "titel": "Für das Verfassen von Texten entsprechende Schreibanlässe nutzen; Texte planen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.VERFASSEN.04",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "VERFASSEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Informationsquellen für die Planung von Texten nutzen; Textentwürfe notieren,",
+      "ordinal": 4,
+      "titel": "Für das Verfassen von Texten entsprechende Schreibanlässe nutzen; Texte planen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.VERFASSEN.05",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "VERFASSEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "sich sprachliche und gestalterische Mittel überlegen und notieren.",
+      "ordinal": 5,
+      "titel": "Für das Verfassen von Texten entsprechende Schreibanlässe nutzen; Texte planen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.VERFASSEN.06",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "VERFASSEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Texte in unterschiedlichen Formen verfassen, um zu erzählen, zu unterhalten, zu appellieren, zu informieren oder etwas zu notieren,",
+      "ordinal": 6,
+      "titel": "Texte der Schreibabsicht entsprechend verfassen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.VERFASSEN.07",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "VERFASSEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Texte verfassen, um für sie persönlich Bedeutsames wie Erfahrungen, Gefühle und Ideen auszudrücken.",
+      "ordinal": 7,
+      "titel": "Texte der Schreibabsicht entsprechend verfassen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.VERFASSEN.08",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "VERFASSEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "ihren Text verständlich und adressatengerecht schreiben,",
+      "ordinal": 8,
+      "titel": "Texte strukturiert und für Leserinnen bzw. Leser verständlich verfassen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.VERFASSEN.09",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "VERFASSEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "ihre Texte sachlich angemessen bzw. dem Handlungsablauf entsprechend strukturieren.",
+      "ordinal": 9,
+      "titel": "Texte strukturiert und für Leserinnen bzw. Leser verständlich verfassen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.VERFASSEN.10",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "VERFASSEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "bei der Wortwahl und der Formulierung von Sätzen bewusst sprachliche Gestaltungsmittel verwenden,",
+      "ordinal": 10,
+      "titel": "Beim Verfassen von Texten sprachliche Mittel bewusst einsetzen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.VERFASSEN.11",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "VERFASSEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Sätze zu einem Text verbinden, indem sie geeignete sprachliche Mittel einsetzen.",
+      "ordinal": 11,
+      "titel": "Beim Verfassen von Texten sprachliche Mittel bewusst einsetzen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.VERFASSEN.12",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "VERFASSEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Texte im Hinblick auf Verständlichkeit, Aufbau, sprachliche Gestaltung und Wirkung überprüfen und überarbeiten,",
+      "ordinal": 12,
+      "titel": "Texte überprüfen, überarbeiten und berichtigen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.VERFASSEN.13",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "VERFASSEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "einfache Texte im Hinblick auf Sprachrichtigkeit und Rechtschreibung berichtigen.",
+      "ordinal": 13,
+      "titel": "Texte überprüfen, überarbeiten und berichtigen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.RECHTSCHREIBEN.01",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "RECHTSCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "einen begrenzten Schreibwortschatz in ihren Sätzen und Texten normgerecht anwenden,",
+      "ordinal": 1,
+      "titel": "Einen begrenzten Wortschatz normgerecht schreiben"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.RECHTSCHREIBEN.02",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "RECHTSCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "beim Ab- und Aufschreiben orthografische Regelhaftigkeiten erfassen.",
+      "ordinal": 2,
+      "titel": "Einen begrenzten Wortschatz normgerecht schreiben"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.RECHTSCHREIBEN.03",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "RECHTSCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "kennen die wichtigsten Regeln der Rechtschreibung und können sie anwenden,",
+      "ordinal": 3,
+      "titel": "Regelungen für normgerechtes Schreiben kennen und anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.RECHTSCHREIBEN.04",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "RECHTSCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können ihr erworbenes Sprach- und Regelwissen für normgerechtes Schreiben und zur Überarbeitung ihrer Schreibprodukte nutzen.",
+      "ordinal": 4,
+      "titel": "Regelungen für normgerechtes Schreiben kennen und anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.RECHTSCHREIBEN.05",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "RECHTSCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können das Mitsprechen beim Schreiben bewusst einsetzen,",
+      "ordinal": 5,
+      "titel": "Für normgerechtes Schreiben Rechtschreibstrategien und Arbeitstechniken anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.RECHTSCHREIBEN.06",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "RECHTSCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können für das richtige Schreiben von Wörtern die Möglichkeit des Ableitens und Verlängerns nutzen,",
+      "ordinal": 6,
+      "titel": "Für normgerechtes Schreiben Rechtschreibstrategien und Arbeitstechniken anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.RECHTSCHREIBEN.07",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "RECHTSCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "verfügen über angemessene Nachschlagetechniken,",
+      "ordinal": 7,
+      "titel": "Für normgerechtes Schreiben Rechtschreibstrategien und Arbeitstechniken anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.RECHTSCHREIBEN.08",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "RECHTSCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "entdecken Regelhaftigkeiten der Rechtschreibung und können sie verbalisieren bzw. kommentieren,",
+      "ordinal": 8,
+      "titel": "Für normgerechtes Schreiben Rechtschreibstrategien und Arbeitstechniken anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.RECHTSCHREIBEN.09",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "RECHTSCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "erkennen Unsicherheiten beim Rechtschreiben und können für normgerechtes Schreiben Rechtschreibstrategien und Arbeitstechniken anwenden.",
+      "ordinal": 9,
+      "titel": "Für normgerechtes Schreiben Rechtschreibstrategien und Arbeitstechniken anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.SPRACHBETRACHTUNG.01",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "SPRACHBETRACHTUNG",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Merkmale und Funktionen von gesprochener und geschriebener Sprache unterscheiden und darüber sprechen,",
+      "ordinal": 1,
+      "titel": "Sprachliche Verständigung klären"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.SPRACHBETRACHTUNG.02",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "SPRACHBETRACHTUNG",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "eigene Ausdrucksformen mit der Standardsprache vergleichen,",
+      "ordinal": 2,
+      "titel": "Sprachliche Verständigung klären"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.SPRACHBETRACHTUNG.03",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "SPRACHBETRACHTUNG",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Gründe für Verstehens- und Verständigungsprobleme finden.",
+      "ordinal": 3,
+      "titel": "Sprachliche Verständigung klären"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.SPRACHBETRACHTUNG.04",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "SPRACHBETRACHTUNG",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "zu einem Wortstamm gehörende Wörter erkennen,",
+      "ordinal": 4,
+      "titel": "Möglichkeiten der Wortbildung für sprachliche Einsichten nutzen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.SPRACHBETRACHTUNG.05",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "SPRACHBETRACHTUNG",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "das Zusammensetzen von Wörtern, auch verschiedener Wortarten, als Möglichkeit der Wortbildung erkennen,",
+      "ordinal": 5,
+      "titel": "Möglichkeiten der Wortbildung für sprachliche Einsichten nutzen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.SPRACHBETRACHTUNG.06",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "SPRACHBETRACHTUNG",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "einige bedeutungsunterscheidende und formverändernde Funktionen von Wortbausteinen verstehen,",
+      "ordinal": 6,
+      "titel": "Möglichkeiten der Wortbildung für sprachliche Einsichten nutzen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.SPRACHBETRACHTUNG.07",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "SPRACHBETRACHTUNG",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Bedeutungsunterschiede sinnverwandter Wörter klären,",
+      "ordinal": 7,
+      "titel": "Möglichkeiten der Wortbildung für sprachliche Einsichten nutzen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.SPRACHBETRACHTUNG.08",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "SPRACHBETRACHTUNG",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "kreative Sprachmittel für Einsichten in die Wortbildung nutzen.",
+      "ordinal": 8,
+      "titel": "Möglichkeiten der Wortbildung für sprachliche Einsichten nutzen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.SPRACHBETRACHTUNG.09",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "SPRACHBETRACHTUNG",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können die wichtigsten sprachlichen Zeitformen unterscheiden,",
+      "ordinal": 9,
+      "titel": "Über Einsichten in die Funktionen von Wort und Satz verfügen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.SPRACHBETRACHTUNG.10",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "SPRACHBETRACHTUNG",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "erkennen die Funktion von Formveränderungen in Wörtern und Sätzen,",
+      "ordinal": 10,
+      "titel": "Über Einsichten in die Funktionen von Wort und Satz verfügen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.SPRACHBETRACHTUNG.11",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "SPRACHBETRACHTUNG",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "kennen die Funktion der wichtigsten Wort- und Satzarten und können für diese Fachbezeichnungen verwenden,",
+      "ordinal": 11,
+      "titel": "Über Einsichten in die Funktionen von Wort und Satz verfügen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.SPRACHBETRACHTUNG.12",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "SPRACHBETRACHTUNG",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können Satzglieder unterscheiden und die wichtigsten benennen.",
+      "ordinal": 12,
+      "titel": "Über Einsichten in die Funktionen von Wort und Satz verfügen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.SPRACHBETRACHTUNG.13",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "SPRACHBETRACHTUNG",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "in gebräuchlichen Fremdwörtern Besonderheiten und Unterschiede im Vergleich zu deutschen Wörtern erkennen,",
+      "ordinal": 13,
+      "titel": "Gemeinsamkeiten und Unterschiede von Sprachen feststellen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.SPRACHBETRACHTUNG.14",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "SPRACHBETRACHTUNG",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Elemente der eigenen Sprache mit solchen anderer Sprachen im Hinblick auf Aussprache, Bedeutung und Schriftbild vergleichen,",
+      "ordinal": 14,
+      "titel": "Gemeinsamkeiten und Unterschiede von Sprachen feststellen"
+    },
+    {
+      "id": "AT.BIST.D.SCH4.SPRACHBETRACHTUNG.15",
+      "fach": "D",
+      "programmstufe": "SCH4",
+      "bereich_code": "SPRACHBETRACHTUNG",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Merkmale von Regionalsprache und Standardsprache unterscheiden.",
+      "ordinal": 15,
+      "titel": "Gemeinsamkeiten und Unterschiede von Sprachen feststellen"
+    }
+  ]
+}

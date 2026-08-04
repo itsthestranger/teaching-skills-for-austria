@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://teaching-skills-austria.local/schema/bildungsstandards.schema.json",
+  "title": "Bildungsstandards-Shard (BiSt Anl. 1, BGBl. II Nr. 1/2009, NOR40255561)",
+  "description": "One shard per Fach x Programmstufe at plugin/data/bildungsstandards/<shard>.json (shard in {d4,m4,d8,e8,m8}, plan Executive Summary / FINDINGS.md V-13). Descriptors are extracted from the RIS BiSt text only -- no IQS numbering, graphics or presentations (CLAUDE.md project constraint); every id is minted fresh under the AT.BIST namespace (data-pipeline/schema/bist_id_schema.py), a separate grammar from the frozen AT.LP23 Lehrplan scheme -- the two never collide by construction (different second segment: BIST vs LP23). additionalProperties is left open (true) throughout, mirroring kompetenzen.schema.json's E3-01 rationale: an unexpected but tolerable field must never turn into a hard schema-validation failure. The only hard failures are a missing id/text on a descriptor and an ID collision -- both enforced in Python (parse_bildungsstandards.py), not here.",
+  "type": "object",
+  "required": ["meta", "kompetenzbereiche", "deskriptoren"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["dataset_version", "shard", "fach", "programmstufe", "provenienz"],
+      "properties": {
+        "dataset_version": { "type": "string" },
+        "shard": {
+          "type": "string",
+          "enum": ["D4", "M4", "D8", "E8", "M8"],
+          "description": "The plan/FINDINGS shorthand (FINDINGS.md V-13). Closed by design -- exactly the five shards in scope; a sixth would mean the parser started reading a subject/grade combination the project has not scoped."
+        },
+        "fach": {
+          "type": "object",
+          "required": ["code", "name"],
+          "properties": {
+            "code": { "type": "string", "enum": ["D", "M", "E"] },
+            "name": { "type": "string", "description": "The verbatim BiSt subject heading, e.g. '(Erste) Lebende Fremdsprache (Englisch)' -- note BiSt's own designation carries the '(Englisch)' suffix the Lehrplan heading omits (FINDINGS.md V-29)." }
+          }
+        },
+        "programmstufe": {
+          "type": "string",
+          "enum": ["SCH4", "SCH8"],
+          "description": "The absolute Schulstufe this BiSt checkpoint targets. Deliberately not AT.LP23's relative K1..K4/SCH1..SCH4 -- BiSt's own text calls both checkpoints 'Schulstufe' verbatim (see bist_id_schema.py module docstring)."
+        },
+        "programmstufe_name": {
+          "type": "string",
+          "description": "Verbatim source subtitle, e.g. '4. Schulstufe der Volksschule' or '8. Schulstufe der Volksschuloberstufe, der Mittelschule und der allgemeinbildenden höheren Schule'."
+        },
+        "teil": { "type": "string", "description": "e.g. '1. Teil' / '2. Teil' -- verbatim source heading." },
+        "abschnitt": { "type": "string", "description": "e.g. '1. Abschnitt' / '2. Abschnitt' / '3. Abschnitt' -- verbatim source heading." },
+        "kompetenzmodell_hinweis": {
+          "type": "string",
+          "description": "Subject-level explanatory prose preceding the first Kompetenzbereich, verbatim. Measured present only for M8 ('Das Kompetenzmodell für Mathematik auf der 8. Schulstufe legt „Inhaltsbereiche“ fest, ...'); absent for D4/M4/D8/E8, which have no such paragraph in the source."
+        },
+        "provenienz": { "$ref": "#/$defs/provenienz" }
+      }
+    },
+    "kompetenzbereiche": {
+      "type": "array",
+      "description": "Every official competence area for this shard, in document order: 5 for D4, 8 for M4, 4 for D8, 5 for E8, 16 for M8 (M8's 16 are the cross product of 4 Handlungsbereiche x 4 Inhaltsbereiche -- see bist_id_schema.py). Measured against the live NOR40255561.xml, 2026-08-04.",
+      "items": { "$ref": "#/$defs/kompetenzbereich" }
+    },
+    "deskriptoren": {
+      "type": "array",
+      "description": "Every BiSt descriptor (one per source bullet item, plus the rare standalone single-sentence competence that carries no bullet list at all -- see Deskriptor.text). Flat, not nested under kompetenzbereiche[] -- join via bereich_code.",
+      "items": { "$ref": "#/$defs/deskriptor" }
+    }
+  },
+  "$defs": {
+    "provenienz": {
+      "type": "object",
+      "description": "Read directly from the BiSt document's own RIS header/footer fields (Kurztitel, Kundmachungsorgan, ... Gesetzesnummer, Dokumentnummer) -- self-contained, not dependent on the gitignored resources/manifest.json (dokument_url/eli/retrieval_date are added best-effort from the manifest when present, and are therefore the only optional fields here).",
+      "required": ["quelle", "kurztitel", "nor", "kundmachungsorgan", "anlage"],
+      "properties": {
+        "quelle": { "type": "string", "description": "e.g. 'RIS Bundesrecht konsolidiert'." },
+        "kurztitel": { "type": "string", "description": "Live RIS value verbatim -- 'Bildungsstandardsverordnung', one word, no hyphen (FINDINGS.md V-51)." },
+        "nor": { "type": "string", "pattern": "^NOR[0-9]+$" },
+        "gesetzesnummer": { "type": "string" },
+        "kundmachungsorgan": { "type": "string", "description": "e.g. 'BGBl. II Nr. 1/2009 zuletzt geändert durch BGBl. II Nr. 262/2023'." },
+        "anlage": { "type": "string", "description": "e.g. 'Anl. 1'." },
+        "typ": { "type": "string" },
+        "abkuerzung": { "type": "string" },
+        "inkrafttretensdatum": { "type": "string" },
+        "zuletzt_aktualisiert": { "type": "string" },
+        "dokument_url": { "type": "string", "format": "uri" },
+        "eli": { "type": "string", "format": "uri" },
+        "retrieval_date": { "type": "string" }
+      }
+    },
+    "kompetenzbereich": {
+      "type": "object",
+      "required": ["code", "name", "ueberschrift_roh"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]{0,29}$",
+          "description": "ID segment, e.g. 'HOERENSPRECHEN' or (M8 only) the concatenated Handlungsbereich+Inhaltsbereich code 'DARSTELLENZAHLEN'. Own AT.BIST table (data-pipeline/schema/bist_id_schema.py), not id_schema.AREA_CODES -- cross-reuse of the same code string across shards (e.g. 'LESEN' in D4/D8/E8) is deliberate and harmless, the fach+programmstufe context always disambiguates."
+        },
+        "name": { "type": "string", "description": "Cleaned display name -- the heading minus its generic 'Kompetenzbereich: ' scaffold prefix, or (M8) the reconstructed 'Handlungsbereich – Inhaltsbereich' combination." },
+        "ueberschrift_roh": { "type": "string", "description": "The complete heading exactly as printed, including any source typesetting inconsistency (e.g. one M8 heading keeps a colon after 'Handlungsbereich' that the other 15 drop; one is missing its closing „\" guillemet) -- never 'corrected'." },
+        "handlungsbereich": { "type": "string", "description": "M8 only: the Handlungsbereich axis label, cleanly extracted (colon/quote glitches removed only here, not in ueberschrift_roh)." },
+        "inhaltsbereich": { "type": "string", "description": "M8 only: the Inhaltsbereich axis label." },
+        "gruppe": { "type": "string", "description": "M4 only: the subject-internal grouping label ('Allgemeine mathematische Kompetenzen' / 'Inhaltliche mathematische Kompetenzen') this area falls under." },
+        "beschreibung": { "type": "string", "description": "D8 only: a verbatim area-level description sentence that precedes the first titled sub-group in the source. Absent where the source has none." }
+      }
+    },
+    "deskriptor": {
+      "type": "object",
+      "required": ["id", "fach", "programmstufe", "bereich_code", "stammsatz", "text", "ordinal"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^AT\\.BIST\\.(D|M|E)\\.(SCH4|SCH8)\\.[A-Z][A-Z0-9]{0,29}\\.[0-9]{2}$",
+          "description": "AT.BIST.<Fach>.<Programmstufe>.<Bereich>.<lfd> -- see data-pipeline/schema/bist_id_schema.py. lfd is scoped per (fach, programmstufe, bereich), not globally sequential."
+        },
+        "fach": { "type": "string", "enum": ["D", "M", "E"] },
+        "programmstufe": { "type": "string", "enum": ["SCH4", "SCH8"] },
+        "bereich_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9]{0,29}$" },
+        "titel": {
+          "type": "string",
+          "description": "The bold sub-group heading this descriptor belongs to, verbatim (e.g. 'Verständlich erzählen und anderen verstehend zuhören'). Omitted where the source has no such sub-title -- measured: always absent for E8 and M8, which go straight from the Kompetenzbereich heading to the 'Kompetenzen:' stem."
+        },
+        "stammsatz": {
+          "type": "string",
+          "description": "The competence-stem sentence verbatim, with the literal 'Kompetenzen:' run-in label stripped (that word is BiSt's own section scaffolding, not part of the competence sentence -- a deliberate parallel to how AT.LP23's Kompetenz.stammsatz captures the Lehrplan stem). Both forms occur verbatim in the source and are kept as printed: 'Die Schülerinnen und Schüler können' and the shorter 'Die Schülerinnen und Schüler' (verb moved into the item text itself, e.g. '...können Situationen richtig einschätzen...'). A faithful quotation of one descriptor is stammsatz + text, exactly the AT.LP23 kompetenz.stammsatz consumer obligation."
+        },
+        "text": {
+          "type": "string",
+          "description": "Verbatim descriptor text -- almost always one dash-bulleted list item (trailing comma/period kept exactly as printed), but for the two measured standalone cases (no <liste> follows the stem at all, e.g. M4 Modellieren/Problemlösen) this is the remainder of that single sentence after the stem."
+        },
+        "ordinal": { "type": "integer", "minimum": 1, "description": "1-based position within (fach, programmstufe, bereich_code); matches the id's lfd segment." }
+      }
+    }
+  }
+}

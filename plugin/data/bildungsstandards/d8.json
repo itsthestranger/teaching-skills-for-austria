@@ -1,0 +1,577 @@
+{
+  "meta": {
+    "dataset_version": "2026-07-27",
+    "shard": "D8",
+    "fach": {
+      "code": "D",
+      "name": "Deutsch"
+    },
+    "programmstufe": "SCH8",
+    "programmstufe_name": "8. Schulstufe der Volksschuloberstufe, der Mittelschule und der allgemeinbildenden höheren Schule",
+    "teil": "2. Teil",
+    "abschnitt": "1. Abschnitt",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Bildungsstandardsverordnung",
+      "nor": "NOR40255561",
+      "gesetzesnummer": "20006166",
+      "kundmachungsorgan": "BGBl. II Nr. 1/2009 zuletzt geändert durch BGBl. II Nr. 262/2023",
+      "anlage": "Anl. 1",
+      "typ": "V",
+      "abkuerzung": "BiStV",
+      "inkrafttretensdatum": "09.09.2023",
+      "zuletzt_aktualisiert": "11.09.2023",
+      "dokument_url": "https://www.ris.bka.gv.at/eli/bgbl/ii/2009/1/ANL1/NOR40255561",
+      "eli": "https://ris.bka.gv.at/eli/bgbl/ii/2009/1/ANL1/NOR40255561",
+      "retrieval_date": "2026-07-27"
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "code": "ZUHOERENSPRECHEN",
+      "name": "Zuhören und Sprechen",
+      "ueberschrift_roh": "Kompetenzbereich: Zuhören und Sprechen",
+      "beschreibung": "Durch Zuhören gesprochene Texte (auch medial vermittelt) verstehen, an private und öffentliche Kommunikationssituationen angepasste Gespräche führen und mündliche Präsentationen durchführen."
+    },
+    {
+      "code": "LESEN",
+      "name": "Lesen",
+      "ueberschrift_roh": "Kompetenzbereich: Lesen",
+      "beschreibung": "Ausgehend von grundlegenden Lesefertigkeiten literarische Texte, Sachtexte, nichtlineare Texte (Tabellen, Diagramme) und Bild-Text-Kombinationen in unterschiedlicher medialer Form inhaltlich und formal erfassen und reflektieren."
+    },
+    {
+      "code": "SCHREIBEN",
+      "name": "Schreiben",
+      "ueberschrift_roh": "Kompetenzbereich: Schreiben",
+      "beschreibung": "Unterschiedliche Texte formal und inhaltlich richtig verfassen; Gehörtes, Gelesenes, Erfahrenes schriftlich umsetzen; elektronische Textmedien nutzen."
+    },
+    {
+      "code": "SPRACHBEWUSSTSEIN",
+      "name": "Sprachbewusstsein",
+      "ueberschrift_roh": "Kompetenzbereich: Sprachbewusstsein",
+      "beschreibung": "Einsicht gewinnen in Struktur, Normen und Funktion der Sprache als Voraussetzung für Textverstehen, wirkungsvollen Sprachgebrauch und gelungene mündliche und schriftliche Kommunikation unter Berücksichtigung des Sprachstandes von Schülerinnen und Schülern mit einer anderen Muttersprache als Deutsch."
+    }
+  ],
+  "deskriptoren": [
+    {
+      "id": "AT.BIST.D.SCH8.ZUHOERENSPRECHEN.01",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "ZUHOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "das Hauptthema gesprochener Texte erkennen,",
+      "ordinal": 1,
+      "titel": "Altersgemäße mündliche Texte im direkten persönlichen Kontakt oder über Medien vermittelt verstehen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.ZUHOERENSPRECHEN.02",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "ZUHOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "die wesentlichen Informationen gesprochener Texte verstehen,",
+      "ordinal": 2,
+      "titel": "Altersgemäße mündliche Texte im direkten persönlichen Kontakt oder über Medien vermittelt verstehen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.ZUHOERENSPRECHEN.03",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "ZUHOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "die grundlegenden Informationen gesprochener Texte mündlich und schriftlich wiedergeben,",
+      "ordinal": 3,
+      "titel": "Altersgemäße mündliche Texte im direkten persönlichen Kontakt oder über Medien vermittelt verstehen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.ZUHOERENSPRECHEN.04",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "ZUHOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "die Redeabsicht gesprochener Texte erkennen,",
+      "ordinal": 4,
+      "titel": "Altersgemäße mündliche Texte im direkten persönlichen Kontakt oder über Medien vermittelt verstehen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.ZUHOERENSPRECHEN.05",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "ZUHOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "stimmliche (Lautstärke, Betonung, Pause, Sprechtempo, Stimmführung) und körpersprachliche (Mimik, Gestik) Mittel der Kommunikation erkennen.",
+      "ordinal": 5,
+      "titel": "Altersgemäße mündliche Texte im direkten persönlichen Kontakt oder über Medien vermittelt verstehen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.ZUHOERENSPRECHEN.06",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "ZUHOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "grundlegende Gesprächsregeln einhalten,",
+      "ordinal": 6,
+      "titel": "Gespräche führen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.ZUHOERENSPRECHEN.07",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "ZUHOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "in Gesprächen auf Äußerungen inhaltlich und partnergerecht eingehen,",
+      "ordinal": 7,
+      "titel": "Gespräche führen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.ZUHOERENSPRECHEN.08",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "ZUHOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "in standardisierten Kommunikationssituationen (Bitte, Beschwerde, Entschuldigung, Vorstellungsgespräch, Diskussion) zielorientiert sprechen,",
+      "ordinal": 8,
+      "titel": "Gespräche führen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.ZUHOERENSPRECHEN.09",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "ZUHOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "die Sprechhaltungen Erzählen, Informieren, Argumentieren und Appellieren einsetzen.",
+      "ordinal": 9,
+      "titel": "Gespräche führen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.ZUHOERENSPRECHEN.10",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "ZUHOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "artikuliert sprechen und die Standardsprache benutzen,",
+      "ordinal": 10,
+      "titel": "Inhalte mündlich präsentieren"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.ZUHOERENSPRECHEN.11",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "ZUHOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "stimmliche (Lautstärke, Betonung, Pause, Sprechtempo, Stimmführung) und körpersprachliche (Mimik, Gestik) Mittel der Kommunikation in Gesprächen und Präsentationen angemessen anwenden,",
+      "ordinal": 11,
+      "titel": "Inhalte mündlich präsentieren"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.ZUHOERENSPRECHEN.12",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "ZUHOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "in freier Rede und gestützt auf Notizen Ergebnisse und Inhalte sach- und adressatengerecht vortragen,",
+      "ordinal": 12,
+      "titel": "Inhalte mündlich präsentieren"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.ZUHOERENSPRECHEN.13",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "ZUHOERENSPRECHEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Medien zur Unterstützung für mündliche Präsentationen nutzen.",
+      "ordinal": 13,
+      "titel": "Inhalte mündlich präsentieren"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.LESEN.01",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "das Hauptthema eines Textes/eines Textabschnittes erkennen,",
+      "ordinal": 1,
+      "titel": "Ein allgemeines Verständnis des Textes entwickeln"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.LESEN.02",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "die Gliederung eines Textes erkennen,",
+      "ordinal": 2,
+      "titel": "Ein allgemeines Verständnis des Textes entwickeln"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.LESEN.03",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Textsignale (Überschrift, Zwischenüberschrift, Fettdruck, Hervorhebungen, Absätze, Einrückungen, Gliederungszeichen) zum Textverständnis nutzen,",
+      "ordinal": 3,
+      "titel": "Ein allgemeines Verständnis des Textes entwickeln"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.LESEN.04",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "grundlegende nicht-fiktionale Textsorten in unterschiedlicher medialer Form erkennen und ihre Textfunktion (Information, Nachricht, Meinung, Anleitung, Vorschrift, Appell, Unterhaltung) erfassen,",
+      "ordinal": 4,
+      "titel": "Ein allgemeines Verständnis des Textes entwickeln"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.LESEN.05",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "epische, lyrische und dramatische Texte unterscheiden und grundlegende epische Kleinformen (Märchen, Sage, Fabel, Kurzgeschichte) und ihre wesentlichen Merkmale erkennen.",
+      "ordinal": 5,
+      "titel": "Ein allgemeines Verständnis des Textes entwickeln"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.LESEN.06",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "zentrale und detaillierte Informationen in unterschiedlichen Texten und Textabschnitten finden,",
+      "ordinal": 6,
+      "titel": "Explizite Informationen ermitteln"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.LESEN.07",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Informationen aus Grafiken, Tabellen, Schaubildern und Bild-Text-Kombinationen ermitteln,",
+      "ordinal": 7,
+      "titel": "Explizite Informationen ermitteln"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.LESEN.08",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Wortbedeutungen mit Hilfe von (elektronischen) Nachschlagewerken klären,",
+      "ordinal": 8,
+      "titel": "Explizite Informationen ermitteln"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.LESEN.09",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "gezielt Informationen in unterschiedlichen Medien aufsuchen und beherrschen insbesondere die Internetrecherche und Benützung von Nachschlagewerken.",
+      "ordinal": 9,
+      "titel": "Explizite Informationen ermitteln"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.LESEN.10",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Informationen aus unterschiedlichen Texten und Medien vergleichen,",
+      "ordinal": 10,
+      "titel": "Eine textbezogene Interpretation entwickeln"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.LESEN.11",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "durch das Herstellen von Bezügen zwischen Textstellen die Bedeutung von Wörtern und Phrasen aus dem Kontext ableiten,",
+      "ordinal": 11,
+      "titel": "Eine textbezogene Interpretation entwickeln"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.LESEN.12",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "zwischen Information, Unterhaltung und Wertung in Printtexten und anderen Medien unterscheiden.",
+      "ordinal": 12,
+      "titel": "Eine textbezogene Interpretation entwickeln"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.LESEN.13",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Intentionen und vermutliche Wirkungen von Texten und Medienangeboten reflektieren,",
+      "ordinal": 13,
+      "titel": "Den Inhalt des Textes reflektieren"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.LESEN.14",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "LESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Eigenschaften, Verhaltensweisen und Handlungsmotive von Figuren in altersgemäßen literarischen Texten reflektieren.",
+      "ordinal": 14,
+      "titel": "Den Inhalt des Textes reflektieren"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SCHREIBEN.01",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können Methoden der Stoffsammlung (zB Mindmap, Cluster) anwenden,",
+      "ordinal": 1,
+      "titel": "Texte planen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SCHREIBEN.02",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können die Textstruktur in Hinblick auf Textsorte und Schreibhaltung festlegen,",
+      "ordinal": 2,
+      "titel": "Texte planen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SCHREIBEN.03",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können ihren sprachlichen Ausdruck an Schreibhaltung und Textsorte anpassen,",
+      "ordinal": 3,
+      "titel": "Texte planen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SCHREIBEN.04",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "berücksichtigen Textadressaten und Schreibsituation.",
+      "ordinal": 4,
+      "titel": "Texte planen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SCHREIBEN.05",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "beim Schreiben eigener Texte die grundlegenden Mittel des Erzählens (Orientierung, Konfliktaufbau, Konfliktlösung) anwenden,",
+      "ordinal": 5,
+      "titel": "Texte verfassen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SCHREIBEN.06",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Sachverhalte und Inhalte nachvollziehbar, logisch richtig und zusammenhängend formulieren,",
+      "ordinal": 6,
+      "titel": "Texte verfassen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SCHREIBEN.07",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "altersgemäße und für ein Thema relevante Argumente und Gegenargumente formulieren und sie sprachlich verknüpfen bzw. gegenüberstellen,",
+      "ordinal": 7,
+      "titel": "Texte verfassen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SCHREIBEN.08",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "formalisierte lineare Texte/nicht-lineare Texte verfassen (zB Lebenslauf, Bewerbungsschreiben, Formulare ausfüllen),",
+      "ordinal": 8,
+      "titel": "Texte verfassen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SCHREIBEN.09",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "unter Einhaltung wesentlicher Kommunikationsregeln an einer altersgemäßen medialen Kommunikation teilnehmen (zB E-Mail, Leserbrief),",
+      "ordinal": 9,
+      "titel": "Texte verfassen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SCHREIBEN.10",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "das Schreiben als Hilfsmittel für ihr eigenes Lernen einsetzen (Zusammenfassung, Stichwortzettel, …).",
+      "ordinal": 10,
+      "titel": "Texte verfassen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SCHREIBEN.11",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "fremde und eigene Texte nach vorgegebenen Kriterien inhaltlich optimieren,",
+      "ordinal": 11,
+      "titel": "Texte überarbeiten"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SCHREIBEN.12",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "fremde und eigene Texte nach vorgegebenen Kriterien sprachlich und orthographisch optimieren,",
+      "ordinal": 12,
+      "titel": "Texte überarbeiten"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SCHREIBEN.13",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SCHREIBEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "fremde und eigene Texte im Hinblick auf Erfordernisse der Textsorte optimieren.",
+      "ordinal": 13,
+      "titel": "Texte überarbeiten"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SPRACHBEWUSSTSEIN.01",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRACHBEWUSSTSEIN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "erkennen die sprachlichen Mittel für den Textzusammenhang (Binde-, Ersatz- und Verweiswörter) und ihre Funktion,",
+      "ordinal": 1,
+      "titel": "Text- und Satzstrukturen kennen und anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SPRACHBEWUSSTSEIN.02",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRACHBEWUSSTSEIN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "erkennen und variieren Satzbau und Satzbauelemente: Hauptsatz, Gliedsatz, Satzglied, Satzgliedteil,",
+      "ordinal": 2,
+      "titel": "Text- und Satzstrukturen kennen und anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SPRACHBEWUSSTSEIN.03",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRACHBEWUSSTSEIN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können Sätze durch Satzzeichen strukturieren,",
+      "ordinal": 3,
+      "titel": "Text- und Satzstrukturen kennen und anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SPRACHBEWUSSTSEIN.04",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRACHBEWUSSTSEIN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "erkennen Verbformen und können sie funktional anwenden.",
+      "ordinal": 4,
+      "titel": "Text- und Satzstrukturen kennen und anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SPRACHBEWUSSTSEIN.05",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRACHBEWUSSTSEIN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Wortarten und ihre wesentlichen Funktionen erkennen und benennen,",
+      "ordinal": 5,
+      "titel": "Wortarten und Wortstrukturen kennen und anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SPRACHBEWUSSTSEIN.06",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRACHBEWUSSTSEIN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Grundregeln der Wortbildung (Ableitung und Zusammensetzung) anwenden.",
+      "ordinal": 6,
+      "titel": "Wortarten und Wortstrukturen kennen und anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SPRACHBEWUSSTSEIN.07",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRACHBEWUSSTSEIN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "kennen Bedeutungsunterschiede von Wörtern: Wortfelder, Wortfamilien, Synonyme, Antonyme, Ober- und Unterbegriffe,",
+      "ordinal": 7,
+      "titel": "Über einen differenzierten Wortschatz verfügen und sprachliche Ausdrucksmittel situationsgerecht anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SPRACHBEWUSSTSEIN.08",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRACHBEWUSSTSEIN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "kennen die Bedeutung von grundlegenden idiomatischen Wendungen (insbesondere von verbalen Phrasen),",
+      "ordinal": 8,
+      "titel": "Über einen differenzierten Wortschatz verfügen und sprachliche Ausdrucksmittel situationsgerecht anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SPRACHBEWUSSTSEIN.09",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRACHBEWUSSTSEIN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können Sprachebenen unterscheiden (zB gesprochene und geschriebene Sprache, Dialekt, Umgangssprache, Standardsprache) und an die kommunikative Situation anpassen.",
+      "ordinal": 9,
+      "titel": "Über einen differenzierten Wortschatz verfügen und sprachliche Ausdrucksmittel situationsgerecht anwenden"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SPRACHBEWUSSTSEIN.10",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRACHBEWUSSTSEIN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "beherrschen grundlegende Regeln der Dehnung, der Schärfung, des Stammprinzips, der Groß- und Kleinschreibung und können diese beim Schreiben anwenden,",
+      "ordinal": 10,
+      "titel": "Über Rechtschreibbewusstsein verfügen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SPRACHBEWUSSTSEIN.11",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRACHBEWUSSTSEIN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "beherrschen die Rechtschreibung des Gebrauchswortschatzes einschließlich gängiger Fremdwörter,",
+      "ordinal": 11,
+      "titel": "Über Rechtschreibbewusstsein verfügen"
+    },
+    {
+      "id": "AT.BIST.D.SCH8.SPRACHBEWUSSTSEIN.12",
+      "fach": "D",
+      "programmstufe": "SCH8",
+      "bereich_code": "SPRACHBEWUSSTSEIN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können Arbeitshilfen zur Rechtschreibung (zB Wörterbuch) einsetzen.",
+      "ordinal": 12,
+      "titel": "Über Rechtschreibbewusstsein verfügen"
+    }
+  ]
+}

@@ -1,0 +1,661 @@
+{
+  "meta": {
+    "dataset_version": "2026-07-27",
+    "shard": "M4",
+    "fach": {
+      "code": "M",
+      "name": "Mathematik"
+    },
+    "programmstufe": "SCH4",
+    "programmstufe_name": "4. Schulstufe der Volksschule",
+    "teil": "1. Teil",
+    "abschnitt": "2. Abschnitt",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Bildungsstandardsverordnung",
+      "nor": "NOR40255561",
+      "gesetzesnummer": "20006166",
+      "kundmachungsorgan": "BGBl. II Nr. 1/2009 zuletzt geändert durch BGBl. II Nr. 262/2023",
+      "anlage": "Anl. 1",
+      "typ": "V",
+      "abkuerzung": "BiStV",
+      "inkrafttretensdatum": "09.09.2023",
+      "zuletzt_aktualisiert": "11.09.2023",
+      "dokument_url": "https://www.ris.bka.gv.at/eli/bgbl/ii/2009/1/ANL1/NOR40255561",
+      "eli": "https://ris.bka.gv.at/eli/bgbl/ii/2009/1/ANL1/NOR40255561",
+      "retrieval_date": "2026-07-27"
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "code": "MODELLIEREN",
+      "name": "Modellieren",
+      "ueberschrift_roh": "Kompetenzbereich: Modellieren",
+      "gruppe": "Allgemeine mathematische Kompetenzen"
+    },
+    {
+      "code": "OPERIEREN",
+      "name": "Operieren",
+      "ueberschrift_roh": "Kompetenzbereich: Operieren",
+      "gruppe": "Allgemeine mathematische Kompetenzen"
+    },
+    {
+      "code": "KOMMUNIZIEREN",
+      "name": "Kommunizieren",
+      "ueberschrift_roh": "Kompetenzbereich: Kommunizieren",
+      "gruppe": "Allgemeine mathematische Kompetenzen"
+    },
+    {
+      "code": "PROBLEMLOESEN",
+      "name": "Problemlösen",
+      "ueberschrift_roh": "Kompetenzbereich: Problemlösen",
+      "gruppe": "Allgemeine mathematische Kompetenzen"
+    },
+    {
+      "code": "ZAHLEN",
+      "name": "Arbeiten mit Zahlen",
+      "ueberschrift_roh": "Kompetenzbereich: Arbeiten mit Zahlen",
+      "gruppe": "Inhaltliche mathematische Kompetenzen"
+    },
+    {
+      "code": "OPERATIONEN",
+      "name": "Arbeiten mit Operationen",
+      "ueberschrift_roh": "Kompetenzbereich: Arbeiten mit Operationen",
+      "gruppe": "Inhaltliche mathematische Kompetenzen"
+    },
+    {
+      "code": "GROESSEN",
+      "name": "Arbeiten mit Größen",
+      "ueberschrift_roh": "Kompetenzbereich: Arbeiten mit Größen",
+      "gruppe": "Inhaltliche mathematische Kompetenzen"
+    },
+    {
+      "code": "EBENERAUM",
+      "name": "Arbeiten mit Ebene und Raum",
+      "ueberschrift_roh": "Kompetenzbereich: Arbeiten mit Ebene und Raum",
+      "gruppe": "Inhaltliche mathematische Kompetenzen"
+    }
+  ],
+  "deskriptoren": [
+    {
+      "id": "AT.BIST.M.SCH4.MODELLIEREN.01",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "MODELLIEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "aus Sachsituationen relevante Informationen entnehmen,",
+      "ordinal": 1,
+      "titel": "Eine Sachsituation in ein mathematisches Modell (Terme und Gleichungen) übertragen, dieses lösen und auf die Ausgangssituation beziehen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.MODELLIEREN.02",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "MODELLIEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "passende Lösungswege finden,",
+      "ordinal": 2,
+      "titel": "Eine Sachsituation in ein mathematisches Modell (Terme und Gleichungen) übertragen, dieses lösen und auf die Ausgangssituation beziehen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.MODELLIEREN.03",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "MODELLIEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "die Ergebnisse interpretieren und sie überprüfen.",
+      "ordinal": 3,
+      "titel": "Eine Sachsituation in ein mathematisches Modell (Terme und Gleichungen) übertragen, dieses lösen und auf die Ausgangssituation beziehen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.MODELLIEREN.04",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "MODELLIEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "zu Termen und Gleichungen Sachaufgaben erstellen.",
+      "ordinal": 4,
+      "titel": "Ein mathematisches Modell in eine Sachsituation übertragen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.OPERIEREN.01",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "OPERIEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Zahlen, Größen und geometrische Figuren strukturieren,",
+      "ordinal": 1,
+      "titel": "Mathematische Abläufe durchführen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.OPERIEREN.02",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "OPERIEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "arithmetische Operationen und Verfahren durchführen,",
+      "ordinal": 2,
+      "titel": "Mathematische Abläufe durchführen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.OPERIEREN.03",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "OPERIEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "geometrische Konstruktionen durchführen.",
+      "ordinal": 3,
+      "titel": "Mathematische Abläufe durchführen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.OPERIEREN.04",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "OPERIEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Tabellen und Grafiken erstellen,",
+      "ordinal": 4,
+      "titel": "Mit Tabellen und Grafiken arbeiten"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.OPERIEREN.05",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "OPERIEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Informationen aus Tabellen und Grafiken entnehmen.",
+      "ordinal": 5,
+      "titel": "Mit Tabellen und Grafiken arbeiten"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.KOMMUNIZIEREN.01",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "KOMMUNIZIEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "mathematische Begriffe und Zeichen sachgerecht in Wort und Schrift benützen,",
+      "ordinal": 1,
+      "titel": "Mathematische Sachverhalte verbalisieren und begründen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.KOMMUNIZIEREN.02",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "KOMMUNIZIEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "ihre Vorgangsweisen beschreiben und protokollieren,",
+      "ordinal": 2,
+      "titel": "Mathematische Sachverhalte verbalisieren und begründen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.KOMMUNIZIEREN.03",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "KOMMUNIZIEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Lösungswege vergleichen und ihre Aussagen und Handlungsweisen begründen.",
+      "ordinal": 3,
+      "titel": "Mathematische Sachverhalte verbalisieren und begründen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.KOMMUNIZIEREN.04",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "KOMMUNIZIEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "ihre Vorgangsweisen in geeigneten Repräsentationsformen festhalten,",
+      "ordinal": 4,
+      "titel": "Mathematische Sachverhalte in unterschiedlichen Repräsentationsformen darstellen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.KOMMUNIZIEREN.05",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "KOMMUNIZIEREN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Zeichnungen und Diagramme erstellen.",
+      "ordinal": 5,
+      "titel": "Mathematische Sachverhalte in unterschiedlichen Repräsentationsformen darstellen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.PROBLEMLOESEN.01",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "PROBLEMLOESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "ein innermathematisches Problem erkennen und dazu relevante Fragen stellen.",
+      "ordinal": 1,
+      "titel": "Mathematisch relevante Fragen stellen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.PROBLEMLOESEN.02",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "PROBLEMLOESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "geeignete Lösungsaktivitäten wie Vermuten, Probieren, Anlegen von Tabellen oder Erstellen von Skizzen anwenden,",
+      "ordinal": 2,
+      "titel": "Lösungsstrategien (er)finden und nutzen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.PROBLEMLOESEN.03",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "PROBLEMLOESEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "zielführende Denkstrategien wie systematisches Probieren oder Nutzen von Analogien einsetzen.",
+      "ordinal": 3,
+      "titel": "Lösungsstrategien (er)finden und nutzen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.ZAHLEN.01",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "ZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Zahlen im Zahlenraum 100 000 lesen und darstellen,",
+      "ordinal": 1,
+      "titel": "Zahldarstellungen und -beziehungen verstehen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.ZAHLEN.02",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "ZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "sich im Zahlenraum 100 000 orientieren, Zahlen vergleichen und diese in Relation setzen,",
+      "ordinal": 2,
+      "titel": "Zahldarstellungen und -beziehungen verstehen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.ZAHLEN.03",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "ZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "arithmetische Muster erkennen, beschreiben und fortsetzen.",
+      "ordinal": 3,
+      "titel": "Zahldarstellungen und -beziehungen verstehen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.ZAHLEN.04",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "ZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Zahlen auf volle Zehner, Hunderter, … Zehntausender runden,",
+      "ordinal": 4,
+      "titel": "Zahlen runden und Anzahlen schätzen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.ZAHLEN.05",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "ZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Anzahlen schätzen.",
+      "ordinal": 5,
+      "titel": "Zahlen runden und Anzahlen schätzen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.ZAHLEN.06",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "ZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Bruchzahlen darstellen,",
+      "ordinal": 6,
+      "titel": "Das Wesen der Bruchzahl verstehen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.ZAHLEN.07",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "ZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Bruchzahlen vergleichen, ordnen und zerlegen,",
+      "ordinal": 7,
+      "titel": "Das Wesen der Bruchzahl verstehen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.ZAHLEN.08",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "ZAHLEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Bruchzahlen im Zusammenhang mit Größen benützen.",
+      "ordinal": 8,
+      "titel": "Das Wesen der Bruchzahl verstehen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.OPERATIONEN.01",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "OPERATIONEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "verfügen über Einsicht in das Wesen von Rechenoperationen,",
+      "ordinal": 1,
+      "titel": "Die vier Grundrechnungsarten und ihre Zusammenhänge verstehen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.OPERATIONEN.02",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "OPERATIONEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können die Zusammenhänge zwischen den Grundrechnungsarten erklären,",
+      "ordinal": 2,
+      "titel": "Die vier Grundrechnungsarten und ihre Zusammenhänge verstehen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.OPERATIONEN.03",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "OPERATIONEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können Umkehroperationen verwenden, auch zur sinnvollen Überprüfung des Ergebnisses,",
+      "ordinal": 3,
+      "titel": "Die vier Grundrechnungsarten und ihre Zusammenhänge verstehen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.OPERATIONEN.04",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "OPERATIONEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können Tausch-, Nachbar- und Analogieaufgaben verwenden.",
+      "ordinal": 4,
+      "titel": "Die vier Grundrechnungsarten und ihre Zusammenhänge verstehen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.OPERATIONEN.05",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "OPERATIONEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "beherrschen sicher und schnell additive Grundaufgaben im Zahlenraum 20,",
+      "ordinal": 5,
+      "titel": "Mündliches Rechnen sicher beherrschen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.OPERATIONEN.06",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "OPERATIONEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "beherrschen sicher und schnell multiplikative Grundaufgaben im Zahlenraum 100,",
+      "ordinal": 6,
+      "titel": "Mündliches Rechnen sicher beherrschen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.OPERATIONEN.07",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "OPERATIONEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können nicht automatisierte Rechenoperationen in Teilschritten durchführen,",
+      "ordinal": 7,
+      "titel": "Mündliches Rechnen sicher beherrschen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.OPERATIONEN.08",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "OPERATIONEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können einfache Gleichungen mit Platzhaltern lösen,",
+      "ordinal": 8,
+      "titel": "Mündliches Rechnen sicher beherrschen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.OPERATIONEN.09",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "OPERATIONEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können Ergebnisschätzungen mit Hilfe von Überschlagsrechnungen durchführen.",
+      "ordinal": 9,
+      "titel": "Mündliches Rechnen sicher beherrschen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.OPERATIONEN.10",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "OPERATIONEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "verstehen die Algorithmen der schriftlichen Rechenverfahren,",
+      "ordinal": 10,
+      "titel": "Schriftliche Rechenverfahren beherrschen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.OPERATIONEN.11",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "OPERATIONEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können die Algorithmen der schriftlichen Verfahren für Addition, Subtraktion, Multiplikation und Division durchführen,",
+      "ordinal": 11,
+      "titel": "Schriftliche Rechenverfahren beherrschen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.OPERATIONEN.12",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "OPERATIONEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können die Lösung mit Hilfe einer Probe überprüfen.",
+      "ordinal": 12,
+      "titel": "Schriftliche Rechenverfahren beherrschen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.GROESSEN.01",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "GROESSEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "kennen genormte Maßeinheiten und können diese den Größenbereichen zuordnen,",
+      "ordinal": 1,
+      "titel": "Größenvorstellungen besitzen und Einheiten kennen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.GROESSEN.02",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "GROESSEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können geeignete Repräsentanten zu Maßeinheiten angeben,",
+      "ordinal": 2,
+      "titel": "Größenvorstellungen besitzen und Einheiten kennen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.GROESSEN.03",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "GROESSEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können Größen in unterschiedlichen Schreibweisen darstellen.",
+      "ordinal": 3,
+      "titel": "Größenvorstellungen besitzen und Einheiten kennen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.GROESSEN.04",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "GROESSEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "beherrschen den Grundvorgang des Messens,",
+      "ordinal": 4,
+      "titel": "Größen messen und schätzen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.GROESSEN.05",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "GROESSEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können mit geeigneten Maßeinheiten messen,",
+      "ordinal": 5,
+      "titel": "Größen messen und schätzen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.GROESSEN.06",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "GROESSEN",
+      "stammsatz": "Die Schülerinnen und Schüler",
+      "text": "können Größen schätzen und ihre Vorgangsweise begründen.",
+      "ordinal": 6,
+      "titel": "Größen messen und schätzen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.GROESSEN.07",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "GROESSEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Größen miteinander vergleichen,",
+      "ordinal": 7,
+      "titel": "Mit Größen operieren"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.GROESSEN.08",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "GROESSEN",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "mit Größen rechnen.",
+      "ordinal": 8,
+      "titel": "Mit Größen operieren"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.EBENERAUM.01",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "EBENERAUM",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "geometrische Körper und Flächen benennen,",
+      "ordinal": 1,
+      "titel": "Geometrische Figuren erkennen, benennen und darstellen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.EBENERAUM.02",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "EBENERAUM",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "die Eigenschaften geometrischer Figuren beschreiben,",
+      "ordinal": 2,
+      "titel": "Geometrische Figuren erkennen, benennen und darstellen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.EBENERAUM.03",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "EBENERAUM",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Modelle von geometrischen Körpern herstellen,",
+      "ordinal": 3,
+      "titel": "Geometrische Figuren erkennen, benennen und darstellen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.EBENERAUM.04",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "EBENERAUM",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "geometrische Figuren zeichnen oder konstruieren.",
+      "ordinal": 4,
+      "titel": "Geometrische Figuren erkennen, benennen und darstellen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.EBENERAUM.05",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "EBENERAUM",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Lagebeziehungen zwischen Objekten im Raum und in der Ebene beschreiben und nutzen,",
+      "ordinal": 5,
+      "titel": "Beziehungen bei geometrischen Figuren erkennen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.EBENERAUM.06",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "EBENERAUM",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "vorgegebene geometrische Muster erkennen, selbst entwickeln oder fortsetzen,",
+      "ordinal": 6,
+      "titel": "Beziehungen bei geometrischen Figuren erkennen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.EBENERAUM.07",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "EBENERAUM",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "den Zusammenhang zwischen Plan und Wirklichkeit herstellen.",
+      "ordinal": 7,
+      "titel": "Beziehungen bei geometrischen Figuren erkennen"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.EBENERAUM.08",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "EBENERAUM",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "geometrische Figuren zerlegen und sie wieder zusammensetzen,",
+      "ordinal": 8,
+      "titel": "Mit geometrischen Figuren operieren"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.EBENERAUM.09",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "EBENERAUM",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "Netze den entsprechenden Körpern zuordnen und umgekehrt.",
+      "ordinal": 9,
+      "titel": "Mit geometrischen Figuren operieren"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.EBENERAUM.10",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "EBENERAUM",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "den Umfang einer geometrischen Figur mittels Einheitslängen messen,",
+      "ordinal": 10,
+      "titel": "Umfang und Flächeninhalt ermitteln"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.EBENERAUM.11",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "EBENERAUM",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "den Umfang von Rechteck und Quadrat berechnen,",
+      "ordinal": 11,
+      "titel": "Umfang und Flächeninhalt ermitteln"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.EBENERAUM.12",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "EBENERAUM",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "den Flächeninhalt einer geometrischen Figur mittels Einheitsflächen messen,",
+      "ordinal": 12,
+      "titel": "Umfang und Flächeninhalt ermitteln"
+    },
+    {
+      "id": "AT.BIST.M.SCH4.EBENERAUM.13",
+      "fach": "M",
+      "programmstufe": "SCH4",
+      "bereich_code": "EBENERAUM",
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "den Flächeninhalt von Rechteck und Quadrat berechnen.",
+      "ordinal": 13,
+      "titel": "Umfang und Flächeninhalt ermitteln"
+    }
+  ]
+}
