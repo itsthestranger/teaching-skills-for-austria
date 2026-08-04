@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "dataset_version": "fixtur-1",
+    "band": "PRIM",
+    "fach": {
+      "code": "M",
+      "name": "Fixturfach M (Primar)"
+    },
+    "uebergreifende_themen_fach": [
+      "Informatische Bildung"
+    ],
+    "differenzierungs_achse": {
+      "typ": "lehrplan_generisch",
+      "niveaus": [
+        "grundlegend",
+        "erweitert",
+        "vertiefend"
+      ]
+    },
+    "anwendungsbereiche_status": "keine",
+    "anwendungsbereiche_bindung": "keine",
+    "bildungsstandard_bezug": "verordnet",
+    "lehrstoff_quelle": "eigen_ausgewiesen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Fixtur-Lehrplan",
+      "nor": "NOR00000001",
+      "kundmachung": "BGBl. II Nr. 0/2026 (Fixtur, keine echte Quelle)",
+      "anlage": "Anl. 1",
+      "teil": "FIXTUR TEIL",
+      "stand": "2026-01-01"
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "nummer": null,
+      "slug": "THETA",
+      "name": "Theta-Bereich",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.PRIM.M.THETA.SCH1.01",
+          "bereich_nummer": null,
+          "bereich_name": "Theta-Bereich",
+          "stufe": "SCH1",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "theta rechnen.",
+          "vorlaeufer": [],
+          "folge": []
+        }
+      ]
+    }
+  ]
+}

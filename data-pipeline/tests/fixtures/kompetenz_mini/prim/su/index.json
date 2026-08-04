@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "dataset_version": "fixtur-1",
+    "band": "PRIM",
+    "fach": {
+      "code": "SU",
+      "name": "Fixturfach SU (Primar)"
+    },
+    "uebergreifende_themen_fach": [
+      "Medienbildung"
+    ],
+    "differenzierungs_achse": {
+      "typ": "lehrplan_generisch",
+      "niveaus": [
+        "grundlegend",
+        "erweitert",
+        "vertiefend"
+      ]
+    },
+    "anwendungsbereiche_status": "optional_sektion",
+    "anwendungsbereiche_bindung": "stufe",
+    "bildungsstandard_bezug": "keine_verordnung",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Fixtur-Lehrplan",
+      "nor": "NOR00000001",
+      "kundmachung": "BGBl. II Nr. 0/2026 (Fixtur, keine echte Quelle)",
+      "anlage": "Anl. 1",
+      "teil": "FIXTUR TEIL",
+      "stand": "2026-01-01"
+    }
+  },
+  "teile": [
+    {
+      "datei": "iota.json",
+      "typ": "kompetenzbereich",
+      "nummer": null,
+      "slug": "IOTA",
+      "name": "Iota-Bereich",
+      "kompetenzen": 1,
+      "anwendungsitems": 1
+    }
+  ],
+  "stichwort_index": {
+    "beobachten": "iota.json"
+  }
+}

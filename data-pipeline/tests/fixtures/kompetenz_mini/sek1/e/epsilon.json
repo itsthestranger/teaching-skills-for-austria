@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "dataset_version": "fixtur-1",
+    "band": "SEK1",
+    "fach": {
+      "code": "E",
+      "name": "Fixturfach E"
+    },
+    "uebergreifende_themen_fach": [
+      "Interkulturelle Bildung"
+    ],
+    "differenzierungs_achse": {
+      "typ": "standard_standardplus",
+      "niveaus": [
+        "Standard",
+        "Standard AHS"
+      ],
+      "gilt_ab_stufe": "K2",
+      "gers": {
+        "typ": "gers",
+        "referenzrahmen": "Gemeinsamer Europäischer Referenzrahmen (Fixtur)",
+        "niveaus": [
+          "A1",
+          "A2"
+        ],
+        "je_stufe_ausgewiesen": false
+      }
+    },
+    "anwendungsbereiche_status": "optional_sektion",
+    "anwendungsbereiche_bindung": "prosa",
+    "bildungsstandard_bezug": "verordnet",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Fixtur-Lehrplan",
+      "nor": "NOR00000001",
+      "kundmachung": "BGBl. II Nr. 0/2026 (Fixtur, keine echte Quelle)",
+      "anlage": "Anl. 1",
+      "teil": "FIXTUR TEIL",
+      "stand": "2026-01-01"
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "nummer": null,
+      "slug": "EPSILON",
+      "name": "Epsilon-Bereich",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.SEK1.E.EPSILON.K1.01",
+          "bereich_nummer": null,
+          "bereich_name": "Epsilon-Bereich",
+          "stufe": "K1",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können, wenn langsam gesprochen wird,",
+          "text": "einfache Sätze verstehen.",
+          "vorlaeufer": [],
+          "folge": []
+        }
+      ]
+    }
+  ]
+}

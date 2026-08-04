@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "dataset_version": "fixtur-1",
+    "band": "SEK1",
+    "fach": {
+      "code": "M",
+      "name": "Fixturfach M"
+    },
+    "uebergreifende_themen_fach": [
+      "Medienbildung"
+    ],
+    "uebergreifende_themen_legende": {
+      "1": "Medienbildung"
+    },
+    "differenzierungs_achse": {
+      "typ": "standard_standardplus",
+      "niveaus": [
+        "Standard",
+        "Standard AHS"
+      ],
+      "gilt_ab_stufe": "K2",
+      "enrichment_quelle": "allenfalls"
+    },
+    "anwendungsbereiche_status": "item_flags",
+    "anwendungsbereiche_bindung": "kompetenz",
+    "bildungsstandard_bezug": "verordnet",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Fixtur-Lehrplan",
+      "nor": "NOR00000001",
+      "kundmachung": "BGBl. II Nr. 0/2026 (Fixtur, keine echte Quelle)",
+      "anlage": "Anl. 1",
+      "teil": "FIXTUR TEIL",
+      "stand": "2026-01-01"
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "nummer": 1,
+      "slug": "ALPHA",
+      "name": "Alpha-Bereich",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.SEK1.M.ALPHA.K1.01",
+          "bereich_nummer": 1,
+          "bereich_name": "Alpha-Bereich",
+          "stufe": "K1",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "alpha eins bruch bearbeiten.",
+          "uebergreifende_themen": [
+            "Medienbildung"
+          ],
+          "themen_marker_roh": [
+            "1"
+          ],
+          "vorlaeufer": [],
+          "folge": [
+            "AT.LP23.SEK1.M.ALPHA.K2.01"
+          ],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.ALPHA.K1.01",
+              "bereich_nummer": 1,
+              "bereich_name": "Alpha-Bereich",
+              "stufe": "K1",
+              "ordinal": 0,
+              "text": "Bearbeiten von Bruchtermen.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ALPHA.K1.01",
+              "wiederholung_von": []
+            },
+            {
+              "id": "AT.LP23.SEK1.M.AB.ALPHA.K1.02",
+              "bereich_nummer": 1,
+              "bereich_name": "Alpha-Bereich",
+              "stufe": "K1",
+              "ordinal": 1,
+              "text": "allenfalls Vertiefen mit Zusatzaufgaben.",
+              "verbindlich": false,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ALPHA.K1.01",
+              "wiederholung_von": []
+            }
+          ]
+        },
+        {
+          "id": "AT.LP23.SEK1.M.ALPHA.K2.01",
+          "bereich_nummer": 1,
+          "bereich_name": "Alpha-Bereich",
+          "stufe": "K2",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "alpha zwei bearbeiten.",
+          "vorlaeufer": [
+            "AT.LP23.SEK1.M.ALPHA.K1.01"
+          ],
+          "folge": [],
+          "anwendungsbereiche": [
+            {
+              "id": "AT.LP23.SEK1.M.AB.ALPHA.K2.01",
+              "bereich_nummer": 1,
+              "bereich_name": "Alpha-Bereich",
+              "stufe": "K2",
+              "ordinal": 0,
+              "text": "Wiederholen und Festigen: Grundlagen aus der 1. Klasse.",
+              "verbindlich": true,
+              "art": "praezisierung",
+              "kompetenz_id": "AT.LP23.SEK1.M.ALPHA.K2.01",
+              "wiederholung_von": [
+                "AT.LP23.SEK1.M.ALPHA.K1.01"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

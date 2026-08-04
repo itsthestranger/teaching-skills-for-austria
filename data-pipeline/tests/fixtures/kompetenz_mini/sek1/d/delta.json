@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "dataset_version": "fixtur-1",
+    "band": "SEK1",
+    "fach": {
+      "code": "D",
+      "name": "Fixturfach D"
+    },
+    "uebergreifende_themen_fach": [
+      "Sprachliche Bildung"
+    ],
+    "differenzierungs_achse": {
+      "typ": "standard_standardplus",
+      "niveaus": [
+        "Standard",
+        "Standard AHS"
+      ],
+      "gilt_ab_stufe": "K2"
+    },
+    "anwendungsbereiche_status": "optional_sektion",
+    "anwendungsbereiche_bindung": "bereich",
+    "bildungsstandard_bezug": "verordnet",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Fixtur-Lehrplan",
+      "nor": "NOR00000001",
+      "kundmachung": "BGBl. II Nr. 0/2026 (Fixtur, keine echte Quelle)",
+      "anlage": "Anl. 1",
+      "teil": "FIXTUR TEIL",
+      "stand": "2026-01-01"
+    },
+    "anwendungsbereiche_bloecke": {
+      "DELTA.K1": {
+        "bindung": "bereich",
+        "bereich_name": "Delta-Struktur",
+        "bereich_slug": "DELTA",
+        "items": [
+          {
+            "id": "AT.LP23.SEK1.D.AB.DELTA.K1.01",
+            "bereich_nummer": null,
+            "bereich_name": "Delta-Struktur",
+            "stufe": "K1",
+            "ordinal": 0,
+            "text": "Strukturitem ohne Kompetenzbezug.",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": []
+          }
+        ]
+      }
+    }
+  },
+  "kompetenzbereiche": []
+}

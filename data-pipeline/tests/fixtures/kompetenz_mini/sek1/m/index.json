@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "dataset_version": "fixtur-1",
+    "band": "SEK1",
+    "fach": {
+      "code": "M",
+      "name": "Fixturfach M"
+    },
+    "uebergreifende_themen_fach": [
+      "Medienbildung"
+    ],
+    "uebergreifende_themen_legende": {
+      "1": "Medienbildung"
+    },
+    "differenzierungs_achse": {
+      "typ": "standard_standardplus",
+      "niveaus": [
+        "Standard",
+        "Standard AHS"
+      ],
+      "gilt_ab_stufe": "K2",
+      "enrichment_quelle": "allenfalls"
+    },
+    "anwendungsbereiche_status": "item_flags",
+    "anwendungsbereiche_bindung": "kompetenz",
+    "bildungsstandard_bezug": "verordnet",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Fixtur-Lehrplan",
+      "nor": "NOR00000001",
+      "kundmachung": "BGBl. II Nr. 0/2026 (Fixtur, keine echte Quelle)",
+      "anlage": "Anl. 1",
+      "teil": "FIXTUR TEIL",
+      "stand": "2026-01-01"
+    }
+  },
+  "teile": [
+    {
+      "datei": "alpha.json",
+      "typ": "kompetenzbereich",
+      "nummer": 1,
+      "slug": "ALPHA",
+      "name": "Alpha-Bereich",
+      "kompetenzen": 2,
+      "anwendungsitems": 3
+    },
+    {
+      "datei": "zusatz.json",
+      "typ": "zusatz",
+      "zusatzkompetenzen": 1,
+      "digitale_technologien_vorschlaege": 1
+    }
+  ],
+  "stichwort_index": {
+    "bruch": "alpha.json",
+    "bruchtermen": "zusatz.json",
+    "zusatzaufgaben": "alpha.json"
+  }
+}

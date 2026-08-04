@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "dataset_version": "fixtur-1",
+    "band": "PRIM",
+    "fach": {
+      "code": "D",
+      "name": "Fixturfach D (Primar)"
+    },
+    "uebergreifende_themen_fach": [
+      "Sprachliche Bildung"
+    ],
+    "differenzierungs_achse": {
+      "typ": "lehrplan_generisch",
+      "niveaus": [
+        "grundlegend",
+        "erweitert",
+        "vertiefend"
+      ]
+    },
+    "anwendungsbereiche_status": "optional_sektion",
+    "anwendungsbereiche_bindung": "stufe",
+    "bildungsstandard_bezug": "verordnet",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Fixtur-Lehrplan",
+      "nor": "NOR00000001",
+      "kundmachung": "BGBl. II Nr. 0/2026 (Fixtur, keine echte Quelle)",
+      "anlage": "Anl. 1",
+      "teil": "FIXTUR TEIL",
+      "stand": "2026-01-01"
+    },
+    "anwendungsbereiche_bloecke": {
+      "SCH1": {
+        "bindung": "stufe",
+        "items": [
+          {
+            "id": "AT.LP23.PRIM.D.AB.SCH1.01",
+            "stufe": "SCH1",
+            "ordinal": 0,
+            "text": "Jahresweiter Blockinhalt für die 1. Schulstufe.",
+            "verbindlich": true,
+            "art": "praezisierung",
+            "kompetenz_id": null,
+            "wiederholung_von": []
+          }
+        ]
+      }
+    }
+  },
+  "kompetenzbereiche": [
+    {
+      "nummer": null,
+      "slug": "ETA",
+      "name": "Eta-Bereich",
+      "kompetenzen": [
+        {
+          "id": "AT.LP23.PRIM.D.ETA.SCH1.01",
+          "bereich_nummer": null,
+          "bereich_name": "Eta-Bereich",
+          "stufe": "SCH1",
+          "ordinal": 0,
+          "stammsatz": "Die Schülerinnen und Schüler können",
+          "text": "eta eins beobachten.",
+          "vorlaeufer": [],
+          "folge": []
+        }
+      ]
+    }
+  ]
+}

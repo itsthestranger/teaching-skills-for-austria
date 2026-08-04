@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "dataset_version": "fixtur-1",
+    "band": "SEK1",
+    "fach": {
+      "code": "D",
+      "name": "Fixturfach D"
+    },
+    "uebergreifende_themen_fach": [
+      "Sprachliche Bildung"
+    ],
+    "differenzierungs_achse": {
+      "typ": "standard_standardplus",
+      "niveaus": [
+        "Standard",
+        "Standard AHS"
+      ],
+      "gilt_ab_stufe": "K2"
+    },
+    "anwendungsbereiche_status": "optional_sektion",
+    "anwendungsbereiche_bindung": "bereich",
+    "bildungsstandard_bezug": "verordnet",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Fixtur-Lehrplan",
+      "nor": "NOR00000001",
+      "kundmachung": "BGBl. II Nr. 0/2026 (Fixtur, keine echte Quelle)",
+      "anlage": "Anl. 1",
+      "teil": "FIXTUR TEIL",
+      "stand": "2026-01-01"
+    }
+  },
+  "teile": [
+    {
+      "datei": "gamma.json",
+      "typ": "kompetenzbereich",
+      "nummer": null,
+      "slug": "GAMMA",
+      "name": "Gamma-Bereich",
+      "kompetenzen": 3,
+      "anwendungsitems": 1
+    },
+    {
+      "datei": "delta.json",
+      "typ": "kompetenzbereich",
+      "nummer": null,
+      "slug": "DELTA",
+      "name": "Delta-Struktur",
+      "kompetenzen": 0,
+      "anwendungsitems": 1
+    }
+  ],
+  "stichwort_index": {
+    "blockinhalt": "gamma.json",
+    "struktur": "delta.json"
+  }
+}

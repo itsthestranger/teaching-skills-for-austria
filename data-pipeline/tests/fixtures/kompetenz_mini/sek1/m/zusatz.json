@@ -1,0 +1,66 @@
+{
+  "meta": {
+    "dataset_version": "fixtur-1",
+    "band": "SEK1",
+    "fach": {
+      "code": "M",
+      "name": "Fixturfach M"
+    },
+    "uebergreifende_themen_fach": [
+      "Medienbildung"
+    ],
+    "uebergreifende_themen_legende": {
+      "1": "Medienbildung"
+    },
+    "differenzierungs_achse": {
+      "typ": "standard_standardplus",
+      "niveaus": [
+        "Standard",
+        "Standard AHS"
+      ],
+      "gilt_ab_stufe": "K2",
+      "enrichment_quelle": "allenfalls"
+    },
+    "anwendungsbereiche_status": "item_flags",
+    "anwendungsbereiche_bindung": "kompetenz",
+    "bildungsstandard_bezug": "verordnet",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Fixtur-Lehrplan",
+      "nor": "NOR00000001",
+      "kundmachung": "BGBl. II Nr. 0/2026 (Fixtur, keine echte Quelle)",
+      "anlage": "Anl. 1",
+      "teil": "FIXTUR TEIL",
+      "stand": "2026-01-01"
+    }
+  },
+  "kompetenzbereiche": [],
+  "zusatzkompetenzen": [
+    {
+      "id": "AT.LP23.SEK1.M.BETA.K3.01",
+      "bereich_nummer": null,
+      "bereich_name": "Beta Zusatzbereich",
+      "stufe": "K3",
+      "ordinal": 0,
+      "stammsatz": "Die Schülerinnen und Schüler können",
+      "text": "beta zusatz bearbeiten.",
+      "vorlaeufer": [],
+      "folge": []
+    }
+  ],
+  "digitale_technologien_vorschlaege": [
+    {
+      "id": "AT.LP23.SEK1.M.DT.ALPHA.K1.01",
+      "bereich_nummer": 1,
+      "bereich_name": "Alpha-Bereich",
+      "stufe": "K1",
+      "ordinal": 0,
+      "text": "Nutzen von Tabellenkalkulation für Bruchtermen.",
+      "verbindlich": true,
+      "art": "digitale_technologien",
+      "kompetenz_id": null,
+      "wiederholung_von": []
+    }
+  ]
+}

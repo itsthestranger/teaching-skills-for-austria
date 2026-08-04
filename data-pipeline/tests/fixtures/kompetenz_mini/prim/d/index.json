@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "dataset_version": "fixtur-1",
+    "band": "PRIM",
+    "fach": {
+      "code": "D",
+      "name": "Fixturfach D (Primar)"
+    },
+    "uebergreifende_themen_fach": [
+      "Sprachliche Bildung"
+    ],
+    "differenzierungs_achse": {
+      "typ": "lehrplan_generisch",
+      "niveaus": [
+        "grundlegend",
+        "erweitert",
+        "vertiefend"
+      ]
+    },
+    "anwendungsbereiche_status": "optional_sektion",
+    "anwendungsbereiche_bindung": "stufe",
+    "bildungsstandard_bezug": "verordnet",
+    "lehrstoff_quelle": "aus_anwendungsbereichen",
+    "provenienz": {
+      "quelle": "RIS Bundesrecht konsolidiert",
+      "kurztitel": "Fixtur-Lehrplan",
+      "nor": "NOR00000001",
+      "kundmachung": "BGBl. II Nr. 0/2026 (Fixtur, keine echte Quelle)",
+      "anlage": "Anl. 1",
+      "teil": "FIXTUR TEIL",
+      "stand": "2026-01-01"
+    }
+  },
+  "teile": [
+    {
+      "datei": "zeta.json",
+      "typ": "kompetenzbereich",
+      "nummer": null,
+      "slug": "ZETA",
+      "name": "Zeta-Bereich",
+      "kompetenzen": 2,
+      "anwendungsitems": 1
+    },
+    {
+      "datei": "eta.json",
+      "typ": "kompetenzbereich",
+      "nummer": null,
+      "slug": "ETA",
+      "name": "Eta-Bereich",
+      "kompetenzen": 1,
+      "anwendungsitems": 1
+    }
+  ],
+  "stichwort_index": {
+    "jahresweiter": "zeta.json,eta.json"
+  }
+}
