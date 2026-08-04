@@ -890,3 +890,69 @@ is deliberately per-field rather than an all-or-nothing group, so a future
 unresolved-only item remains representable. On SEK1.M this keeps every shard
 below its soft size target: 21 of 237 items gain theme data, while the other
 216 do not gain three redundant empty arrays.
+
+---
+
+## 14. Bildungsstandards Anl. 1 (`NOR40255561`) — a second document shape
+
+**Measured 2026-08-04 (E8-01/E8-02, V-80).** This is a *different regulation* from the Lehrplan and
+does not follow the conventions documented in §§1–13. Everything below is measured against the live
+81,009-byte document, not projected from the Lehrplan.
+
+### 14.1 Shape
+
+`nutzdaten/abschnitt` has **exactly 393 children** — the plan's figure is exact, not approximate.
+Hierarchy: `Teil → Abschnitt → subject → Kompetenzbereich → (Titel/stem group) → Deskriptor`.
+
+| Shard | Teil / Abschnitt | Kompetenzbereiche | Deskriptoren |
+|---|---|---:|---:|
+| D4 | 1. Teil, 1. Abschnitt | 5 | 75 |
+| M4 | 1. Teil | 8 | 58 |
+| D8 | 2. Teil | 4 | 52 |
+| E8 | 2. Teil, 2. Abschnitt | 5 | 35 |
+| M8 | 2. Teil | 16 | 48 |
+| **Total** | | **38** | **268** |
+
+**There is no Sachunterricht chapter at all** — this is measured absence, and it is the source-level
+justification for the defined-empty `PRIM.SU` Bildungsstandard result.
+
+**M8 is two-dimensional**: 4 Handlungsbereiche × 4 Inhaltsbereiche = 16 combined areas. No Lehrplan
+subject has this shape, which matters for the E8-03 crosswalk — the M8 side is not shaped like M4's.
+
+### 14.2 `typ` is unreliable here — match on heading text
+
+Unlike the Lehrplan, where `@typ="g1"` reliably segments TEIL and subject (§2), this document's
+`typ` **varies between occurrences of the same structural role**: one Abschnitt boundary is
+`g1min` while all later ones are `g1`; one subject name is `typ="para"`, another `typ="g2"`.
+
+The parser therefore matches on heading **text**, never on `typ`. Do not "simplify" it back.
+
+### 14.3 Four shapes with no Lehrplan analogue
+
+1. **`<gdash/>`** — 8 occurrences, all in M8; absent from both Lehrplan documents. A naive
+   `itertext()` walk drops it silently, turning `(Un-)Gleichungen` into `(Un)Gleichungen`. It is
+   rendered as a literal hyphen and pinned by a dedicated test. This is the same class of bug as
+   `element_text`'s `<symbol>` drop (§13) — **presentation-looking elements that carry real text.**
+2. **Fused `<schlussteil>`** — D4 Rechtschreiben and D8 Lesen put Titel+stem *inside* `<liste>`
+   rather than in a preceding `<absatz>`.
+3. **Standalone single-sentence competences** — M4 Modellieren and Problemlösen carry their
+   competence in an `<absatz>` with no `<liste>` at all. **Any check that sweeps only `<listelem>`
+   will not see these two**; the orchestrator's first verbatim spot-check missed them for exactly
+   this reason before widening to the raw document.
+4. **Area descriptions** — D8's four Kompetenzbereiche each carry a general sentence before the
+   first titled sub-group. An early parser draft **silently discarded these as "unexpected"**.
+
+Item 4 is the **fourth independent silent-loss mechanism** this project has measured (after V-58,
+V-69 and the §13 `<symbol>` drop). The pattern is now well established: assume a fifth exists.
+
+### 14.4 Identifiers
+
+`AT.BIST.<Fach>.<Programmstufe>.<Bereich>.<lfd>` — 6 segments; `Fach` = `D|M|E`, `Programmstufe` =
+`SCH4|SCH8`, `lfd` scoped per (Fach, Programmstufe, Bereich). Lives in `schema/bist_id_schema.py`
+with its **own** `BEREICH_CODES` table. This is a separate namespace from the frozen `AT.LP23`
+grammar: BiSt describes single-grade checkpoints, not a four-year grid, so the Lehrplan's
+`<Bereich>.<Stufe>.<lfd>` tail does not fit. Collision is structurally impossible (2nd segment).
+
+Two M8 headings carry source typesetting glitches (one keeps a colon the other 15 drop; one lacks
+its closing guillemet). Both are preserved verbatim in `ueberschrift_roh` and kept **out** of the
+code-minting path.
