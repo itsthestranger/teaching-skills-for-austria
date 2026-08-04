@@ -76,6 +76,7 @@ LOGGER = logging.getLogger(__name__)
 #: ``plugin/scripts/kompetenz.py`` -> ``plugin/`` -> repo/plugin root.
 _PLUGIN_ROOT = Path(__file__).resolve().parent.parent
 KOMPETENZEN_ROOT = _PLUGIN_ROOT / "data" / "kompetenzen"
+BILDUNGSSTANDARDS_ROOT = _PLUGIN_ROOT / "data" / "bildungsstandards"
 
 #: Directory names on disk are lower-case (``sek1/m``, ``prim/su``, ...);
 #: shard *keys* used throughout this module and the rest of the codebase
@@ -1063,20 +1064,25 @@ def finde_lernaufgaben(
 
 
 def finde_bildungsstandard_bezug(kompetenz_id: str) -> dict[str, Any]:
-    """Read ``meta.bildungsstandard_bezug``.
+    """Return the area-level Bildungsstandard relation for one competence.
 
     ``keine_verordnung`` (PRIM.SU, the *only* shard without a Bildungsstandard
     -- read from the data, never a hardcoded "Sachunterricht" special case):
     ``{"abgedeckt": False, "grund": "keine BiSt verordnet"}``, a
     defined-empty result, not an error.
 
-    ``verordnet`` (the other five): a Bildungsstandard exists in law for
-    this shard, but the per-competence descriptor crosswalk
-    (``plugin/data/bildungsstandards/``, backlog E8) has not been built yet
-    -- that directory ships only a ``.gitkeep`` today. This function
-    reports that honestly (``abgedeckt: True``, empty ``deskriptoren``,
-    plus a ``hinweis``) instead of fabricating descriptor content; see the
-    2026-08-03 deviations.md row.
+    ``verordnet`` (the other five): assignments are read from the shipped,
+    project-authored ``bildungsstandards/crosswalk.json``. They connect the
+    competence's *area* to one or more AT.BIST areas and return every official
+    descriptor in those target areas. The assignments and rationales are
+    explicitly ``amtlich: false``; endpoint area text and descriptor text keep
+    the official shard provenance. This is deliberately not a descriptor-level
+    or 1:1 identity claim.
+
+    SEK1.M's two GZ-integrative records belong to a synthetic data area rather
+    than one of the regulation's four official Lehrplan areas. They therefore
+    return an honest covered-but-unmapped empty result instead of being forced
+    onto the M8 geometry matrix.
     """
     k = kompetenz_nach_id(kompetenz_id)
     shard_dir = _shard_verzeichnis(k["fach"])
@@ -1086,10 +1092,68 @@ def finde_bildungsstandard_bezug(kompetenz_id: str) -> dict[str, Any]:
     if bezug == "keine_verordnung":
         return {"abgedeckt": False, "grund": "keine BiSt verordnet"}
     if bezug == "verordnet":
+        crosswalk = _datei_laden(BILDUNGSSTANDARDS_ROOT / "crosswalk.json")
+        zuordnungen_roh = [
+            z
+            for z in crosswalk["zuordnungen"]
+            if z["lehrplan_fach"] == k["fach"]
+            and z["lehrplan_bereich"] == k["bereich_slug"]
+        ]
+
+        deskriptoren_nach_id: dict[str, dict[str, Any]] = {}
+        zuordnungen: list[dict[str, Any]] = []
+        shard_cache: dict[str, dict[str, Any]] = {}
+        for z in zuordnungen_roh:
+            shard = z["bildungsstandard_shard"]
+            if shard not in shard_cache:
+                shard_cache[shard] = _datei_laden(
+                    BILDUNGSSTANDARDS_ROOT / f"{shard.casefold()}.json"
+                )
+            bist_doc = shard_cache[shard]
+            ziel_code = z["bildungsstandard_bereich"]
+            ziel_bereich = next(
+                b for b in bist_doc["kompetenzbereiche"] if b["code"] == ziel_code
+            )
+            ziel_deskriptoren: list[str] = []
+            for d in bist_doc["deskriptoren"]:
+                if d["bereich_code"] != ziel_code:
+                    continue
+                ident = d["id"]
+                ziel_deskriptoren.append(ident)
+                if ident not in deskriptoren_nach_id:
+                    eintrag = dict(d)
+                    eintrag["volltext"] = voller_wortlaut(d)
+                    eintrag["provenienz"] = dict(bist_doc["meta"]["provenienz"])
+                    deskriptoren_nach_id[ident] = eintrag
+
+            zuordnung = dict(z)
+            zuordnung["lehrplan_bereich_name"] = k["bereich_name"]
+            zuordnung["lehrplan_provenienz"] = dict(k["provenienz"])
+            zuordnung["bildungsstandard_bereich_name"] = ziel_bereich["name"]
+            zuordnung["bildungsstandard_provenienz"] = dict(
+                bist_doc["meta"]["provenienz"]
+            )
+            zuordnung["deskriptor_ids"] = ziel_deskriptoren
+            zuordnungen.append(zuordnung)
+
+        methodik = dict(crosswalk["meta"])
+        if not zuordnungen:
+            return {
+                "abgedeckt": True,
+                "deskriptoren": [],
+                "zuordnungen": [],
+                "methodik": methodik,
+                "hinweis": (
+                    "Für diesen Zusatzbereich besteht keine Bereichszuordnung; "
+                    "es wird keine Deskriptoridentität erfunden."
+                ),
+            }
         return {
             "abgedeckt": True,
-            "deskriptoren": [],
-            "hinweis": "Bildungsstandards-Crosswalk noch nicht erstellt (E8 offen)",
+            "deskriptoren": list(deskriptoren_nach_id.values()),
+            "zuordnungen": zuordnungen,
+            "methodik": methodik,
+            "hinweis": methodik["praezisionsaussage"],
         }
     raise KompetenzFehler(f"unbekannter bildungsstandard_bezug {bezug!r}")
 

@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://teaching-skills-austria.local/schema/bildungsstandards-crosswalk.schema.json",
+  "title": "Bereichs-Crosswalk Lehrplan 2023 zu Bildungsstandards",
+  "description": "Project-authored, deliberately coarse area-level assignments between the separate AT.LP23 and AT.BIST namespaces. The crosswalk is not official RIS content and never asserts descriptor-level or 1:1 identity.",
+  "type": "object",
+  "required": ["meta", "zuordnungen", "nicht_abgedeckt"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["dataset_version", "ebene", "amtlich", "praezisionsaussage", "quellen"],
+      "properties": {
+        "dataset_version": { "type": "string" },
+        "ebene": { "const": "kompetenzbereich" },
+        "amtlich": { "const": false },
+        "praezisionsaussage": {
+          "const": "Bereichsbezug; keine 1:1-Zuordnung von Lehrplan-Kompetenzen zu Bildungsstandard-Deskriptoren."
+        },
+        "quellen": {
+          "type": "object",
+          "required": ["lehrplan", "bildungsstandards"],
+          "properties": {
+            "lehrplan": {
+              "type": "object",
+              "required": ["namespace", "nor"],
+              "properties": {
+                "namespace": { "const": "AT.LP23" },
+                "nor": { "type": "array", "minItems": 2, "items": { "type": "string", "pattern": "^NOR[0-9]+$" } }
+              }
+            },
+            "bildungsstandards": {
+              "type": "object",
+              "required": ["namespace", "nor"],
+              "properties": {
+                "namespace": { "const": "AT.BIST" },
+                "nor": { "const": "NOR40255561" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "zuordnungen": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/zuordnung" }
+    },
+    "nicht_abgedeckt": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/nicht_abgedeckt" }
+    }
+  },
+  "$defs": {
+    "zuordnung": {
+      "type": "object",
+      "required": ["lehrplan_fach", "lehrplan_bereich", "bildungsstandard_shard", "bildungsstandard_bereich", "beziehung", "rationale", "amtlich"],
+      "properties": {
+        "lehrplan_fach": { "enum": ["PRIM.D", "PRIM.M", "SEK1.D", "SEK1.E", "SEK1.M"] },
+        "lehrplan_bereich": { "type": "string", "pattern": "^[A-Z][A-Z0-9]*$" },
+        "bildungsstandard_shard": { "enum": ["D4", "M4", "D8", "E8", "M8"] },
+        "bildungsstandard_bereich": { "type": "string", "pattern": "^[A-Z][A-Z0-9]{0,29}$" },
+        "beziehung": {
+          "enum": ["bereichsentsprechung", "bereichsbuendelung", "bereichsaufteilung", "querschnitt_prozess", "matrix_inhaltsachse"]
+        },
+        "rationale": { "type": "string", "minLength": 40 },
+        "amtlich": { "const": false }
+      }
+    },
+    "nicht_abgedeckt": {
+      "type": "object",
+      "required": ["lehrplan_fach", "abgedeckt", "grund", "rationale", "amtlich"],
+      "properties": {
+        "lehrplan_fach": { "type": "string" },
+        "abgedeckt": { "const": false },
+        "grund": { "type": "string", "minLength": 1 },
+        "rationale": { "type": "string", "minLength": 40 },
+        "amtlich": { "const": false }
+      }
+    }
+  }
+}

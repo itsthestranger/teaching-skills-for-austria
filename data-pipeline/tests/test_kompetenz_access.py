@@ -731,7 +731,9 @@ def test_finde_bildungsstandard_bezug_andere_fuenf_sind_verordnet(fach, _bindung
     k = K.finde_kompetenz(fach)[0]
     ergebnis = K.finde_bildungsstandard_bezug(k["id"])
     assert ergebnis["abgedeckt"] is True
-    assert ergebnis["deskriptoren"] == []
+    assert ergebnis["deskriptoren"]
+    assert ergebnis["zuordnungen"]
+    assert "keine 1:1-Zuordnung" in ergebnis["methodik"]["praezisionsaussage"]
 
 
 # ---------------------------------------------------------------------------

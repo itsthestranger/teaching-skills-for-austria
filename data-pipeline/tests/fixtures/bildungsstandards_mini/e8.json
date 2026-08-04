@@ -1,0 +1,7 @@
+{
+  "meta": { "shard": "E8", "provenienz": { "quelle": "Synthetische Vertragsfixtur", "nor": "NOR00000002" } },
+  "kompetenzbereiche": [{ "code": "EPSILON8", "name": "Epsilon-Standardbereich" }],
+  "deskriptoren": [
+    { "id": "AT.BIST.E.SCH8.EPSILON8.01", "fach": "E", "programmstufe": "SCH8", "bereich_code": "EPSILON8", "stammsatz": "Fixturlernende können", "text": "eine Epsilon-Handlung ausführen.", "ordinal": 1 }
+  ]
+}

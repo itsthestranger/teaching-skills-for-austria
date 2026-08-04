@@ -1,0 +1,11 @@
+{
+  "meta": { "shard": "D4", "provenienz": { "quelle": "Synthetische Vertragsfixtur", "nor": "NOR00000002" } },
+  "kompetenzbereiche": [
+    { "code": "ETA4", "name": "Eta-Standardbereich" },
+    { "code": "ZETA4", "name": "Zeta-Standardbereich" }
+  ],
+  "deskriptoren": [
+    { "id": "AT.BIST.D.SCH4.ETA4.01", "fach": "D", "programmstufe": "SCH4", "bereich_code": "ETA4", "stammsatz": "Fixturlernende können", "text": "eine Eta-Handlung ausführen.", "ordinal": 1 },
+    { "id": "AT.BIST.D.SCH4.ZETA4.01", "fach": "D", "programmstufe": "SCH4", "bereich_code": "ZETA4", "stammsatz": "Fixturlernende können", "text": "eine Zeta-Handlung ausführen.", "ordinal": 1 }
+  ]
+}

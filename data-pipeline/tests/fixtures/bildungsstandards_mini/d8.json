@@ -1,0 +1,11 @@
+{
+  "meta": { "shard": "D8", "provenienz": { "quelle": "Synthetische Vertragsfixtur", "nor": "NOR00000002" } },
+  "kompetenzbereiche": [
+    { "code": "GAMMA8", "name": "Gamma-Standardbereich" },
+    { "code": "DELTA8", "name": "Delta-Standardbereich" }
+  ],
+  "deskriptoren": [
+    { "id": "AT.BIST.D.SCH8.GAMMA8.01", "fach": "D", "programmstufe": "SCH8", "bereich_code": "GAMMA8", "stammsatz": "Fixturlernende können", "text": "eine Gamma-Handlung ausführen.", "ordinal": 1 },
+    { "id": "AT.BIST.D.SCH8.DELTA8.01", "fach": "D", "programmstufe": "SCH8", "bereich_code": "DELTA8", "stammsatz": "Fixturlernende können", "text": "eine Delta-Handlung ausführen.", "ordinal": 1 }
+  ]
+}

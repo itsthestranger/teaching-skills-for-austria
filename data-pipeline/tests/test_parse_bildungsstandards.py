@@ -350,7 +350,11 @@ class TestSchemaValidity:
         literal E8-02 acceptance criterion. Skipped if not yet written in
         this environment (build is a separate --write step)."""
         out_dir = Path(__file__).resolve().parents[2] / "plugin" / "data" / "bildungsstandards"
-        files = sorted(out_dir.glob("*.json"))
+        # crosswalk.json is a separately schematized E8-03 artifact in the
+        # same shipped directory; only the five named descriptor shards are
+        # inputs to bildungsstandards.schema.json.
+        files = [out_dir / f"{name}.json" for name in ("d4", "m4", "d8", "e8", "m8")]
+        files = [f for f in files if f.exists()]
         if not files:
             pytest.skip("plugin/data/bildungsstandards/*.json not written in this environment")
         assert {f.stem for f in files} == {"d4", "m4", "d8", "e8", "m8"}

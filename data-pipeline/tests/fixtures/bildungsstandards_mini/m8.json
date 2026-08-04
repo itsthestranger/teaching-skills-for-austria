@@ -1,0 +1,7 @@
+{
+  "meta": { "shard": "M8", "provenienz": { "quelle": "Synthetische Vertragsfixtur", "nor": "NOR00000002" } },
+  "kompetenzbereiche": [{ "code": "ALPHA8", "name": "Alpha-Matrixbereich" }],
+  "deskriptoren": [
+    { "id": "AT.BIST.M.SCH8.ALPHA8.01", "fach": "M", "programmstufe": "SCH8", "bereich_code": "ALPHA8", "stammsatz": "Fixturlernende können", "text": "eine Alpha-Handlung ausführen.", "ordinal": 1 }
+  ]
+}

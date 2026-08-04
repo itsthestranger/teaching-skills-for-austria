@@ -11,19 +11,16 @@ axis vocabulary describes. None of the record IDs, subject names or
 competence text below are real regulation text; they exist only to give
 each branch a deterministic, easy-to-read input.
 
-Unlike the sibling module, every test here runs against
-``data-pipeline/tests/fixtures/kompetenz_mini/`` via the
-``_fixture_root`` autouse fixture below, which monkeypatches
-``kompetenz.KOMPETENZEN_ROOT`` for the duration of each test. Nothing in
-this module reads ``plugin/data/kompetenzen/`` -- if it did, a shipped-data
-change could make one of these tests pass or fail for the wrong reason,
-which would defeat the point of a contract fixture. Redirecting
-``KOMPETENZEN_ROOT`` and changing nothing else is itself the concrete
-proof of the B1->B2 non-breaking promise for the file-backed half of the
-system: if a future implementation swaps the directory-of-JSON-parts
-storage for SQLite while keeping ``kompetenz.py``'s public surface
-unchanged, this exact module should still be re-runnable (perhaps with the
-monkeypatch target renamed) and still pass.
+Unlike the sibling module, every test here runs against the wholly synthetic
+``kompetenz_mini/`` and ``bildungsstandards_mini/`` trees via the
+``_fixture_root`` autouse fixture below, which redirects both public-data
+roots for the duration of each test. Nothing in this module reads either
+shipped data directory -- if it did, a shipped-data change could make a test
+pass or fail for the wrong reason, defeating the contract fixture. Redirecting
+both roots and changing nothing else is the concrete proof of the B1->B2
+non-breaking promise for the file-backed system: a future storage migration
+can rerun this module against equivalent synthetic inputs while preserving the
+same public surface.
 
 ================================================================================
 THE CONTRACT -- what a caller (a skill, a future B2 implementer) may rely on
@@ -120,6 +117,7 @@ import pytest
 _HERE = Path(__file__).resolve().parent
 _REPO_ROOT = _HERE.parent.parent
 _FIXTURE_ROOT = _HERE / "fixtures" / "kompetenz_mini"
+_BIST_FIXTURE_ROOT = _HERE / "fixtures" / "bildungsstandards_mini"
 sys.path.insert(0, str(_REPO_ROOT / "plugin" / "scripts"))
 
 import kompetenz as K  # noqa: E402
@@ -127,14 +125,15 @@ import kompetenz as K  # noqa: E402
 
 @pytest.fixture(autouse=True)
 def _fixture_root(monkeypatch):
-    """Point the module at the mini fixture, never the shipped dataset.
+    """Point both module data roots at mini fixtures, never shipped data.
 
-    This is the one seam every test in this module relies on. It is also
+    These are the two seams every test in this module relies on. They are also
     the concrete demonstration of the migration promise this task exists
     to pin: every public function below is reached exclusively through
-    this one redirected root, with no other code change.
+    redirected synthetic roots, with no other code change.
     """
     monkeypatch.setattr(K, "KOMPETENZEN_ROOT", _FIXTURE_ROOT)
+    monkeypatch.setattr(K, "BILDUNGSSTANDARDS_ROOT", _BIST_FIXTURE_ROOT)
 
 
 #: The five ``anwendungsbereiche_bindung`` values, each carried by exactly
@@ -610,8 +609,22 @@ def test_finde_bildungsstandard_bezug_verordnet(fach, _bindung):
     k = K.finde_kompetenz(fach)[0]
     ergebnis = K.finde_bildungsstandard_bezug(k["id"])
     assert ergebnis["abgedeckt"] is True
-    assert ergebnis["deskriptoren"] == []
-    assert ergebnis["hinweis"]
+    assert len(ergebnis["zuordnungen"]) == 1
+    assert len(ergebnis["deskriptoren"]) == 1
+    zuordnung = ergebnis["zuordnungen"][0]
+    deskriptor = ergebnis["deskriptoren"][0]
+    assert zuordnung["lehrplan_fach"] == fach
+    assert zuordnung["rationale"]
+    assert zuordnung["amtlich"] is False
+    assert zuordnung["deskriptor_ids"] == [deskriptor["id"]]
+    assert deskriptor["id"].startswith("AT.BIST.")
+    assert deskriptor["volltext"] == f"{deskriptor['stammsatz']} {deskriptor['text']}"
+    assert deskriptor["provenienz"] == {
+        "quelle": "Synthetische Vertragsfixtur",
+        "nor": "NOR00000002",
+    }
+    assert ergebnis["methodik"]["amtlich"] is False
+    assert "keine 1:1-Zuordnung" in ergebnis["hinweis"]
 
 
 def test_finde_bildungsstandard_bezug_keine_verordnung():

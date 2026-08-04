@@ -1,0 +1,327 @@
+{
+  "meta": {
+    "dataset_version": "2026-08-04",
+    "ebene": "kompetenzbereich",
+    "amtlich": false,
+    "praezisionsaussage": "Bereichsbezug; keine 1:1-Zuordnung von Lehrplan-Kompetenzen zu Bildungsstandard-Deskriptoren.",
+    "quellen": {
+      "lehrplan": { "namespace": "AT.LP23", "nor": ["NOR40271469", "NOR40271471"] },
+      "bildungsstandards": { "namespace": "AT.BIST", "nor": "NOR40255561" }
+    }
+  },
+  "zuordnungen": [
+    {
+      "lehrplan_fach": "PRIM.D", "lehrplan_bereich": "HOERENSPRECHEN",
+      "bildungsstandard_shard": "D4", "bildungsstandard_bereich": "HOERENSPRECHEN",
+      "beziehung": "bereichsentsprechung", "amtlich": false,
+      "rationale": "Beide Bereiche bündeln mündliches Verstehen, Sprechen und Gesprächshandeln. Die ähnliche Reichweite begründet einen Bereichsbezug, nicht die Gleichsetzung einzelner Kompetenzen und Deskriptoren."
+    },
+    {
+      "lehrplan_fach": "PRIM.D", "lehrplan_bereich": "LESEN",
+      "bildungsstandard_shard": "D4", "bildungsstandard_bereich": "LESEN",
+      "beziehung": "bereichsentsprechung", "amtlich": false,
+      "rationale": "Lehrplan und Bildungsstandard ordnen Lesefertigkeit, Textverstehen und Mediennutzung einem Lesebereich zu. Unterschiede in Gliederung und Detailgrad schließen eine 1:1-Aussage aus."
+    },
+    {
+      "lehrplan_fach": "PRIM.D", "lehrplan_bereich": "VERFASSEN",
+      "bildungsstandard_shard": "D4", "bildungsstandard_bereich": "VERFASSEN",
+      "beziehung": "bereichsentsprechung", "amtlich": false,
+      "rationale": "Beide Bereiche behandeln das Planen, Verfassen und Überarbeiten eigener Texte. Der Bezug gilt für den Gesamtbereich; einzelne Formulierungen werden nicht als identisch behauptet."
+    },
+    {
+      "lehrplan_fach": "PRIM.D", "lehrplan_bereich": "RECHTSCHREIBEN",
+      "bildungsstandard_shard": "D4", "bildungsstandard_bereich": "RECHTSCHREIBEN",
+      "beziehung": "bereichsbuendelung", "amtlich": false,
+      "rationale": "Der Lehrplanbereich verbindet Rechtschreiben mit Sprachbetrachtung. Sein orthografischer Anteil entspricht thematisch dem BiSt-Bereich Rechtschreiben, ohne dass daraus eine Deskriptoridentität folgt."
+    },
+    {
+      "lehrplan_fach": "PRIM.D", "lehrplan_bereich": "RECHTSCHREIBEN",
+      "bildungsstandard_shard": "D4", "bildungsstandard_bereich": "SPRACHBETRACHTUNG",
+      "beziehung": "bereichsbuendelung", "amtlich": false,
+      "rationale": "Der kombinierte Lehrplanbereich umfasst ausdrücklich Sprachbetrachtung. Deshalb gehört auch der eigenständige BiSt-Bereich zu seinem Bereichsbezug; die zwei Modelle schneiden den Stoff verschieden."
+    },
+
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "ZAHLENDATEN",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "MODELLIEREN",
+      "beziehung": "querschnitt_prozess", "amtlich": false,
+      "rationale": "Modellieren ist im Bildungsstandard eine allgemeine mathematische Kompetenz, die auch auf Zahlen und Daten angewendet wird. Die Zuordnung bezeichnet diese querschnittliche Anwendbarkeit, keine Gleichheit der Bereiche."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "ZAHLENDATEN",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "OPERIEREN",
+      "beziehung": "querschnitt_prozess", "amtlich": false,
+      "rationale": "Operieren ist eine allgemeine Tätigkeit, die im Lehrplanbereich Zahlen und Daten an dessen Inhalten ausgeführt wird. Prozess- und Inhaltsachse bleiben verschieden; Deskriptoren sind nicht 1:1 zugeordnet."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "ZAHLENDATEN",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "KOMMUNIZIEREN",
+      "beziehung": "querschnitt_prozess", "amtlich": false,
+      "rationale": "Mathematisches Kommunizieren kann Zahlen- und Dateninhalte zum Gegenstand haben. Die Zuordnung macht den Prozess für diesen Inhaltsbereich auffindbar, ohne ihn mit dem Inhaltsbereich gleichzusetzen."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "ZAHLENDATEN",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "PROBLEMLOESEN",
+      "beziehung": "querschnitt_prozess", "amtlich": false,
+      "rationale": "Problemlösen ist in Zahlen- und Datensituationen anwendbar, bleibt aber eine allgemeine mathematische Kompetenz. Der Bezug ist mehrdimensional und behauptet keine einzelne Entsprechung."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "ZAHLENDATEN",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "ZAHLEN",
+      "beziehung": "bereichsentsprechung", "amtlich": false,
+      "rationale": "Arbeiten mit Zahlen deckt den Zahlenschwerpunkt des Lehrplanbereichs Zahlen und Daten ab. Der Datenanteil des Lehrplans ist breiter, weshalb ausdrücklich keine vollständige oder 1:1-Deckung behauptet wird."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "OPERATIONEN",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "MODELLIEREN",
+      "beziehung": "querschnitt_prozess", "amtlich": false,
+      "rationale": "Modellieren nutzt Operationen beim Übersetzen und Bearbeiten von Sachsituationen. Es ist eine quer zu den Lehrplaninhalten liegende Prozesskompetenz und kein zweiter Name für den Bereich Operationen."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "OPERATIONEN",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "OPERIEREN",
+      "beziehung": "querschnitt_prozess", "amtlich": false,
+      "rationale": "Allgemeines Operieren wird an Rechenoperationen besonders sichtbar, bleibt im BiSt-Modell jedoch eine Prozesskompetenz über mehreren Inhalten. Daher gilt nur ein Bereichsbezug."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "OPERATIONEN",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "KOMMUNIZIEREN",
+      "beziehung": "querschnitt_prozess", "amtlich": false,
+      "rationale": "Vorgangsweisen und Zusammenhänge von Operationen können mathematisch kommuniziert und begründet werden. Die Zuordnung verbindet Prozess und Inhalt, ohne Deskriptoren einzelnen Lehrplankompetenzen zuzuschreiben."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "OPERATIONEN",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "PROBLEMLOESEN",
+      "beziehung": "querschnitt_prozess", "amtlich": false,
+      "rationale": "Rechenoperationen sind Mittel zur Lösung mathematischer Probleme, während Problemlösen eine allgemeine Tätigkeit bleibt. Die Zuordnung ist fachlich anwendbar, aber weder vollständig noch 1:1."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "OPERATIONEN",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "OPERATIONEN",
+      "beziehung": "bereichsentsprechung", "amtlich": false,
+      "rationale": "Die beiden Bereiche behandeln Rechenoperationen und ihre Zusammenhänge inhaltlich unmittelbar. Unterschiedliche Ordnung und Formulierung der Einzelaussagen verhindern dennoch eine Deskriptoridentität."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "GROESSEN",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "MODELLIEREN",
+      "beziehung": "querschnitt_prozess", "amtlich": false,
+      "rationale": "Größen treten in Sachsituationen und mathematischen Modellen auf; Modellieren ist deshalb auf diesen Lehrplanbereich anwendbar. Es bleibt eine allgemeine Prozessachse statt einer inhaltlichen Identität."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "GROESSEN",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "OPERIEREN",
+      "beziehung": "querschnitt_prozess", "amtlich": false,
+      "rationale": "Messen, Darstellen und Rechnen mit Größen verlangen mathematisches Operieren. Die Zuordnung zeigt diese Prozessanwendung, nicht eine Gleichsetzung des allgemeinen BiSt-Bereichs mit dem Lehrplaninhalt."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "GROESSEN",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "KOMMUNIZIEREN",
+      "beziehung": "querschnitt_prozess", "amtlich": false,
+      "rationale": "Messvorgänge, Schätzungen und Größenbeziehungen können beschrieben und begründet werden. Kommunizieren ist dabei querschnittlich tätig; einzelne Deskriptoren werden nicht einzeln zugeordnet."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "GROESSEN",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "PROBLEMLOESEN",
+      "beziehung": "querschnitt_prozess", "amtlich": false,
+      "rationale": "Größenbezogene Aufgaben können Problemlösestrategien erfordern. Der Crosswalk stellt diese fachliche Anwendbarkeit her, während Prozess- und Inhaltsbereich als unterschiedliche Modellachsen erhalten bleiben."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "GROESSEN",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "GROESSEN",
+      "beziehung": "bereichsentsprechung", "amtlich": false,
+      "rationale": "Arbeiten mit Größen und der Lehrplanbereich Größen teilen den Kern aus Größenvorstellungen, Messen, Schätzen und Rechnen. Das ist eine nahe Bereichsentsprechung, keine 1:1-Zuordnung."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "EBENERAUM",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "MODELLIEREN",
+      "beziehung": "querschnitt_prozess", "amtlich": false,
+      "rationale": "Ebene und Raum bieten Gegenstände für geometrisches Modellieren und Darstellen. Modellieren bleibt eine allgemeine Kompetenz, die dem Inhaltsbereich nur querschnittlich zugeordnet wird."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "EBENERAUM",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "OPERIEREN",
+      "beziehung": "querschnitt_prozess", "amtlich": false,
+      "rationale": "Geometrische Konstruktionen und das Arbeiten mit Figuren sind Formen mathematischen Operierens. Der Prozessbezug ist fachlich, aber nicht als Identität von Bereichen oder Deskriptoren gemeint."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "EBENERAUM",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "KOMMUNIZIEREN",
+      "beziehung": "querschnitt_prozess", "amtlich": false,
+      "rationale": "Lagebeziehungen, Figuren und Konstruktionen können beschrieben und in Repräsentationen festgehalten werden. Kommunizieren wird deshalb querschnittlich, nicht als deckungsgleicher Inhaltsbereich verknüpft."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "EBENERAUM",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "PROBLEMLOESEN",
+      "beziehung": "querschnitt_prozess", "amtlich": false,
+      "rationale": "Geometrische Probleme können mit Skizzen, Probieren und anderen Strategien bearbeitet werden. Das begründet Prozessanwendbarkeit, aber keine Einzelzuordnung zwischen Aussagen beider Regelungen."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "EBENERAUM",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "EBENERAUM",
+      "beziehung": "bereichsentsprechung", "amtlich": false,
+      "rationale": "Arbeiten mit Ebene und Raum entspricht thematisch dem gleichnamigen Lehrplanbereich mit Figuren, Körpern und Lagebeziehungen. Die Nähe der Titel ist keine Aussage über 1:1-Präzision."
+    },
+
+    {
+      "lehrplan_fach": "SEK1.D", "lehrplan_bereich": "HOERENSPRECHEN",
+      "bildungsstandard_shard": "D8", "bildungsstandard_bereich": "ZUHOERENSPRECHEN",
+      "beziehung": "bereichsentsprechung", "amtlich": false,
+      "rationale": "Beide Bereiche fassen Zuhören, Gesprächsführung und mündliches Präsentieren zusammen. Der Crosswalk verbindet die Gesamtbereiche und behauptet keine Übereinstimmung einzelner Aussagen."
+    },
+    {
+      "lehrplan_fach": "SEK1.D", "lehrplan_bereich": "LESEN",
+      "bildungsstandard_shard": "D8", "bildungsstandard_bereich": "LESEN",
+      "beziehung": "bereichsentsprechung", "amtlich": false,
+      "rationale": "Beide Lesebereiche umfassen Textverstehen, Informationsentnahme und Reflexion verschiedener Texte und Medien. Ihre interne Gliederung ist verschieden; daher gilt nur Bereichsnähe."
+    },
+    {
+      "lehrplan_fach": "SEK1.D", "lehrplan_bereich": "SCHREIBEN",
+      "bildungsstandard_shard": "D8", "bildungsstandard_bereich": "SCHREIBEN",
+      "beziehung": "bereichsentsprechung", "amtlich": false,
+      "rationale": "Planen, Verfassen und Überarbeiten von Texten bilden in beiden Modellen den Schreibbereich. Die Zuordnung ist auf diese gemeinsame Domäne beschränkt und nicht deskriptorpräzise."
+    },
+    {
+      "lehrplan_fach": "SEK1.D", "lehrplan_bereich": "SPRACHREFLEXION",
+      "bildungsstandard_shard": "D8", "bildungsstandard_bereich": "SPRACHBEWUSSTSEIN",
+      "beziehung": "bereichsentsprechung", "amtlich": false,
+      "rationale": "Sprachbewusstsein und Sprachreflexion behandeln Struktur, Norm und Funktion von Sprache sowie Rechtschreibung. Die Begriffe und Zuschnitte sind verwandt, aber nicht als identisch gesetzt."
+    },
+
+    {
+      "lehrplan_fach": "SEK1.E", "lehrplan_bereich": "HOEREN",
+      "bildungsstandard_shard": "E8", "bildungsstandard_bereich": "HOEREN",
+      "beziehung": "bereichsentsprechung", "amtlich": false,
+      "rationale": "Beide Bereiche ordnen rezeptive mündliche Kompetenzen dem Hören zu. Leistungsbedingungen und Detailstufen unterscheiden sich, sodass nur der Bereichsbezug, nicht Einzelidentität, gilt."
+    },
+    {
+      "lehrplan_fach": "SEK1.E", "lehrplan_bereich": "LESEN",
+      "bildungsstandard_shard": "E8", "bildungsstandard_bereich": "LESEN",
+      "beziehung": "bereichsentsprechung", "amtlich": false,
+      "rationale": "Lesen ist in beiden Modellen ein eigener rezeptiver Kompetenzbereich für unterschiedliche Texte. Der Crosswalk übernimmt die Domänennähe, nicht eine 1:1-Abbildung der Niveaus oder Aussagen."
+    },
+    {
+      "lehrplan_fach": "SEK1.E", "lehrplan_bereich": "SPRECHEN",
+      "bildungsstandard_shard": "E8", "bildungsstandard_bereich": "GESPRAECHE",
+      "beziehung": "bereichsaufteilung", "amtlich": false,
+      "rationale": "Der Lehrplan bündelt interaktives und zusammenhängendes Sprechen in einem Bereich. Der BiSt-Bereich An Gesprächen Teilnehmen bildet den interaktiven Teil davon ab, ohne Einzelzuordnung."
+    },
+    {
+      "lehrplan_fach": "SEK1.E", "lehrplan_bereich": "SPRECHEN",
+      "bildungsstandard_shard": "E8", "bildungsstandard_bereich": "SPRECHEN",
+      "beziehung": "bereichsaufteilung", "amtlich": false,
+      "rationale": "Der Lehrplanbereich Sprechen enthält auch zusammenhängendes Sprechen. Die Bildungsstandards führen diesen produktiven Teil separat; beide Zielbereiche teilen daher den gebündelten Lehrplanbereich."
+    },
+    {
+      "lehrplan_fach": "SEK1.E", "lehrplan_bereich": "SCHREIBEN",
+      "bildungsstandard_shard": "E8", "bildungsstandard_bereich": "SCHREIBEN",
+      "beziehung": "bereichsentsprechung", "amtlich": false,
+      "rationale": "Beide Schreibbereiche erfassen schriftliche Produktion für vertraute kommunikative Zwecke. Unterschiedliche CEFR-Markierung und Binnenstruktur schließen eine deskriptorpräzise Gleichsetzung aus."
+    },
+
+    {
+      "lehrplan_fach": "SEK1.M", "lehrplan_bereich": "ZAHLEN",
+      "bildungsstandard_shard": "M8", "bildungsstandard_bereich": "DARSTELLENZAHLEN",
+      "beziehung": "matrix_inhaltsachse", "amtlich": false,
+      "rationale": "Der BiSt-Bereich kreuzt Darstellen/Modellbilden mit dem Inhaltsbereich Zahlen und Maße. Nur diese Inhaltsachse entspricht dem Lehrplanbereich; die zusätzliche Handlungsachse verhindert ein flaches 1:1-Modell."
+    },
+    {
+      "lehrplan_fach": "SEK1.M", "lehrplan_bereich": "ZAHLEN",
+      "bildungsstandard_shard": "M8", "bildungsstandard_bereich": "RECHNENZAHLEN",
+      "beziehung": "matrix_inhaltsachse", "amtlich": false,
+      "rationale": "Der BiSt-Bereich verbindet Rechnen/Operieren mit Zahlen und Maßen. Die gemeinsame Inhaltsachse begründet den Bezug, während der Handlungsanteil eine eigenständige Dimension bleibt."
+    },
+    {
+      "lehrplan_fach": "SEK1.M", "lehrplan_bereich": "ZAHLEN",
+      "bildungsstandard_shard": "M8", "bildungsstandard_bereich": "INTERPRETIERENZAHLEN",
+      "beziehung": "matrix_inhaltsachse", "amtlich": false,
+      "rationale": "Interpretieren von Zahlen und Maßen liegt auf derselben BiSt-Inhaltsachse wie der Lehrplanbereich Zahlen und Maße. Der Crosswalk erhält die Handlungsdimension und behauptet keine Bereichsidentität."
+    },
+    {
+      "lehrplan_fach": "SEK1.M", "lehrplan_bereich": "ZAHLEN",
+      "bildungsstandard_shard": "M8", "bildungsstandard_bereich": "ARGUMENTIERENZAHLEN",
+      "beziehung": "matrix_inhaltsachse", "amtlich": false,
+      "rationale": "Argumentieren/Begründen wird im BiSt-Modell mit Zahlen und Maßen gekreuzt. Der Lehrplan liefert die passende Inhaltsdomäne, nicht dieselbe zweidimensionale Bereichsstruktur."
+    },
+    {
+      "lehrplan_fach": "SEK1.M", "lehrplan_bereich": "VARIABLEN",
+      "bildungsstandard_shard": "M8", "bildungsstandard_bereich": "DARSTELLENVARIABLE",
+      "beziehung": "matrix_inhaltsachse", "amtlich": false,
+      "rationale": "Darstellen/Modellbilden wird mit Variablen und funktionalen Abhängigkeiten gekreuzt. Diese Inhaltsachse entspricht dem Lehrplanbereich, die Handlungsachse bleibt eine zusätzliche BiSt-Dimension."
+    },
+    {
+      "lehrplan_fach": "SEK1.M", "lehrplan_bereich": "VARIABLEN",
+      "bildungsstandard_shard": "M8", "bildungsstandard_bereich": "RECHNENVARIABLE",
+      "beziehung": "matrix_inhaltsachse", "amtlich": false,
+      "rationale": "Rechnen/Operieren mit Variablen, Termen und funktionalen Abhängigkeiten teilt die Inhaltsdomäne des Lehrplanbereichs. Die Zuordnung bleibt wegen der Matrixstruktur bewusst grob."
+    },
+    {
+      "lehrplan_fach": "SEK1.M", "lehrplan_bereich": "VARIABLEN",
+      "bildungsstandard_shard": "M8", "bildungsstandard_bereich": "INTERPRETIERENVARIABLE",
+      "beziehung": "matrix_inhaltsachse", "amtlich": false,
+      "rationale": "Interpretieren algebraischer und funktionaler Zusammenhänge liegt auf der passenden BiSt-Inhaltsachse. Es ist eine Handlungsvariante innerhalb dieser Achse, keine 1:1-Entsprechung."
+    },
+    {
+      "lehrplan_fach": "SEK1.M", "lehrplan_bereich": "VARIABLEN",
+      "bildungsstandard_shard": "M8", "bildungsstandard_bereich": "ARGUMENTIERENVARIABLE",
+      "beziehung": "matrix_inhaltsachse", "amtlich": false,
+      "rationale": "Argumentieren/Begründen zu algebraischen und funktionalen Inhalten gehört zur selben Inhaltsdomäne wie Variablen und Funktionen. Die separate Handlungsachse bleibt sichtbar und unvermischt."
+    },
+    {
+      "lehrplan_fach": "SEK1.M", "lehrplan_bereich": "FIGUREN",
+      "bildungsstandard_shard": "M8", "bildungsstandard_bereich": "DARSTELLENFIGUREN",
+      "beziehung": "matrix_inhaltsachse", "amtlich": false,
+      "rationale": "Darstellen/Modellbilden geometrischer Figuren und Körper kreuzt die BiSt-Handlungsachse mit der Inhaltsdomäne des Lehrplanbereichs. Die Matrixzelle ist kein flaches Gegenstück."
+    },
+    {
+      "lehrplan_fach": "SEK1.M", "lehrplan_bereich": "FIGUREN",
+      "bildungsstandard_shard": "M8", "bildungsstandard_bereich": "RECHNENFIGUREN",
+      "beziehung": "matrix_inhaltsachse", "amtlich": false,
+      "rationale": "Rechnen/Operieren wird hier auf geometrische Figuren und Körper bezogen. Die gemeinsame Inhaltsachse trägt die Zuordnung; die BiSt-Handlungsdimension bleibt zusätzlich."
+    },
+    {
+      "lehrplan_fach": "SEK1.M", "lehrplan_bereich": "FIGUREN",
+      "bildungsstandard_shard": "M8", "bildungsstandard_bereich": "INTERPRETIERENFIGUREN",
+      "beziehung": "matrix_inhaltsachse", "amtlich": false,
+      "rationale": "Interpretieren geometrischer Figuren, Körper und Beziehungen liegt auf der zum Lehrplanbereich passenden Inhaltsachse. Es wird nicht als identischer Lehrplanbereich ausgegeben."
+    },
+    {
+      "lehrplan_fach": "SEK1.M", "lehrplan_bereich": "FIGUREN",
+      "bildungsstandard_shard": "M8", "bildungsstandard_bereich": "ARGUMENTIERENFIGUREN",
+      "beziehung": "matrix_inhaltsachse", "amtlich": false,
+      "rationale": "Argumentieren/Begründen zu geometrischen Inhalten teilt die Inhaltsdomäne Figuren und Körper. Die Zuordnung wahrt die zweite, handlungsbezogene Dimension des BiSt-Modells."
+    },
+    {
+      "lehrplan_fach": "SEK1.M", "lehrplan_bereich": "DATEN",
+      "bildungsstandard_shard": "M8", "bildungsstandard_bereich": "DARSTELLENSTATISTIK",
+      "beziehung": "matrix_inhaltsachse", "amtlich": false,
+      "rationale": "Darstellen/Modellbilden statistischer Sachverhalte kreuzt die BiSt-Handlungsachse mit der statistischen Inhaltsdomäne. Diese liegt nahe Daten und Zufall, ist aber enger zugeschnitten."
+    },
+    {
+      "lehrplan_fach": "SEK1.M", "lehrplan_bereich": "DATEN",
+      "bildungsstandard_shard": "M8", "bildungsstandard_bereich": "RECHNENSTATISTIK",
+      "beziehung": "matrix_inhaltsachse", "amtlich": false,
+      "rationale": "Rechnen/Operieren mit statistischen Daten gehört zur statistischen Inhaltsachse und damit zum Bereichsbezug von Daten und Zufall. Der Zufallsanteil ist nicht vollständig deckungsgleich."
+    },
+    {
+      "lehrplan_fach": "SEK1.M", "lehrplan_bereich": "DATEN",
+      "bildungsstandard_shard": "M8", "bildungsstandard_bereich": "INTERPRETIERENSTATISTIK",
+      "beziehung": "matrix_inhaltsachse", "amtlich": false,
+      "rationale": "Interpretieren statistischer Tabellen, Grafiken und Kennzahlen liegt in der zum Lehrplanbereich passenden Inhaltsdomäne. Die Zuordnung bleibt wegen Matrix und Zufallsanteil bewusst grob."
+    },
+    {
+      "lehrplan_fach": "SEK1.M", "lehrplan_bereich": "DATEN",
+      "bildungsstandard_shard": "M8", "bildungsstandard_bereich": "ARGUMENTIERENSTATISTIK",
+      "beziehung": "matrix_inhaltsachse", "amtlich": false,
+      "rationale": "Argumentieren/Begründen zu statistischen Darstellungen und Kennzahlen teilt die statistische Inhaltsachse von Daten und Zufall. Es bleibt eine eigene Handlungsvariante ohne 1:1-Anspruch."
+    }
+  ],
+  "nicht_abgedeckt": [
+    {
+      "lehrplan_fach": "PRIM.SU",
+      "abgedeckt": false,
+      "grund": "keine BiSt verordnet",
+      "amtlich": false,
+      "rationale": "Die Bildungsstandardsverordnung, Anlage 1, enthält kein Kapitel für Sachunterricht. Der Crosswalk bildet diese gemessene Abwesenheit als definiertes leeres Ergebnis ab und erfindet keine Zuordnung."
+    }
+  ]
+}

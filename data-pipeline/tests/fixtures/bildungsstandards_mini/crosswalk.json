@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "dataset_version": "fixtur-1",
+    "ebene": "kompetenzbereich",
+    "amtlich": false,
+    "praezisionsaussage": "Bereichsbezug; keine 1:1-Zuordnung in der synthetischen Vertragsfixtur.",
+    "quellen": {
+      "lehrplan": { "namespace": "AT.LP23", "nor": ["NOR00000001"] },
+      "bildungsstandards": { "namespace": "AT.BIST", "nor": "NOR00000002" }
+    }
+  },
+  "zuordnungen": [
+    {
+      "lehrplan_fach": "PRIM.D", "lehrplan_bereich": "ETA",
+      "bildungsstandard_shard": "D4", "bildungsstandard_bereich": "ETA4",
+      "beziehung": "bereichsentsprechung", "amtlich": false,
+      "rationale": "Synthetische Bereichszuordnung für den Eta-Zweig der Vertragsfixtur; sie behauptet ausdrücklich keine Einzelidentität."
+    },
+    {
+      "lehrplan_fach": "PRIM.D", "lehrplan_bereich": "ZETA",
+      "bildungsstandard_shard": "D4", "bildungsstandard_bereich": "ZETA4",
+      "beziehung": "bereichsentsprechung", "amtlich": false,
+      "rationale": "Synthetische Bereichszuordnung für den Zeta-Zweig der Vertragsfixtur; sie behauptet ausdrücklich keine Einzelidentität."
+    },
+    {
+      "lehrplan_fach": "PRIM.M", "lehrplan_bereich": "THETA",
+      "bildungsstandard_shard": "M4", "bildungsstandard_bereich": "THETA4",
+      "beziehung": "querschnitt_prozess", "amtlich": false,
+      "rationale": "Synthetische Prozess-zu-Inhalt-Zuordnung für die Vertragsfixtur, bewusst nur auf Bereichsebene und nicht deskriptorpräzise."
+    },
+    {
+      "lehrplan_fach": "SEK1.D", "lehrplan_bereich": "GAMMA",
+      "bildungsstandard_shard": "D8", "bildungsstandard_bereich": "GAMMA8",
+      "beziehung": "bereichsentsprechung", "amtlich": false,
+      "rationale": "Synthetische Bereichszuordnung für Gamma, die den nichtamtlichen Crosswalk-Vertrag ohne echte Regelungstexte prüft."
+    },
+    {
+      "lehrplan_fach": "SEK1.D", "lehrplan_bereich": "DELTA",
+      "bildungsstandard_shard": "D8", "bildungsstandard_bereich": "DELTA8",
+      "beziehung": "bereichsentsprechung", "amtlich": false,
+      "rationale": "Synthetische Zuordnung des kompetenzlosen Strukturbereichs Delta; sie prüft Datenabdeckung ohne eine Kompetenz zu erfinden."
+    },
+    {
+      "lehrplan_fach": "SEK1.E", "lehrplan_bereich": "EPSILON",
+      "bildungsstandard_shard": "E8", "bildungsstandard_bereich": "EPSILON8",
+      "beziehung": "bereichsaufteilung", "amtlich": false,
+      "rationale": "Synthetische Sprachbereichszuordnung für Epsilon; der Datensatz testet nur die öffentliche Bereichssemantik."
+    },
+    {
+      "lehrplan_fach": "SEK1.M", "lehrplan_bereich": "ALPHA",
+      "bildungsstandard_shard": "M8", "bildungsstandard_bereich": "ALPHA8",
+      "beziehung": "matrix_inhaltsachse", "amtlich": false,
+      "rationale": "Synthetische Matrixzuordnung für Alpha; die Vertragsfixtur wahrt den ausdrücklichen Verzicht auf 1:1-Präzision."
+    }
+  ],
+  "nicht_abgedeckt": [
+    {
+      "lehrplan_fach": "PRIM.SU", "abgedeckt": false,
+      "grund": "keine BiSt verordnet", "amtlich": false,
+      "rationale": "Synthetischer definierter Leerfall für den Datenzweig ohne Bildungsstandard-Verordnung."
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "meta": { "shard": "M4", "provenienz": { "quelle": "Synthetische Vertragsfixtur", "nor": "NOR00000002" } },
+  "kompetenzbereiche": [{ "code": "THETA4", "name": "Theta-Standardbereich" }],
+  "deskriptoren": [
+    { "id": "AT.BIST.M.SCH4.THETA4.01", "fach": "M", "programmstufe": "SCH4", "bereich_code": "THETA4", "stammsatz": "Fixturlernende können", "text": "eine Theta-Handlung ausführen.", "ordinal": 1 }
+  ]
+}
