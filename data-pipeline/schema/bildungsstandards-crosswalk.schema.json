@@ -65,13 +65,60 @@
         },
         "rationale": { "type": "string", "minLength": 40 },
         "amtlich": { "const": false }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "lehrplan_fach": { "const": "PRIM.D" } },
+            "required": ["lehrplan_fach"]
+          },
+          "then": {
+            "properties": { "bildungsstandard_shard": { "const": "D4" } }
+          }
+        },
+        {
+          "if": {
+            "properties": { "lehrplan_fach": { "const": "PRIM.M" } },
+            "required": ["lehrplan_fach"]
+          },
+          "then": {
+            "properties": { "bildungsstandard_shard": { "const": "M4" } }
+          }
+        },
+        {
+          "if": {
+            "properties": { "lehrplan_fach": { "const": "SEK1.D" } },
+            "required": ["lehrplan_fach"]
+          },
+          "then": {
+            "properties": { "bildungsstandard_shard": { "const": "D8" } }
+          }
+        },
+        {
+          "if": {
+            "properties": { "lehrplan_fach": { "const": "SEK1.E" } },
+            "required": ["lehrplan_fach"]
+          },
+          "then": {
+            "properties": { "bildungsstandard_shard": { "const": "E8" } }
+          }
+        },
+        {
+          "if": {
+            "properties": { "lehrplan_fach": { "const": "SEK1.M" } },
+            "required": ["lehrplan_fach"]
+          },
+          "then": {
+            "properties": { "bildungsstandard_shard": { "const": "M8" } }
+          }
+        }
+      ]
     },
     "nicht_abgedeckt": {
       "type": "object",
       "required": ["lehrplan_fach", "abgedeckt", "grund", "rationale", "amtlich"],
       "properties": {
-        "lehrplan_fach": { "type": "string" },
+        "lehrplan_fach": { "enum": ["PRIM.SU"] },
         "abgedeckt": { "const": false },
         "grund": { "type": "string", "minLength": 1 },
         "rationale": { "type": "string", "minLength": 40 },

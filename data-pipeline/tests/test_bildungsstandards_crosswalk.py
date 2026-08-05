@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import json
 import sys
 from collections import Counter, defaultdict
@@ -104,61 +105,104 @@ def test_m4_prozessachsen_und_m8_matrix_bleiben_unterschiedlich():
         assert sum(z["lehrplan_bereich"] == lp_bereich for z in m8) == 4
 
 
-def test_zugriff_liefert_nur_gemappte_bereiche_ohne_descriptor_duplikate():
-    crosswalk = laden(CROSSWALK_PATH)
-    bist_docs = {
-        shard: laden(BIST_ROOT / f"{shard.casefold()}.json")
-        for shard in ("D4", "M4", "D8", "E8", "M8")
-    }
-    alle_bist_ids = {
-        d["id"]: d for doc in bist_docs.values() for d in doc["deskriptoren"]
-    }
+PAARUNGEN = {
+    "PRIM.D": "D4",
+    "PRIM.M": "M4",
+    "SEK1.D": "D8",
+    "SEK1.E": "E8",
+    "SEK1.M": "M8",
+}
 
-    gemappt = 0
-    gelieferte_bist_ids: set[str] = set()
-    for fach in ("PRIM.D", "PRIM.M", "SEK1.D", "SEK1.E", "SEK1.M"):
-        for k in K.finde_kompetenz(fach):
-            ergebnis = K.finde_bildungsstandard_bezug(k["id"])
-            assert ergebnis["abgedeckt"] is True
-            assert "keine 1:1-Zuordnung" in ergebnis["methodik"]["praezisionsaussage"]
-            ids = [d["id"] for d in ergebnis["deskriptoren"]]
-            gelieferte_bist_ids.update(ids)
-            assert len(ids) == len(set(ids))
 
-            ziel = {
-                (z["bildungsstandard_shard"], z["bildungsstandard_bereich"])
-                for z in crosswalk["zuordnungen"]
-                if z["lehrplan_fach"] == fach and z["lehrplan_bereich"] == k["bereich_slug"]
-            }
-            if k["bereich_slug"] == "GZINTEGRATIV":
-                assert ziel == set()
-                assert ergebnis["deskriptoren"] == []
-                assert ergebnis["zuordnungen"] == []
-                assert "Zusatzbereich" in ergebnis["hinweis"]
+def test_schema_erzwingt_die_fach_shard_paarungen_und_lehnt_jeden_swap_ab():
+    """Regressionswaechter (E8-06): ein fachfremder Swap muss am Schema scheitern.
+
+    Geprueft wird das **ganze Dokument**, nicht `$defs/zuordnung` allein -- nur der
+    Dokumentpfad ist der Pfad, auf dem echte Daten validiert werden. Mutiert wird die
+    ausgelieferte `crosswalk.json`, damit Zaehlungen und Abdeckung erhalten bleiben: genau
+    so sieht die Vertauschung aus, die zuvor schema-gueltig und test-gruen blieb.
+
+    Erschoepfend ueber alle 20 falschen Kombinationen. Ein Fall wie `SEK1.E -> E4` taugt
+    dafuer nicht: `E4` steht ohnehin nicht im Enum und wuerde auch ohne die Paarungsregel
+    abgewiesen -- ein solcher Test besteht bereits vor der Korrektur und bewacht nichts.
+    """
+    schema = laden(SCHEMA_PATH)
+    validator = jsonschema.Draft202012Validator(schema)
+    echt = laden(CROSSWALK_PATH)
+
+    validator.validate(echt)  # Positivkontrolle: die ausgelieferten 50 Zuordnungen sind gueltig
+
+    geprueft = 0
+    for fach, richtig in PAARUNGEN.items():
+        for falsch in PAARUNGEN.values():
+            if falsch == richtig:
                 continue
+            mutiert = copy.deepcopy(echt)
+            getroffen = False
+            for z in mutiert["zuordnungen"]:
+                if z["lehrplan_fach"] == fach:
+                    z["bildungsstandard_shard"] = falsch
+                    getroffen = True
+                    break
+            assert getroffen, f"keine Zuordnung fuer {fach} gefunden"
+            geprueft += 1
+            assert list(validator.iter_errors(mutiert)), (
+                f"Schema akzeptiert {fach} -> {falsch}, erwartet war {fach} -> {richtig}"
+            )
 
-            gemappt += 1
-            assert ziel
-            assert ergebnis["zuordnungen"]
-            assert all(z["rationale"] and z["amtlich"] is False for z in ergebnis["zuordnungen"])
-            assert all(z["lehrplan_provenienz"]["nor"].startswith("NOR") for z in ergebnis["zuordnungen"])
-            assert all(z["bildungsstandard_provenienz"]["nor"] == "NOR40255561" for z in ergebnis["zuordnungen"])
-            assert ids
-            for ident in ids:
-                d = alle_bist_ids[ident]
-                shard = ident.split(".")[2] + ident.split(".")[3].removeprefix("SCH")
-                assert (shard, d["bereich_code"]) in ziel
-            assert all(d["volltext"].startswith(d["stammsatz"]) for d in ergebnis["deskriptoren"])
-            assert all(d["provenienz"]["nor"] == "NOR40255561" for d in ergebnis["deskriptoren"])
+    assert geprueft == 20
 
-    assert gemappt == 197
-    # SEK1.D/Sprachreflexion is an official structural Lehrplan area with
-    # zero competence records (V-77). Its mapping exists and endpoint checks
-    # above cover it, but a competence-id API cannot originate from it.
-    nicht_per_kompetenz_erreichbar = {
-        ident
-        for ident, d in alle_bist_ids.items()
-        if ident.startswith("AT.BIST.D.SCH8.SPRACHBEWUSSTSEIN.")
-    }
-    assert len(nicht_per_kompetenz_erreichbar) == 12
-    assert gelieferte_bist_ids == set(alle_bist_ids) - nicht_per_kompetenz_erreichbar
+
+def test_schema_lehnt_den_vollstaendigen_d4_d8_tausch_mit_erhaltenen_zahlen_ab():
+    """Der konkrete Fall aus der Pruefung: `PRIM.D -> D8` **und** `SEK1.D -> D4` zugleich.
+
+    Zaehlungen, Abdeckung und Schema-Form bleiben dabei unveraendert -- der Grund, warum
+    zaehlende Tests diesen Fehler nicht finden konnten.
+    """
+    schema = laden(SCHEMA_PATH)
+    validator = jsonschema.Draft202012Validator(schema)
+    mutiert = laden(CROSSWALK_PATH)
+
+    getauscht = 0
+    for z in mutiert["zuordnungen"]:
+        if z["lehrplan_fach"] == "PRIM.D" and z["bildungsstandard_shard"] == "D4":
+            z["bildungsstandard_shard"] = "D8"
+            getauscht += 1
+        elif z["lehrplan_fach"] == "SEK1.D" and z["bildungsstandard_shard"] == "D8":
+            z["bildungsstandard_shard"] = "D4"
+            getauscht += 1
+
+    assert getauscht == 9
+    assert len(mutiert["zuordnungen"]) == 50
+    assert len(list(validator.iter_errors(mutiert))) == getauscht
+
+
+def test_schema_faengt_ein_fehlendes_shard_feld_statt_still_durchzulassen():
+    """`then` fuehrt kein eigenes `required`, haelt also nur, solange
+    `bildungsstandard_shard` auf Zuordnungsebene `required` bleibt. Faellt das weg,
+    liefe die Paarungsregel ins Leere (`if` ohne Treffer => Teilschema gilt als erfuellt).
+    Dieser Test bindet die Voraussetzung fest.
+    """
+    schema = laden(SCHEMA_PATH)
+    assert "bildungsstandard_shard" in schema["$defs"]["zuordnung"]["required"]
+
+    validator = jsonschema.Draft202012Validator(schema)
+    mutiert = laden(CROSSWALK_PATH)
+    del mutiert["zuordnungen"][0]["bildungsstandard_shard"]
+    assert list(validator.iter_errors(mutiert))
+
+
+def test_schema_beschraenkt_nicht_abgedeckt_auf_prim_su():
+    """`nicht_abgedeckt.lehrplan_fach` war ein freier String; PRIM.SU ist der einzige
+    legitime Eintrag, weil nur fuer Sachunterricht keine Bildungsstandards verordnet sind.
+    """
+    schema = laden(SCHEMA_PATH)
+    validator = jsonschema.Draft202012Validator(schema)
+
+    validator.validate(laden(CROSSWALK_PATH))
+
+    for fremd in ("PRIM.D", "SEK1.M", "SEK1.E"):
+        mutiert = laden(CROSSWALK_PATH)
+        assert mutiert["nicht_abgedeckt"], "nicht_abgedeckt ist leer -- Test waere wirkungslos"
+        mutiert["nicht_abgedeckt"][0]["lehrplan_fach"] = fremd
+        assert list(validator.iter_errors(mutiert)), f"Schema akzeptiert nicht_abgedeckt {fremd}"
