@@ -38,7 +38,7 @@ Die Rubrics sind CSV-Dateien mit den folgenden Spalten:
 | `Criterion` | Kurzer Name des Kriteriums |
 | `What pass requires` | Die spezifische, bewertbare Bedingung, die ein „Bestanden" ausmacht |
 | `Notes` | Begründung oder Design-Notizen |
-| `Conditional` | Falls nicht leer, gilt das Kriterium nur unter dieser Bedingung |
+| `Conditional` | Falls nicht leer, gilt das Kriterium nur unter dieser Bedingung. Mehrere Bedingungen werden mit `; ` getrennt und gelten **konjunktiv** (alle müssen erfüllt sein), z. B. `PRIM.SU-Naturwissenschaft; PRIM.SU-SCH3-4-quantitative-daten` |
 
 ### Für Unterrichtspläne (at-unterrichtsplanung)
 
@@ -144,7 +144,8 @@ Amtliche **RIS-Inhalte** müssen deutlich von **Lehrkraft-bereitgestellten** (`d
 
 ## Notizen für Evaluatoren
 
-- **Bedingte Kriterien**: Einige Kriterien gelten nur unter bestimmten Bedingungen (gekennzeichnet in der `Conditional`-Spalte). Überspringen Sie ein Kriterium, wenn seine Bedingung nicht erfüllt ist.
+- **Bedingte Kriterien**: Einige Kriterien gelten nur unter bestimmten Bedingungen (gekennzeichnet in der `Conditional`-Spalte). Überspringen Sie ein Kriterium, wenn seine Bedingung nicht erfüllt ist. Bei mehreren, mit `; ` getrennten Bedingungen muss **jede** erfüllt sein.
+- **Geltungsbereich gehört in `Conditional`, nicht in `Notes`**: Wenn ein Kriterium nur für einen Fachbereich, eine Schulstufe oder eine Textsorte gilt, muss das in `Conditional` stehen. `Notes` ist reine Begründung und wird beim Überspringen **nicht** ausgewertet — ein dort formulierter Geltungsbereich bleibt wirkungslos. `tests/test_rubric_conditions.py` prüft das für die bekannten Geltungsbereiche.
 - **Unabhängige Bewertung**: Jedes Kriterium wird isoliert bewertet — ein Versagen bei `R2` sagt etwas Spezifisches über kognitive Anforderungen aus, nicht nur „das Material ist schlecht".
 - **Kalibrierung**: Erwägen Sie, mit Kolleg:innen zu kalibrieren, wenn Sie diese Rubrics zum ersten Mal verwenden. Die Grenzen zwischen „Pass" und „Fail" erfordern manchmal Urteilsvermögen.
 
