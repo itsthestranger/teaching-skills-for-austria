@@ -115,8 +115,15 @@ Für eine reguläre, kompetenztragende Stunde ist diese Abfragefolge Pflicht:
 5. `finde_bildungsstandard_bezug(id)` und `finde_uebergreifende_themen(kompetenz_id=id)`
    aufrufen. Hat die Kompetenz keine eigenen Themenmarkierungen, darf ergänzend nur aus
    `finde_uebergreifende_themen(fach=fach)` ein tatsächlich in die Stunde eingebundenes Thema
-   gewählt werden. Leere Deskriptoren oder ein `hinweis` bedeuten: den ausstehenden Crosswalk
-   transparent nennen, keinen Bildungsstandard-Deskriptor erfinden.
+   gewählt werden. Drei Ergebnisformen sind zu unterscheiden (voller Vertrag in
+   `references/kompetenzdaten.md`): bei **mapped** (`abgedeckt: true` mit Deskriptoren) ist der
+   mitgelieferte `hinweis` die methodische Präzisierung — er steht bei **jedem** erfolgreichen
+   Treffer und bedeutet **nicht** einen ausstehenden Crosswalk; bei **covered-but-unmapped**
+   (`abgedeckt: true`, leere Deskriptoren) nennt ein *eigener*, anderer `hinweis`, dass für
+   diesen Bereich keine Zuordnung besteht; bei **defined-empty** (`abgedeckt: false`, nur
+   `PRIM.SU`) fehlt `hinweis` ganz, stattdessen steht `grund`. In allen drei Fällen die
+   jeweilige Aussage transparent an die Lehrkraft weitergeben, nie einen
+   Bildungsstandard-Deskriptor erfinden.
 
 Für die wörtliche Verankerung stets `volltext` oder `voller_wortlaut(kompetenz)` verwenden,
 nie `text` allein. Die `provenienz` des zurückgegebenen Objekts wird unverändert in den

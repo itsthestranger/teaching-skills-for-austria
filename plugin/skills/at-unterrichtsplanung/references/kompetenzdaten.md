@@ -44,10 +44,24 @@ Alle in `plugin/scripts/kompetenz.py`, pure stdlib, offline, deterministisch.
    `.md`/`.txt`; die volle Ingestion (`.pdf`/`.docx`, `docs/.cache/`, Limits) ist eine eigene,
    noch offene Aufgabe.
 6. **`finde_bildungsstandard_bezug(kompetenz_id) → dict`**
-   `{"abgedeckt": False, "grund": "keine BiSt verordnet"}` für `PRIM.SU` — das ist die *einzige*
-   Fachgruppe ohne Bildungsstandardsverordnung, ehrlich als Nichtvorhandensein, nicht als Fehler.
-   Für die anderen fünf: `{"abgedeckt": True, "deskriptoren": [], "hinweis": …}` — die
-   Deskriptor-Crosswalk-Tabelle ist noch nicht gebaut; nie Deskriptoren erfinden.
+   Der Deskriptor-Crosswalk ist seit E8-03 gebaut (50 Bereichszuordnungen, V-82). Drei
+   verschiedene, gemessene Ergebnisformen — keine zwei, keine ist ein ausstehender Zustand:
+   - **Mapped** (die 197 gewöhnlichen Nicht-SU-Kompetenzen, z. B. `SEK1.M.ZAHLEN.K2.01`):
+     `{"abgedeckt": True, "deskriptoren": […], "zuordnungen": […], "methodik": …, "hinweis":
+     "Bereichsbezug; keine 1:1-Zuordnung von Lehrplan-Kompetenzen zu
+     Bildungsstandard-Deskriptoren."}`. Dieser `hinweis` ist die methodische Präzisierung und
+     steht bei **jedem** erfolgreichen Treffer — er ist kein Zeichen für einen fehlenden
+     Crosswalk.
+   - **Covered-but-unmapped** (die zwei synthetischen `GZINTEGRATIV`-Kompetenzen):
+     `{"abgedeckt": True, "deskriptoren": [], "zuordnungen": [], "methodik": …, "hinweis": "Für
+     diesen Zusatzbereich besteht keine Bereichszuordnung; es wird keine Deskriptoridentität
+     erfunden."}`. Anderer `hinweis`-Text als oben; transparent als "für diesen Bereich keine
+     Zuordnung" nennen.
+   - **Defined-empty** (`PRIM.SU`, alle Kompetenzen — die *einzige* Fachgruppe ohne
+     Bildungsstandardsverordnung): `{"abgedeckt": False, "grund": "keine BiSt verordnet"}` — kein
+     `deskriptoren`-Feld, kein `hinweis`; ehrlich als Nichtvorhandensein, nicht als Bug.
+
+   Nie einen Bildungsstandard-Deskriptor erfinden, in keiner der drei Formen.
 7. **`finde_uebergreifende_themen(fach=None, kompetenz_id=None, thema=None) → list`**
    Genau eines der drei Argumente angeben. Übergreifende Themen sind Lehrplan-Querschnittsthemen
    (z. B. "Medienbildung"), keine freie Verschlagwortung.
