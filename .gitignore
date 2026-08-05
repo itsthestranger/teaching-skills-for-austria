@@ -4,6 +4,7 @@ BACKLOG.md
 CLAUDE.md
 AGENTS.md
 handover.md
+REVIEW_FINDINGS.md
 docs/*
 !docs/.gitkeep
 !docs/README.md
