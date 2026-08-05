@@ -31,12 +31,6 @@
               "key": "kompetenz"
             },
             {
-              "type": "uebergreifende_themen_tag",
-              "themen": [
-                "Informatische Bildung"
-              ]
-            },
-            {
               "type": "labeled",
               "label": "Lehrstoffquelle",
               "text": "aus_anwendungsbereichen: Die folgenden Präzisierungen sind der verbindliche Kern der Stunde."
@@ -93,8 +87,8 @@
             {
               "type": "list",
               "items": [
-                "Zweiergruppen ordnen Bruchkarten und Dezimalkarten auf einem Zahlenstrahl.",
-                "Sie erklären mindestens einen Vergleich als Anteil und einen als Position auf dem Zahlenstrahl.",
+                "Zweiergruppen ordnen Bruchkarten, Dezimalkarten und Ganzzahlkarten (auch negative Werte wie -3 und -1) auf einem gemeinsamen Zahlenstrahl.",
+                "Sie erklären mindestens einen Vergleich als Anteil, einen als Position auf dem Zahlenstrahl und einen Vergleich zweier ganzer Zahlen (zB -3 und 2).",
                 "Die Lehrkraft nutzt die verbindlichen Präzisierungen als Beobachtungsgrundlage."
               ]
             },
@@ -116,7 +110,7 @@
               "type": "callout",
               "kind": "student-task",
               "label": "Exit-Ticket",
-              "text": "Ordne 0,75, 2/3 und 3/4 der Größe nach. Zeichne eine Zahl auf dem Zahlenstrahl ein und begründe deinen Vergleich in einem Satz."
+              "text": "Ordne -2, 0,75, 2/3 und 3/4 der Größe nach. Zeichne eine Zahl auf dem Zahlenstrahl ein und begründe deinen Vergleich in einem Satz."
             }
           ]
         }
