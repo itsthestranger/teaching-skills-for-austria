@@ -169,7 +169,16 @@ Bestätigungsrunde ausführen:
 4. Den Spiralverlauf einschließlich Vorläufer, Aktivierung, Erarbeitung, Sicherung und Exit in
    den Blöcken konkret abbilden. Die aus der Abfrage ermittelte Bildungsstandard-Antwort als
    Hinweis darstellen, nie durch eine freie Zuordnung ersetzen.
-5. Unmittelbar danach den vorhandenen Renderer ausführen — keine Rendererlogik kopieren:
+5. **Verankerung prüfen, bevor der Turn als fertig gilt:**
+
+   ```bash
+   python3 plugin/scripts/pruefe_verankerung.py <pfad>/lesson.json
+   ```
+
+   Bei Exit-Code ungleich 0 die gemeldeten Verletzungen beheben (Schritt 2 erneut, nie den
+   Checker umgehen) und danach erneut prüfen. Kein Plan wird ausgegeben, der diesen Checker
+   nicht besteht.
+6. Unmittelbar danach den vorhandenen Renderer ausführen — keine Rendererlogik kopieren:
 
    ```bash
    python3 plugin/skills/at-unterrichtsplanung/scripts/render_documents.py \
