@@ -39,6 +39,7 @@ from lesson_common import (  # noqa: E402
     workspace_height, normalize_text, label_text, label_sep, table_row_height,
     coerce_headers, coerce_rows, kompetenz_citation, resolve_niveau_kind, resolve_herkunft,
     split_abbildungen, resolve_abbildung_path, abbildung_missing_marker, abbildung_alt,
+    render_with_abbildungen,
 )
 
 FILL_IN_SIZES = {"short": "6em", "med": "14em", "long": "100%"}
@@ -52,6 +53,24 @@ def md(text) -> str:
     # multi-paragraph callouts). Collapsing them produced unreadable prose blobs.
     t = re.sub(r"[ \t]*\n[ \t]*", "<br>", t)
     return t
+
+
+def md_abb(text, abbildungen) -> str:
+    """md(), but first resolving any ⟦ABB:datei⟧ tokens in `text` into inline <img>
+    tags via the shared render_with_abbildungen()/split_abbildungen() helpers, when the
+    carrying block supplies an `abbildungen` array. Markdown-rendered text (through md(),
+    unchanged) and image markup (through _abbildung_img) compose in the token's exact
+    position — this is the general-block counterpart of verbatim_html(), which stays the
+    no-markdown path reserved for kompetenzbezug's quoted competence text.
+
+    Identical to md(text) when `abbildungen` is falsy, so every block that carries no
+    `abbildungen` (every block in today's goldens) renders byte-identically."""
+    if not abbildungen:
+        return md(text)
+    parts: list[str] = []
+    render_with_abbildungen(text, abbildungen, lambda part: parts.append(md(part)),
+                             lambda meta: parts.append(_abbildung_img(meta)))
+    return "".join(parts)
 
 
 def _abbildung_img(meta: dict) -> str:
@@ -125,20 +144,22 @@ def render_block(blk: dict, theme: Theme) -> str:
     # the same commit — the html and docx renderers must emit the same text.
     t = _btype(blk)
     if t == "paragraph":
-        return f"<p>{md(blk.get('text', ''))}</p>"
+        return f"<p>{md_abb(blk.get('text', ''), blk.get('abbildungen'))}</p>"
     if t == "labeled":
         lbl = label_text(blk)
-        return f"<p><b>{md(lbl)}{label_sep(lbl)}</b> {md(blk.get('text', ''))}</p>"
+        return (f"<p><b>{md(lbl)}{label_sep(lbl)}</b> "
+                f"{md_abb(blk.get('text', ''), blk.get('abbildungen'))}</p>")
     if t == "h2":
         return f"<div class=\"h2\">{md(blk.get('text', ''))}</div>"
     if t == "h3":
         return f"<div class=\"h3\">{md(blk.get('text', ''))}</div>"
     if t == "instructions":
-        return f"<p class=\"instr\">{md(blk.get('text', ''))}</p>"
+        return f"<p class=\"instr\">{md_abb(blk.get('text', ''), blk.get('abbildungen'))}</p>"
     if t in ("list", "checklist"):
         cls = ' class="check"' if t == "checklist" else ""
         tag = "ol" if blk.get("ordered") else "ul"
-        items = "".join(f"<li>{md(i)}</li>" for i in blk.get("items", []))
+        items = "".join(f"<li>{md_abb(i, blk.get('abbildungen'))}</li>"
+                        for i in blk.get("items", []))
         head = (f"<p class=\"listlabel\"><b>{md(label_text(blk))}</b></p>"
                 if blk.get("label") else "")
         return f"{head}<{tag}{cls}>{items}</{tag}>"
@@ -152,7 +173,8 @@ def render_block(blk: dict, theme: Theme) -> str:
         head = (f"<div class=\"co-label\"><span class=\"co-icon\">{icon}</span>"
                 f"<b>{md(label)}</b></div>" if label
                 else f"<div class=\"co-label\"><span class=\"co-icon\">{icon}</span></div>")
-        body = f"<p style=\"margin:0\">{md(text)}</p>" if text else ""
+        body = (f"<p style=\"margin:0\">{md_abb(text, blk.get('abbildungen'))}</p>"
+                if text else "")
         return f"<div class=\"co {klass}\">{head}{body}</div>"
     if t == "cards":
         items = [c if isinstance(c, dict) else {"title": str(c), "text": ""}
@@ -160,7 +182,8 @@ def render_block(blk: dict, theme: Theme) -> str:
         cards = "".join(
             "<div class=\"card\">"
             f"<div class=\"card-title\">{md(c.get('title', ''))}</div>"
-            f"<div class=\"card-body\">{md(c.get('text', ''))}</div></div>"
+            f"<div class=\"card-body\">{md_abb(c.get('text', ''), blk.get('abbildungen'))}"
+            "</div></div>"
             for c in items)
         return f"<div class=\"cards\">{cards}</div>"
     if t == "fill_in":
@@ -203,7 +226,7 @@ def render_block(blk: dict, theme: Theme) -> str:
                 style = ""
                 if not str(c).strip():  # td height acts as a minimum; the row still grows
                     style = f" style=\"height:{row_h:g}pt\""
-                cells.append(f"<td{style}>{md(c)}</td>")
+                cells.append(f"<td{style}>{md_abb(c, blk.get('abbildungen'))}</td>")
             rows.append("<tr>" + "".join(cells) + "</tr>")
         classes = [] if headers else ["headless"]
         if blk.get("display") == "large":
@@ -218,7 +241,7 @@ def render_block(blk: dict, theme: Theme) -> str:
         bits = " · ".join(md(str(blk.get(k))) for k in ("author", "date", "origin")
                           if blk.get(k))
         title = md(blk.get("title", ""))
-        excerpt = md(blk.get("excerpt") or blk.get("text") or "")
+        excerpt = md_abb(blk.get("excerpt") or blk.get("text") or "", blk.get("abbildungen"))
         meta = f"<span class=\"sc-meta\"> — {bits}</span>" if bits else ""
         return (f"<div class=\"sourcecard\"><div class=\"sc-head\"><b>{title}</b>{meta}</div>"
                 f"<div class=\"sc-body\">{excerpt}</div></div>")
@@ -244,7 +267,7 @@ def render_block(blk: dict, theme: Theme) -> str:
                 cells = ["" if str(c).strip().strip("_") == "" and "_" in str(c) else c
                          for c in cells]
                 tds = "".join(
-                    f"<td>{md(c)}</td>" if str(c).strip()
+                    f"<td>{md_abb(c, blk.get('abbildungen'))}</td>" if str(c).strip()
                     else f"<td style=\"height:{row_h:g}pt\"></td>" for c in cells)
                 body += f"<tr>{tds}</tr>"
         else:
@@ -345,9 +368,10 @@ def render_block(blk: dict, theme: Theme) -> str:
     # NEVER dump raw JSON into the page — a printed worksheet with {"type": ...} on it is a
     # blocking print-safety failure (seen in real model output: "list" and "labeled_box").
     if blk.get("text"):
-        return f"<p>{md(blk.get('text'))}</p>"
+        return f"<p>{md_abb(blk.get('text'), blk.get('abbildungen'))}</p>"
     if blk.get("items"):
-        return "<ul>" + "".join(f"<li>{md(i)}</li>" for i in blk.get("items", [])) + "</ul>"
+        return ("<ul>" + "".join(f"<li>{md_abb(i, blk.get('abbildungen'))}</li>"
+                                 for i in blk.get("items", [])) + "</ul>")
     # Unknown type with no renderable content: emit nothing. (No debug comment — the type
     # string is model-controlled and could contain "-->" to break out of an HTML comment.)
     return ""

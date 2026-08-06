@@ -27,6 +27,7 @@ from lesson_common import (  # noqa: E402
     md_tokens, workspace_height, label_text, label_sep, table_row_height, preamble_blocks,
     coerce_headers, coerce_rows, kompetenz_citation, resolve_niveau_kind, resolve_herkunft,
     split_abbildungen, resolve_abbildung_path, abbildung_missing_marker, ABB_HEIGHT_RATIO,
+    render_with_abbildungen,
 )
 
 try:
@@ -97,6 +98,27 @@ def add_md(para, text, bold=False, italic=False):
         r = para.add_run(t)
         r.bold = bold or attrs.get("bold", False)
         r.italic = italic or attrs.get("italic", False)
+
+
+def add_md_abb(para, text, abbildungen, theme, bold=False, italic=False):
+    """add_md(), but first resolving any ⟦ABB:datei⟧ tokens in `text` into inline
+    picture runs via the shared render_with_abbildungen()/split_abbildungen() helpers,
+    when the carrying block supplies an `abbildungen` array. Markdown-rendered text
+    runs (through add_md, unchanged) and image runs (through _add_abbildung_run)
+    compose in the token's exact position — this is the general-block counterpart of
+    add_verbatim(), which stays the no-markdown path reserved for kompetenzbezug's
+    quoted competence text.
+
+    Identical to add_md(text) when `abbildungen` is falsy, so every block that carries
+    no `abbildungen` (every block in today's goldens) renders byte-identically."""
+    if not abbildungen:
+        add_md(para, text, bold=bold, italic=italic)
+        return
+    render_with_abbildungen(
+        text, abbildungen,
+        lambda part: add_md(para, part, bold=bold, italic=italic),
+        lambda meta: _add_abbildung_run(para, meta, theme),
+    )
 
 
 def add_verbatim(para, text, abbildungen=None, theme=None):
@@ -264,14 +286,14 @@ def _content_width(doc) -> float:
 # ---- per-block emitters ------------------------------------------------------
 
 def _emit_paragraph(doc, blk, theme):
-    add_md(doc.add_paragraph(), blk.get("text", ""))
+    add_md_abb(doc.add_paragraph(), blk.get("text", ""), blk.get("abbildungen"), theme)
 
 
 def _emit_labeled(doc, blk, theme):
     p = doc.add_paragraph()
     lbl = label_text(blk)
     add_md(p, f"{lbl}{label_sep(lbl)} ", bold=True)
-    add_md(p, blk.get("text", ""))
+    add_md_abb(p, blk.get("text", ""), blk.get("abbildungen"), theme)
 
 
 def _emit_heading(style):
@@ -281,7 +303,8 @@ def _emit_heading(style):
 
 
 def _emit_instructions(doc, blk, theme):
-    add_md(doc.add_paragraph(style="LC Instr"), blk.get("text", ""))
+    add_md_abb(doc.add_paragraph(style="LC Instr"), blk.get("text", ""),
+               blk.get("abbildungen"), theme)
 
 
 def _label_para(doc, blk):
@@ -302,7 +325,7 @@ def _emit_list(doc, blk, theme, *, checklist=False):
         p = doc.add_paragraph(style=style)
         if checklist:
             p.add_run("☐  ")
-        add_md(p, item)
+        add_md_abb(p, item, blk.get("abbildungen"), theme)
         paras.append(p)
     if ordered and paras:
         _restart_numbering(doc, paras)
@@ -318,7 +341,7 @@ def _emit_callout(doc, blk, theme):
         add_md(lp, label_text(blk), bold=True)
     text = blk.get("text") or blk.get("body") or blk.get("content") or ""
     if text:
-        add_md(cell.add_paragraph(), text)
+        add_md_abb(cell.add_paragraph(), text, blk.get("abbildungen"), theme)
     doc.add_paragraph(style="LC Spacer")
 
 
@@ -380,7 +403,7 @@ def _emit_cards(doc, blk, theme):
         c = c if isinstance(c, dict) else {"title": str(c), "text": ""}
         cell = tbl.rows[0].cells[i]
         add_md(cell.paragraphs[0], c.get("title", ""), bold=True)
-        add_md(cell.add_paragraph(), c.get("text", ""))
+        add_md_abb(cell.add_paragraph(), c.get("text", ""), blk.get("abbildungen"), theme)
     doc.add_paragraph(style="LC Spacer")
 
 
@@ -470,8 +493,9 @@ def _emit_table(doc, blk, theme):
         full_blank = not any(c.strip() for c in cells)
         for i, v in enumerate(cells):
             p = tr.cells[i].paragraphs[0]
-            add_md(p, v, bold=(large and v.strip() != "")
-                   or (not headers and i == 0 and v.strip() != ""))
+            add_md_abb(p, v, blk.get("abbildungen"), theme,
+                       bold=(large and v.strip() != "")
+                       or (not headers and i == 0 and v.strip() != ""))
             if large:
                 from docx.enum.text import WD_ALIGN_PARAGRAPH
                 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -563,7 +587,8 @@ def _emit_source_card(doc, blk, theme):
     head = " · ".join(str(blk.get(k))
                       for k in ("title", "author", "date", "origin") if blk.get(k))
     _emit_callout(doc, {"kind": "student-task", "label": head,
-                        "text": blk.get("excerpt") or blk.get("text") or ""}, theme)
+                        "text": blk.get("excerpt") or blk.get("text") or "",
+                        "abbildungen": blk.get("abbildungen")}, theme)
 
 
 def _emit_fill_table(doc, blk, theme):
@@ -588,7 +613,7 @@ def _emit_fill_table(doc, blk, theme):
             n = 3
         rows = [[""] * cols for _ in range(min(max(1, n), 50))]
     fwd = {"headers": headers, "rows": rows}
-    for k in ("row_height_pt", "empty_row_height_pt"):
+    for k in ("row_height_pt", "empty_row_height_pt", "abbildungen"):
         if blk.get(k):
             fwd[k] = blk[k]
     _emit_table(doc, fwd, theme)
@@ -734,10 +759,11 @@ def emit_block(doc, blk: dict, theme: Theme):
     if fn is not None:
         return fn(doc, blk, theme)
     if blk.get("text"):
-        add_md(doc.add_paragraph(), blk["text"])
+        add_md_abb(doc.add_paragraph(), blk["text"], blk.get("abbildungen"), theme)
     elif blk.get("items"):
         for item in blk["items"]:
-            add_md(doc.add_paragraph(style="List Bullet"), item)
+            add_md_abb(doc.add_paragraph(style="List Bullet"), item,
+                       blk.get("abbildungen"), theme)
 
 
 # ---- document assembly -------------------------------------------------------

@@ -910,6 +910,25 @@ def split_abbildungen(text, abbildungen) -> list[tuple[str, object]]:
     return parts
 
 
+def render_with_abbildungen(text, abbildungen, text_fn, image_fn) -> None:
+    """Drive split_abbildungen() and dispatch each part to `text_fn` (a non-empty text
+    segment) or `image_fn` (an image metadata dict), in order.
+
+    This is the second half of the "one call site per renderer" fix (FINDINGS.md V-87):
+    split_abbildungen() decides where the image sits, this decides how each renderer's
+    markdown pass and image embedder compose around it, so add_md_abb()/md_abb() in the
+    docx and html renderers can both stay one-line wrappers that never disagree with
+    each other about run order. An empty text segment (e.g. two adjacent tokens, or a
+    token at the very start/end of `text`) is never passed to `text_fn` — callers can
+    assume every text segment they see is non-empty."""
+    for kind, part in split_abbildungen(text, abbildungen):
+        if kind == "text":
+            if part:
+                text_fn(part)
+        else:
+            image_fn(part)
+
+
 def _plugin_root() -> Path:
     """Walk up from this script's location to find the plugin root, marked by a
     `.claude-plugin/` directory. Falls back to this file's fixed
