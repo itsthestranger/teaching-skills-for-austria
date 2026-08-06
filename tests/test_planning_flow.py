@@ -67,6 +67,34 @@ def test_skill_prescribes_bounded_clarification_and_one_turn_rendering() -> None
         assert required in skill
 
 
+def test_skill_specifies_the_full_document_set_and_does_not_disclaim_it() -> None:
+    """E6-06: SKILL.md must actually specify when `schueler_material` and
+    `beobachtungsbogen` are produced and what sources their content, and must
+    no longer disclaim them as future work -- while the `docs/`-ingestion
+    disclaimer (E6-05, owned by a different task) stays true and present.
+    """
+    skill = SKILL.read_text(encoding="utf-8")
+
+    # schueler_material is specified as optional, gated on an actual need for
+    # a student-facing document -- never "always" and never "never".
+    assert '"schueler_material"' in skill or "`schueler_material`" in skill
+    assert "das Weglassen ist die korrekte" in skill
+
+    # beobachtungsbogen content is specified as sourced from the access
+    # layer, including the differentiation axis being read from
+    # meta.differenzierungs_achse/finde_differenzierung rather than assumed.
+    assert 'finde_differenzierung(id)["niveaus"]' in skill
+    assert "festverdrahteten Fachliste" in skill
+
+    # The old blanket disclaimer ("only unterrichtsplanung ships, the other
+    # two are future work") must be gone...
+    assert "Diese Aufgabe erzeugt zunächst mindestens die `unterrichtsplanung`." not in skill
+    # ...but the docs/-ingestion disclaimer must remain -- that is a
+    # different, still-open task (E6-05) owned by another agent.
+    assert "nachgelagerte Erweiterung" in skill
+    assert "`docs/`-Ingestion" in skill or "docs/`-Ingestion" in skill
+
+
 def test_sek1_mathematik_flow_fixture_is_officially_anchored_and_spiral() -> None:
     blocks, anchor = _fixture_blocks_and_anchor()
     record = kompetenz.kompetenz_nach_id(anchor["kompetenz_id"])
@@ -150,6 +178,58 @@ def test_sek1_mathematik_flow_application_items_match_api_binding_split() -> Non
         )
     else:
         assert "keine verknüpfte optionale Präzisierung" in optional_text
+
+
+def test_sek1_mathematik_flow_every_real_binding_item_is_reachable_somewhere() -> None:
+    """Coverage, not just membership: every real binding application item for
+    the anchored competence must appear in at least one labelled binding
+    block *somewhere* in the document set -- not necessarily all in the same
+    document, but nowhere may go missing.
+
+    ``pruefe_verankerung.py`` only proves the fixture invents nothing (set
+    membership); it has no rule that would catch *dropping* real content, so
+    this test is the coverage half that omission needed and previously
+    lacked. It union-collects every ``Verbindliche Anwendungsbereiche``-style
+    block across all three documents (via the same generic, type-agnostic
+    label match ``pruefe_verankerung`` itself uses) and set-differences
+    against the live API's binding set.
+    """
+    source = json.loads(FIXTURE.read_text(encoding="utf-8"))
+    blocks = _blocks(source)
+    anchor = next(block for block in blocks if block.get("type") == "kompetenzbezug")
+    kompetenz_id = anchor["kompetenz_id"]
+
+    real_binding = {
+        item["text"]
+        for item in kompetenz.finde_anwendungsbereiche(kompetenz_id, nur_verbindlich=True)
+    }
+    assert real_binding, "sanity: this competence must actually have binding items to cover"
+
+    shown_binding: set[str] = set()
+    for block in blocks:
+        label = block.get("label")
+        items = block.get("items")
+        if (
+            isinstance(label, str)
+            and pruefe_verankerung._VERBINDLICH_LABEL.search(label)
+            and not pruefe_verankerung._OPTIONAL_LABEL.search(label)
+            and isinstance(items, list)
+        ):
+            shown_binding.update(i for i in items if isinstance(i, str))
+
+    missing = real_binding - shown_binding
+    assert not missing, (
+        f"{len(missing)} real binding application item(s) for {kompetenz_id} appear in "
+        f"none of the document set's 'Verbindliche Anwendungsbereiche' blocks: {missing!r}"
+    )
+    # The inverse (nothing fabricated) is already covered by
+    # test_sek1_mathematik_flow_application_items_match_api_binding_split and
+    # by pruefe_verankerung itself; assert it here too so this test is a
+    # complete, self-contained coverage+fidelity check on its own.
+    assert shown_binding <= real_binding, (
+        f"document set shows {shown_binding - real_binding} as binding, which the API "
+        "does not return -- fabricated or paraphrased"
+    )
 
 
 def test_sek1_mathematik_flow_theme_tag_matches_api_exactly() -> None:
@@ -244,6 +324,16 @@ def test_sek1_mathematik_flow_integer_claim_is_backed_by_real_evidence() -> None
     ), "no real binding application item for this competence covers 'ganze Zahlen'"
 
 
+def test_sek1_mathematik_flow_fixture_carries_the_full_document_set() -> None:
+    """E6-06: the planning fixture carries all three document ids -- not just
+    `unterrichtsplanung`."""
+    source = json.loads(FIXTURE.read_text(encoding="utf-8"))
+    doc_ids = [doc["id"] for doc in source["documents"]]
+    assert doc_ids == ["unterrichtsplanung", "schueler_material", "beobachtungsbogen"]
+    for doc in source["documents"]:
+        assert doc["sections"], f"{doc['id']} has no sections"
+
+
 def test_sek1_mathematik_flow_fixture_renders_docx_in_one_command(tmp_path: Path) -> None:
     pytest.importorskip("docx", reason="python-docx is optional; DOCX flow test is skipped")
     result = subprocess.run(
@@ -253,11 +343,53 @@ def test_sek1_mathematik_flow_fixture_renders_docx_in_one_command(tmp_path: Path
         text=True,
     )
     assert result.returncode == 0, result.stderr or result.stdout
-    docx_path = tmp_path / "unterrichtsplanung.docx"
-    assert docx_path.is_file()
-    assert (tmp_path / "unterrichtsplanung.html").is_file()
-    with zipfile.ZipFile(docx_path) as document:
-        assert "word/document.xml" in document.namelist()
+    # E6-06: all three documents must actually render, in both formats.
+    for doc_id in ("unterrichtsplanung", "schueler_material", "beobachtungsbogen"):
+        docx_path = tmp_path / f"{doc_id}.docx"
+        assert docx_path.is_file(), f"{doc_id}.docx was not written"
+        assert (tmp_path / f"{doc_id}.html").is_file(), f"{doc_id}.html was not written"
+        with zipfile.ZipFile(docx_path) as document:
+            assert "word/document.xml" in document.namelist()
+
+
+def test_sek1_mathematik_flow_beobachtungsbogen_niveaus_match_differenzierung_api() -> None:
+    """The beobachtungsbogen's Leistungsniveaus statement must be exactly
+    what `finde_differenzierung` reports for the anchored competence -- read
+    from `meta.differenzierungs_achse`, never assumed from a hardcoded
+    subject list, and never claiming a per-item Standard/Standard-AHS split
+    (V-60: that distinction is prose-only in the source).
+    """
+    blocks, anchor = _fixture_blocks_and_anchor()
+    kompetenz_id = anchor["kompetenz_id"]
+    diff = kompetenz.finde_differenzierung(kompetenz_id)
+
+    niveau_block = next(
+        (b for b in blocks if b.get("label") == "Leistungsniveaus (ab der 2. Klasse)"), None
+    )
+
+    if not diff["niveaus"]:
+        assert niveau_block is None, (
+            "API reports no effective Leistungsniveaus for this competence's stage, "
+            "but the fixture still carries a Leistungsniveaus block"
+        )
+        return
+
+    assert niveau_block is not None, (
+        f"API reports niveaus={diff['niveaus']!r} as effective for {kompetenz_id}, "
+        "but the fixture carries no Leistungsniveaus block"
+    )
+    for label in diff["niveaus"]:
+        assert label in niveau_block["text"]
+
+    # The block must not imply a per-item marker: no labelled application
+    # block anywhere in the document may attach "Standard AHS" to an item.
+    for block in blocks:
+        if block.get("type") == "list" and isinstance(block.get("items"), list):
+            for item in block["items"]:
+                assert "Standard AHS" not in item, (
+                    f"item {item!r} carries a per-item Standard-AHS marker, but the "
+                    "source only ever states this distinction as prose (V-60)"
+                )
 
 
 # ---------------------------------------------------------------------------

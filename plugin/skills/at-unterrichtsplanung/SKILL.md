@@ -62,10 +62,25 @@ einem Ausgabe-Turn:
 
 - **`unterrichtsplanung`** (Lehrkraft) — der eigentliche Stundenverlauf, verankert in mindestens
   einer wörtlichen Kompetenzbeschreibung mit RIS-Quelle.
-- **`schueler_material`** (Schüler:innen) — nur wenn die Stunde tatsächlich ein Arbeitsblatt
-  braucht; nicht jede Stunde hat eines.
-- **`beobachtungsbogen`** (Lehrkraft) — Look-fors aus Anwendungsbereichen/Lehrstoff, inklusive der
-  Standard/Standard-AHS-Unterscheidung, wo diese Achse für das Fach und die Schulstufe gilt.
+- **`schueler_material`** (Schüler:innen) — **optional**: nur ausgeben, wenn die Stunde
+  tatsächlich ein eigenständiges Schüler:innen-Dokument erzeugt (Arbeitsblatt, Sortieraufgabe,
+  abzugebendes Exit-Ticket). Eine reine Plenums- oder Gesprächsstunde ohne eigenes
+  Schüler:innen-Dokument liefert **kein** `schueler_material` — das Weglassen ist die korrekte
+  Antwort, kein unvollständiges Ergebnis.
+- **`beobachtungsbogen`** (Lehrkraft) — für jede reguläre, kompetenztragende Stunde (Schritt 2
+  wurde durchlaufen). Die Look-fors sind unverändert die bereits abgefragten
+  `finde_anwendungsbereiche(id, nur_verbindlich=True)`-Items bzw., bei `lehrstoff_quelle:
+  eigen_ausgewiesen`, die `finde_lehrstoff(id)`-Rückgabe — nichts wird für den Bogen neu
+  formuliert oder erfunden. Die Leistungsniveau-Angabe (`Standard`/`Standard AHS`) erscheint
+  **ausschließlich**, wenn `finde_differenzierung(id)["niveaus"]` für die gewählte Kompetenz
+  tatsächlich nicht leer ist. Das ist die Achse aus `meta.differenzierungs_achse`
+  (`references/kompetenzdaten.md` §8) — sie greift je nach `gilt_ab_stufe` erst ab einer
+  bestimmten Schulstufe (bei SEK1 M/D/E ab K2, nicht schon K1) und wird **nie** aus einer
+  festverdrahteten Fachliste angenommen. Ist `niveaus` für die konkrete Stufe leer, entfällt der
+  Abschnitt ersatzlos, statt eine Unterscheidung zu behaupten, die die Quelle dort nicht trifft.
+  Auch wenn er erscheint, bleibt `Standard AHS` eine Metadaten-Einstufung (Fließtext im Lehrplan)
+  — der Bogen darf nie suggerieren, einzelne Anwendungsbereiche-Items seien selbst als
+  `Standard`/`Standard AHS` markiert.
 
 Herkunft ist in jedem Dokument sichtbar getrennt: amtlicher Lehrplantext vs. optionales
 Lehrkraft-Material aus `docs/` (nie als amtlich ausgewiesen, siehe `references/kompetenzdaten.md`).
@@ -157,9 +172,16 @@ werden klar von den amtlichen RIS-Zitaten getrennt und nie als Lehrplantext ausg
 Sobald die Angaben ausreichend sind, den gesamten folgenden Ablauf in **einer** Antwort und ohne
 Bestätigungsrunde ausführen:
 
-1. Eine vollständige `lesson.json` mit mindestens einem Dokument
-   `{"id": "unterrichtsplanung", "audience": "teacher", …}` schreiben. Die Datei enthält
-   `shared` und `documents`; jeder Abschnitt enthält `heading` und `blocks`.
+1. Eine vollständige `lesson.json` schreiben: immer das Dokument `{"id": "unterrichtsplanung",
+   "audience": "teacher", …}`, für jede reguläre kompetenztragende Stunde zusätzlich
+   `{"id": "beobachtungsbogen", "audience": "teacher", …}`, und `{"id": "schueler_material",
+   "audience": "student", …}` nur dann, wenn die Stunde tatsächlich ein eigenständiges
+   Schüler:innen-Dokument braucht (siehe Dokumenten-Set oben — Weglassen ist hier die korrekte
+   Antwort). Die Datei enthält `shared` und `documents`; jeder Abschnitt enthält `heading` und
+   `blocks`. Die amtliche Verankerung (`kompetenzbezug` mitsamt `quelle`) gehört in `shared` und
+   wird von jedem Dokument, das sie zeigt, per `from_shared` referenziert — nie in einem zweiten
+   Dokument erneut abgetippt, damit Wortlaut und Provenienz nicht zwischen den Dokumenten
+   auseinanderlaufen können.
 2. Die Verankerung als `kompetenzbezug` schreiben: `kompetenz_id`, vollständiger wörtlicher Text
    und die unveränderte `provenienz` als `quelle`. Übergreifende Themen als
    `uebergreifende_themen_tag` ausgeben, sobald mindestens eines vorliegt.
@@ -189,6 +211,9 @@ Bestätigungsrunde ausführen:
    tatsächlich geschriebenen Pfade nennen und nur dann Erfolg melden, wenn der Renderer mit
    Status 0 beendet wurde.
 
-Diese Aufgabe erzeugt zunächst mindestens die `unterrichtsplanung`. Das optionale
-`schueler_material`, der `beobachtungsbogen` und die vollständige `docs/`-Ingestion gehören zu
-den nachgelagerten Erweiterungen und werden nicht als bereits geliefert behauptet.
+Diese Aufgabe erzeugt die `unterrichtsplanung` und, für jede kompetenztragende Stunde, den
+`beobachtungsbogen`; das `schueler_material` kommt hinzu, sobald die Stunde ein eigenständiges
+Schüler:innen-Dokument braucht. Die vollständige `docs/`-Ingestion (PDF/DOCX-Konvertierung,
+`docs/.cache/`, Größen-/Anzahl-/Token-Grenzen) ist dagegen eine nachgelagerte Erweiterung und
+wird hier nicht als bereits geliefert behauptet — `finde_lernaufgaben` liest heute nur native
+`.md`/`.txt`-Dateien.

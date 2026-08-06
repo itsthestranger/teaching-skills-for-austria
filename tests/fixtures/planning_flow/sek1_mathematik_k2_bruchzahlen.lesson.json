@@ -115,6 +115,199 @@
           ]
         }
       ]
+    },
+    {
+      "id": "schueler_material",
+      "audience": "student",
+      "eyebrow": "Sekundarstufe I · Mathematik · 2. Klasse · Arbeitsblatt",
+      "title": "Zahlen auf dem Zahlenstrahl",
+      "meta": "Name: ____________________    Datum: ____________",
+      "sections": [
+        {
+          "heading": "Aufwärmen",
+          "blocks": [
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "callout",
+                  "kind": "student-task",
+                  "label": "Warm-up",
+                  "text": "Markiere 1/2, 3/4 und 0,5 auf einem Zahlenstrahl. Welche Darstellungen zeigen denselben Wert?"
+                },
+                {
+                  "type": "answer_box"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Zahlen vergleichen",
+          "blocks": [
+            {
+              "type": "callout",
+              "kind": "student-note",
+              "label": "Denk daran",
+              "text": "Bruch, Dezimalzahl oder ganze Zahl - jede Zahl hat einen festen Platz auf dem Zahlenstrahl."
+            },
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "Ordne diese Zahlen der Größe nach: -2, 0,75, 2/3, 3/4."
+                },
+                {
+                  "type": "answer_box",
+                  "ruled": true
+                }
+              ]
+            },
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "Wechsle 0,6 in einen Bruch und in einen Prozentsatz um. Zeige deinen Rechenweg."
+                },
+                {
+                  "type": "answer_box"
+                }
+              ]
+            },
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "Vergleiche -3 und 2 auf dem Zahlenstrahl. Welche Zahl liegt weiter rechts, und warum?"
+                },
+                {
+                  "type": "answer_box"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Zeig, was du kannst",
+          "blocks": [
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "callout",
+                  "kind": "student-task",
+                  "label": "Exit-Ticket",
+                  "text": "Ordne -2, 0,75, 2/3 und 3/4 der Größe nach. Zeichne eine Zahl auf dem Zahlenstrahl ein und begründe deinen Vergleich in einem Satz."
+                },
+                {
+                  "type": "answer_box",
+                  "ruled": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "beobachtungsbogen",
+      "audience": "teacher",
+      "eyebrow": "Sekundarstufe I · Mathematik · 2. Klasse · Beobachtungsbogen",
+      "title": "Beobachtung: Bruchzahlen darstellen und vergleichen",
+      "meta": "Kompetenzbereich Zahlen und Maße · AT.LP23.SEK1.M.ZAHLEN.K2.02",
+      "sections": [
+        {
+          "heading": "Amtliche Verankerung",
+          "blocks": [
+            {
+              "type": "from_shared",
+              "key": "kompetenz"
+            }
+          ]
+        },
+        {
+          "heading": "Worauf achten",
+          "blocks": [
+            {
+              "type": "list",
+              "label": "Verbindliche Anwendungsbereiche",
+              "items": [
+                "Wechseln zwischen Bruch- und Dezimaldarstellung auch bei Zahlen mit einfacher periodischer Dezimaldarstellung (zB ⟦ABB:hauptdokument.img8is.png⟧;",
+                "Wechseln zwischen Bruch- und Dezimaldarstellung und Prozentdarstellung (zB ⟦ABB:hauptdokument.img9is.png⟧);",
+                "Deuten von Brüchen als relative Anteile und relative Häufigkeiten;",
+                "Darstellen ganzer Zahlen als Punkte auf der Zahlengeraden; Interpretieren ganzer Zahlen auch in außermathematischen Situationen;",
+                "Vergleichen und Ordnen ganzer Zahlen;",
+                "Vergleichen der Zahlbereiche, zB hinsichtlich der Existenz von Vorgängern, Nachfolgern und Zahlen zwischen zwei Werten, sowie der Eindeutigkeit der Zahldarstellung."
+              ],
+              "abbildungen": [
+                {
+                  "token": "⟦ABB:hauptdokument.img8is.png⟧",
+                  "datei": "hauptdokument.img8is.png",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img8is.png"
+                },
+                {
+                  "token": "⟦ABB:hauptdokument.img9is.png⟧",
+                  "datei": "hauptdokument.img9is.png",
+                  "pfad": "data/abbildungen/NOR40271471/hauptdokument.img9is.png"
+                }
+              ]
+            },
+            {
+              "type": "fill_table",
+              "headers": [
+                "Schüler:in",
+                "Beobachtete Strategie (Zahlenstrahl / Bruch / Dezimal / ganze Zahl)",
+                "Nächster Schritt"
+              ],
+              "blank_rows": 8,
+              "row_height_pt": 26
+            }
+          ]
+        },
+        {
+          "heading": "Optionale Erweiterung",
+          "blocks": [
+            {
+              "type": "labeled",
+              "label": "Optionale Erweiterung (allenfalls, nicht verpflichtend)",
+              "text": "Für diese Kompetenz liegt keine verknüpfte optionale Präzisierung vor."
+            }
+          ]
+        },
+        {
+          "heading": "Leistungsniveaus",
+          "blocks": [
+            {
+              "type": "labeled",
+              "label": "Leistungsniveaus (ab der 2. Klasse)",
+              "text": "Für Mathematik unterscheidet der Lehrplan ab der 2. Klasse die zwei Leistungsniveaus 'Standard' und 'Standard AHS' (Wechsel während des Unterrichtsjahres möglich). Das ist eine Metadaten-Einstufung aus dem Fließtext des Lehrplans - keine einzelnen Anwendungsbereiche-Items sind selbst als 'Standard' oder 'Standard AHS' gekennzeichnet."
+            }
+          ]
+        },
+        {
+          "heading": "Vorläuferkompetenz (Diagnosegrundlage)",
+          "blocks": [
+            {
+              "type": "labeled",
+              "label": "Vorläufer",
+              "text": "AT.LP23.SEK1.M.ZAHLEN.K1.01 (natürliche Zahlen sowie nichtnegative Dezimal- und Bruchzahlen interpretieren, darstellen und vergleichen), AT.LP23.SEK1.M.ZAHLEN.K1.02 (Rechenoperationen mit natürlichen Zahlen und nichtnegativen Dezimalzahlen durchführen und deuten) und AT.LP23.SEK1.M.ZAHLEN.K1.03 (Größen anschreiben, Maßangaben interpretieren und Umrechnungen durchführen) sind die Vorläuferkompetenzen, die im Einstieg aktiviert werden."
+            }
+          ]
+        },
+        {
+          "heading": "Bildungsstandard-Bezug",
+          "blocks": [
+            {
+              "type": "labeled",
+              "label": "Bildungsstandards-Bezug",
+              "text": "Der projektseitige Bereichs-Crosswalk verbindet Zahlen und Maße mit vier M8-Bereichen (Darstellen/Modellbilden, Rechnen/Operieren, Interpretieren sowie Argumentieren/Begründen) und macht 12 amtliche Deskriptoren auffindbar. Dies ist ausdrücklich ein Bereichsbezug und keine 1:1-Zuordnung dieser Kompetenz zu einzelnen Deskriptoren."
+            }
+          ]
+        }
+      ]
     }
   ]
 }
