@@ -40,9 +40,8 @@ Alle in `plugin/scripts/kompetenz.py`, pure stdlib, offline, deterministisch.
    siehe `mathematik.md`). Dieselben Koordinaten-Regeln wie oben.
 5. **`finde_lernaufgaben(fach=None, stufe=None, kompetenz_id=None, docs_root=None) → list[dict]`**
    Lehrkraft-Material aus `docs/`. Jeder Treffer trägt `herkunft: "docs"`, `amtlich: False` — nie
-   als amtlich ausweisen. Fehlendes/leeres `docs/` → `[]`, kein Fehler. **Interimsleser**: nur
-   `.md`/`.txt`; die volle Ingestion (`.pdf`/`.docx`, `docs/.cache/`, Limits) ist eine eigene,
-   noch offene Aufgabe.
+   als amtlich ausweisen. Fehlendes/leeres `docs/` → `[]`, kein Fehler. Ordnerkonvention,
+   Formate, Limits und Herkunftskennzeichnung: `lehrkraft_material.md`.
 6. **`finde_bildungsstandard_bezug(kompetenz_id) → dict`**
    Der Deskriptor-Crosswalk ist seit E8-03 gebaut (50 Bereichszuordnungen, V-82). Drei
    verschiedene, gemessene Ergebnisformen — keine zwei, keine ist ein ausstehender Zustand:

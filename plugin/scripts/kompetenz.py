@@ -939,28 +939,21 @@ def finde_lehrstoff(
 # 5. finde_lernaufgaben (docs/ only)
 # ---------------------------------------------------------------------------
 
-#: Minimal folder-name -> Fachcode alias table (plan §6.6). Full ingestion
-#: (pdf/docx conversion, docs/.cache/, size/count/token limits) is E6-05's
-#: scope, not this task's -- see the 2026-08-03 deviations.md row.
-_DOCS_FACH_ALIAS: dict[str, str] = {
-    "mathematik": "M",
-    "deutsch": "D",
-    "englisch": "E",
-    "sachunterricht": "SU",
-    "m": "M",
-    "d": "D",
-    "e": "E",
-    "su": "SU",
-}
+#: ``plugin/scripts/docs_ingest.py`` owns the full ingestion contract
+#: (folder convention, alias table, .md/.txt native, .pdf/.docx conversion,
+#: docs/.cache/, size/count/token limits -- plan §6.6, backlog E6-05). This
+#: module only imports it lazily inside :func:`finde_lernaufgaben` to avoid
+#: a module-level import cycle risk and to keep every other function in
+#: this file independent of the docs/ ingestion machinery.
+def _docs_ingest():
+    import sys as _sys
 
-_STUFE_TOKENS = {f"K{n}" for n in range(1, 5)} | {f"SCH{n}" for n in range(1, 5)}
+    HERE = str(Path(__file__).resolve().parent)
+    if HERE not in _sys.path:
+        _sys.path.insert(0, HERE)
+    import docs_ingest
 
-
-def _docs_stufe_normalisieren(roh: str) -> str | None:
-    kandidat = roh.strip().upper()
-    if kandidat in _STUFE_TOKENS:
-        return kandidat
-    return None
+    return docs_ingest
 
 
 def finde_lernaufgaben(
@@ -971,15 +964,16 @@ def finde_lernaufgaben(
 ) -> list[dict[str, Any]]:
     """Teacher-supplied material from ``docs/`` only -- never official/RIS.
 
-    Missing or empty ``docs/`` returns ``[]`` and the calling flow
-    continues normally (plan §6.6). This is a minimal, interim reader for
-    E4-01: native ``.md``/``.txt`` files only, matched against the folder
-    convention ``docs/<fach>/<stufe>/…`` | ``docs/<fach>/…`` | ``docs/…``
-    (unassigned). PDF/DOCX conversion, ``docs/.cache/``, and the
-    size/count/token limits are §6.6's full ingestion contract (backlog
-    E6-05) and are **not** implemented here -- an unconvertible file is
-    silently skipped rather than logged as unusable, which E6-05 must
-    still add.
+    Missing or empty ``docs/`` returns ``[]`` and the calling flow continues
+    normally (plan §6.6). Delegates the full ingestion contract --
+    ``.md``/``.txt`` native, ``.pdf``/``.docx`` converted and cached under
+    ``docs/.cache/``, the folder-convention alias table, and the
+    size/count/token-budget limits with observable logging of anything
+    skipped or dropped -- to :mod:`docs_ingest`. Use
+    ``docs_ingest.sammle(...)`` directly for the full
+    :class:`docs_ingest.Ingestionsbericht` (what was skipped/dropped and
+    why); this function keeps returning only the accepted entries as plain
+    dicts, matching its established ``list[dict]`` contract.
 
     Every returned entry carries ``herkunft: "docs"`` and ``amtlich:
     False`` -- teacher material is never presented as official.
@@ -992,70 +986,10 @@ def finde_lernaufgaben(
         except KompetenzNichtGefunden:
             LOGGER.warning("finde_lernaufgaben: kompetenz_id %s nicht gefunden", kompetenz_id)
 
-    wurzel = Path(docs_root) if docs_root is not None else Path("docs")
-    if not wurzel.is_dir():
-        return []
-
-    ziel_fach_code: str | None = None
-    if fach:
-        f = fach.strip().upper()
-        ziel_fach_code = f.split(".", 1)[1] if "." in f else f
-
-    ziel_stufe = stufe.strip().upper() if stufe else None
-
-    ergebnisse: list[dict[str, Any]] = []
-    for pfad in sorted(wurzel.rglob("*")):
-        if not pfad.is_file():
-            continue
-        rel = pfad.relative_to(wurzel)
-        teile = rel.parts
-        if any(teil.startswith(".") for teil in teile):
-            # Hidden files/dirs, notably docs/.cache/ (the §6.6 conversion
-            # cache -- never source content) and dotfiles in general.
-            continue
-        if pfad.suffix.lower() not in (".md", ".txt"):
-            continue
-        if len(teile) == 1 and pfad.name.casefold() == "readme.md":
-            # docs/README.md is this folder's own scaffolding/instructions
-            # (the one non-.gitkeep file the repo commits at docs/ root,
-            # see .gitignore), never a teacher-authored Lernaufgabe.
-            continue
-
-        erkannter_fach = _DOCS_FACH_ALIAS.get(teile[0].casefold()) if teile else None
-        erkannte_stufe = None
-        if erkannter_fach and len(teile) >= 3:
-            erkannte_stufe = _docs_stufe_normalisieren(teile[1])
-
-        if ziel_fach_code is not None and erkannter_fach != ziel_fach_code:
-            # An unrecognised folder is listed as *unassigned* rather than
-            # discarded (plan §6.6) when browsing docs/ without a fach
-            # filter -- but it must not spuriously match a caller that asked
-            # for one specific subject's material.
-            continue
-        if ziel_stufe is not None and erkannte_stufe is not None and erkannte_stufe != ziel_stufe:
-            continue
-
-        text = pfad.read_text(encoding="utf-8", errors="replace")
-        titel = pfad.stem
-        for zeile in text.splitlines():
-            zeile = zeile.strip()
-            if zeile.startswith("#"):
-                titel = zeile.lstrip("#").strip() or titel
-                break
-
-        ergebnisse.append(
-            {
-                "titel": titel,
-                "pfad": str(rel),
-                "fach": f"?.{erkannter_fach}" if erkannter_fach else None,
-                "stufe": erkannte_stufe,
-                "text": text,
-                "herkunft": "docs",
-                "amtlich": False,
-            }
-        )
-
-    return ergebnisse
+    ingest = _docs_ingest()
+    wurzel = docs_root if docs_root is not None else ingest.STANDARD_DOCS_ROOT
+    bericht = ingest.sammle(wurzel, fach=fach, stufe=stufe, kompetenz_id=kompetenz_id)
+    return [eintrag.to_dict() for eintrag in bericht.treffer]
 
 
 # ---------------------------------------------------------------------------
