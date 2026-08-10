@@ -1,6 +1,6 @@
 # Continuous integration for teaching-skills-austria.
 #
-# Four independent gates, one job each, so a red build names the rule it broke rather than
+# Five independent gates, one job each, so a red build names the rule it broke rather than
 # "CI failed":
 #
 #   dataset          schema validation of the six shipped shards -- hard rules fail the run,
@@ -11,10 +11,20 @@
 #                    repo -- see the collection guard in that job
 #   fetcher-selftest the fetcher's offline correctness checks, run with the network blackholed
 #   plugin-manifest  the plugin manifests still parse and carry no unresolved release placeholder
+#   plugin-smoke     the installed-plugin path on a genuinely fresh environment (E10-06)
 #
-# Everything here runs without network access and without `data-pipeline/resources/`, which is
-# gitignored: the live-source tests skip themselves when it is absent (~63 skips on a clean
-# checkout) and that is the expected CI shape, not a failure.
+# Every job except `plugin-smoke` runs without network access and without
+# `data-pipeline/resources/`, which is gitignored: the live-source tests skip themselves when it
+# is absent (~63 skips on a clean checkout) and that is the expected CI shape, not a failure.
+# `plugin-smoke` is the deliberate exception -- proving python-docx installs on a fresh machine
+# is the one thing that cannot be done without fetching it. See that job for the boundary.
+#
+# There is deliberately NO amendment-detection job. `detect_amendment.py` diffs a candidate
+# manifest against the committed one, and CI only ever has the committed one -- any such job
+# would compare a file with itself and could only ever pass. That is the vacuous-check failure
+# mode the `tests` collection guard exists to prevent, so it is not reproduced here. Amendment
+# detection is manual and on-notice (plan section 10.3): re-run the fetcher, then diff the fresh
+# manifest against the committed baseline before updating it.
 
 name: CI
 
@@ -174,3 +184,42 @@ jobs:
           else
             echo "no release placeholders left"
           fi
+
+  plugin-smoke:
+    name: Plugin smoke test (fresh environment)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # The Claude Code CLI, not python-docx, is this job's own subject: `plugin validate
+      # --strict`, `marketplace add` and `install` need the real CLI. Installed fresh every run
+      # so a break in the install step fails the job loudly rather than letting the smoke test
+      # downgrade to its PROXY-SKIPPED path and report success for steps it never ran.
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
+      # This job is the one place network access is allowed, and only for the wheel build:
+      # decision E5-11 kept upstream's runtime `pip install`, so the delivery story this job
+      # exists to verify is precisely "the dependency can be fetched and installed on a machine
+      # that does not have it". The install into the fresh venv is itself done --no-index with
+      # the proxies blackholed, so only the wheel build reaches the network.
+      #
+      # --require-cli turns a missing or broken `claude` binary into a hard failure instead of a
+      # silent skip; without it this job could pass while testing none of the CLI chain.
+      - name: Plugin smoke test
+        run: python scripts/plugin_smoke_test.py --require-cli --json > smoke_report.json
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: plugin-smoke-test-report
+          path: smoke_report.json
+          if-no-files-found: warn
