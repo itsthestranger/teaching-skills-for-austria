@@ -1,0 +1,477 @@
+{
+  "shared": {
+    "kompetenz": {
+      "type": "kompetenzbezug",
+      "kompetenz_id": "AT.LP23.PRIM.SU.NATURWISS.SCH3.01",
+      "text": "Die Schülerinnen und Schüler können sich über Naturereignisse und Wetterphänomene informieren sowie die Bedeutung von Sonne, Luft, Wasser und Boden für Lebewesen erkennen, darüber nachdenken und Zusammenhänge erklären.",
+      "quelle": {
+        "quelle": "RIS Bundesrecht konsolidiert",
+        "kurztitel": "Lehrplan der Volksschule",
+        "nor": "NOR40271469",
+        "kundmachung": "BGBl. Nr. 134/1963 zuletzt geändert durch BGBl. II Nr. 178/2025",
+        "anlage": "Anl. 1",
+        "teil": "NEUNTER TEIL",
+        "stand": "2026-07-27"
+      }
+    },
+    "anwendungsbereiche_auswahl": {
+      "type": "list",
+      "label": "Verbindliche Anwendungsbereiche (Auswahl aus der stufenweiten Liste)",
+      "items": [
+        "Klima und Wetter",
+        "Stoffe und Veränderungen"
+      ]
+    },
+    "anwendungsbereiche_hinweis": {
+      "type": "labeled",
+      "label": "Hinweis zu den Anwendungsbereichen",
+      "text": "AT.LP23.PRIM.SU.AB.SCH3.01–.10 sind zehn Anwendungsbereiche, die für die gesamte 3. Schulstufe des Sachunterrichts gelten (anwendungsbereiche_bindung: 'stufe') — dieselben zehn Items gelten für jede Kompetenz dieser Stufe in allen sechs Kompetenzbereichen, nicht nur für diese Naturwissenschaftliche Kompetenz. Zwei Items ('Klima und Wetter', 'Stoffe und Veränderungen') sind für diese Einheit pädagogisch ausgewählt, weil sie inhaltlich zu Wetterphänomenen sowie zu Wasser und Boden passen. Die übrigen acht (u. a. 'Kinderrechte und Diversität', 'Geschichte und Ereignisse', 'Produktion und Handel') gehören zu anderen Kompetenzbereichen (Sozialwissenschaftlich, Historisch, Wirtschaftlich, ...) derselben Stufe und werden hier bewusst nicht als Präzisierung dieser Kompetenz dargestellt."
+    },
+    "vorklasse_liste": {
+      "type": "list",
+      "label": "Vorjahreskompetenzen (Vorklasse-Stützung)",
+      "items": [
+        "AT.LP23.PRIM.SU.NATURWISS.SCH2.01 — Die Schülerinnen und Schüler können den Aufbau des eigenen Körpers beschreiben und Funktionen von ausgewählten Organen erklären; Besonderheiten, Unterschiede und Zusammenhänge verschiedener Signale, Sinne und Sinnesleistungen erkennen, vergleichen und erklären.",
+        "AT.LP23.PRIM.SU.NATURWISS.SCH2.02 — Die Schülerinnen und Schüler können Tiere und Pflanzen in ihren Lebensräumen erkunden und dokumentieren sowie Wechselwirkungen beschreiben."
+      ]
+    },
+    "vorklasse_hinweis": {
+      "type": "labeled",
+      "label": "Hinweis zur Vorjahres-Stützung",
+      "text": "Die beiden Vorklasse-Kompetenzen sind der amtliche, positionale Vorläufer im selben Naturwissenschaftlichen Kompetenzbereich (finde_progression, Richtung 'zurueck') — sie handeln vom eigenen Körper/den Sinnen bzw. von Tieren und Pflanzen, nicht wortwörtlich von Wetter. Die Grundlegend-Stufe nutzt sie als Grundlage für die Fertigkeiten 'sinnesgestützt beobachten' und 'beobachten und dokumentieren', die auf Wetterphänomene übertragen werden — keine dieser Kompetenzen wird als 'über Wetter' umgedeutet."
+    },
+    "niveaus_hinweis": {
+      "type": "labeled",
+      "label": "Differenzierungsachse (aus finde_differenzierung, verbatim)",
+      "text": "typ: lehrplan_generisch · niveaus: grundlegend, erweitert, vertiefend · quelle: Kompetenzbeschreibungen + Anwendungsbereiche je Schulstufe. Anders als bei der Sek-I-Achse gibt es kein gilt_ab_stufe: Alle drei Labels sind an jeder Schulstufe von PRIM.SU wirksam, auch an der 3. Schulstufe dieser Einheit — keine K1-artige Aussetzung."
+    },
+    "enrichment_hinweis": {
+      "type": "labeled",
+      "label": "Vertiefung — Herkunft (kein Datensatz-Enrichment)",
+      "text": "enrichment_items ist für AT.LP23.PRIM.SU.NATURWISS.SCH3.01 leer ([]), weil die PRIM.SU-Achse kein enrichment_quelle: 'allenfalls' trägt (das gilt nur für SEK1.M). Das ist der echte Datenstand, keine Lücke. Die Vertiefend-Stufe unten ist deshalb ausschließlich skill-eigene, an stammsatz + text rückgebundene Vertiefung — sie behauptet an keiner Stelle, amtlichen 'allenfalls'- oder Standard-AHS-Inhalt aus dem Datensatz abzufragen; ein solches Feld existiert für diesen Shard nicht."
+    },
+    "bildungsstandard_hinweis": {
+      "type": "labeled",
+      "label": "Bildungsstandards-Bezug",
+      "text": "finde_bildungsstandard_bezug liefert für PRIM.SU {'abgedeckt': False, 'grund': 'keine BiSt verordnet'} — Sachunterricht ist der einzige der sechs Shards ohne Bildungsstandardsverordnung. Diese Planung enthält deshalb regulär keinen Bildungsstandard-Bezug-Abschnitt; das ist die amtlich korrekte Antwort, kein Fehler."
+    }
+  },
+  "documents": [
+    {
+      "id": "differenzierungsplan",
+      "audience": "teacher",
+      "eyebrow": "Primarstufe · Sachunterricht · 3. Schulstufe · Differenzierung",
+      "title": "Wetter und Naturphänomene: Differenzierungsplan",
+      "meta": "Naturwissenschaftlicher Kompetenzbereich · AT.LP23.PRIM.SU.NATURWISS.SCH3.01",
+      "sections": [
+        {
+          "heading": "Amtliche Verankerung",
+          "blocks": [
+            {
+              "type": "from_shared",
+              "key": "kompetenz"
+            },
+            {
+              "type": "labeled",
+              "label": "Kompetenzbereich",
+              "text": "Naturwissenschaftlicher Kompetenzbereich (NATURWISS) · 3. Schulstufe (SCH3)"
+            },
+            {
+              "type": "from_shared",
+              "key": "anwendungsbereiche_auswahl"
+            },
+            {
+              "type": "from_shared",
+              "key": "anwendungsbereiche_hinweis"
+            },
+            {
+              "type": "from_shared",
+              "key": "vorklasse_liste"
+            },
+            {
+              "type": "from_shared",
+              "key": "vorklasse_hinweis"
+            },
+            {
+              "type": "from_shared",
+              "key": "niveaus_hinweis"
+            },
+            {
+              "type": "from_shared",
+              "key": "enrichment_hinweis"
+            },
+            {
+              "type": "from_shared",
+              "key": "bildungsstandard_hinweis"
+            },
+            {
+              "type": "herkunftsblock",
+              "amtlich": true,
+              "quelle": {
+                "quelle": "RIS Bundesrecht konsolidiert",
+                "kurztitel": "Lehrplan der Volksschule",
+                "nor": "NOR40271469",
+                "kundmachung": "BGBl. Nr. 134/1963 zuletzt geändert durch BGBl. II Nr. 178/2025",
+                "anlage": "Anl. 1",
+                "teil": "NEUNTER TEIL",
+                "stand": "2026-07-27"
+              },
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "Zielkompetenz, Anwendungsbereiche und Vorjahres-Stützung stammen ausschließlich aus dem PRIM.SU-Shard über plugin/scripts/kompetenz.py. Dieses Dokument erfindet keine Kompetenz-ID, kein Zitat und keine Anwendungsbereich-Zuordnung."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Stufenübersicht",
+          "blocks": [
+            {
+              "type": "niveau_spalte",
+              "niveaus": [
+                {
+                  "label": "grundlegend",
+                  "titel": "Sinnesgestützt beobachten",
+                  "blocks": [
+                    {
+                      "type": "paragraph",
+                      "text": "Gründet auf den zwei Vorklasse-Kompetenzen NATURWISS.SCH2.01–.02 (Sinne; Beobachten und Dokumentieren) — siehe eigenes Arbeitsblatt 'arbeitsblatt_grundlegend'."
+                    }
+                  ]
+                },
+                {
+                  "label": "erweitert",
+                  "titel": "Zusammenhänge erklären",
+                  "blocks": [
+                    {
+                      "type": "paragraph",
+                      "text": "Bindende Kompetenz (volltext) plus die zwei ausgewählten verbindlichen Anwendungsbereiche 'Klima und Wetter' und 'Stoffe und Veränderungen' — siehe eigenes Arbeitsblatt 'arbeitsblatt_erweitert'."
+                    }
+                  ]
+                },
+                {
+                  "label": "vertiefend",
+                  "titel": "Untersuchen und protokollieren",
+                  "blocks": [
+                    {
+                      "type": "paragraph",
+                      "text": "Skill-eigene, an stammsatz + text rückgebundene Vertiefung (kein Datensatz-Enrichment, siehe Hinweis oben) — siehe eigenes Arbeitsblatt 'arbeitsblatt_vertiefend'."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Stufenzuweisung und Revision",
+          "blocks": [
+            {
+              "type": "labeled",
+              "label": "Begründung",
+              "text": "Die Zuweisung zu grundlegend/erweitert/vertiefend stützt sich auf die letzte Beobachtung zum Beschreiben von Sinneseindrücken (Vorstunde: Wetterbilder sortieren). Sie ist eine Arbeitsannahme, kein fixer Track: formative Evidenz aus dieser Stunde (Beobachtungsbogen, mündliche Erklärung) kann die Zuordnung für die nächste Einheit revidieren."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arbeitsblatt_grundlegend",
+      "audience": "student",
+      "eyebrow": "Sachunterricht · 3. Schulstufe · Arbeitsblatt (Grundlegend)",
+      "title": "Wetter beobachten: Grundlegend",
+      "meta": "Name: ____________________    Datum: ____________",
+      "sections": [
+        {
+          "heading": "Amtliche Verankerung",
+          "blocks": [
+            {
+              "type": "from_shared",
+              "key": "kompetenz"
+            },
+            {
+              "type": "labeled",
+              "label": "Niveaustufe",
+              "text": "grundlegend"
+            }
+          ]
+        },
+        {
+          "heading": "Was du schon kannst (Vorjahr)",
+          "blocks": [
+            {
+              "type": "from_shared",
+              "key": "vorklasse_liste"
+            },
+            {
+              "type": "from_shared",
+              "key": "vorklasse_hinweis"
+            }
+          ]
+        },
+        {
+          "heading": "Wetter mit allen Sinnen",
+          "blocks": [
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "callout",
+                  "kind": "student-task",
+                  "label": "Los geht's",
+                  "text": "Schau aus dem Fenster oder geh kurz nach draußen. Was siehst du, was hörst du, was spürst du auf der Haut? Kreuze an: Sonne / Regen / Wind / Wolken / Kälte / Wärme."
+                },
+                {
+                  "type": "answer_box"
+                }
+              ]
+            },
+            {
+              "type": "callout",
+              "kind": "student-note",
+              "label": "Denk daran",
+              "text": "So wie du im Vorjahr mit deinen Sinnen den eigenen Körper und Tiere in ihren Lebensräumen beobachtet hast, beobachtest du jetzt das Wetter."
+            }
+          ]
+        },
+        {
+          "heading": "Sonne, Luft, Wasser, Boden",
+          "blocks": [
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "Male ein Bild: Was braucht eine Pflanze zum Wachsen? Beschrifte Sonne, Luft, Wasser und Boden mit einem Pfeil zur Pflanze."
+                },
+                {
+                  "type": "answer_box",
+                  "ruled": false
+                }
+              ]
+            },
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "Ergänze den Satz: 'Wenn es heute ___ ist, ziehe ich ___ an.'"
+                },
+                {
+                  "type": "answer_box"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Zeig, was du kannst",
+          "blocks": [
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "callout",
+                  "kind": "student-task",
+                  "label": "Reflexion",
+                  "text": "Erzähl einer Partnerin oder einem Partner: Welches Wetterzeichen hast du heute mit deinen Sinnen am deutlichsten bemerkt?"
+                },
+                {
+                  "type": "answer_box",
+                  "ruled": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arbeitsblatt_erweitert",
+      "audience": "student",
+      "eyebrow": "Sachunterricht · 3. Schulstufe · Arbeitsblatt (Erweitert)",
+      "title": "Wetter und Naturphänomene: Erweitert",
+      "meta": "Name: ____________________    Datum: ____________",
+      "sections": [
+        {
+          "heading": "Amtliche Verankerung",
+          "blocks": [
+            {
+              "type": "from_shared",
+              "key": "kompetenz"
+            },
+            {
+              "type": "labeled",
+              "label": "Niveaustufe",
+              "text": "erweitert"
+            }
+          ]
+        },
+        {
+          "heading": "Verbindliche Anwendungsbereiche",
+          "blocks": [
+            {
+              "type": "from_shared",
+              "key": "anwendungsbereiche_auswahl"
+            },
+            {
+              "type": "from_shared",
+              "key": "anwendungsbereiche_hinweis"
+            }
+          ]
+        },
+        {
+          "heading": "Aufgaben",
+          "blocks": [
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "Beobachte drei Tage lang das Wetter (Klima und Wetter) und trage jeden Tag ein Zeichen (Sonne/Wolke/Regen/Wind) sowie die gefühlte Temperatur in eine kleine Tabelle ein."
+                },
+                {
+                  "type": "fill_table",
+                  "headers": ["Tag", "Wetterzeichen", "Gefühlte Temperatur"],
+                  "blank_rows": 3,
+                  "row_height_pt": 22
+                }
+              ]
+            },
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "Erkläre in zwei bis drei Sätzen: Warum braucht eine Pflanze Sonne, Luft, Wasser und Boden (Stoffe und Veränderungen)? Was passiert, wenn eines davon fehlt?"
+                },
+                {
+                  "type": "answer_box",
+                  "ruled": true
+                }
+              ]
+            },
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "Beschreibe, was mit dem Boden passiert, wenn es lange geregnet hat, und was, wenn es lange nicht geregnet hat. Nenne einen Zusammenhang mit einem Lebewesen deiner Wahl."
+                },
+                {
+                  "type": "answer_box"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Zeig, was du kannst",
+          "blocks": [
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "callout",
+                  "kind": "student-task",
+                  "label": "Reflexion",
+                  "text": "Welchen Zusammenhang zwischen Wetter und Lebewesen findest du am wichtigsten? Woran könntest du diesen Zusammenhang jemand anderem zeigen?"
+                },
+                {
+                  "type": "answer_box",
+                  "ruled": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arbeitsblatt_vertiefend",
+      "audience": "student",
+      "eyebrow": "Sachunterricht · 3. Schulstufe · Arbeitsblatt (Vertiefend)",
+      "title": "Wetter und Naturphänomene: Vertiefend",
+      "meta": "Name: ____________________    Datum: ____________",
+      "sections": [
+        {
+          "heading": "Amtliche Verankerung",
+          "blocks": [
+            {
+              "type": "from_shared",
+              "key": "kompetenz"
+            },
+            {
+              "type": "labeled",
+              "label": "Niveaustufe",
+              "text": "vertiefend"
+            },
+            {
+              "type": "from_shared",
+              "key": "enrichment_hinweis"
+            }
+          ]
+        },
+        {
+          "heading": "Skill-eigene Vertiefung (nicht amtlich, kein Datensatz-Enrichment)",
+          "blocks": [
+            {
+              "type": "herkunftsblock",
+              "amtlich": false,
+              "quelle_hinweis": "skill-eigene Vertiefung, rückgebunden an stammsatz + text der Zielkompetenz (AT.LP23.PRIM.SU.NATURWISS.SCH3.01) — keine amtliche 'allenfalls'-Quelle, da die PRIM.SU-Achse keine enrichment_quelle trägt",
+              "blocks": [
+                {
+                  "type": "group",
+                  "blocks": [
+                    {
+                      "type": "paragraph",
+                      "text": "Plane eine kleine Untersuchung: Stelle zwei gleiche Pflanzen an unterschiedliche Orte (z. B. sonnig/schattig oder gegossen/ungegossen). Notiere täglich eine Woche lang, was sich verändert."
+                    },
+                    {
+                      "type": "fill_table",
+                      "headers": ["Tag", "Pflanze A", "Pflanze B"],
+                      "blank_rows": 5,
+                      "row_height_pt": 22
+                    }
+                  ]
+                },
+                {
+                  "type": "group",
+                  "blocks": [
+                    {
+                      "type": "callout",
+                      "kind": "student-task",
+                      "label": "Weiterdenken",
+                      "text": "Erkläre in einer kleinen Kette: Wie hängen Sonne, Wasser im Boden, Verdunstung und Wolkenbildung zusammen? Zeichne einen Kreislauf mit Pfeilen."
+                    },
+                    {
+                      "type": "answer_box",
+                      "ruled": true
+                    }
+                  ]
+                },
+                {
+                  "type": "group",
+                  "blocks": [
+                    {
+                      "type": "callout",
+                      "kind": "student-task",
+                      "label": "Reflexion",
+                      "text": "Was hat dich an deiner Untersuchung überrascht? Was würdest du beim nächsten Mal anders machen, um noch genauer zu beobachten?"
+                    },
+                    {
+                      "type": "answer_box",
+                      "ruled": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

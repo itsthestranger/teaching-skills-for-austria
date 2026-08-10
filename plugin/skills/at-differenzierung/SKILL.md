@@ -177,11 +177,17 @@ statischer Track.
 Für Mathematik ist die Datenquelle je Stufe (unter/auf/über) in `references/mathematik.md`
 festgelegt — dort steht, welches Feld aus `finde_differenzierung`/`finde_anwendungsbereiche` jede
 Stufe füllt, wie `vorklasse_stuetzen` und die `Wiederholen und Festigen`-Items getrennt bleiben,
-und die K1-Regel für `niveaus`. Ein generisches Achse-Beispiel für ein Nicht-Mathematik-Fach sowie
-die feinkörnige `niveau_spalte`-Layout-Politur sind fachspezifisches bzw. renderer-seitiges
-Referenzmaterial, das diese Skill (noch) nicht mitliefert und hier nicht als bereits vorhanden
-behauptet — die Achse selbst bleibt aber, wie oben beschrieben, in jedem Fall aus
-`finde_differenzierung` gelesen, nie angenommen.
+und die K1-Regel für `niveaus`. Für Sachunterricht (`PRIM.SU`, `lehrplan_generisch`, kein
+`gilt_ab_stufe`) ist die Datenquelle je Stufe (grundlegend/erweitert/vertiefend) in
+`references/sachunterricht.md` festgelegt — dort steht insbesondere, dass `enrichment_items` dort
+immer `[]` ist (die Über-Stufe ist ausschließlich skill-eigene Vertiefung, nie eine behauptete
+Datensatz-Abfrage) und dass die verbindlichen Anwendungsbereiche je Schulstufe geteilt sind
+(`anwendungsbereiche_bindung: "stufe"`) — dieselbe Zehner-Liste gilt für jede Kompetenz der Stufe in
+allen sechs Kompetenzbereichen, sodass eine Auswahl daraus als pädagogische Entscheidung, nie als
+amtliche Eins-zu-eins-Bindung an die gewählte Kompetenz auszuweisen ist. Die feinkörnige
+`niveau_spalte`-Layout-Politur bleibt renderer-seitiges Referenzmaterial, das diese Skill (noch)
+nicht mitliefert und hier nicht als bereits vorhanden behauptet — die Achse selbst bleibt aber, wie
+oben beschrieben, in jedem Fall aus `finde_differenzierung` gelesen, nie angenommen.
 
 ## Schritt 4 — In einem Turn Material und DOCX ausgeben
 
