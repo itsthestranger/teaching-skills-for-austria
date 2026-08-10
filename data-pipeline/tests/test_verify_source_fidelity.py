@@ -310,3 +310,39 @@ def test_the_bounded_mode_does_not_catch_a_trailing_truncation() -> None:
     assert V._is_bounded("Die Schülerinnen und Schüler können etwas", block)
     # leading truncation -- caught
     assert not V._is_bounded("Schülerinnen und Schüler können etwas tun.", block)
+
+
+def test_every_shipped_gers_sentence_is_located_in_the_source() -> None:
+    """E8-05 shipped four per-class-year GeR sentences as quotable law. They arrived after the
+    original sweep, so this asserts they are inside the guard at all rather than assumed clean."""
+    records = V.zielniveau_records("SEK1.E")
+    assert len(records) == 4, f"expected K1..K4, got {[r.record_id for r in records]}"
+    blocks = V.source_blocks(V.resolve_source(V.SHARD_SOURCES["SEK1.E"], "fixtures"))
+    assert V.verify(records, blocks) == []
+
+
+def test_no_other_shard_ships_a_gers_sentence() -> None:
+    """Pins E8-05's scope decision: only SEK1.E carries per-class-year CEFR. Deutsch has no
+    Zielniveau statement in the source, so inventing one there is the failure this rules out."""
+    for shard in ("PRIM.D", "PRIM.M", "PRIM.SU", "SEK1.D", "SEK1.M"):
+        assert V.zielniveau_records(shard) == [], f"{shard} unexpectedly ships a GeR sentence"
+
+
+def test_a_gers_sentence_must_be_a_sentence_complete_prefix_of_its_block() -> None:
+    """The bounded mode cannot see a trailing truncation (pinned above), and these records take
+    that path -- so the trailing edge is defended here instead. Each shipped sentence must open
+    its source block *and* end at a sentence boundary, which is what a dropped final word breaks.
+    """
+    blocks = V.source_blocks(V.resolve_source(V.SHARD_SOURCES["SEK1.E"], "fixtures"))
+    for record in V.zielniveau_records("SEK1.E"):
+        needle = V.normalise(record.text)
+        assert needle.endswith("."), f"{record.record_id} does not end at a sentence boundary"
+        assert any(block.startswith(needle) for block in blocks), (
+            f"{record.record_id} does not open any source block")
+
+    # The exact mutation the bounded mode lets through must fail this check.
+    truncated = V.normalise(
+        "In allen vier Kompetenzbereichen wird das Zielniveau A1/A2")
+    assert not truncated.endswith("."), "probe is not a trailing truncation"
+    assert any(block.startswith(truncated) for block in blocks), (
+        "probe should still be a valid prefix -- that is why the bounded mode misses it")

@@ -285,6 +285,38 @@ def competence_records(shard: str) -> list[Record]:
     return records
 
 
+def zielniveau_records(shard: str) -> list[Record]:
+    """The per-class-year GeR sentences shipped in `meta.differenzierungs_achse.gers.je_stufe`.
+
+    These are quoted to teachers as law ("das Zielniveau dieser Klasse ist ..."), so they belong
+    inside this guard for the same reason `stammsatz` does. They arrived after the original sweep
+    and would otherwise be the one class of shipped regulation text nothing located in the source.
+
+    Unlike the competence records they are *not* whole source blocks -- each is the opening
+    sentence of a block that continues with its own commentary ("... angestrebt. Es ist zu
+    beachten, dass ...") -- so they take the bounded path. `test_verify_source_fidelity.py`
+    additionally pins that each is a sentence-complete prefix, which is what rules out the
+    trailing truncation the bounded mode alone cannot see.
+    """
+    band, code = shard.split(".")
+    shard_dir = KOMPETENZEN_ROOT / band.lower() / code.lower()
+    records: list[Record] = []
+    seen: set[tuple[str, str]] = set()
+    for path in sorted(shard_dir.glob("*.json")):
+        achse = (json.loads(path.read_text(encoding="utf-8"))
+                 .get("meta", {}).get("differenzierungs_achse", {}))
+        for stufe, entry in sorted((achse.get("gers") or {}).get("je_stufe", {}).items()):
+            satz = entry.get("satz")
+            if not isinstance(satz, str) or not satz.strip():
+                continue
+            key = (stufe, satz)
+            if key in seen:
+                continue  # every part file of a shard carries the same meta block
+            seen.add(key)
+            records.append(Record(f"{shard}.GERS.{stufe}", shard, "gers.je_stufe.satz", satz))
+    return records
+
+
 def descriptor_records() -> list[Record]:
     records: list[Record] = []
     for path in sorted(BIST_ROOT.glob("*.json")):
@@ -479,6 +511,12 @@ def run(mode: str) -> tuple[list[Divergence], dict[str, int], list[str], dict[st
         divergences.extend(verify(records, blocks, require_exact=True))
         tally(records, blocks)
         checked[shard] = len(records)
+
+        # Opening sentences of their blocks, not whole blocks -- bounded, see zielniveau_records.
+        niveau_records = zielniveau_records(shard)
+        divergences.extend(verify(niveau_records, blocks))
+        tally(niveau_records, blocks)
+        checked[shard] += len(niveau_records)
 
     bist_path = resolve_source(BIST_SOURCE, mode)
     if bist_path is None:
