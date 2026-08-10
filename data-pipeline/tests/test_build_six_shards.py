@@ -399,14 +399,29 @@ def test_no_shard_falls_back_to_the_generic_axis_with_a_warning(caplog):
 
 def test_only_sek1_e_carries_the_cefr_sub_axis():
     """CEFR is an *additional* axis for SEK1.E, not a replacement (V-61)."""
+    built_gers: dict | None = None
     for spec_key, fixture, *_ in META:
         achse = next(iter(_baue(spec_key, fixture).values()))["meta"]["differenzierungs_achse"]
         assert ("gers" in achse) == (spec_key == "SEK1.E"), spec_key
-    gers = B.DIFFERENZIERUNGS_ACHSEN["SEK1.E"]["gers"]
-    assert gers["niveaus"] == ["A1", "A2", "B1"]
-    # The source does state a target level per class year in prose, but nothing
-    # extracts those paragraphs yet (V-41). The axis must not imply otherwise.
-    assert gers["je_stufe_ausgewiesen"] is False
+        if spec_key == "SEK1.E":
+            built_gers = achse["gers"]
+    assert built_gers is not None
+    assert built_gers["niveaus"] == ["A1", "A2", "B1"]
+    # E8-05/V-41: the source does state a target level per class year in
+    # prose ("In allen vier Kompetenzbereichen wird das Zielniveau ...
+    # angestrebt."), and parse_lehrplan.py's ZIELNIVEAU_RE now extracts it --
+    # the *built* meta (through _build_differenzierungs_achse) carries the
+    # real per-year mapping, sourced from ParseResult.zielniveau_je_stufe.
+    assert built_gers["je_stufe_ausgewiesen"] is True
+    assert set(built_gers["je_stufe"]) == {"K1", "K2", "K3", "K4"}
+    assert built_gers["je_stufe"]["K1"]["niveau"] == "A1/A2"
+    # The *static* registration table (DIFFERENZIERUNGS_ACHSEN) still carries
+    # the honest placeholder False/no-je_stufe -- it is never itself asserted
+    # true; only real parser output flips it, so a spec registered with a
+    # gers sub-block but no matching extraction would ship False, not a
+    # promise the data cannot back up.
+    assert B.DIFFERENZIERUNGS_ACHSEN["SEK1.E"]["gers"]["je_stufe_ausgewiesen"] is False
+    assert "je_stufe" not in B.DIFFERENZIERUNGS_ACHSEN["SEK1.E"]["gers"]
 
 
 @pytest.mark.parametrize("spec_key,fixture,typ,gilt_ab,bist", META)

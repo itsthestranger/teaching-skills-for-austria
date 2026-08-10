@@ -1175,20 +1175,30 @@ def _stufe_liegt_ab(stufe: str, grenze: str) -> bool:
 
 
 def finde_differenzierung(kompetenz_id: str) -> dict[str, Any]:
-    """``{achse, niveaus[], enrichment_items[], vorklasse_stuetzen[],
-    docs_material[]}``, read from ``meta.differenzierungs_achse`` -- never
-    re-derived, never a hardcoded subject list.
+    """``{achse, niveaus[], gers_stufe, enrichment_items[],
+    vorklasse_stuetzen[], docs_material[]}``, read from
+    ``meta.differenzierungs_achse`` -- never re-derived, never a hardcoded
+    subject list.
 
     ``achse`` is the axis dict verbatim (``typ`` is ``standard_standardplus``
     for SEK1 D/M/E, from K2 up, or ``lehrplan_generisch`` for the three
-    primary shards; SEK1.E additionally carries a ``gers`` sub-axis whose
-    ``je_stufe_ausgewiesen`` is ``False`` -- its A1/A2/B1 list is a
-    subject-level statement, not a per-class-year mapping, and this
-    function does not pretend otherwise). ``niveaus`` are labels (V-60),
-    never a per-item filter.  They are the labels effective at the queried
-    competence's stage: if the verbatim metadata has ``gilt_ab_stufe`` they
-    are ``[]`` before that boundary (K1 for the Sek I axis) and the axis's
-    labels at/after it; ``achse`` itself always remains verbatim metadata.
+    primary shards; SEK1.E additionally carries a ``gers`` sub-axis). ``niveaus``
+    are labels (V-60), never a per-item filter.  They are the labels effective
+    at the queried competence's stage: if the verbatim metadata has
+    ``gilt_ab_stufe`` they are ``[]`` before that boundary (K1 for the Sek I
+    axis) and the axis's labels at/after it; ``achse`` itself always remains
+    verbatim metadata.
+
+    ``gers_stufe`` is the queried competence's own CEFR target-level citation
+    (``{niveau, satz, abschnitt, quell_index}``, E8-05/V-41) -- resolved from
+    ``achse["gers"]["je_stufe"][k["stufe"]]`` **only when the axis's own
+    ``gers.je_stufe_ausgewiesen`` is true** (dispatched on that data field,
+    never on "is this SEK1.E"). ``None`` for every competence outside that one
+    axis, and also ``None`` if a future ``gers`` axis were registered without a
+    matching per-class-year extraction -- this function never invents the
+    mapping ``achse`` itself does not carry. The full per-year map for every
+    class year, not just the queried one, is still reachable verbatim via
+    ``achse["gers"]["je_stufe"]``.
 
     ``enrichment_items`` is the ``allenfalls`` content -- **only present at
     all when the axis itself carries ``enrichment_quelle: "allenfalls"``**,
@@ -1218,6 +1228,11 @@ def finde_differenzierung(kompetenz_id: str) -> dict[str, Any]:
     if gilt_ab_stufe and not _stufe_liegt_ab(k["stufe"], gilt_ab_stufe):
         niveaus = []
 
+    gers_stufe: dict[str, Any] | None = None
+    gers = achse.get("gers")
+    if gers and gers.get("je_stufe_ausgewiesen"):
+        gers_stufe = gers.get("je_stufe", {}).get(k["stufe"])
+
     enrichment_items: list[dict[str, Any]] = []
     if achse.get("enrichment_quelle") == "allenfalls":
         enrichment_items = finde_anwendungsbereiche(kompetenz_id, nur_verbindlich=False)
@@ -1233,6 +1248,7 @@ def finde_differenzierung(kompetenz_id: str) -> dict[str, Any]:
     return {
         "achse": achse,
         "niveaus": niveaus,
+        "gers_stufe": gers_stufe,
         "enrichment_items": enrichment_items,
         "vorklasse_stuetzen": vorklasse_stuetzen,
         "docs_material": docs_material,

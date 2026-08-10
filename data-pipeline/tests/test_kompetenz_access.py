@@ -784,11 +784,13 @@ def test_finde_differenzierung_callable_gegen_alle_sechs_shards(fach, _bindung):
         assert set(ergebnis) == {
             "achse",
             "niveaus",
+            "gers_stufe",
             "enrichment_items",
             "vorklasse_stuetzen",
             "docs_material",
         }
         assert isinstance(ergebnis["niveaus"], list)
+        assert ergebnis["gers_stufe"] is None or isinstance(ergebnis["gers_stufe"], dict)
         # Before the Sek I axis's K2 metadata boundary, the effective labels
         # are defined-empty while the verbatim axis still names both labels.
         if fach.startswith("SEK1.") and k["stufe"] == "K1":
@@ -876,18 +878,79 @@ def test_finde_differenzierung_achse_und_label_sind_ueber_alle_sechs_shards_exak
         )
 
 
-def test_finde_differenzierung_gers_ist_sek1_e_only_und_nicht_je_stufe_erfunden():
+def test_finde_differenzierung_gers_ist_sek1_e_only():
     for fach, _bindung in SHARDS:
         achse = K.finde_differenzierung(K.finde_kompetenz(fach)[0]["id"])["achse"]
         if fach == "SEK1.E":
-            assert achse["gers"] == {
-                "typ": "gers",
-                "referenzrahmen": "Gemeinsamer Europäischer Referenzrahmen (GeR)",
-                "niveaus": ["A1", "A2", "B1"],
-                "je_stufe_ausgewiesen": False,
-            }
+            assert achse["gers"]["typ"] == "gers"
+            assert achse["gers"]["referenzrahmen"] == "Gemeinsamer Europäischer Referenzrahmen (GeR)"
+            assert achse["gers"]["niveaus"] == ["A1", "A2", "B1"]
         else:
             assert "gers" not in achse
+
+
+#: The per-class-year CEFR target level, verbatim as published (E8-05/V-41),
+#: measured against tests/fixtures/sek1_fremdsprache.xml and reproduced
+#: identically in the shipped SEK1.E shard -- see
+#: data-pipeline/parse_lehrplan.py's ZIELNIVEAU_RE and
+#: LehrplanParser._erfasse_zielniveau.
+ERWARTETES_ZIELNIVEAU_JE_STUFE = {
+    "K1": "A1/A2",
+    "K2": "A2",
+    "K3": "A2+",
+    "K4": "A2+ mit ausgewählten Deskriptoren aus B1",
+}
+
+
+def test_finde_differenzierung_gers_je_stufe_ist_sourced_aus_der_regelung():
+    """E8-05/V-41: the per-class-year CEFR mapping is extracted from the
+    source's 'In allen vier Kompetenzbereichen wird das Zielniveau ...
+    angestrebt.' sentence, not asserted -- every entry carries the verbatim
+    sentence plus enough provenance to cite it ('sourced and cited', the
+    acceptance wording)."""
+    achse = K.finde_differenzierung(K.finde_kompetenz("SEK1.E")[0]["id"])["achse"]
+    gers = achse["gers"]
+    assert gers["je_stufe_ausgewiesen"] is True
+    assert set(gers["je_stufe"]) == {"K1", "K2", "K3", "K4"}
+    for stufe, erwartetes_niveau in ERWARTETES_ZIELNIVEAU_JE_STUFE.items():
+        eintrag = gers["je_stufe"][stufe]
+        assert eintrag["niveau"] == erwartetes_niveau
+        assert eintrag["satz"] == (
+            f"In allen vier Kompetenzbereichen wird das Zielniveau {erwartetes_niveau} angestrebt."
+        )
+        assert eintrag["abschnitt"]
+        assert isinstance(eintrag["quell_index"], int)
+
+
+def test_finde_differenzierung_gers_stufe_loest_pro_kompetenz_auf():
+    """gers_stufe resolves to the queried competence's own class year -- the
+    per-year data is reachable through the access layer, not just buried in
+    the verbatim achse dict."""
+    for k in K.finde_kompetenz("SEK1.E"):
+        ergebnis = K.finde_differenzierung(k["id"])
+        erwartet = ERWARTETES_ZIELNIVEAU_JE_STUFE[k["stufe"]]
+        assert ergebnis["gers_stufe"]["niveau"] == erwartet
+        assert ergebnis["gers_stufe"] == ergebnis["achse"]["gers"]["je_stufe"][k["stufe"]]
+
+
+def test_finde_differenzierung_gers_stufe_ist_none_ausserhalb_sek1_e():
+    """Negative/scope test (E8-05): no shard other than SEK1.E carries a
+    per-class-year CEFR mapping -- gers_stufe is None everywhere else, and
+    SEK1.D and the three primary shards carry no 'gers' key in their axis at
+    all. This pins the scope decision: the source states no CEFR axis for
+    Deutsch (measured -- its one Referenzrahmen mention sits inside the
+    Deutsch-als-Zweitsprache strand and names no target level), so it must
+    never be invented for D."""
+    for fach, _bindung in SHARDS:
+        if fach == "SEK1.E":
+            continue
+        for k in K.finde_kompetenz(fach):
+            ergebnis = K.finde_differenzierung(k["id"])
+            assert ergebnis["gers_stufe"] is None
+            assert "gers" not in ergebnis["achse"]
+    for fach in ("SEK1.D", "PRIM.D", "PRIM.M", "PRIM.SU"):
+        index = K._index_laden(K._shard_verzeichnis(fach))
+        assert "gers" not in index["meta"]["differenzierungs_achse"]
 
 
 def test_finde_differenzierung_niveaus_gelten_in_sek1_erst_ab_k2_und_in_prim_durchgehend():

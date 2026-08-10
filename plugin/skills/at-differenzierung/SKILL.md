@@ -105,7 +105,7 @@ Für die gewählte `kompetenz_id` ist diese Abfragefolge Pflicht — jede Aussag
 Niveau oder eine Zusatzmenge stammt aus genau diesem Aufruf, nie aus Wissen über "welches Fach das
 üblicherweise hat":
 
-1. **`finde_differenzierung(kompetenz_id)`** aufrufen und alle fünf Felder lesen:
+1. **`finde_differenzierung(kompetenz_id)`** aufrufen und alle sechs Felder lesen:
    - **`achse`** — die Metadaten-Achse **verbatim**, aus `meta.differenzierungs_achse` des
      Shards. `achse["typ"]` ist `standard_standardplus` (SEK1.D, SEK1.M, SEK1.E, ab der
      `gilt_ab_stufe`, gemessen `K2`) oder `lehrplan_generisch` (PRIM.D, PRIM.M, PRIM.SU). SEK1.E
@@ -123,6 +123,12 @@ Niveau oder eine Zusatzmenge stammt aus genau diesem Aufruf, nie aus Wissen übe
      **Metadaten-Einstufung**: "Standard AHS" bleibt Fließtext im Lehrplan, nie eine Markierung an
      einem einzelnen Anwendungsbereich-Item. Kein erzeugter Text darf suggerieren, der Datensatz
      unterscheide Standard von Standard AHS pro Item.
+   - **`gers_stufe`** — die GeR-Zielniveau-Angabe **für die Stufe der abgefragten Kompetenz**,
+     befüllt nur wenn `achse["gers"]["je_stufe_ausgewiesen"]` `True` ist (gemessen: SEK1.E, seit
+     E8-05). Enthält `niveau` (z. B. `"A2+ mit ausgewählten Deskriptoren aus B1"`), den amtlichen
+     Originalsatz `satz`, die Abschnittsüberschrift `abschnitt` und `quell_index` zur Zitierung.
+     Für jedes andere Fach `None` — dort existiert keine `gers`-Sub-Achse und darf keine erfunden
+     werden.
    - **`enrichment_items`** — real amtliche `allenfalls`-Inhalte, aber **nur befüllt, wenn die
      Achse selbst `enrichment_quelle: "allenfalls"` trägt** (gemessen: SEK1.M). Für jeden anderen
      Shard ist diese Liste leer; das ist der wahre Datenstand, kein Fehler. Diese Prüfung hängt
@@ -146,9 +152,15 @@ Niveau oder eine Zusatzmenge stammt aus genau diesem Aufruf, nie aus Wissen übe
    allein — `stammsatz` trägt bei manchen Fächern eine Bedingung, die zur Kompetenz gehört
    (z. B. SEK1.E). Die `provenienz` des zurückgegebenen Objekts unverändert in den
    `kompetenzbezug.quelle`-Block übernehmen.
-4. **SEK1.E / GERS**: existiert die `gers`-Sub-Achse, ist ihr `je_stufe_ausgewiesen` gemessen
-   `False` — die A1/A2/B1-Angabe ist eine **fachweite** Aussage, keine Zuordnung pro Schulstufe.
-   Sie darf genannt, aber nie als "diese Klasse liegt auf Niveau X" pro Jahrgang ausgegeben werden.
+4. **SEK1.E / GERS**: existiert die `gers`-Sub-Achse, trägt sie **zwei** Angaben, beide verbatim
+   aus dem Datensatz, nie vermischt: `niveaus` (`["A1", "A2", "B1"]`) ist die **fachweite** Aussage
+   des Lehrplans, keine Zuordnung pro Schulstufe. `je_stufe` (seit E8-05 `je_stufe_ausgewiesen:
+   True`) ist die echte **Zuordnung pro Klasse**, erreichbar direkt als `gers_stufe` im
+   Rückgabewert (siehe Schritt 2.1) oder als `achse["gers"]["je_stufe"][stufe]` für jede beliebige
+   Klasse. Eine Aussage wie "diese Klasse liegt auf Niveau X" ist damit erlaubt — aber nur mit
+   Zitatgrundlage: `niveau` **und** der amtliche Originalsatz (`satz`) gehören zusammen in jede
+   solche Aussage, nie `niveau` allein ohne seinen Beleg. Für jedes andere Fach bleibt `gers_stufe`
+   `None`; dort existiert keine `gers`-Sub-Achse und darf keine unterstellt werden.
 
 ## Schritt 3 — Stufen aufbauen (unter/auf/über)
 

@@ -46,7 +46,33 @@
           "A2",
           "B1"
         ],
-        "je_stufe_ausgewiesen": false
+        "je_stufe_ausgewiesen": true,
+        "je_stufe": {
+          "K1": {
+            "niveau": "A1/A2",
+            "satz": "In allen vier Kompetenzbereichen wird das Zielniveau A1/A2 angestrebt.",
+            "abschnitt": "Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. bis 4. Klasse):",
+            "quell_index": 46
+          },
+          "K2": {
+            "niveau": "A2",
+            "satz": "In allen vier Kompetenzbereichen wird das Zielniveau A2 angestrebt.",
+            "abschnitt": "Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. bis 4. Klasse):",
+            "quell_index": 64
+          },
+          "K3": {
+            "niveau": "A2+",
+            "satz": "In allen vier Kompetenzbereichen wird das Zielniveau A2+ angestrebt.",
+            "abschnitt": "Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. bis 4. Klasse):",
+            "quell_index": 82
+          },
+          "K4": {
+            "niveau": "A2+ mit ausgewählten Deskriptoren aus B1",
+            "satz": "In allen vier Kompetenzbereichen wird das Zielniveau A2+ mit ausgewählten Deskriptoren aus B1 angestrebt.",
+            "abschnitt": "Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. bis 4. Klasse):",
+            "quell_index": 100
+          }
+        }
       }
     },
     "anwendungsbereiche_status": "optional_sektion",

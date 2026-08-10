@@ -100,10 +100,14 @@ def test_skill_states_k1_enrichment_is_real_but_never_standard_ahs_labelled() ->
     assert "**nie**" in skill
 
 
-def test_skill_states_gers_is_subject_level_not_per_year() -> None:
+def test_skill_states_gers_hat_fachweite_und_je_stufe_angaben() -> None:
+    """E8-05: the skill must distinguish the two gers facts -- 'niveaus' (the
+    fachweite A1/A2/B1 statement) from 'je_stufe' (the real per-class-year
+    mapping, je_stufe_ausgewiesen True since E8-05) -- never conflate them."""
     skill = SKILL.read_text(encoding="utf-8")
     assert "je_stufe_ausgewiesen" in skill
     assert "fachweite" in skill
+    assert "gers_stufe" in skill
 
 
 # ---------------------------------------------------------------------------
@@ -135,13 +139,18 @@ def test_measured_primary_shard_uses_lehrplan_generisch() -> None:
     assert result["niveaus"] == result["achse"]["niveaus"]
 
 
-def test_measured_sek1_e_gers_is_subject_level_only() -> None:
+def test_measured_sek1_e_gers_hat_fachweite_und_je_stufe_angaben() -> None:
+    """E8-05: 'niveaus' stays the fachweite A1/A2/B1 statement; 'je_stufe' is
+    now a real, sourced per-class-year mapping (je_stufe_ausgewiesen True),
+    and gers_stufe resolves it for the queried competence's own stufe."""
     sek1e = kompetenz.finde_kompetenz("SEK1.E")
     k2 = next(c for c in sek1e if c["stufe"] == "K2")
     result = kompetenz.finde_differenzierung(k2["id"])
     gers = result["achse"]["gers"]
-    assert gers["je_stufe_ausgewiesen"] is False
+    assert gers["je_stufe_ausgewiesen"] is True
     assert gers["niveaus"] == ["A1", "A2", "B1"]
+    assert result["gers_stufe"]["niveau"] == "A2"
+    assert result["gers_stufe"] == gers["je_stufe"]["K2"]
 
 
 def test_measured_enrichment_items_nonempty_only_for_sek1_m() -> None:

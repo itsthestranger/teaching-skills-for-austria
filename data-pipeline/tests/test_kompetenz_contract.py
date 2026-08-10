@@ -44,7 +44,7 @@ without notice:
 - ``finde_bildungsstandard_bezug(kompetenz_id) -> dict``
 - ``finde_uebergreifende_themen(fach=None, kompetenz_id=None, thema=None)
   -> list`` (exactly one of the three keyword args)
-- ``finde_differenzierung(kompetenz_id) -> {"achse", "niveaus",
+- ``finde_differenzierung(kompetenz_id) -> {"achse", "niveaus", "gers_stufe",
   "enrichment_items", "vorklasse_stuetzen", "docs_material"}``
 - ``finde_typische_fehlvorstellungen(kompetenz_id) -> list`` (always ``[]``
   today -- E9 is unimplemented by design)
@@ -681,11 +681,13 @@ def test_finde_differenzierung_callable_gegen_alle_fixtur_shards(fach, _bindung)
         assert set(ergebnis) == {
             "achse",
             "niveaus",
+            "gers_stufe",
             "enrichment_items",
             "vorklasse_stuetzen",
             "docs_material",
         }
         assert isinstance(ergebnis["niveaus"], list)
+        assert ergebnis["gers_stufe"] is None or isinstance(ergebnis["gers_stufe"], dict)
         assert isinstance(ergebnis["enrichment_items"], list)
         assert isinstance(ergebnis["vorklasse_stuetzen"], list)
         assert isinstance(ergebnis["docs_material"], list)
@@ -722,13 +724,19 @@ def test_finde_differenzierung_enrichment_nur_wenn_achse_es_traegt():
 
 
 def test_finde_differenzierung_gers_subachse_ist_verbatim_metadaten():
-    achse = K.finde_differenzierung("AT.LP23.SEK1.E.EPSILON.K1.01")["achse"]
-    assert achse["gers"] == {
+    """This fixture's gers sub-axis has je_stufe_ausgewiesen: False (no
+    je_stufe key at all) -- distinct from the real SEK1.E shard, which does
+    carry a per-class-year mapping since E8-05. Proves finde_differenzierung
+    passes the axis through verbatim either way, and that gers_stufe stays
+    None when the axis itself does not claim a per-year mapping."""
+    ergebnis = K.finde_differenzierung("AT.LP23.SEK1.E.EPSILON.K1.01")
+    assert ergebnis["achse"]["gers"] == {
         "typ": "gers",
         "referenzrahmen": "Gemeinsamer Europäischer Referenzrahmen (Fixtur)",
         "niveaus": ["A1", "A2"],
         "je_stufe_ausgewiesen": False,
     }
+    assert ergebnis["gers_stufe"] is None
 
 
 def test_finde_differenzierung_vorklasse_stuetzen_ist_exakt_die_rueckwaertsprogression():

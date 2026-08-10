@@ -46,7 +46,33 @@
           "A2",
           "B1"
         ],
-        "je_stufe_ausgewiesen": false
+        "je_stufe_ausgewiesen": true,
+        "je_stufe": {
+          "K1": {
+            "niveau": "A1/A2",
+            "satz": "In allen vier Kompetenzbereichen wird das Zielniveau A1/A2 angestrebt.",
+            "abschnitt": "Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. bis 4. Klasse):",
+            "quell_index": 46
+          },
+          "K2": {
+            "niveau": "A2",
+            "satz": "In allen vier Kompetenzbereichen wird das Zielniveau A2 angestrebt.",
+            "abschnitt": "Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. bis 4. Klasse):",
+            "quell_index": 64
+          },
+          "K3": {
+            "niveau": "A2+",
+            "satz": "In allen vier Kompetenzbereichen wird das Zielniveau A2+ angestrebt.",
+            "abschnitt": "Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. bis 4. Klasse):",
+            "quell_index": 82
+          },
+          "K4": {
+            "niveau": "A2+ mit ausgewählten Deskriptoren aus B1",
+            "satz": "In allen vier Kompetenzbereichen wird das Zielniveau A2+ mit ausgewählten Deskriptoren aus B1 angestrebt.",
+            "abschnitt": "Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. bis 4. Klasse):",
+            "quell_index": 100
+          }
+        }
       }
     },
     "anwendungsbereiche_status": "optional_sektion",
@@ -72,8 +98,8 @@
       "name": "Hören",
       "kompetenzen": 6,
       "anwendungsitems": 0,
-      "bytes": 6649,
-      "tokens_approx": 1662
+      "bytes": 7911,
+      "tokens_approx": 1977
     },
     {
       "datei": "lesen.json",
@@ -83,8 +109,8 @@
       "name": "Lesen",
       "kompetenzen": 8,
       "anwendungsitems": 0,
-      "bytes": 7731,
-      "tokens_approx": 1932
+      "bytes": 8993,
+      "tokens_approx": 2248
     },
     {
       "datei": "schreiben.json",
@@ -94,8 +120,8 @@
       "name": "Schreiben",
       "kompetenzen": 11,
       "anwendungsitems": 0,
-      "bytes": 12656,
-      "tokens_approx": 3164
+      "bytes": 13918,
+      "tokens_approx": 3479
     },
     {
       "datei": "sprechen.json",
@@ -105,16 +131,16 @@
       "name": "Sprechen (an Gesprächen teilnehmen und zusammenhängend sprechen)",
       "kompetenzen": 12,
       "anwendungsitems": 0,
-      "bytes": 12510,
-      "tokens_approx": 3127
+      "bytes": 13772,
+      "tokens_approx": 3443
     },
     {
       "datei": "zusatz.json",
       "typ": "zusatz",
       "zusatzkompetenzen": 0,
       "digitale_technologien_vorschlaege": 0,
-      "bytes": 2236,
-      "tokens_approx": 559
+      "bytes": 3498,
+      "tokens_approx": 874
     }
   ],
   "stichwort_index": {

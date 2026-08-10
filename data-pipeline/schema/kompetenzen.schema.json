@@ -56,7 +56,8 @@
             "enrichment_quelle": { "type": "string" },
             "spiralprinzip_backlinks": { "type": "boolean" },
             "quelle": { "type": "string" },
-            "optional_material": { "type": "string" }
+            "optional_material": { "type": "string" },
+            "gers": { "$ref": "#/$defs/gers_achse" }
           }
         },
         "anwendungsbereiche_status": {
@@ -312,6 +313,53 @@
     "kompetenz.stammsatz": {
       "type": "string",
       "description": "The competence stem paragraph verbatim as published (FINDINGS.md V-58, data-pipeline/notes/deviations.md 2026-07-30 row). Normally the bare 'Die Schuelerinnen und Schueler koennen', but in Sek I (Erste) Lebende Fremdsprache it carries a load-bearing CEFR performance condition -- verbatim from the source: 'Die Schuelerinnen und Schueler koennen, wenn sehr langsam, klar und deutlich in Standardsprache gesprochen wird,' -- which qualifies every competence in the block that follows. A faithful quotation of the competence is 'stammsatz' + the item 'text'; neither field alone is the published sentence, and any consumer (renderer, skill, crosswalk) that quotes 'text' without 'stammsatz' produces an incomplete and potentially misleading quotation. This is a consumer obligation, not decoration. REQUIRED on kompetenz since E12-16: the parser captures it (E12-06) and build_dataset.py emits it (E12-11), so all 247 competence records across the six shipped shards carry it."
+    },
+    "gers_achse": {
+      "type": "object",
+      "description": "The GeR/CEFR differentiation sub-axis, meta.differenzierungs_achse.gers -- SEK1.E only (E8-05/V-41). 'niveaus' is the subject-level statement the regulation makes outright ('orientiert sich an den ... Kompetenzniveaus A1 und A2 sowie an ausgewaehlten Deskriptoren des Kompetenzniveaus B1'). 'je_stufe', present iff je_stufe_ausgewiesen is true, is the per-class-year target-level mapping parse_lehrplan.py's ZIELNIVEAU_RE extracts from the 'In allen vier Kompetenzbereichen wird das Zielniveau ... angestrebt.' sentence that opens each class year's body text -- sourced, not typed in (build_dataset.py's _build_differenzierungs_achse, fed from ParseResult.zielniveau_je_stufe).",
+      "required": ["typ", "je_stufe_ausgewiesen"],
+      "properties": {
+        "typ": { "const": "gers" },
+        "referenzrahmen": { "type": "string" },
+        "niveaus": { "type": "array", "items": { "type": "string" } },
+        "je_stufe_ausgewiesen": {
+          "type": "boolean",
+          "description": "Whether 'je_stufe' below is populated. False is the honest default for a shard whose source has no per-class-year statement (or, in principle, a future document revision where the extraction found nothing) -- never asserted true without a matching 'je_stufe' map."
+        },
+        "je_stufe": {
+          "type": "object",
+          "description": "stufe code (K1..K4) -> one gers_stufe_eintrag. Present only when je_stufe_ausgewiesen is true.",
+          "additionalProperties": { "$ref": "#/$defs/gers_stufe_eintrag" }
+        }
+      },
+      "if": {
+        "properties": { "je_stufe_ausgewiesen": { "const": true } },
+        "required": ["je_stufe_ausgewiesen"]
+      },
+      "then": { "required": ["je_stufe"] }
+    },
+    "gers_stufe_eintrag": {
+      "type": "object",
+      "description": "One class year's CEFR target-level citation (E8-05/V-41): the extracted level phrase plus enough provenance to quote it back to the source. Combined with the shard's own meta.provenienz (NOR/Kundmachungsorgan/retrieval date), 'satz' and 'abschnitt' let a consumer cite the exact regulation sentence this level came from.",
+      "required": ["niveau", "satz", "abschnitt", "quell_index"],
+      "properties": {
+        "niveau": {
+          "type": "string",
+          "description": "The target-level phrase verbatim, e.g. 'A2+ mit ausgewaehlten Deskriptoren aus B1' -- not shortened to the bare CEFR code, which would misattribute a level the source does not claim outright."
+        },
+        "satz": {
+          "type": "string",
+          "description": "The verbatim source sentence this level was extracted from, e.g. 'In allen vier Kompetenzbereichen wird das Zielniveau A2 angestrebt.' -- an exact substring of the published paragraph, not a reconstruction."
+        },
+        "abschnitt": {
+          "type": "string",
+          "description": "The exact heading text of the section this sentence sits in, captured from the source (e.g. 'Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. bis 4. Klasse):'), never typed in."
+        },
+        "quell_index": {
+          "type": "integer",
+          "description": "Position of the source element among the subject's flat child list (parse_lehrplan.py's Ereignis.index) -- the same provenance mechanism other parser-emitted records use to point back at their exact source position."
+        }
+      }
     },
     "anwendungsbereiche_block_eintrag": {
       "type": "object",

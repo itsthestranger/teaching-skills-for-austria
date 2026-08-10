@@ -11,10 +11,14 @@ Sprachen sind hier nicht automatisch "die GERS-Fächer". Amtlich gilt: `SEK1.D` 
 tragen dieselbe Achse wie Mathematik — `standard_standardplus`, `niveaus: ["Standard",
 "Standard AHS"]`, gültig **erst ab `K2`** (`gilt_ab_stufe: "K2"`; für `K1` liefert
 `finde_differenzierung` `niveaus: []`). GERS (Gemeinsamer Europäischer Referenzrahmen) ist bei
-`SEK1.E` eine **zusätzliche** Unter-Achse (`achse.gers`), keine Ersetzung: `niveaus: ["A1", "A2",
-"B1"]`, aber `je_stufe_ausgewiesen: False` — das ist eine **fachweite** Aussage aus dem Lehrplan,
-**keine** Zuordnung pro Schulstufe/Klasse. Nie eine A1/A2/B1-Zuordnung für eine bestimmte Klasse
-erfinden, die der Datensatz nicht liefert.
+`SEK1.E` eine **zusätzliche** Unter-Achse (`achse.gers`) mit zwei getrennten Angaben: `niveaus:
+["A1", "A2", "B1"]` ist die **fachweite** Aussage aus dem Lehrplan. Seit E8-05 gibt es zusätzlich
+eine echte **Zuordnung pro Klasse** (`je_stufe_ausgewiesen: True`, `achse.gers.je_stufe["K1"..
+"K4"]`, auch direkt als `gers_stufe` im Rückgabewert der abgefragten Kompetenz) — pro Klasse
+`niveau` (z. B. `"A2+ mit ausgewählten Deskriptoren aus B1"`), der amtliche Originalsatz (`satz`)
+und Zitier-Provenienz (`abschnitt`, `quell_index`). Eine A1/A2/B1-Zuordnung für eine bestimmte
+Klasse ist damit erlaubt, aber nur mit dieser Zitatgrundlage aus `gers_stufe`/`je_stufe` — nie ohne
+`satz`, und nie für ein anderes Fach als `SEK1.E` (dort existiert `achse.gers` überhaupt nicht).
 
 `PRIM.D` hat wie alle Primarstufenfächer `lehrplan_generisch`
 (`niveaus: ["grundlegend", "erweitert", "vertiefend"]`), keine Standard/Standard-AHS-Achse.

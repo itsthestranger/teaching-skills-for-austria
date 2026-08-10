@@ -1595,6 +1595,12 @@ class TestNewSubjectFixtures(unittest.TestCase):
         # own (mirrors GZINTEGRATIV; notes/deviations.md, 2026-07-28).
         block_namen = {b.bereich_name for b in r.bloecke}
         self.assertIn("Sprachbewusstsein und Sprachreflexion", block_namen)
+        # Negative/scope test (E8-05/V-41): Deutsch's document states no
+        # per-class-year CEFR target level anywhere -- its one Referenzrahmen
+        # mention (Deutsch als Zweitsprache strand) names no level at all, and
+        # zielniveau_pruefen is False for this spec, so no attempt is made to
+        # find one.
+        self.assertEqual(r.zielniveau_je_stufe, {})
 
     def test_sek1_fremdsprache(self):
         spec = P.SUBJECT_SPECS["SEK1.E"]
@@ -1609,6 +1615,29 @@ class TestNewSubjectFixtures(unittest.TestCase):
         # 'prosa' bindung: the heading is seen and logged, not silently
         # dropped -- zero blocks is correct, not a phantom empty one.
         self.assertEqual(len(r.issues.by_art("anwendungsbereiche_prosa")), 4)
+        # E8-05/V-41: the per-class-year CEFR target level, extracted from
+        # "In allen vier Kompetenzbereichen wird das Zielniveau ...
+        # angestrebt." -- measured verbatim against this fixture.
+        self.assertEqual(
+            {stufe: eintrag["niveau"] for stufe, eintrag in r.zielniveau_je_stufe.items()},
+            {
+                "K1": "A1/A2",
+                "K2": "A2",
+                "K3": "A2+",
+                "K4": "A2+ mit ausgewählten Deskriptoren aus B1",
+            },
+        )
+        for stufe, eintrag in r.zielniveau_je_stufe.items():
+            self.assertTrue(
+                eintrag["satz"].startswith("In allen vier Kompetenzbereichen wird das Zielniveau")
+            )
+            self.assertTrue(eintrag["satz"].endswith(f"{eintrag['niveau']} angestrebt."))
+            self.assertEqual(
+                eintrag["abschnitt"],
+                "Kompetenzbeschreibungen und Anwendungsbereiche, Lehrstoff (1. bis 4. Klasse):",
+            )
+            self.assertIsInstance(eintrag["quell_index"], int)
+        self.assertEqual(r.issues.by_art("zielniveau_nicht_gefunden"), [])
 
     def test_prim_deutsch(self):
         spec = P.SUBJECT_SPECS["PRIM.D"]
@@ -1621,6 +1650,8 @@ class TestNewSubjectFixtures(unittest.TestCase):
         self.assertEqual(P.actual_counts(r), P.ERWARTET_PRIM_D)
         self._assert_no_kompetenz_id_and_no_collisions(r)
         self._assert_item_theme_counts(r, 11)
+        # Negative/scope test (E8-05): no CEFR axis in primary Deutsch either.
+        self.assertEqual(r.zielniveau_je_stufe, {})
         # 'stufe' bindung: blocks attach to the school year only, never to
         # whichever area happened to precede them.
         for b in r.bloecke:

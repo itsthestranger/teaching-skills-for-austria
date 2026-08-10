@@ -394,6 +394,24 @@ GZ_INTEGRATIV_RE = re.compile(
 GZ_INTEGRATIV_BEREICH_NAME = "Integrative Führung von Geometrisches Zeichnen"
 GZ_INTEGRATIV_BEREICH_SLUG = "GZINTEGRATIV"
 
+#: The per-class-year CEFR (GeR) target-level sentence, SEK1.E only, e.g.
+#: ``"In allen vier Kompetenzbereichen wird das Zielniveau A2+ mit
+#: ausgewählten Deskriptoren aus B1 angestrebt."`` (E8-05/V-41). Measured
+#: against ``tests/fixtures/sek1_fremdsprache.xml``: one such sentence
+#: opens the body text immediately after each ``STUFE`` marker inside the
+#: combined competence section, before any ``Kompetenzbereich`` heading of
+#: that class year -- captured with ``self.bereich is None`` as a guard
+#: (see :meth:`LehrplanParser._kompetenzbereiche`) so an accidental textual
+#: echo inside an area's own competences can never be mistaken for the
+#: year-level statement. The captured group is the *whole* level phrase as
+#: published, not just the bare CEFR code -- it must survive verbatim
+#: because two of the four class years qualify it ("A2+ mit ausgewählten
+#: Deskriptoren aus B1"), and shortening that to "B1" would misattribute a
+#: level the source does not claim outright.
+ZIELNIVEAU_RE = re.compile(
+    r"^In allen vier Kompetenzbereichen wird das Zielniveau (?P<niveau>.+?) angestrebt\."
+)
+
 
 @dataclass(frozen=True)
 class SubjectSpec:
@@ -482,6 +500,20 @@ class SubjectSpec:
     there (it would report a meaningless 0/N split) and leave ``verbindlich``
     ``True`` unconditionally. ``True`` only for SEK1.M."""
 
+    zielniveau_pruefen: bool = False
+    """Whether the body text opening each class year is scanned for the
+    ``ZIELNIVEAU_RE`` CEFR target-level sentence (E8-05/V-41). Measured:
+    this sentence occurs only in SEK1.E's document -- zero matches against
+    PRIM.D and exactly zero *Zielniveau*/per-year matches in SEK1.D (its one
+    Referenzrahmen mention is inside the Deutsch-als-Zweitsprache strand and
+    names no target level at all, see notes/deviations.md). ``True`` only
+    for SEK1.E; scanning for it elsewhere would either find nothing (a
+    no-op) or -- worse, should the pattern ever coincidentally match unrelated
+    prose in a future document revision -- silently invent a CEFR axis for a
+    subject the regulation does not give one to. Dispatch stays
+    metadata-driven on this field, never a hardcoded ``fach_code == "E"``
+    check (standing rule, V-61/E7-02)."""
+
 
 SEK1_MATHEMATIK = SubjectSpec(
     band="SEK1",
@@ -555,6 +587,7 @@ SEK1_FREMDSPRACHE = SubjectSpec(
     anwendungsbereiche_status="optional_sektion",
     lehrstoff_quelle="aus_anwendungsbereichen",
     anwendungsbereiche_bindung="prosa",
+    zielniveau_pruefen=True,
 )
 
 PRIM_DEUTSCH = SubjectSpec(
@@ -770,6 +803,14 @@ class ParseResult:
     e.g. Sek I maths' 'integrative Führung von Geometrisches Zeichnen'.  Kept so
     nothing is silently dropped; not counted among the core competences."""
 
+    zielniveau_je_stufe: dict[str, dict] = field(default_factory=dict)
+    """SEK1.E only (E8-05/V-41): stufe code -> ``{niveau, satz, abschnitt,
+    quell_index}`` extracted from the CEFR target-level sentence that opens
+    each class year's body text (:data:`ZIELNIVEAU_RE`,
+    :meth:`LehrplanParser._erfasse_zielniveau`). Empty for every other spec
+    -- ``SubjectSpec.zielniveau_pruefen`` is ``False`` there, so no attempt
+    is made to invent a CEFR axis a subject's regulation does not give it."""
+
 
 # --------------------------------------------------------------------------
 # State machine
@@ -969,6 +1010,21 @@ class LehrplanParser:
         self._zusatz_stufe: str | None = None
         self._zusatz_titel: str | None = None
 
+        self._kompetenz_sektion_titel: str = ""
+        """The exact heading text that opened the current combined
+        competence/application section (e.g. 'Kompetenzbeschreibungen und
+        Anwendungsbereiche, Lehrstoff (1. bis 4. Klasse):'), set on
+        ``SEKTION_KOMPETENZ`` -- see :meth:`_step`. Used only as citable
+        provenance for :attr:`zielniveau_je_stufe` entries (E8-05); never
+        typed in, always the source's own words."""
+
+        self.zielniveau_je_stufe: dict[str, dict] = {}
+        """SEK1.E only (``SubjectSpec.zielniveau_pruefen``): stufe code
+        (``K1``..``K4``) -> ``{niveau, satz, abschnitt, quell_index}``,
+        extracted from the ``ZIELNIVEAU_RE`` sentence that opens each class
+        year's body text (E8-05/V-41). Empty for every other spec -- see the
+        field's docstring."""
+
     # -- classification --------------------------------------------------
 
     def _classify(self, index: int, el: ET.Element) -> Ereignis:
@@ -1145,6 +1201,7 @@ class LehrplanParser:
             self.stufe = None
             self.bereich = None
             self._stammsatz = None
+            self._kompetenz_sektion_titel = ev.extracted.text
             return
 
         if ev.token is Token.SEKTION_ANWENDUNG:
@@ -1250,6 +1307,21 @@ class LehrplanParser:
             self._schliesse_ab_block()
             self._verlasse_sektion(ev)
             return
+        if (
+            ev.token is Token.TEXT
+            and self.spec.zielniveau_pruefen
+            and self.bereich is None
+        ):
+            # The CEFR target-level sentence opens the body text right after
+            # a STUFE marker, before any Kompetenzbereich heading of that
+            # class year -- self.bereich is None precisely there (reset at
+            # every STUFE boundary; see the STUFE branch above) and stays
+            # None until the first BEREICH token, so this guard cannot fire
+            # on prose inside an area's own competences.
+            m = ZIELNIVEAU_RE.match(ev.extracted.text)
+            if m:
+                self._erfasse_zielniveau(ev, m)
+                return
         if ev.token in _KOMPETENZBEREICHE_IGNORIERBAR:
             return
         self.issues.add(
@@ -1413,6 +1485,41 @@ class LehrplanParser:
                 ev.index,
             )
         return f"{self.spec.stufen_praefix}{nr}"
+
+    def _erfasse_zielniveau(self, ev: Ereignis, m: re.Match[str]) -> None:
+        """Record one CEFR target-level sentence into
+        :attr:`zielniveau_je_stufe` (E8-05/V-41). ``m.group(0)`` -- the
+        matched span, an exact substring of ``ev.extracted.text`` -- is
+        stored verbatim as ``satz``: the source paragraph continues with
+        further sentences ("Es ist zu beachten, dass ...") that qualify the
+        level but are not themselves the target-level statement, so ``satz``
+        is the one sentence the citation is about, not the whole paragraph.
+        ``abschnitt`` and ``quell_index`` are the citable provenance a
+        consumer needs to point back at the exact heading and document
+        position this came from, without re-deriving them."""
+        if self.stufe is None:
+            self.issues.add(
+                "zielniveau_ohne_stufe",
+                "CEFR target-level sentence found before any STUFE marker; discarded",
+                ev.index,
+                ev.extracted.text[:80],
+            )
+            return
+        if self.stufe in self.zielniveau_je_stufe:
+            self.issues.add(
+                "zielniveau_doppelt",
+                f"a CEFR target-level sentence was already recorded for {self.stufe!r}; "
+                "keeping the first, discarding this one",
+                ev.index,
+                ev.extracted.text[:80],
+            )
+            return
+        self.zielniveau_je_stufe[self.stufe] = {
+            "niveau": m.group("niveau"),
+            "satz": m.group(0),
+            "abschnitt": self._kompetenz_sektion_titel,
+            "quell_index": ev.index,
+        }
 
     def _bereich(self, ev: Ereignis) -> Kompetenzbereich:
         name = ev.daten["name"]
@@ -1935,6 +2042,11 @@ class LehrplanParser:
                 item.fussnoten_unaufgeloest = offen
         if not self.kompetenzen:
             self.issues.add("keine_kompetenzen", "no competences extracted")
+        if self.spec.zielniveau_pruefen and not self.zielniveau_je_stufe:
+            self.issues.add(
+                "zielniveau_nicht_gefunden",
+                "zielniveau_pruefen is set but no CEFR target-level sentence was found",
+            )
         return ParseResult(
             spec=self.spec,
             fach_name=self.spec.fach_ueberschrift.title(),
@@ -1946,6 +2058,7 @@ class LehrplanParser:
             uebergreifende_themen_fach=self._themen_fach,
             issues=self.issues,
             zusatzbloecke=self._zusatz,
+            zielniveau_je_stufe=dict(self.zielniveau_je_stufe),
         )
 
 
@@ -2186,6 +2299,7 @@ def result_to_dict(result: ParseResult) -> dict:
             "uebergreifende_themen_fach": result.uebergreifende_themen_fach,
             "uebergreifende_themen_legende": result.themen_map,
             "join": result.join_stats,
+            "zielniveau_je_stufe": result.zielniveau_je_stufe,
         },
         "kompetenzbereiche": [dataclasses.asdict(b) for b in result.bereiche],
         "kompetenzen": [dataclasses.asdict(k) for k in result.kompetenzen],

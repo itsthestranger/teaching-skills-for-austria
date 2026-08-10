@@ -108,6 +108,7 @@ Usage
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import logging
 import re
@@ -177,13 +178,16 @@ DIFFERENZIERUNGS_ACHSEN: dict[str, dict] = {
         # A1 und A2 sowie an ausgewählten Deskriptoren des Kompetenzniveaus B1"),
         # measured 2026-08-02.
         #
-        # It is deliberately NOT a per-class-year mapping. The source does state
-        # a target level per class year in prose ("In allen vier
-        # Kompetenzbereichen wird das Zielniveau A2+ angestrebt"), with values
-        # A1/A2, A2, A2+ and "A2+ mit ausgewählten Deskriptoren aus B1" -- but
-        # nothing extracts those paragraphs yet, and inventing the year->level
-        # assignment here would assert an attribution the dataset cannot support.
-        # That extraction is V-41 / E8.
+        # `je_stufe` is filled in by `_build_differenzierungs_achse` below, from
+        # `ParseResult.zielniveau_je_stufe` -- the per-class-year target-level
+        # sentence ("In allen vier Kompetenzbereichen wird das Zielniveau A2+
+        # angestrebt.") that parse_lehrplan.py's ZIELNIVEAU_RE now extracts
+        # (E8-05/V-41). Never a typed-in literal here: this dict only carries
+        # the placeholder `je_stufe_ausgewiesen: False` as the honest default
+        # for anyone reading this table directly (e.g. a shard for a spec whose
+        # zielniveau_pruefen is False, or the rare parse that finds nothing);
+        # `_build_differenzierungs_achse` overwrites both fields from real
+        # parser output before a shard is ever written.
         "gers": {
             "typ": "gers",
             "referenzrahmen": "Gemeinsamer Europäischer Referenzrahmen (GeR)",
@@ -544,6 +548,40 @@ def _anwendungsitem_zu_dict(
 # --------------------------------------------------------------------------
 
 
+def _build_differenzierungs_achse(spec: PL.SubjectSpec, result: PL.ParseResult) -> dict:
+    """``meta.differenzierungs_achse`` for one shard, sourced not typed-in.
+
+    Starts from the static per-subject registration (:data:`DIFFERENZIERUNGS_ACHSEN`
+    / :data:`GENERISCHE_ACHSE`) -- deep-copied so the shared module-level dict is
+    never mutated across builds -- then, for the one axis that carries a ``gers``
+    sub-block (SEK1.E today), fills in the per-class-year CEFR mapping from
+    ``result.zielniveau_je_stufe`` (E8-05/V-41): parse_lehrplan.py's
+    ``ZIELNIVEAU_RE`` extraction of the "In allen vier Kompetenzbereichen wird
+    das Zielniveau ... angestrebt." sentence, keyed on
+    ``SubjectSpec.zielniveau_pruefen`` -- never a hardcoded ``fach_code`` check
+    here either. ``je_stufe_ausgewiesen`` is set from whether that extraction
+    actually found anything, not asserted True unconditionally -- a future
+    subject registered with a ``gers`` sub-block but no matching source text
+    would ship an honest False instead of a promise the data cannot back up.
+    """
+    achse = copy.deepcopy(
+        DIFFERENZIERUNGS_ACHSEN.get(f"{spec.band}.{spec.fach_code}", GENERISCHE_ACHSE)
+    )
+    if "gers" in achse:
+        if not result.zielniveau_je_stufe:
+            LOG.warning(
+                "%s.%s axis carries a gers sub-block but no CEFR target-level "
+                "sentence was extracted -- shipping je_stufe_ausgewiesen: False",
+                spec.band, spec.fach_code,
+            )
+        achse["gers"] = {
+            **achse["gers"],
+            "je_stufe_ausgewiesen": bool(result.zielniveau_je_stufe),
+            "je_stufe": dict(sorted(result.zielniveau_je_stufe.items())),
+        }
+    return achse
+
+
 def build_meta(
     spec: PL.SubjectSpec, result: PL.ParseResult, provenienz: dict, dataset_version: str | None
 ) -> dict:
@@ -554,9 +592,7 @@ def build_meta(
         "fach": {"code": spec.fach_code, "name": result.fach_name},
         "uebergreifende_themen_fach": list(result.uebergreifende_themen_fach),
         "uebergreifende_themen_legende": dict(result.themen_map),
-        "differenzierungs_achse": DIFFERENZIERUNGS_ACHSEN.get(
-            f"{spec.band}.{spec.fach_code}", GENERISCHE_ACHSE
-        ),
+        "differenzierungs_achse": _build_differenzierungs_achse(spec, result),
         "anwendungsbereiche_status": spec.anwendungsbereiche_status,
         # Mirrors SubjectSpec.anwendungsbereiche_bindung verbatim, so a consumer
         # can tell "the regulation offers only prose / nothing here" from "the
