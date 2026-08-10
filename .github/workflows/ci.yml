@@ -1,0 +1,170 @@
+# Continuous integration for teaching-skills-austria.
+#
+# Four independent gates, one job each, so a red build names the rule it broke rather than
+# "CI failed":
+#
+#   dataset          schema validation of the six shipped shards -- hard rules fail the run,
+#                    soft rules are reported and do not (the project carries one accepted soft
+#                    finding, the SEK1.M zahlen.json size overage, which must never fail a build)
+#   tests            repository-wide pytest: parser unit tests over the committed fixtures AND
+#                    the DOCX golden-file tests, which only run if collection covers the whole
+#                    repo -- see the collection guard in that job
+#   fetcher-selftest the fetcher's offline correctness checks, run with the network blackholed
+#   plugin-manifest  the plugin manifests still parse and carry no unresolved release placeholder
+#
+# Everything here runs without network access and without `data-pipeline/resources/`, which is
+# gitignored: the live-source tests skip themselves when it is absent (~63 skips on a clean
+# checkout) and that is the expected CI shape, not a failure.
+
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # The DOCX goldens are byte-maps of python-docx output. Pin the interpreter so a runner
+  # image bump cannot turn a packaging difference into a phantom golden failure; raise this
+  # deliberately, with the goldens re-verified locally on the new version first.
+  PYTHON_VERSION: "3.13"
+
+jobs:
+  dataset:
+    name: Schema validation (hard fails, soft reports)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - run: python -m pip install --upgrade pip
+      - run: pip install -r requirements-dev.txt
+
+      # Exit 1 on any hard finding; soft findings print and pass. `--strict` would promote
+      # soft findings too and is deliberately NOT used: it would fail every build on the
+      # accepted zahlen.json overage.
+      - name: Validate the six shards
+        run: python data-pipeline/validate_dataset.py
+
+      - name: Machine-readable report
+        if: always()
+        run: python data-pipeline/validate_dataset.py --json > validate_dataset.json || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: validate-dataset-report
+          path: validate_dataset.json
+          if-no-files-found: warn
+
+  tests:
+    name: Tests (parser fixtures + DOCX goldens)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - run: python -m pip install --upgrade pip
+      - run: pip install -r requirements-dev.txt
+
+      # The golden tests live in tests/ while the parser tests live in data-pipeline/tests/.
+      # A future pytest config that narrowed collection to one of those roots would leave this
+      # job green while silently testing half the repository -- exactly the vacuous-check
+      # failure mode this project keeps hitting. Assert both suites are actually collected
+      # before running anything.
+      - name: Guard -- both suites are in the collected set
+        run: |
+          python - <<'PY'
+          import subprocess, sys
+          out = subprocess.run(
+              [sys.executable, "-m", "pytest", "--collect-only", "-q"],
+              capture_output=True, text=True, check=False,
+          ).stdout
+          required = [
+              "tests/test_renderer_golden.py",
+              "tests/test_niveau_spalte_rendering.py",
+              "data-pipeline/tests/test_parse_lehrplan.py",
+              "data-pipeline/tests/test_shipped_bytes.py",
+          ]
+          missing = [path for path in required if path not in out]
+          if missing:
+              sys.exit("collection does not reach: " + ", ".join(missing))
+          print("collection guard: all required suites present")
+          PY
+
+      # Repository-wide, so the renderer goldens are included: any DOCX package-member diff
+      # fails here. python-docx is installed, so the golden tests must not skip.
+      - name: pytest
+        run: python -m pytest -q
+
+  fetcher-selftest:
+    name: Fetcher self-test (no network)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - run: python -m pip install --upgrade pip
+      - run: pip install -r requirements-dev.txt
+
+      # Point every proxy variable at a closed port so an accidental outbound call fails fast
+      # and loudly instead of quietly succeeding on the runner's live network. The self-test
+      # is meant to prove offline correctness; it may never depend on reaching RIS.
+      - name: --self-test with the network blackholed
+        env:
+          http_proxy: http://127.0.0.1:9
+          https_proxy: http://127.0.0.1:9
+          HTTP_PROXY: http://127.0.0.1:9
+          HTTPS_PROXY: http://127.0.0.1:9
+          no_proxy: ""
+          NO_PROXY: ""
+        run: python data-pipeline/fetch_ris_resources.py --self-test
+
+  plugin-manifest:
+    name: Plugin manifests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Manifests parse as JSON
+        run: |
+          python - <<'PY'
+          import json
+          for path in (".claude-plugin/plugin.json", ".claude-plugin/marketplace.json"):
+              with open("plugin/" + path, encoding="utf-8") as handle:
+                  json.load(handle)
+              print("ok:", path)
+          PY
+
+      # `claude plugin validate --strict` is not available on the runner, so this is the
+      # portable subset: the manifests parse, and the release placeholders are still tracked.
+      # It reports rather than fails -- replacing them is E11-01, and the build must not go
+      # red for a known, scheduled release task.
+      - name: Report unresolved release placeholders
+        run: |
+          if grep -rn 'TODO-KONTAKT-EMAIL\|<Name/Org>' plugin/ data-pipeline/ ; then
+            echo "::warning::release placeholders are still present (E11-01)"
+          else
+            echo "no release placeholders left"
+          fi
