@@ -1,0 +1,496 @@
+{
+  "shared": {
+    "kompetenz": {
+      "type": "kompetenzbezug",
+      "kompetenz_id": "AT.LP23.SEK1.M.ZAHLEN.K2.03",
+      "text": "Die Schülerinnen und Schüler können Rechenoperationen mit nichtnegativen Bruchzahlen durchführen und interpretieren; die Addition bzw. Subtraktion einer natürlichen Zahl zu bzw. von einer ganzen Zahl als Bewegung auf der Zahlengeraden deuten;",
+      "quelle": {
+        "quelle": "RIS Bundesrecht konsolidiert",
+        "kurztitel": "Lehrpläne der Mittelschulen",
+        "nor": "NOR40271471",
+        "kundmachung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+        "anlage": "Anl. 1",
+        "teil": "ACHTER TEIL",
+        "stand": "2026-07-27"
+      }
+    },
+    "verbindliche_items": {
+      "type": "list",
+      "label": "Verbindliche Anwendungsbereiche",
+      "items": [
+        "Wiederholen und Festigen: Grundvorstellungen zu den Grundrechenoperationen; Durchführen von Rechenverfahren mit nichtnegativen Dezimalzahlen; Abschätzen von Rechenergebnissen, Ermitteln von Schranken;",
+        "Deuten des Multiplizierens mit Bruchzahlen, zB als Teilen und nachfolgendes Vervielfachen bzw. als Vervielfachen und nachfolgendes Teilen, oder als Ermitteln eines relativen Anteils („Von-Deutung“ der Multiplikation: zB ⟦ABB:hauptdokument.img10is.png⟧ von ⟦ABB:hauptdokument.img11is.png⟧ von ⟦ABB:hauptdokument.img12is.png⟧);",
+        "Deuten des Dividierens durch eine Bruchzahl zB als Messen, als Umkehren des Multiplizierens;",
+        "schriftliches Durchführen der vier Grundrechenoperationen mit Bruchzahlen, in einfachen Fällen auch im Kopf;",
+        "Beschreiben und Anwenden der Rechenregeln für Bruchzahlen; Interpretieren dieser Rechenregeln durch geometrische Deutungen und in Sachsituationen;",
+        "Wissen, dass für Bruchzahlen die gleichen Rechengesetze sowie Klammer- und Vorrangregeln wie für natürliche Zahlen und nichtnegative Dezimalzahlen gelten; Anwenden dieser Gesetze und Regeln auf Rechnungen mit Bruchzahlen;",
+        "Erkennen von Vorteilen und Nachteilen der Bruch- bzw. Dezimaldarstellung beim Durchführen von Rechenoperationen;",
+        "Deuten und Darstellen von Additionen und Subtraktionen der Form ⟦ABB:hauptdokument.img16is.png⟧ und ⟦ABB:hauptdokument.img17is.png⟧ mit ⟦ABB:hauptdokument.img18is.png⟧ und ⟦ABB:hauptdokument.img19is.png⟧ als Bewegungen auf der Zahlengeraden; Verwenden dieser Deutung, um entsprechende Rechenaufgaben zu lösen."
+      ],
+      "abbildungen": [
+        {
+          "token": "⟦ABB:hauptdokument.img10is.png⟧",
+          "datei": "hauptdokument.img10is.png",
+          "pfad": "data/abbildungen/NOR40271471/hauptdokument.img10is.png"
+        },
+        {
+          "token": "⟦ABB:hauptdokument.img11is.png⟧",
+          "datei": "hauptdokument.img11is.png",
+          "pfad": "data/abbildungen/NOR40271471/hauptdokument.img11is.png"
+        },
+        {
+          "token": "⟦ABB:hauptdokument.img12is.png⟧",
+          "datei": "hauptdokument.img12is.png",
+          "pfad": "data/abbildungen/NOR40271471/hauptdokument.img12is.png"
+        },
+        {
+          "token": "⟦ABB:hauptdokument.img16is.png⟧",
+          "datei": "hauptdokument.img16is.png",
+          "pfad": "data/abbildungen/NOR40271471/hauptdokument.img16is.png"
+        },
+        {
+          "token": "⟦ABB:hauptdokument.img17is.png⟧",
+          "datei": "hauptdokument.img17is.png",
+          "pfad": "data/abbildungen/NOR40271471/hauptdokument.img17is.png"
+        },
+        {
+          "token": "⟦ABB:hauptdokument.img18is.png⟧",
+          "datei": "hauptdokument.img18is.png",
+          "pfad": "data/abbildungen/NOR40271471/hauptdokument.img18is.png"
+        },
+        {
+          "token": "⟦ABB:hauptdokument.img19is.png⟧",
+          "datei": "hauptdokument.img19is.png",
+          "pfad": "data/abbildungen/NOR40271471/hauptdokument.img19is.png"
+        }
+      ]
+    },
+    "allenfalls_item": {
+      "type": "list",
+      "label": "Optionale Erweiterung (allenfalls, nicht verpflichtend)",
+      "items": [
+        "Erkennen, wie sich Änderungen eines Operanden (Summand, Faktor, ...) auf das Ergebnis auswirken, allenfalls im Zusammenhang mit Variablen (zB ⟦ABB:hauptdokument.img13is.png⟧wird doppelt so groß, wenn ⟦ABB:hauptdokument.img14is.png⟧ gleich bleibt und ⟦ABB:hauptdokument.img15is.png⟧ halbiert wird);"
+      ],
+      "abbildungen": [
+        {
+          "token": "⟦ABB:hauptdokument.img13is.png⟧",
+          "datei": "hauptdokument.img13is.png",
+          "pfad": "data/abbildungen/NOR40271471/hauptdokument.img13is.png"
+        },
+        {
+          "token": "⟦ABB:hauptdokument.img14is.png⟧",
+          "datei": "hauptdokument.img14is.png",
+          "pfad": "data/abbildungen/NOR40271471/hauptdokument.img14is.png"
+        },
+        {
+          "token": "⟦ABB:hauptdokument.img15is.png⟧",
+          "datei": "hauptdokument.img15is.png",
+          "pfad": "data/abbildungen/NOR40271471/hauptdokument.img15is.png"
+        }
+      ]
+    },
+    "wiederholen_item": {
+      "type": "list",
+      "label": "Verbindliche Anwendungsbereiche (Wiederholen und Festigen)",
+      "items": [
+        "Wiederholen und Festigen: Grundvorstellungen zu den Grundrechenoperationen; Durchführen von Rechenverfahren mit nichtnegativen Dezimalzahlen; Abschätzen von Rechenergebnissen, Ermitteln von Schranken;"
+      ],
+      "abbildungen": []
+    },
+    "vorklasse_liste": {
+      "type": "list",
+      "label": "Vorjahreskompetenzen (Vorklasse-Stützung)",
+      "items": [
+        "AT.LP23.SEK1.M.ZAHLEN.K1.01 — Die Schülerinnen und Schüler können natürliche Zahlen sowie nichtnegative Dezimal- und Bruchzahlen interpretieren, darstellen und vergleichen;",
+        "AT.LP23.SEK1.M.ZAHLEN.K1.02 — Die Schülerinnen und Schüler können Rechenoperationen mit natürlichen Zahlen und mit nichtnegativen Dezimalzahlen durchführen und deuten; Überschlagsrechnungen durchführen;",
+        "AT.LP23.SEK1.M.ZAHLEN.K1.03 — Die Schülerinnen und Schüler können Größen ein- und mehrnamig anschreiben, Maßangaben interpretieren und Umrechnungen durchführen."
+      ]
+    },
+    "niveaus_hinweis": {
+      "type": "labeled",
+      "label": "Leistungsniveaus (ab der 2. Klasse)",
+      "text": "Ab der 2. Klasse unterscheidet der Lehrplan für Mathematik die zwei Leistungsniveaus 'Standard' und 'Standard AHS' (Wechsel während des Unterrichtsjahres möglich). Das ist eine Metadaten-Einstufung für diese Schulstufe insgesamt, aus dem Fliesstext des Lehrplans — kein einzelnes Anwendungsbereich-Item ist selbst als 'Standard' oder 'Standard AHS' gekennzeichnet, und keine Abfrage dieses Datensatzes kann Items nach diesem Label filtern."
+    }
+  },
+  "documents": [
+    {
+      "id": "differenzierungsplan",
+      "audience": "teacher",
+      "eyebrow": "Sekundarstufe I · Mathematik · 2. Klasse · Differenzierung",
+      "title": "Bruchrechnen: Differenzierungsplan",
+      "meta": "Kompetenzbereich Zahlen und Maße · AT.LP23.SEK1.M.ZAHLEN.K2.03",
+      "sections": [
+        {
+          "heading": "Amtliche Verankerung",
+          "blocks": [
+            {
+              "type": "from_shared",
+              "key": "kompetenz"
+            },
+            {
+              "type": "labeled",
+              "label": "Kompetenzbereich",
+              "text": "Zahlen und Maße (ZAHLEN) · 2. Klasse (K2)"
+            },
+            {
+              "type": "from_shared",
+              "key": "verbindliche_items"
+            },
+            {
+              "type": "from_shared",
+              "key": "allenfalls_item"
+            },
+            {
+              "type": "from_shared",
+              "key": "vorklasse_liste"
+            },
+            {
+              "type": "labeled",
+              "label": "Differenzierungsachse (aus finde_differenzierung, verbatim)",
+              "text": "typ: standard_standardplus · gilt_ab_stufe: K2 · niveaus an dieser Stufe wirksam: Standard, Standard AHS · enrichment_quelle: allenfalls. 'Standard AHS' bleibt Fließtext-Metadaten aus dem Lehrplan, nie eine Markierung an einem einzelnen Kompetenz- oder Anwendungsbereich-Item."
+            }
+          ]
+        },
+        {
+          "heading": "Stufenübersicht",
+          "blocks": [
+            {
+              "type": "niveau_spalte",
+              "niveaus": [
+                {
+                  "label": "unter",
+                  "titel": "Vorjahreswissen festigen",
+                  "blocks": [
+                    {
+                      "type": "paragraph",
+                      "text": "Gründet auf den drei Vorklasse-Kompetenzen ZAHLEN.K1.01–.03 sowie dem amtlichen 'Wiederholen und Festigen'-Anwendungsbereich AB.ZAHLEN.K2.12 — zwei getrennte Quellen, siehe eigenes Arbeitsblatt 'arbeitsblatt_unter'."
+                    }
+                  ]
+                },
+                {
+                  "label": "auf",
+                  "titel": "Standard",
+                  "blocks": [
+                    {
+                      "type": "paragraph",
+                      "text": "Bindende Kompetenz (volltext) plus alle 8 verbindlichen Anwendungsbereiche — siehe eigenes Arbeitsblatt 'arbeitsblatt_auf'."
+                    }
+                  ]
+                },
+                {
+                  "label": "über",
+                  "titel": "Vertiefung",
+                  "blocks": [
+                    {
+                      "type": "paragraph",
+                      "text": "Das amtliche 'allenfalls'-Item AB.ZAHLEN.K2.17 (nicht verpflichtend) plus skill-eigene, an stammsatz+text rückgebundene Vertiefung — siehe eigenes Arbeitsblatt 'arbeitsblatt_ueber'."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Stufenzuweisung und Revision",
+          "blocks": [
+            {
+              "type": "labeled",
+              "label": "Begründung",
+              "text": "Die Zuweisung zu unter/auf/über stützt sich auf die letzte Beobachtung zum Umgang mit Bruch- und Dezimaldarstellungen (Vorstunde: Zahlenstrahl-Vergleich). Sie ist eine Arbeitsannahme, kein fixer Track: formative Evidenz aus dieser Stunde (Beobachtung, Exit-Ticket) kann die Zuordnung für die nächste Einheit revidieren."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arbeitsblatt_unter",
+      "audience": "student",
+      "eyebrow": "Sekundarstufe I · Mathematik · 2. Klasse · Arbeitsblatt (Grundlagen)",
+      "title": "Brüche und Rechenoperationen: Grundlagen festigen",
+      "meta": "Name: ____________________    Datum: ____________",
+      "sections": [
+        {
+          "heading": "Amtliche Verankerung",
+          "blocks": [
+            {
+              "type": "from_shared",
+              "key": "kompetenz"
+            }
+          ]
+        },
+        {
+          "heading": "Was du schon kannst (Vorjahr)",
+          "blocks": [
+            {
+              "type": "from_shared",
+              "key": "vorklasse_liste"
+            },
+            {
+              "type": "from_shared",
+              "key": "wiederholen_item"
+            }
+          ]
+        },
+        {
+          "heading": "Aufwärmen am Zahlenstrahl",
+          "blocks": [
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "callout",
+                  "kind": "student-task",
+                  "label": "Los geht's",
+                  "text": "Zeichne einen Zahlenstrahl von 0 bis 2. Markiere 1/2, 1/4 und 3/4 und beschrifte jede Markierung."
+                },
+                {
+                  "type": "answer_box",
+                  "ruled": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Rechnen mit Brüchen",
+          "blocks": [
+            {
+              "type": "callout",
+              "kind": "student-note",
+              "label": "Denk daran",
+              "text": "Beim Schätzen hilft der Zahlenstrahl: Liegt das Ergebnis näher bei 0, bei 1/2 oder bei 1?"
+            },
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "Schätze zuerst, dann rechne: 0,5 + 0,25. Zeichne dein Ergebnis auf dem Zahlenstrahl ein."
+                },
+                {
+                  "type": "answer_box"
+                }
+              ]
+            },
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "Runde 0,47 und 0,52 jeweils auf eine Nachkommastelle. Was fällt dir auf?"
+                },
+                {
+                  "type": "answer_box"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Zeig, was du kannst",
+          "blocks": [
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "callout",
+                  "kind": "student-task",
+                  "label": "Reflexion",
+                  "text": "Erkläre einer Partnerin oder einem Partner in eigenen Worten: Warum hilft der Zahlenstrahl beim Schätzen von Rechenergebnissen? Wo warst du dir unsicher?"
+                },
+                {
+                  "type": "answer_box",
+                  "ruled": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arbeitsblatt_auf",
+      "audience": "student",
+      "eyebrow": "Sekundarstufe I · Mathematik · 2. Klasse · Arbeitsblatt (Standard)",
+      "title": "Brüche und Rechenoperationen: Standard",
+      "meta": "Name: ____________________    Datum: ____________",
+      "sections": [
+        {
+          "heading": "Amtliche Verankerung",
+          "blocks": [
+            {
+              "type": "from_shared",
+              "key": "kompetenz"
+            },
+            {
+              "type": "from_shared",
+              "key": "niveaus_hinweis"
+            }
+          ]
+        },
+        {
+          "heading": "Verbindliche Anwendungsbereiche",
+          "blocks": [
+            {
+              "type": "from_shared",
+              "key": "verbindliche_items"
+            }
+          ]
+        },
+        {
+          "heading": "Aufgaben",
+          "blocks": [
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "Berechne 2/5 · 3/4 und deute das Ergebnis als 'Anteil von einem Anteil'. Zeichne eine Skizze dazu."
+                },
+                {
+                  "type": "answer_box",
+                  "ruled": true
+                }
+              ]
+            },
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "Führe schriftlich durch: 3/8 + 5/6. Wende dabei die Rechenregeln für Brüche an, die du kennst."
+                },
+                {
+                  "type": "answer_box"
+                }
+              ]
+            },
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "Stelle -2 + 5 als Bewegung auf der Zahlengeraden dar. Beschreibe in einem Satz, wie sich das Vorzeichen der zweiten Zahl auf die Bewegungsrichtung auswirkt."
+                },
+                {
+                  "type": "answer_box"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Zeig, was du kannst",
+          "blocks": [
+            {
+              "type": "group",
+              "blocks": [
+                {
+                  "type": "callout",
+                  "kind": "student-task",
+                  "label": "Reflexion",
+                  "text": "Welche der beiden Rechenoperationen (Multiplikation oder Division mit Bruchzahlen) fiel dir heute leichter? Woran erkennst du selbst, ob dein Ergebnis stimmen kann, ohne nachzurechnen?"
+                },
+                {
+                  "type": "answer_box",
+                  "ruled": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arbeitsblatt_ueber",
+      "audience": "student",
+      "eyebrow": "Sekundarstufe I · Mathematik · 2. Klasse · Arbeitsblatt (Vertiefung)",
+      "title": "Brüche und Rechenoperationen: Vertiefung",
+      "meta": "Name: ____________________    Datum: ____________",
+      "sections": [
+        {
+          "heading": "Amtliche Verankerung",
+          "blocks": [
+            {
+              "type": "from_shared",
+              "key": "kompetenz"
+            },
+            {
+              "type": "from_shared",
+              "key": "niveaus_hinweis"
+            }
+          ]
+        },
+        {
+          "heading": "Optionale Erweiterung (allenfalls, amtlich, nicht verpflichtend)",
+          "blocks": [
+            {
+              "type": "herkunftsblock",
+              "amtlich": true,
+              "quelle": {
+                "quelle": "RIS Bundesrecht konsolidiert",
+                "kurztitel": "Lehrpläne der Mittelschulen",
+                "nor": "NOR40271471",
+                "kundmachung": "BGBl. II Nr. 185/2012 zuletzt geändert durch BGBl. II Nr. 178/2025",
+                "anlage": "Anl. 1",
+                "teil": "ACHTER TEIL",
+                "stand": "2026-07-27"
+              },
+              "blocks": [
+                {
+                  "type": "from_shared",
+                  "key": "allenfalls_item"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "Dieses Item ist ein amtliches 'allenfalls'-Item aus demselben Lehrplanabschnitt wie die verbindlichen Anwendungsbereiche — real, aber ausdrücklich nicht verpflichtend. Es ist kein 'Standard-AHS'-Item; eine solche Kennzeichnung pro Item existiert im Datensatz nicht."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Skill-eigene Vertiefung (nicht amtlich)",
+          "blocks": [
+            {
+              "type": "herkunftsblock",
+              "amtlich": false,
+              "quelle_hinweis": "skill-eigene Vertiefung, rückgebunden an stammsatz + text der Zielkompetenz (AT.LP23.SEK1.M.ZAHLEN.K2.03) — keine amtliche Anwendungsbereich-Quelle",
+              "blocks": [
+                {
+                  "type": "group",
+                  "blocks": [
+                    {
+                      "type": "paragraph",
+                      "text": "Ein Konto ändert sich an drei Tagen: Tag 1: -3/4 kg (Zutatenverbrauch als Bruch gedacht), Tag 2: +2,5, Tag 3: eine Bruchzahl deiner Wahl zwischen -1 und -2. Stelle alle drei Veränderungen als Bewegungen auf einer gemeinsamen Zahlengeraden dar."
+                    },
+                    {
+                      "type": "answer_box",
+                      "ruled": true
+                    }
+                  ]
+                },
+                {
+                  "type": "group",
+                  "blocks": [
+                    {
+                      "type": "callout",
+                      "kind": "student-task",
+                      "label": "Weiterdenken",
+                      "text": "Erfinde selbst zwei Bruchzahlen, deren Produkt größer als beide Faktoren ist. Begründe, warum das bei diesen Zahlen so ist — und ob das für alle Bruchzahlen gilt."
+                    },
+                    {
+                      "type": "answer_box",
+                      "ruled": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

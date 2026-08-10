@@ -49,7 +49,10 @@ Zielkompetenz). Sie ersetzt keine Kompetenzwahl und erfindet keine.
    Funktionsvertrag für alle neun `finde_*`-Funktionen (diese Skill nutzt sie mit, statt sie
    zweitzuschreiben) und ist hier verbindlich mitzulesen, auch wenn schon eine Fachreferenz jener
    Skill bekannt ist. Diese Skill selbst hat keine eigene Fachreferenz-Tabelle, die eine Achse
-   einem Fach fest zuordnet — genau das würde das Verbot aus Schritt 2 unterlaufen.
+   einem Fach fest zuordnet — genau das würde das Verbot aus Schritt 2 unterlaufen. Für Mathematik
+   (`PRIM.M`/`SEK1.M`) zusätzlich `references/mathematik.md` dieser Skill lesen: sie legt fest,
+   welches Datenfeld je Stufe (unter/auf/über) die Quelle ist, und ist ebenso verbindlich wie
+   Punkt 2 dieser Liste, sobald das Fach feststeht.
 
 ---
 
@@ -171,11 +174,14 @@ Aufgabe, die über reines Rechnen/Abrufen hinausgeht. Stufen-Zuweisung wird im D
 begründet und ausdrücklich als anhand formativer Evidenz revidierbar gekennzeichnet, nicht als
 statischer Track.
 
-Die konkrete fachspezifische Ausgestaltung je Stufe (z. B. Mathematik-Aufgabentypen, ein
-generisches Achse-Beispiel für ein Nicht-Mathematik-Fach, die feinkörnige `niveau_spalte`-Layout-
-Politur) ist fachspezifisches bzw. renderer-seitiges Referenzmaterial, das diese Skill nicht
-mitliefert und hier nicht als bereits vorhanden behauptet — die Achse selbst bleibt aber, wie
-oben beschrieben, in jedem Fall aus `finde_differenzierung` gelesen, nie angenommen.
+Für Mathematik ist die Datenquelle je Stufe (unter/auf/über) in `references/mathematik.md`
+festgelegt — dort steht, welches Feld aus `finde_differenzierung`/`finde_anwendungsbereiche` jede
+Stufe füllt, wie `vorklasse_stuetzen` und die `Wiederholen und Festigen`-Items getrennt bleiben,
+und die K1-Regel für `niveaus`. Ein generisches Achse-Beispiel für ein Nicht-Mathematik-Fach sowie
+die feinkörnige `niveau_spalte`-Layout-Politur sind fachspezifisches bzw. renderer-seitiges
+Referenzmaterial, das diese Skill (noch) nicht mitliefert und hier nicht als bereits vorhanden
+behauptet — die Achse selbst bleibt aber, wie oben beschrieben, in jedem Fall aus
+`finde_differenzierung` gelesen, nie angenommen.
 
 ## Schritt 4 — In einem Turn Material und DOCX ausgeben
 
