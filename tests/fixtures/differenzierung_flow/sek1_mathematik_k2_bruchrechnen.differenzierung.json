@@ -288,6 +288,37 @@
           ]
         },
         {
+          "heading": "Übungsmaterial der Lehrkraft (nicht amtlich)",
+          "blocks": [
+            {
+              "type": "herkunftsblock",
+              "amtlich": false,
+              "quelle_hinweis": "Bruchrechnen Übung (mathematik/K2/bruchrechnen.md)",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "Eigene Notizen zu Bruchstreifen und Zahlenstrahl für die 2. Klasse."
+                },
+                {
+                  "type": "group",
+                  "blocks": [
+                    {
+                      "type": "callout",
+                      "kind": "student-task",
+                      "label": "Übung aus dem Material der Lehrkraft",
+                      "text": "Lege die Bruchstreifen für 1/2, 1/4 und 3/4 nebeneinander. Übertrage jede Länge auf deinen Zahlenstrahl und vergleiche mit deiner Schätzung von vorhin."
+                    },
+                    {
+                      "type": "answer_box",
+                      "ruled": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
           "heading": "Zeig, was du kannst",
           "blocks": [
             {
