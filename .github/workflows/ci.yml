@@ -57,6 +57,12 @@ jobs:
       - name: Validate the six shards
         run: python data-pipeline/validate_dataset.py
 
+      # Independent of the pipeline that produced the data: locates every shipped competence
+      # and descriptor string in the RIS XML itself. Runs against the committed fixtures, so it
+      # needs no network and no gitignored resources.
+      - name: Source-truth fidelity
+        run: python data-pipeline/verify_source_fidelity.py
+
       - name: Machine-readable report
         if: always()
         run: python data-pipeline/validate_dataset.py --json > validate_dataset.json || true
