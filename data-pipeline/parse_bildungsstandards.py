@@ -366,9 +366,15 @@ class BildungsstandardsParser:
         }
         manifest_extra = _lade_manifest_eintrag_optional()
         if manifest_extra:
-            for key in ("dokument_url", "eli", "retrieval_date"):
+            for key in ("dokument_url", "eli"):
                 if manifest_extra.get(key):
                     prov[key] = manifest_extra[key]
+            # The manifest calls it `retrieval_date`; every shipped shard calls it `stand`,
+            # exactly as build_dataset.py maps it for the curriculum shards. One name across
+            # both datasets keeps lesson_common.kompetenz_citation()'s "Stand:" half working
+            # for a Bildungsstandards source too, instead of silently dropping it.
+            if manifest_extra.get("retrieval_date"):
+                prov["stand"] = manifest_extra["retrieval_date"]
         return prov
 
     # -- helpers ------------------------------------------------------
@@ -779,7 +785,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = BildungsstandardsParser(root)
     shards = parser.parse()
     provenienz = parser.provenienz()
-    dataset_version = args.dataset_version or provenienz.get("retrieval_date") or provenienz.get("zuletzt_aktualisiert", "")
+    dataset_version = args.dataset_version or provenienz.get("stand") or provenienz.get("zuletzt_aktualisiert", "")
 
     ok = True
     for key in sorted(shards, key=lambda k: BID.shard_name(*k)):

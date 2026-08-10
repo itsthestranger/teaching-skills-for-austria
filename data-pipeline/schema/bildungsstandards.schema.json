@@ -56,7 +56,7 @@
   "$defs": {
     "provenienz": {
       "type": "object",
-      "description": "Read directly from the BiSt document's own RIS header/footer fields (Kurztitel, Kundmachungsorgan, ... Gesetzesnummer, Dokumentnummer) -- self-contained, not dependent on the gitignored resources/manifest.json (dokument_url/eli/retrieval_date are added best-effort from the manifest when present, and are therefore the only optional fields here).",
+      "description": "Read directly from the BiSt document's own RIS header/footer fields (Kurztitel, Kundmachungsorgan, ... Gesetzesnummer, Dokumentnummer) -- self-contained, not dependent on the gitignored resources/manifest.json (dokument_url/eli/stand are added best-effort from the manifest when present, and are therefore the only optional fields here; `stand` is the manifest's retrieval_date under the same field name the curriculum shards use).",
       "required": ["quelle", "kurztitel", "nor", "kundmachungsorgan", "anlage"],
       "properties": {
         "quelle": { "type": "string", "description": "e.g. 'RIS Bundesrecht konsolidiert'." },
@@ -71,7 +71,7 @@
         "zuletzt_aktualisiert": { "type": "string" },
         "dokument_url": { "type": "string", "format": "uri" },
         "eli": { "type": "string", "format": "uri" },
-        "retrieval_date": { "type": "string" }
+        "stand": { "type": "string", "description": "Retrieval date of the RIS source, ISO 8601. Same name as the curriculum shards' provenienz.stand, so one citation formatter serves both datasets." }
       }
     },
     "kompetenzbereich": {

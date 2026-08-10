@@ -5,8 +5,8 @@
     "amtlich": false,
     "praezisionsaussage": "Bereichsbezug; keine 1:1-Zuordnung von Lehrplan-Kompetenzen zu Bildungsstandard-Deskriptoren.",
     "quellen": {
-      "lehrplan": { "namespace": "AT.LP23", "nor": ["NOR40271469", "NOR40271471"] },
-      "bildungsstandards": { "namespace": "AT.BIST", "nor": "NOR40255561" }
+      "lehrplan": { "namespace": "AT.LP23", "nor": ["NOR40271469", "NOR40271471"], "stand": "2026-07-27" },
+      "bildungsstandards": { "namespace": "AT.BIST", "nor": "NOR40255561", "stand": "2026-07-27" }
     }
   },
   "zuordnungen": [
