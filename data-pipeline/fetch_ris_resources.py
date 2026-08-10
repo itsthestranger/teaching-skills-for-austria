@@ -61,12 +61,12 @@ DISCOVERY_URL = "https://data.bka.gv.at/ris/api/v2.6/Bundesrecht"
 # is passed. Host is www.ris.bka.gv.at, NOT data.bka.gv.at (V-05).
 FALLBACK_URL_TMPL = "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/{nor}/{nor}.{ext}"
 
-# TODO-KONTAKT-EMAIL is a literal placeholder tracked for replacement before
-# release -- do not fill in a real address here without updating the tracker.
+# Identity sent to RIS on every request: a real project URL and a reachable contact
+# address, as the RIS terms of use expect for automated retrieval (plan Section 2).
 USER_AGENT = (
     "teaching-skills-austria/0.1 "
-    "(+https://github.com/TODO-ORG/teaching-skills-for-austria; "
-    "contact: TODO-KONTAKT-EMAIL)"
+    "(+https://github.com/itsthestranger/teaching-skills-for-austria; "
+    "contact: ps@strangeprojects.com)"
 )
 
 # Politeness: max 1 request/second, exponential backoff, sane retry cap.

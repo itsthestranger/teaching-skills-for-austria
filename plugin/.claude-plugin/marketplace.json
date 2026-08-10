@@ -1,6 +1,6 @@
 {
   "name": "teaching-skills-austria",
-  "owner": { "name": "<Name/Org>" },
+  "owner": { "name": "Phillip Stranger" },
   "metadata": { "description": "Kompetenzorientierter Unterricht Österreich (Lehrplan 2023)." },
   "plugins": [{
     "name": "teaching-skills-austria",
