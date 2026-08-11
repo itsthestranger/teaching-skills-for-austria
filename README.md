@@ -148,6 +148,25 @@ Rechte und Autorschaft bleiben bei Ihnen.
 Einzelheiten — Ordnerkonventionen, unterstützte Formate, Grenzen — stehen in
 [`docs/README.md`](docs/README.md).
 
+### `docs/` bedeutet zweierlei — nicht verwechseln
+
+Das Wort `docs/` kommt in diesem Projekt in **zwei völlig verschiedenen Bedeutungen** vor:
+
+| | Was | Wo | Wer liest es |
+|---|---|---|---|
+| **Ihr Material** | Ihre eigenen Unterlagen, die die Skills zur Laufzeit einbeziehen | `docs/` **in Ihrem Arbeitsverzeichnis** — dort, wo Sie Claude starten | die Skills, bei jeder Anfrage |
+| **Projektnotizen** | Technische Aufzeichnungen darüber, **wie** der Datensatz aus RIS gebaut wurde | `data-pipeline/notes/` im Repository | Menschen, die am Projekt arbeiten |
+
+Für Sie als Lehrkraft ist **nur die erste Zeile relevant.** Die Projektnotizen unter
+`data-pipeline/notes/` sind kein Unterrichtsmaterial, werden von den Skills nie gelesen und müssen
+Sie nicht interessieren.
+
+Wichtig ist dabei: Der Ordner `docs/` wird **relativ zu Ihrem Arbeitsverzeichnis** aufgelöst, nicht
+im installierten Plugin gesucht. Er gehört Ihnen, nicht dem Plugin. Wenn Sie Claude also direkt im
+geklonten Repository starten, wird dessen mitgelieferter `docs/`-Ordner verwendet — der enthält nur
+die Anleitung und sonst nichts. Arbeiten Sie am besten in einem eigenen Verzeichnis und legen Sie
+`docs/` dort an.
+
 ---
 
 ## Zum Konnektor
