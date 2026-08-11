@@ -189,6 +189,23 @@ Sie ist ein privates Open-Source-Projekt.
 
 ---
 
+## Ohne Gewähr
+
+Dieses Plugin wird **ohne Gewähr** bereitgestellt — Nutzung auf eigene Verantwortung. Die erzeugten
+Dokumente entstehen automatisiert und sind **vor dem Einsatz im Unterricht fachlich zu prüfen**. Es
+wird keinerlei Zusicherung gegeben, dass ein Ergebnis fachlich richtig, vollständig, altersgemäß
+oder für Ihre Klasse geeignet ist. Die pädagogische Verantwortung bleibt vollständig bei Ihnen als
+Lehrkraft. Denselben Hinweis trägt die Fußzeile jedes erzeugten Dokuments.
+
+Rechtlich gilt der Gewährleistungsausschluss der **Apache-2.0**-Lizenz (siehe
+[`LICENSE`](LICENSE), Abschnitte 7 und 8).
+
+Die Versionsnummer sagt dasselbe: dies ist ein **Vorab-Release (0.9.x)**, kein 1.0. Der Datensatz
+und die beiden Skills sind vollständig und getestet, aber das Zusammenspiel ist noch nicht über
+längere Zeit im echten Schulalltag erprobt. Rückmeldungen sind ausdrücklich willkommen.
+
+---
+
 ## Grenzen — was dieses Plugin nicht tut
 
 - **Es beurteilt nicht.** Keine Noten, keine Schularbeiten, keine Tests.

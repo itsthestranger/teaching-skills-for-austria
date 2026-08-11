@@ -25,8 +25,13 @@ SKILLS = ("at-differenzierung", "at-unterrichtsplanung")
 
 DEFAULT_FOOTER_NOTE = (
     "Konsolidierter RIS-Text, unverbindliche Fassung. Rechtsverbindlich ist die im "
-    "Bundesgesetzblatt (BGBl.) kundgemachte Fassung."
+    "Bundesgesetzblatt (BGBl.) kundgemachte Fassung. "
+    "Ohne Gewähr: automatisiert erstellt, vor dem Einsatz fachlich prüfen."
 )
+
+#: The two claims the footer must always make, kept separate from the exact
+#: wording above so a future reword cannot silently drop one of them.
+PFLICHTAUSSAGEN = ("Bundesgesetzblatt (BGBl.)", "Ohne Gewähr")
 
 MINIMAL_DATA = {"title": "Testdokument", "sections": []}
 OVERRIDDEN_NOTE = "Interne Testfassung — nicht amtlich."
@@ -97,3 +102,16 @@ def test_html_explicit_footer_note_overrides_default(skill: str, tmp_path: Path)
     html = out.read_text(encoding="utf-8")
     assert OVERRIDDEN_NOTE in html
     assert DEFAULT_FOOTER_NOTE not in html
+
+
+def test_default_footer_makes_both_required_statements():
+    """Wording may be revised; neither claim may quietly disappear.
+
+    The BGBl.-precedence half is the legal-source statement (E11-03); the
+    "Ohne Gewähr" half is the no-warranty statement the public release depends
+    on. A reword that drops either one would still pass the exact-string tests
+    above only if that literal were updated in lockstep -- this check states the
+    requirement semantically instead.
+    """
+    for aussage in PFLICHTAUSSAGEN:
+        assert aussage in DEFAULT_FOOTER_NOTE, f"footer no longer states {aussage!r}"

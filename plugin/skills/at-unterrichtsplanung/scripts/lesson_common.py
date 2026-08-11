@@ -498,7 +498,8 @@ def expand_document(data: dict, audience: str = "teacher") -> dict:
 
 DEFAULT_FOOTER_NOTE = (
     "Konsolidierter RIS-Text, unverbindliche Fassung. Rechtsverbindlich ist die im "
-    "Bundesgesetzblatt (BGBl.) kundgemachte Fassung."
+    "Bundesgesetzblatt (BGBl.) kundgemachte Fassung. "
+    "Ohne Gewähr: automatisiert erstellt, vor dem Einsatz fachlich prüfen."
 )
 
 DEFAULT_THEME = {
