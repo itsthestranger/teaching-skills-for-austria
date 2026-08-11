@@ -27,11 +27,31 @@ def test_skill_file_exists_and_loads() -> None:
     assert "name: at-differenzierung" in text
 
 
+#: The specification is a **local-only, gitignored** working document (CLAUDE.md: it is a
+#: reference for the build and nothing ships it), so it is absent on any CI runner and on any
+#: fresh clone. A test that reads it can only run where it exists.
+PLAN = REPO_ROOT / "teaching-skills-austria-plan.md"
+
+
+@pytest.mark.skipif(
+    not PLAN.is_file(),
+    reason=(
+        "teaching-skills-austria-plan.md is local-only and gitignored, so byte-identity with "
+        "plan §6.5 is only checkable on a machine that has the spec. The frontmatter itself is "
+        "still guarded everywhere by tests/test_skill_routing.py, which asserts name, "
+        "description and the full routing semantics without needing the plan."
+    ),
+)
 def test_frontmatter_is_plan_section_6_5_verbatim() -> None:
     """The frontmatter block (between the two ``---`` fences) must be byte-identical to the
     plan's §6.5 ``at-differenzierung`` YAML block -- no rewording, per the task's explicit
-    instruction."""
-    plan = (REPO_ROOT / "teaching-skills-austria-plan.md").read_text(encoding="utf-8")
+    instruction.
+
+    Deliberately still enforced where the plan exists: the frontmatter carries the pre-V-61
+    simplification *"Sprachen: GERS A1/A2/B1"*, retained on purpose (2026-08-06 deviation row)
+    because it is the skill's routing surface. This test is what stops someone "correcting" it.
+    """
+    plan = PLAN.read_text(encoding="utf-8")
     plan_lines = plan.splitlines()
     start = plan_lines.index("name: at-differenzierung") - 1  # the '---' line before it
     assert plan_lines[start] == "---"
