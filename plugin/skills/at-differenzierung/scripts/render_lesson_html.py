@@ -39,7 +39,7 @@ from lesson_common import (  # noqa: E402
     workspace_height, normalize_text, label_text, label_sep, table_row_height,
     coerce_headers, coerce_rows, kompetenz_citation, resolve_niveau_kind, resolve_herkunft,
     split_abbildungen, resolve_abbildung_path, abbildung_missing_marker, abbildung_alt,
-    render_with_abbildungen,
+    render_with_abbildungen, DEFAULT_FOOTER_NOTE,
 )
 
 FILL_IN_SIZES = {"short": "6em", "med": "14em", "long": "100%"}
@@ -421,8 +421,7 @@ def render(data: dict) -> str:
         for blk in blocks:
             out.append(render_block(blk, theme))
 
-    if data.get("footer_note"):
-        out.append(f"<div class=\"footer\">{md(data['footer_note'])}</div>")
+    out.append(f"<div class=\"footer\">{md(data.get('footer_note') or DEFAULT_FOOTER_NOTE)}</div>")
 
     title = escape(str(data.get("title", "Unterrichtsplanung")), quote=True)
     return ("<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>" + title

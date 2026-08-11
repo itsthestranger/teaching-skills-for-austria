@@ -496,6 +496,11 @@ def expand_document(data: dict, audience: str = "teacher") -> dict:
 # theme, alias, callout, and grade-band logic without duplication.
 # ============================================================================
 
+DEFAULT_FOOTER_NOTE = (
+    "Konsolidierter RIS-Text, unverbindliche Fassung. Rechtsverbindlich ist die im "
+    "Bundesgesetzblatt (BGBl.) kundgemachte Fassung."
+)
+
 DEFAULT_THEME = {
     "primary": "#17A267", "title_color": "#14613F",
     "text": "#222222", "muted": "#666666", "rule": "#D0D4D8", "border": "#CBD2D8",

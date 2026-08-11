@@ -27,7 +27,7 @@ from lesson_common import (  # noqa: E402
     md_tokens, workspace_height, label_text, label_sep, table_row_height, preamble_blocks,
     coerce_headers, coerce_rows, kompetenz_citation, resolve_niveau_kind, resolve_herkunft,
     split_abbildungen, resolve_abbildung_path, abbildung_missing_marker, ABB_HEIGHT_RATIO,
-    render_with_abbildungen,
+    render_with_abbildungen, DEFAULT_FOOTER_NOTE,
 )
 
 try:
@@ -803,8 +803,7 @@ def render(data: dict, out_path: str) -> int:
         for blk in section.get("blocks", []):
             emit_block(doc, blk, theme)
 
-    if data.get("footer_note"):
-        doc.add_paragraph(str(data["footer_note"]), style="LC Muted")
+    doc.add_paragraph(str(data.get("footer_note") or DEFAULT_FOOTER_NOTE), style="LC Muted")
 
     doc.save(out_path)
     # Post-expansion count, so multi-document sources report accurately.

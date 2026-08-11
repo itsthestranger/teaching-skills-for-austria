@@ -126,6 +126,10 @@ Bewusst **nicht** verwendet: aufbereitete Materialien des IQS, des Pädagogik-Pa
 Universitätsprojekten. Das ist redaktionelle Arbeit Dritter, kein Verordnungstext — und damit
 rechtlich eine andere Lage.
 
+Der mitgelieferte Lehrplantext ist die **konsolidierte RIS-Fassung** und dient nur der
+Information. Rechtsverbindlich ist ausschließlich die im Bundesgesetzblatt (BGBl.) kundgemachte
+Fassung. Denselben Hinweis trägt auch die Fußzeile jedes erzeugten Dokuments.
+
 ---
 
 ## Ihr eigenes Material
