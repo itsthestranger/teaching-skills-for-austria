@@ -161,3 +161,65 @@ def test_proxy_blackhole_stays_lowercase_only(workflow: str) -> None:
         )
     for required in ("http_proxy:", "https_proxy:", "no_proxy:"):
         assert required in workflow, f"the proxy blackhole lost {required}"
+
+
+#: Lowest major version of each action that runs on the **node24** runtime, each verified
+#: 2026-08-11 by reading `runs.using` in that action's own `action.yml` at the tag -- not
+#: guessed from release notes, whose summaries proved unreliable. GitHub emits
+#: "Node.js 20 is deprecated. Use Node.js version 24 instead." for anything older.
+#:
+#: Note `upload-artifact` needs **v6**: v5 is still `node20`, unlike the other three whose
+#: node24 runtime arrived one major earlier. Raise a floor only after re-checking `action.yml`
+#: at the new tag; do not assume "latest major" and "lowest node24 major" are the same thing.
+MIN_ACTION_MAJORS = {
+    "actions/checkout": 5,
+    "actions/setup-python": 6,
+    "actions/setup-node": 5,
+    "actions/upload-artifact": 6,
+}
+
+
+def test_actions_are_on_the_node24_runtime(workflow: str) -> None:
+    """A node20 action does not fail the build -- it warns -- so nothing but this notices."""
+    import re
+
+    stale = []
+    for action, minimum in MIN_ACTION_MAJORS.items():
+        for match in re.finditer(rf"uses:\s*{re.escape(action)}@v(\d+)", workflow):
+            major = int(match.group(1))
+            if major < minimum:
+                line = workflow[: match.start()].count("\n") + 1
+                stale.append(
+                    f"line {line}: {action}@v{major} runs on node20; "
+                    f"v{minimum} is the lowest node24 major"
+                )
+    assert not stale, "\n".join(stale)
+
+
+def test_every_action_used_is_covered_by_the_floor(workflow: str) -> None:
+    """Canary: a new action added to the workflow must get a floor too, or the check
+    above would silently ignore it."""
+    import re
+
+    used = {m.group(1) for m in re.finditer(r"uses:\s*([\w-]+/[\w-]+)@", workflow)}
+    uncovered = used - set(MIN_ACTION_MAJORS)
+    assert not uncovered, (
+        f"actions with no node24 floor recorded: {sorted(uncovered)} -- read `runs.using` "
+        "in each action.yml and add it to MIN_ACTION_MAJORS"
+    )
+
+
+def test_cli_node_version_is_not_end_of_life(workflow: str) -> None:
+    """The Node the Claude Code CLI runs on, distinct from the actions' own runtime.
+
+    plugin-smoke is the closest thing this project has to a real user's fresh environment,
+    so pinning it to an EOL Node would make it prove something no user experiences.
+    """
+    import re
+
+    match = re.search(r'node-version:\s*"(\d+)"', workflow)
+    assert match, "plugin-smoke no longer pins a node-version"
+    assert int(match.group(1)) >= 24, (
+        f'node-version "{match.group(1)}" is end-of-life (Node 20 EOL: April 2026); '
+        "pin an active LTS"
+    )
