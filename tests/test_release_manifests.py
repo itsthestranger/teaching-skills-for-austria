@@ -18,7 +18,11 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PLUGIN_MANIFEST = REPO_ROOT / "plugin" / ".claude-plugin" / "plugin.json"
-MARKETPLACE_MANIFEST = REPO_ROOT / "plugin" / ".claude-plugin" / "marketplace.json"
+#: At the **repository** root, deliberately not beside `plugin.json`: `/plugin marketplace add
+#: owner/repo` only looks for `.claude-plugin/marketplace.json` at the top of the repo, so a
+#: teacher can install straight from GitHub without cloning first. Relative `source` paths in
+#: it resolve from the directory containing `.claude-plugin/`, hence `"source": "./plugin"`.
+MARKETPLACE_MANIFEST = REPO_ROOT / ".claude-plugin" / "marketplace.json"
 
 SEMVER = re.compile(r"^\d+\.\d+\.\d+$")
 
@@ -51,3 +55,32 @@ def test_version_is_semver():
 
 def test_plugin_name_matches_the_marketplace_entry():
     assert _plugin()["name"] == _marketplace_entry()["name"]
+
+
+def test_marketplace_manifest_is_at_the_repository_root():
+    """`/plugin marketplace add owner/repo` only finds it here.
+
+    Verified 2026-08-11 against the real CLI: with this file at the repo root and
+    `source: ./plugin`, `claude plugin marketplace add ./` registers the marketplace and
+    `claude plugin install` resolves both skills. With it under `plugin/.claude-plugin/`
+    the GitHub shorthand cannot find it at all, and teachers must clone first.
+    """
+    assert MARKETPLACE_MANIFEST.is_file(), (
+        f"{MARKETPLACE_MANIFEST} is missing -- installing straight from GitHub depends on it"
+    )
+    stray = REPO_ROOT / "plugin" / ".claude-plugin" / "marketplace.json"
+    assert not stray.is_file(), (
+        "a second marketplace.json under plugin/.claude-plugin/ would duplicate the catalogue "
+        "and drift from the root one"
+    )
+
+
+def test_marketplace_source_points_at_the_plugin_directory():
+    """Relative sources resolve from the directory containing `.claude-plugin/` -- the repo
+    root here -- so the entry must reach back down into `plugin/`. `./` would resolve to the
+    repo root, which has no plugin.json and would fail to install."""
+    source = _marketplace_entry()["source"]
+    assert source == "./plugin", f"expected './plugin', found {source!r}"
+    assert (REPO_ROOT / source.lstrip("./") / ".claude-plugin" / "plugin.json").is_file(), (
+        "the marketplace source path does not resolve to a directory containing plugin.json"
+    )

@@ -76,7 +76,13 @@ REQUIREMENTS = REPO_ROOT / "requirements-dev.txt"
 
 PLUGIN_DIR = REPO_ROOT / "plugin"
 PLUGIN_MANIFEST = PLUGIN_DIR / ".claude-plugin" / "plugin.json"
-MARKETPLACE_MANIFEST = PLUGIN_DIR / ".claude-plugin" / "marketplace.json"
+#: The marketplace manifest lives at the **repository** root, not the plugin root, because
+#: `/plugin marketplace add owner/repo` only finds `.claude-plugin/marketplace.json` there.
+#: Its entry points back down with `"source": "./plugin"`. `plugin.json` stays at the plugin
+#: root, where the plugin format requires it -- the two manifests are deliberately not siblings.
+MARKETPLACE_MANIFEST = REPO_ROOT / ".claude-plugin" / "marketplace.json"
+#: What `marketplace add` is pointed at: the directory *containing* `.claude-plugin/`.
+MARKETPLACE_ROOT = REPO_ROOT
 
 PRUEFE_VERANKERUNG = PLUGIN_DIR / "scripts" / "pruefe_verankerung.py"
 
@@ -266,7 +272,7 @@ def phase_marketplace_add(work_dir: Path) -> StepResult:
     proj.mkdir(parents=True, exist_ok=True)
     env = _offline_env({"CLAUDE_CONFIG_DIR": str(cfg)})
 
-    result = _run([claude, "plugin", "marketplace", "add", str(PLUGIN_DIR), "--scope", "local"], cwd=proj, env=env)
+    result = _run([claude, "plugin", "marketplace", "add", str(MARKETPLACE_ROOT), "--scope", "local"], cwd=proj, env=env)
     if result.returncode != 0:
         return StepResult(name, REAL, ok=False, detail="marketplace add failed", log=result.stdout + result.stderr)
     return StepResult(name, REAL, ok=True, detail=result.stdout.strip())
@@ -286,7 +292,7 @@ def phase_install(work_dir: Path) -> StepResult:
     proj.mkdir(parents=True, exist_ok=True)
     env = _offline_env({"CLAUDE_CONFIG_DIR": str(cfg)})
 
-    add = _run([claude, "plugin", "marketplace", "add", str(PLUGIN_DIR), "--scope", "local"], cwd=proj, env=env)
+    add = _run([claude, "plugin", "marketplace", "add", str(MARKETPLACE_ROOT), "--scope", "local"], cwd=proj, env=env)
     if add.returncode != 0:
         return StepResult(name, REAL, ok=False, detail="prerequisite marketplace add failed", log=add.stdout + add.stderr)
 

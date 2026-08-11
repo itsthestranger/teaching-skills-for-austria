@@ -70,18 +70,71 @@ andere.
 
 ## Installation
 
+Dieses Plugin läuft in **Claude Code**. Das ist kein reines Terminal-Werkzeug — es steckt auch in
+der Claude-Desktop-App und im Browser. Sie brauchen also **keine Kommandozeile**, wenn Sie das nicht
+möchten. Wählen Sie den Weg, der zu Ihnen passt:
+
+### A) Claude-Desktop-App — der einfachste Weg, ohne Terminal
+
+1. Claude-App öffnen und oben auf den Tab **Code** wechseln (die App hat die Tabs **Chat**,
+   **Cowork** und **Code**).
+2. Einen Ordner auswählen, in dem Sie arbeiten möchten — dort landen später Ihre Dokumente.
+3. Neben dem Eingabefeld auf **+** klicken → **Plugins** → **Add plugin**.
+4. Im Plugin-Browser die Marketplace-Adresse hinzufügen:
+   `itsthestranger/teaching-skills-for-austria`
+5. Das Plugin **Unterricht Österreich (LP 2023)** installieren.
+
+Über **+** → **Plugins** → **Manage plugins** können Sie es später deaktivieren oder entfernen.
+
+### B) Claude Code im Terminal
+
+Zwei Befehle, ohne das Repository zu klonen:
+
 ```bash
-git clone https://github.com/itsthestranger/teaching-skills-for-austria
-claude plugin marketplace add ./teaching-skills-for-austria/plugin
+claude plugin marketplace add itsthestranger/teaching-skills-for-austria
 claude plugin install teaching-skills-austria@teaching-skills-austria
 ```
 
-Danach genügt eine Anfrage in natürlicher Sprache — die passende Skill wird automatisch geladen.
-Sie müssen sie nicht namentlich aufrufen.
+Innerhalb einer laufenden Sitzung geht dasselbe mit `/plugin marketplace add …` und
+`/plugin install …`. Meldet die Installation *"Run /reload-plugins to activate"*, führen Sie
+`/reload-plugins` aus.
+
+### C) Claude Code im Browser (Cloud-Sitzungen)
+
+Der Plugin-Browser steht in Cloud-Sitzungen **nicht** zur Verfügung. Tragen Sie das Plugin
+stattdessen im Repository ein, mit dem Sie arbeiten — in `.claude/settings.json`:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "teaching-skills-austria": {
+      "source": { "source": "github", "repo": "itsthestranger/teaching-skills-for-austria" }
+    }
+  },
+  "enabledPlugins": ["teaching-skills-austria@teaching-skills-austria"]
+}
+```
+
+Beim Start der Sitzung wird es dann automatisch installiert.
+
+### Danach
+
+Eine Anfrage in natürlicher Sprache genügt — die passende Skill wird automatisch geladen. Sie
+müssen sie nicht namentlich aufrufen.
 
 Für die **DOCX**-Ausgabe wird `python-docx` beim ersten Rendern nachinstalliert. Schlägt das fehl
 (z. B. ohne Internetzugang), erzeugen die Skills weiterhin HTML — Sie verlieren die Word-Datei, nicht
 die Inhalte.
+
+### Wo es *nicht* läuft
+
+- **Im normalen Claude-Chat** (Tab **Chat** in der App, oder `claude.ai` im Browser). Der Chat ist
+  eine andere Umgebung als **Code** und lädt keine Plugins. Er hat eine eigene, davon getrennte
+  Skills-Funktion (*Customize → Skills*), die einzelne, in sich geschlossene Skill-Pakete erwartet.
+  Dieses Plugin passt dort nicht hinein: Beide Skills greifen auf **einen gemeinsamen** Datensatz
+  (`plugin/data/`) und gemeinsame Skripte (`plugin/scripts/`) zu, die außerhalb der einzelnen
+  Skill-Ordner liegen. Nutzen Sie den Tab **Code** (Weg A) — der braucht ebenfalls kein Terminal.
+- **In WSL-Sitzungen** (Windows-Subsystem für Linux) werden Plugins nicht unterstützt.
 
 ---
 

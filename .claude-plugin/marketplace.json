@@ -1,0 +1,19 @@
+{
+  "name": "teaching-skills-austria",
+  "owner": {
+    "name": "Phillip Stranger"
+  },
+  "metadata": {
+    "description": "Kompetenzorientierter Unterricht Österreich (Lehrplan 2023)."
+  },
+  "plugins": [
+    {
+      "name": "teaching-skills-austria",
+      "displayName": "Unterricht Österreich (LP 2023)",
+      "description": "Standardsbasierte Unterrichtsplanung und Differenzierung, Primarstufe + Sek I.",
+      "version": "0.9.0",
+      "category": "education",
+      "source": "./plugin"
+    }
+  ]
+}
