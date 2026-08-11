@@ -58,8 +58,13 @@ def test_fetcher_selftest_is_network_blackholed(workflow: str) -> None:
     runner would prove nothing about offline correctness."""
     assert "--self-test" in workflow
     assert "http://127.0.0.1:9" in workflow
-    for var in ("http_proxy", "https_proxy", "HTTP_PROXY", "HTTPS_PROXY"):
-        assert f"{var}:" in workflow
+    # Lowercase only. This test previously also demanded HTTP_PROXY/HTTPS_PROXY, which
+    # made it *enforce* a workflow GitHub rejects outright ("'HTTP_PROXY' is already
+    # defined" -- env keys are compared case-insensitively). What matters here is that
+    # the proxy variables exist and point at a closed port, not their casing; casing is
+    # pinned separately by test_proxy_blackhole_stays_lowercase_only.
+    for var in ("http_proxy", "https_proxy"):
+        assert f"{var}: http://127.0.0.1:9" in workflow
 
 
 def test_python_version_is_pinned(workflow: str) -> None:
@@ -67,3 +72,92 @@ def test_python_version_is_pinned(workflow: str) -> None:
     a packaging difference into a phantom golden failure."""
     assert 'PYTHON_VERSION: "3.13"' in workflow
     assert "python-version: ${{ env.PYTHON_VERSION }}" in workflow
+
+
+# ---------------------------------------------------------------------------
+# Structural checks that GitHub would otherwise be the first to make.
+#
+# The module docstring's reasoning ("GitHub is the thing that parses this file")
+# has one hole: GitHub only parses it *after* a push, and pushing is owner-only
+# here. A malformed workflow therefore cannot be discovered locally at all -- it
+# burns a push/CI cycle instead. These checks are still stdlib-only.
+#
+# Real failure, 2026-08-11: the fetcher job set both `http_proxy` and
+# `HTTP_PROXY` (belt-and-braces for tools that read one or the other). GitHub
+# compares `env:` keys **case-insensitively** and rejected the entire workflow:
+#   "(Line: 154, Col: 11): 'HTTP_PROXY' is already defined"
+# Nothing in the repo could have caught it; the whole run was Invalid workflow
+# file, so every job was skipped.
+# ---------------------------------------------------------------------------
+
+def _env_blocks(text: str) -> list[tuple[int, list[tuple[str, int]]]]:
+    """Return (start_line, [(key, line_no), ...]) for every `env:` mapping."""
+    import re
+
+    lines = text.split("\n")
+    blocks: list[tuple[int, list[tuple[str, int]]]] = []
+    index = 0
+    while index < len(lines):
+        opener = re.match(r"^(\s*)env:\s*(#.*)?$", lines[index])
+        if not opener:
+            index += 1
+            continue
+        indent = len(opener.group(1))
+        keys: list[tuple[str, int]] = []
+        cursor = index + 1
+        while cursor < len(lines):
+            line = lines[cursor]
+            if not line.strip() or line.strip().startswith("#"):
+                cursor += 1
+                continue
+            entry = re.match(r"^(\s+)([A-Za-z_][A-Za-z0-9_-]*):", line)
+            if not entry or len(entry.group(1)) <= indent:
+                break
+            keys.append((entry.group(2), cursor + 1))
+            cursor += 1
+        blocks.append((index + 1, keys))
+        index = cursor
+    return blocks
+
+
+def test_env_blocks_have_no_case_insensitive_duplicate_keys(workflow: str) -> None:
+    """GitHub rejects the whole file for this, so every job is skipped."""
+    import collections
+
+    failures = []
+    for start, keys in _env_blocks(workflow):
+        seen = collections.defaultdict(list)
+        for key, line_no in keys:
+            seen[key.lower()].append(f"{key} (line {line_no})")
+        for lowered, occurrences in seen.items():
+            if len(occurrences) > 1:
+                failures.append(
+                    f"env: block at line {start} defines {lowered!r} more than once: "
+                    + ", ".join(occurrences)
+                    + " -- GitHub compares env keys case-insensitively and will reject "
+                    "the workflow as 'Invalid workflow file'"
+                )
+    assert not failures, "\n".join(failures)
+
+
+def test_the_env_block_scanner_actually_finds_the_blocks(workflow: str) -> None:
+    """Canary: a scanner that silently matches nothing would pass everything."""
+    blocks = _env_blocks(workflow)
+    assert blocks, "no env: blocks found -- the scanner is broken, not the workflow"
+    assert any(keys for _, keys in blocks), "every env: block parsed as empty"
+
+
+def test_proxy_blackhole_stays_lowercase_only(workflow: str) -> None:
+    """The fix for the 2026-08-11 failure, pinned so it cannot be undone.
+
+    urllib.request.getproxies_environment() lower-cases every variable name
+    before matching, so lowercase alone reaches the fetcher; adding the
+    uppercase twins buys nothing and breaks the file.
+    """
+    for forbidden in ("HTTP_PROXY:", "HTTPS_PROXY:", "NO_PROXY:"):
+        assert forbidden not in workflow, (
+            f"{forbidden} collides case-insensitively with its lowercase twin; "
+            "keep the lowercase form only"
+        )
+    for required in ("http_proxy:", "https_proxy:", "no_proxy:"):
+        assert required in workflow, f"the proxy blackhole lost {required}"

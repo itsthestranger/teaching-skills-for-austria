@@ -147,14 +147,17 @@ jobs:
       # Point every proxy variable at a closed port so an accidental outbound call fails fast
       # and loudly instead of quietly succeeding on the runner's live network. The self-test
       # is meant to prove offline correctness; it may never depend on reaching RIS.
+      #
+      # LOWERCASE ONLY -- do not add HTTP_PROXY/HTTPS_PROXY/NO_PROXY alongside these.
+      # GitHub Actions compares `env:` keys case-insensitively and rejects the whole workflow
+      # file with "'HTTP_PROXY' is already defined". Lowercase is sufficient: the fetcher uses
+      # urllib only, and urllib.request.getproxies_environment() lower-cases every variable
+      # name before matching, so it honours these. Guarded by tests/test_ci_workflow.py.
       - name: --self-test with the network blackholed
         env:
           http_proxy: http://127.0.0.1:9
           https_proxy: http://127.0.0.1:9
-          HTTP_PROXY: http://127.0.0.1:9
-          HTTPS_PROXY: http://127.0.0.1:9
           no_proxy: ""
-          NO_PROXY: ""
         run: python data-pipeline/fetch_ris_resources.py --self-test
 
   plugin-manifest:
