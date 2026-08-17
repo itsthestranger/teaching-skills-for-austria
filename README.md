@@ -215,10 +215,11 @@ Für Sie als Lehrkraft ist **nur die erste Zeile relevant.** Die Projektnotizen 
 Sie nicht interessieren.
 
 Wichtig ist dabei: Der Ordner `docs/` wird **relativ zu Ihrem Arbeitsverzeichnis** aufgelöst, nicht
-im installierten Plugin gesucht. Er gehört Ihnen, nicht dem Plugin. Wenn Sie Claude also direkt im
-geklonten Repository starten, wird dessen mitgelieferter `docs/`-Ordner verwendet — der enthält nur
-die Anleitung und sonst nichts. Arbeiten Sie am besten in einem eigenen Verzeichnis und legen Sie
-`docs/` dort an.
+im installierten Plugin gesucht. Er gehört Ihnen, nicht dem Plugin. Arbeiten Sie deshalb in Ihrem
+eigenen Verzeichnis und legen Sie `docs/` dort an — für die Installation müssen Sie dieses
+Repository nicht herunterladen. (Nur falls Sie es zur Entwicklung doch klonen: Starten Sie Claude
+nicht darin. Sonst wird dessen mitgelieferter `docs/`-Ordner verwendet, der nur die Anleitung
+enthält und sonst nichts.)
 
 ---
 
