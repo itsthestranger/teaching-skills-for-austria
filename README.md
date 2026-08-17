@@ -15,8 +15,8 @@ Herkunft (RIS-NOR, BGBl.-Fundstelle, Abrufdatum) mit.
 Für Lehrkräfte der **Primarstufe (Volksschule)** und der **Sekundarstufe I (Mittelschule)**, die
 Unterricht planen oder differenzieren und dabei nicht jedes Mal den Lehrplan aufschlagen wollen.
 
-Sie brauchen keine Programmierkenntnisse. Sie brauchen Claude Code und einmal die drei
-Installationsbefehle weiter unten.
+Sie brauchen keine Programmierkenntnisse, nur Claude Code. Die Installation weiter unten geht
+wahlweise ohne Kommandozeile über die Claude-Desktop-App oder im Terminal mit zwei Befehlen.
 
 ---
 
