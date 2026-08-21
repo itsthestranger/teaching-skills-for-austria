@@ -15,7 +15,7 @@ This project is derived from the upstream repository:
 | Skill Names | `k12-lesson-differentiation` → `at-differenzierung` | Austrian localization and naming convention |
 | Product Language | English → German | Primary audience is Austrian teachers |
 | Knowledge Graph | Learning Commons connector → Bundled RIS competence data | Local curriculum authority (BMBWF) data source preferred |
-| SaaS References | US ed-tech platforms removed from `.mcp.json` and docs | Not applicable in Austrian educational context |
+| MCP servers | Upstream's `plugin/.mcp.json` is **not carried over**; this project ships no `.mcp.json` and declares no MCP servers | That file declares nine US ed-tech HTTP servers (ASSISTments, Brisk Teaching, Canva, Coteach, Diffit, Eedi, MagicSchool, Snorkl, TeachFX). None serves the Austrian school context, and the plugin is designed to work offline from the bundled RIS dataset |
 | Render Blocks | Added: `kompetenzbezug` | Reference competency standards in lesson plans |
 | Render Blocks | Added: `uebergreifende_themen_tag` | Cross-curricular theme tags per Lehrplan 2023 |
 | Render Blocks | Added: `niveau_spalte` | Tiered proficiency levels for differentiation |

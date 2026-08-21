@@ -81,7 +81,7 @@ Kompetenz zurückgibt, keine andere.
 2. Einen Ordner auswählen, in dem Sie arbeiten möchten. Dort landen später Ihre Dokumente.
 3. Neben dem Eingabefeld auf **+** klicken → **Plugins** → **Add plugin**.
 4. Die Marketplace-Adresse hinzufügen: `itsthestranger/teaching-skills-for-austria`
-5. Das Plugin **Unterricht Österreich (LP 2023)** installieren.
+5. Das Plugin **Unterrichtsplanung & Differenzierung** installieren.
 
 Bietet der Plugin-Browser kein Feld für eine Marketplace-Adresse an, führen Sie einmalig den ersten
 Befehl aus Weg B aus. Desktop-App und CLI teilen sich dieselbe Konfiguration, danach steht der
