@@ -19,7 +19,6 @@ Copied from `plugin/skills/k12-lesson-planning/` at the pinned commit:
 - `scripts/render_all.sh`
 - `scripts/theme.css`
 - `LICENSE`
-- `references/NOTICE`
 
 ### `plugin/skills/at-differenzierung/`
 Copied from `plugin/skills/k12-lesson-differentiation/` at the pinned commit:
@@ -31,7 +30,6 @@ Copied from `plugin/skills/k12-lesson-differentiation/` at the pinned commit:
 - `scripts/render_all.sh`
 - `scripts/theme.css`
 - `LICENSE`
-- `references/NOTICE`
 
 ## Not copied (deliberately, separate later tasks)
 
@@ -39,6 +37,16 @@ Copied from `plugin/skills/k12-lesson-differentiation/` at the pinned commit:
 - `references/ela.md`, `references/math.md`, `references/science.md`,
   `references/social_studies.md` — upstream subject reference files.
 - `SKILL.md` — upstream skill definition.
+
+## Removed after vendoring
+
+- `references/NOTICE` (both skills) — upstream's Common Core State Standards
+  attribution. It was copied at vendoring time, but the files it attributes
+  (`references/ela.md`, `math.md`, `science.md`, `social_studies.md`) were
+  deliberately not copied, and E10-08b removed the last imported framework
+  vocabulary from the rubrics. No CCSS text ships in this repository, so the
+  notice attributed content that is not present and made the plugin appear to
+  carry US standards. Removed 2026-08-21.
 
 ## Modification status at this stage
 

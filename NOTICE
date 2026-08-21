@@ -1,16 +1,38 @@
-Skills for Competence-Oriented Teaching in Austria (Lehrplan 2023)
-Copyright 2026 Anthropic, PBC
-Copyright 2026 Learning Commons
+Unterricht Österreich (Lehrplan 2023)
+Copyright 2026 Phillip Stranger
 
-Portions of this product were co-developed by Anthropic, PBC
-and Learning Commons under a collaboration agreement.
+This project is a derivative work of "Agent Skills for K-12 Teachers":
 
-This product incorporates curriculum text and competence standards
-from the Austrian Lehrplan 2023 and related materials retrieved from
-the Rechtsinformationssystem des Bundes (RIS). These materials are
-freie Werke under § 7 UrhG (Austrian Federal Copyright Act) and are
-reproduced in accordance with applicable law.
+    https://github.com/anthropics/k12-teacher-skills
+    Licensed under the Apache License, Version 2.0
 
-Republik Österreich / Bundesministerium für Bildung, Wissenschaft
-und Forschung (BMBWF) is acknowledged for the public availability
-of Austrian curriculum and education policy materials.
+The document renderer under plugin/skills/*/scripts/ is vendored from that
+project and has since been modified; the pinned commit and the full list of
+changes are recorded in UPSTREAM.md and plugin/skills/PROVENANCE.md.
+
+As required by section 4(d) of the Apache License, the upstream NOTICE is
+retained verbatim below. It describes the upstream project only. Neither
+Anthropic, PBC nor Learning Commons contributed to, reviewed, commissioned
+or endorsed this project, and neither is responsible for it.
+
+    Agent Skills for K-12 Teachers
+    Copyright 2026 Anthropic, PBC
+    Copyright 2026 Learning Commons
+    Portions of this product were co-developed by Anthropic, PBC
+    and Learning Commons under a collaboration agreement.
+
+Everything specific to Austria -- the competence dataset, the data pipeline,
+the skill definitions and the German document text -- was written for this
+project and is not part of the upstream work.
+
+Curriculum text and competence standards are reproduced from the Austrian
+Lehrplan 2023 and the Bildungsstandards-Verordnung as published by the
+Rechtsinformationssystem des Bundes (RIS). These are freie Werke under § 7
+UrhG (Austrian Federal Copyright Act) and are reproduced in accordance with
+applicable law.
+
+Republik Österreich / Bundesministerium für Bildung, Wissenschaft und
+Forschung (BMBWF) is acknowledged for the public availability of Austrian
+curriculum and education policy materials. This project is not an offering
+of, affiliated with, or endorsed by the BMBWF, the IQS, or any other public
+authority.

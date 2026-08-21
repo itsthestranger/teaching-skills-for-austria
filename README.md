@@ -8,6 +8,10 @@ Die Skills erfinden keine Kompetenzen. Jede Kompetenzformulierung, jeder Anwendu
 Lehrstoffbezug in einem erzeugten Dokument stammt wörtlich aus dem Lehrplantext und trägt seine
 Herkunft (RIS-NOR, BGBl.-Fundstelle, Abrufdatum) mit.
 
+Das Ganze ist ein privates Open-Source-Vorhaben, **kein amtliches Angebot** und keine fertige
+Lösung: eine durchgearbeitete Fallstudie an sechs Fächern, die zeigt, wie weit man mit dem offen
+verfügbaren Verordnungstext kommt.
+
 ---
 
 ## Für wen ist das?
@@ -17,9 +21,8 @@ Unterricht planen oder differenzieren und dabei nicht jedes Mal den Lehrplan auf
 
 Programmierkenntnisse brauchen Sie keine, aber zweierlei schon: ein **kostenpflichtiges Claude-Abo**
 (Pro, Max, Team oder Enterprise, im Gratis-Tarif gibt es keine Plugins) und **Claude Code**. Claude
-Code ist kein reines Terminal-Werkzeug, es steckt auch in der Claude-Desktop-App im Tab **Code**, ein
-Terminal ist also nicht nötig. Im normalen Claude-Chat läuft das Plugin nicht, siehe
-[Wo es läuft](#wo-es-läuft).
+Code steckt auch in der Claude-Desktop-App im Tab **Code**, ein Terminal ist also nicht nötig. Im
+normalen Claude-Chat läuft das Plugin nicht, siehe [Wo es läuft](#wo-es-läuft).
 
 ---
 
@@ -63,7 +66,7 @@ Kompetenz zurückgibt, keine andere.
 | Claude Code im Terminal | ✓ |
 | Claude-Desktop-App, Tab **Code** | ✓ |
 | Claude Code über SSH | ✓ |
-| Claude Code im Browser (Cloud-Sitzung) | ✓ nur über `.claude/settings.json`, siehe Weg C |
+| Claude Code im Browser (Cloud-Sitzung) | nur wenn das Plugin im Projekt-Repository eingetragen ist — hier nicht beschrieben |
 | **Cowork** (`Customize → Plugins`) | ✓ laut Anthropic-Doku, für dieses Plugin nicht getestet |
 | Claude-Chat (Tab **Chat**, `claude.ai`) | — Chat verwendet keine Plugins |
 | WSL-Sitzungen unter Windows | — dort sind Plugins nicht verfügbar |
@@ -97,27 +100,6 @@ claude plugin install teaching-skills-austria@teaching-skills-austria
 In einer laufenden Sitzung geht dasselbe mit `/plugin marketplace add …` und `/plugin install …`.
 Meldet die Installation *„Run /reload-plugins to activate"*, führen Sie `/reload-plugins` aus.
 
-### C) Claude Code im Browser (Cloud-Sitzungen)
-
-Dort gibt es keinen Plugin-Browser, und lokal installierte Plugins gelten nicht. Tragen Sie das
-Plugin stattdessen in dem Repository ein, mit dem Sie arbeiten, in `.claude/settings.json`:
-
-```json
-{
-  "extraKnownMarketplaces": {
-    "teaching-skills-austria": {
-      "source": { "source": "github", "repo": "itsthestranger/teaching-skills-for-austria" }
-    }
-  },
-  "enabledPlugins": { "teaching-skills-austria@teaching-skills-austria": true }
-}
-```
-
-Beim Start der Sitzung wird das Plugin dann aus dem angegebenen Marketplace installiert. Die
-Sitzung braucht dafür Netzzugang. Beide Schlüssel sind Objekte, keine Listen: `enabledPlugins`
-wird mit `plugin@marketplace` adressiert und auf `true` gesetzt. Als Liste geschrieben wird der
-Eintrag kommentarlos ignoriert.
-
 ### Danach
 
 Eine Anfrage in natürlicher Sprache genügt, die passende Skill wird automatisch geladen. Für die
@@ -128,7 +110,7 @@ Internetzugang), erzeugen die Skills weiterhin HTML. Sie verlieren die Word-Date
 
 ## Welche Fächer sind abgedeckt?
 
-Genau sechs Fach×Stufen-Kombinationen. Das ist bewusst so und wird in Version 1 nicht erweitert:
+Genau sechs Fach×Stufen-Kombinationen, bewusst nicht mehr:
 
 | | Deutsch | Mathematik | Englisch | Sachunterricht |
 |---|:---:|:---:|:---:|:---:|
@@ -153,12 +135,6 @@ beiden. Alle drei Quellen stammen ausschließlich aus RIS, Abrufdatum **27. 07. 
 | Lehrplan der Volksschule | `NOR40271469` | BGBl. Nr. 134/1963 i. d. F. BGBl. II Nr. 178/2025 |
 | Lehrpläne der Mittelschulen | `NOR40271471` | BGBl. II Nr. 185/2012 i. d. F. BGBl. II Nr. 178/2025 |
 | Bildungsstandards-Verordnung | `NOR40255561` | BGBl. II Nr. 1/2009 i. d. F. BGBl. II Nr. 262/2023 |
-
-Lehrpläne und Bildungsstandards-Verordnung sind **freie Werke nach § 7 UrhG**: Rechtsvorschriften
-genießen keinen urheberrechtlichen Schutz, ihr Wortlaut darf wörtlich weitergegeben werden. Die
-Herkunft wird trotzdem durchgängig mitgeführt, weil sie fachlich zählt. Bewusst **nicht** verwendet
-sind aufbereitete Materialien des IQS, des Pädagogik-Pakets oder von Universitätsprojekten: das ist
-redaktionelle Arbeit Dritter, kein Verordnungstext, und damit rechtlich eine andere Lage.
 
 Der mitgelieferte Lehrplantext ist die **konsolidierte RIS-Fassung** und dient nur der Information.
 Rechtsverbindlich ist ausschließlich die im Bundesgesetzblatt (BGBl.) kundgemachte Fassung.
@@ -197,13 +173,13 @@ zurück, die im Original auf den *Learning Commons Knowledge Graph* zugreifen. D
 
 **Der gute Weg wäre ein offizieller Konnektor einer öffentlichen Stelle**, sinnvollerweise des BMBWF,
 der über RIS hinausreicht: Lehrpläne, Bildungsstandards, Diagnostik und geprüftes Begleitmaterial aus
-einer Hand, gepflegt von der zuständigen Stelle. Solange es den nicht gibt, ist dieses Plugin die
-**Zwischenlösung**: der amtliche Text, den RIS offen bereitstellt, sauber aufbereitet und
-mitgeliefert. Der Zugriff läuft absichtlich über eine Werkzeugschnittstelle, die ein späterer
-offizieller Konnektor ohne Bruch bedienen könnte, ohne dass die Skills geändert werden müssten.
+einer Hand, gepflegt von der zuständigen Stelle. Bis dahin arbeitet dieses Projekt mit dem, was offen
+verfügbar ist: dem amtlichen Text aus RIS, aufbereitet und mitgeliefert. Der Zugriff läuft
+absichtlich über eine Werkzeugschnittstelle, die ein späterer offizieller Konnektor ohne Bruch
+bedienen könnte, ohne dass die Skills geändert werden müssten.
 
-Diese Aufbereitung ist **kein amtliches Angebot** des BMBWF, des IQS oder einer anderen Behörde,
-sondern ein privates Open-Source-Projekt.
+Diese Aufbereitung ist **kein amtliches Angebot** des BMBWF, des IQS oder einer anderen Behörde und
+mit keiner dieser Stellen abgestimmt.
 
 ---
 
@@ -218,8 +194,8 @@ Rechtlich gilt der Gewährleistungsausschluss der **Apache-2.0**-Lizenz ([`LICEN
 Abschnitte 7 und 8).
 
 Die Versionsnummer sagt dasselbe: dies ist ein **Vorab-Release (0.9.x)**. Datensatz und Skills sind
-vollständig und getestet, das Zusammenspiel aber noch nicht über längere Zeit im Schulalltag erprobt.
-Rückmeldungen sind ausdrücklich willkommen.
+vollständig und getestet, das Zusammenspiel aber nicht im Schulalltag erprobt. Rückmeldungen sind
+ausdrücklich willkommen.
 
 **Was das Plugin nicht tut:** Es beurteilt nicht (keine Noten, Schularbeiten oder Tests) und ersetzt
 die fachliche Entscheidung nicht. Es kennt nur den Stand vom 27. 07. 2026, spätere Novellen fehlen
@@ -231,6 +207,6 @@ Einträge mit Quellenangabe vorliegen. Lieber leer als erfunden.
 
 ## Lizenz
 
-Code und Skills: **Apache-2.0** ([`LICENSE`](LICENSE)). Urheberrechtliche Hinweise und Danksagungen:
-[`NOTICE`](NOTICE). Der Lehrplan- und Verordnungstext ist gemeinfrei (§ 7 UrhG). Ihr eigenes Material
-in `docs/` fällt nicht darunter, es gehört Ihnen.
+Code und Skills stehen unter **Apache-2.0** ([`LICENSE`](LICENSE)); Herkunft und Danksagungen stehen
+in [`NOTICE`](NOTICE). Der Lehrplan- und Verordnungstext ist als Rechtsvorschrift gemeinfrei
+(§ 7 UrhG). Ihr eigenes Material in `docs/` gehört Ihnen.
